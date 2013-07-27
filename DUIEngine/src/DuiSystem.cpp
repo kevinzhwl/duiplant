@@ -12,58 +12,32 @@ template<> DuiSystem* Singleton<DuiSystem>::ms_Singleton = 0;
 
 DuiSystem::DuiSystem(HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")*/)
     :m_hInst(hInst)
-    ,m_atomWnd(0)
-    ,m_p(NULL)
     ,m_pResProvider(NULL)
     ,m_pLogger(NULL)
+	,m_pScriptModule(NULL)
     ,m_pBuf(NULL),m_nCount(0)
-	,m_pTiXmlMsgBoxTempl(NULL)
+	,m_funCreateTextServices(NULL)
 {
-    InitializeCriticalSection(&m_cs);
-    m_atomWnd=CSimpleWnd::RegisterSimpleWnd(hInst,pszHostClassName);
-    m_hHeapExecutable=HeapCreate(HEAP_CREATE_ENABLE_EXECUTE,0,0);
     createSingletons();
+	CSimpleWndHelper::Init(hInst,pszHostClassName);
+	m_rich20=LoadLibrary(_T("riched20.dll"));
+	if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
 }
 
 DuiSystem::~DuiSystem(void)
 {
     destroySingletons();
-
-    UnregisterClass((LPCTSTR)m_atomWnd,m_hInst);
-    DeleteCriticalSection(&m_cs);
-
+	CSimpleWndHelper::Destroy();
     //name id map
     if(m_pBuf && m_nCount) delete []m_pBuf;
     m_nCount=0;
     m_pBuf=NULL;
-	if(m_pTiXmlMsgBoxTempl)
-	{
-		delete m_pTiXmlMsgBoxTempl;
-		m_pTiXmlMsgBoxTempl=NULL;
-	}
-    HeapDestroy(m_hHeapExecutable);
+
+	if(m_rich20) FreeLibrary(m_rich20);
+	m_funCreateTextServices=NULL;
 }
 
-void DuiSystem::LockSharePtr( void * pObj )
-{
-    EnterCriticalSection(&m_cs);
-    m_p=pObj;
-}
-
-void * DuiSystem::GetSharePtr()
-{
-    return m_p;
-}
-
-void * DuiSystem::ReleaseSharePtr()
-{
-    void *pRet=m_p;
-    LeaveCriticalSection(&m_cs);
-    return pRet;
-}
-
-
-size_t DuiSystem::InitName2ID( UINT uXmlResID ,LPCSTR pszType/*=DUIRES_XML_TYPE*/)
+size_t DuiSystem::InitName2ID( UINT uXmlResID ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/)
 {
     if(m_nCount)
     {
@@ -82,30 +56,28 @@ size_t DuiSystem::InitName2ID( UINT uXmlResID ,LPCSTR pszType/*=DUIRES_XML_TYPE*
     strXml.Allocate(dwSize);
     resProvider.GetRawBuffer(pszType,uXmlResID,strXml,dwSize);
 
-    TiXmlDocument xmlDoc;
-    xmlDoc.Parse(strXml);
-    if(!xmlDoc.Error())
-    {
-        TiXmlElement *pItem=xmlDoc.RootElement();
-        while(pItem)
-        {
-            DUIASSERT(strcmp(pItem->Value(),"name2id")==0);
-            pItem=pItem->NextSiblingElement();
-            m_nCount++;
-        }
-        m_pBuf=new CNamedID[m_nCount];
+	pugi::xml_document xmlDoc;
+	if(!xmlDoc.load_buffer(strXml,strXml .size(),pugi::parse_default,pugi::encoding_utf8)) return 0;
 
-        pItem=xmlDoc.RootElement();
-        int iItem=0;
-        while(pItem)
-        {
-            DUIASSERT(strcmp(pItem->Value(),"name2id")==0);
-            m_pBuf[iItem++]=CNamedID(pItem->Attribute("name"),atoi(pItem->Attribute("id")));
-            pItem=pItem->NextSiblingElement();
-        }
-        qsort(m_pBuf,m_nCount,sizeof(CNamedID),CNamedID::Compare);
-    }
-    return m_nCount;
+	pugi::xml_node xmlNode=xmlDoc.first_child();
+	while(xmlNode)
+	{
+		DUIASSERT(strcmp(xmlNode.name(),"name2id")==0);
+		xmlNode=xmlNode.next_sibling();
+		m_nCount++;
+	}
+	m_pBuf=new CNamedID[m_nCount];
+
+	xmlNode=xmlDoc.first_child();
+	int iItem=0;
+	while(xmlNode)
+	{
+		m_pBuf[iItem++]=CNamedID(xmlNode.attribute("name").value(),xmlNode.attribute("id").as_int(0));
+		xmlNode=xmlNode.next_sibling();
+	}
+	qsort(m_pBuf,m_nCount,sizeof(CNamedID),CNamedID::Compare);
+
+	return m_nCount;
 }
 
 UINT DuiSystem::Name2ID( LPCSTR strName )
@@ -163,46 +135,46 @@ void DuiSystem::logEvent(LoggingLevel level , LPCTSTR pszFormat, ...)
     m_pLogger->logEvent(szBuffer,level);
 }
 
-BOOL DuiSystem::Init( UINT uXmlResID ,LPCSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL DuiSystem::Init( UINT uXmlResID ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 {
-	TiXmlDocument xmlDoc;
-	if(!LoadXmlDocment(&xmlDoc,uXmlResID,pszType)) return FALSE;
+	pugi::xml_document xmlDoc;
+	if(!LoadXmlDocment(xmlDoc,uXmlResID,pszType)) return FALSE;
 	//set default font
-	TiXmlElement *pXmlFont=xmlDoc.RootElement()->FirstChildElement("font");
-	if(pXmlFont)
+	pugi::xml_node xmlFont;
+	xmlFont=xmlDoc.first_child().child("font");
+	if(xmlFont)
 	{
-		int nSize=12;
-		pXmlFont->Attribute("size",&nSize);
-		DuiFontPool::getSingleton().SetDefaultFont(DUI_CA2T(pXmlFont->Attribute("face")),nSize);
+		int nSize=xmlFont.attribute("size").as_int(12);
+		DuiFontPool::getSingleton().SetDefaultFont(DUI_CA2T(xmlFont.attribute("face").value()),nSize);
 	}
 	//load string table
-	TiXmlElement *pXmlStrTable=xmlDoc.RootElement()->FirstChildElement("string");
-	if(pXmlStrTable)
+	pugi::xml_node xmlStr=xmlDoc.first_child().child("string");
+	if(xmlStr)
 	{
-		DuiStringPool::getSingleton().Init(pXmlStrTable);
+		DuiStringPool::getSingleton().Init(xmlStr);
 	}
 	//load style table
-	TiXmlElement *pXmlStyles=xmlDoc.RootElement()->FirstChildElement("style");
-	if(pXmlStrTable)
+	pugi::xml_node xmlStyle=xmlDoc.first_child().child("style");
+	if(xmlStyle)
 	{
-		DuiStylePool::getSingleton().Init(pXmlStyles);
+		DuiStylePool::getSingleton().Init(xmlStyle);
 	}
 	//load skin
-	TiXmlElement *pXmlSkins=xmlDoc.RootElement()->FirstChildElement("skins");
-	if(pXmlStrTable)
+	pugi::xml_node xmlSkin=xmlDoc.first_child().child("skins");
+	if(xmlSkin)
 	{
-		DuiSkinPool::getSingleton().Init(pXmlSkins);
+		DuiSkinPool::getSingleton().Init(xmlSkin);
 	}
+	pugi::xml_node xmlObjAttr=xmlDoc.first_child().child("objattr");
 	//load objattr
-	TiXmlElement *pXmlObjAttr=xmlDoc.RootElement()->FirstChildElement("objattr");
-	if(pXmlStrTable)
+	if(xmlObjAttr)
 	{
-		DuiCSS::getSingleton().Init(pXmlObjAttr);
+		DuiCSS::getSingleton().Init(xmlObjAttr);
 	}
 	return TRUE;
 }
 
-BOOL DuiSystem::LoadXmlDocment(TiXmlDocument *pXmlDoc, UINT uXmlResID ,LPCSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL DuiSystem::LoadXmlDocment(pugi::xml_document & xmlDoc, UINT uXmlResID ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 {
 	DUIASSERT(GetResProvider());
 	DuiResProviderBase *pRes=DuiSystem::getSingleton().GetResProvider();
@@ -215,25 +187,26 @@ BOOL DuiSystem::LoadXmlDocment(TiXmlDocument *pXmlDoc, UINT uXmlResID ,LPCSTR ps
 	strXml.Allocate(dwSize);
 	pRes->GetRawBuffer(pszType,uXmlResID,strXml,dwSize);
 
-	pXmlDoc->Parse(strXml, NULL, TIXML_ENCODING_UTF8);
-
-	return !pXmlDoc->Error();
+	pugi::xml_parse_result result= xmlDoc.load_buffer(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8);
+	DUIRES_ASSERTA(result,"parse xml error! resid=%d,desc=%s,offset=%d",uXmlResID,result.description(),result.offset);
+	return result;
 }
 
-BOOL DuiSystem::SetMsgBoxTemplate( UINT uXmlResID,LPCSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL DuiSystem::SetMsgBoxTemplate( UINT uXmlResID,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 {
-	DUIASSERT(m_pTiXmlMsgBoxTempl==NULL);
-	TiXmlDocument xmlDoc;
-	if(!LoadXmlDocment(&xmlDoc,uXmlResID,pszType)) return FALSE;
-	if(strcmp("layer",xmlDoc.RootElement()->Value())!=0) return FALSE;
-
-	TiXmlElement *pXmlBody=(TiXmlElement*) xmlDoc.RootElement()->FirstChildElement("body");
-	
-	if(!xmlDoc.RootElement()->Attribute("frame_size") && !xmlDoc.RootElement()->Attribute("minsize")) return FALSE;
-
-	m_pTiXmlMsgBoxTempl=(TiXmlElement*)xmlDoc.RootElement()->Clone();
+	if(!LoadXmlDocment(m_xmlMsgBoxTempl,uXmlResID,pszType)) goto format_error;
+	if(!m_xmlMsgBoxTempl.child("layer").attribute("frame_size").value()[0]) goto format_error;
+	if(!m_xmlMsgBoxTempl.child("layer").attribute("minsize").value()[0]) goto format_error;
 
 	return TRUE;
+format_error:
+	m_xmlMsgBoxTempl.reset();
+	return FALSE;
 }
 
+HRESULT DuiSystem::CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk )
+{
+	if(!m_funCreateTextServices) return E_NOTIMPL;
+	return m_funCreateTextServices(punkOuter,pITextHost,ppUnk);
+}
 }//namespace DuiEngine

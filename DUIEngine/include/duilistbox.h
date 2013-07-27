@@ -36,7 +36,7 @@ public:
 
     virtual ~CDuiListBox();
 
-    virtual BOOL Load(TiXmlElement* pTiXmlElem);
+    virtual BOOL Load(pugi::xml_node xmlNode);
 
     inline int GetCount() const;
 
@@ -84,8 +84,8 @@ public:
 
 protected:
 
-    virtual BOOL LoadChildren(TiXmlElement* pTiXmlChildElem);
-    void LoadItemAttribute(TiXmlElement *pTiXmlItem, LPLBITEM pItem);
+    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
+    void LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem);
 
     int InsertItem(int nIndex, LPLBITEM pItem);
 
@@ -118,8 +118,6 @@ protected:
     void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     void OnDestroy();
-
-    LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
 
 protected:
 

@@ -18,12 +18,10 @@ CDuiItemBox::CDuiItemBox():m_nItemWid(100),m_nItemHei(100),m_nSepHei(5),m_nSepWi
 
 CDuiPanel* CDuiItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
 {
-    TiXmlDocument xmlDoc;
     CDuiStringA strXml=DUI_CW2A(pszXml,CP_UTF8);;
 
-    xmlDoc.Parse(strXml);
-    if(xmlDoc.Error()) return NULL;
-
+	pugi::xml_document xmlDoc;
+	if(!xmlDoc.load_buffer((LPCSTR)strXml,strXml.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return NULL;
 
     CDuiWindow *pChild=m_pFirstChild,*pPrevChild=ICWND_FIRST;
     for(int iChild=0; iChild<iItem || iItem==-1; iChild++)
@@ -36,7 +34,7 @@ CDuiPanel* CDuiItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureV
     CDuiPanel *pPanel=new CDuiPanel;
     InsertChild(pPanel, pPrevChild);
 
-    pPanel->LoadChildren(xmlDoc.RootElement());
+    pPanel->LoadChildren(xmlDoc);
     pPanel->SetVisible(TRUE);
     pPanel->SetFixSize(m_nItemWid,m_nItemHei);
 
@@ -258,15 +256,10 @@ void CDuiItemBox::OnSize(UINT nType, CSize size)
 {
     if(m_rcWindow.IsRectEmpty()) return;
 
-    m_ptOrgin=CPoint(0,0);
+    m_ptOrigin=CPoint(0,0);
     m_siVer.nPos=0;
     UpdateScroll();
     ReLayout();
-}
-
-void CDuiItemBox::OnCalcChildPos(CDuiWindow *pDuiWndChild)
-{
-    //leave it unhandled
 }
 
 void CDuiItemBox::ReLayout()
@@ -277,7 +270,7 @@ void CDuiItemBox::ReLayout()
     while(pChild)
     {
         rcItem=GetItemRect(iItem);
-        rcItem.OffsetRect(m_rcWindow.TopLeft()-m_ptOrgin);
+        rcItem.OffsetRect(m_rcWindow.TopLeft()-m_ptOrigin);
         pChild->Move(rcItem);
         pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
         iItem++;
@@ -299,27 +292,26 @@ int CDuiItemBox::GetScrollLineSize(BOOL bVertical)
     else return m_nItemWid+m_nSepWid;
 }
 
-BOOL CDuiItemBox::LoadChildren(TiXmlElement* pTiXmlChildElem)
+BOOL CDuiItemBox::LoadChildren(pugi::xml_node xmlNode)
 {
-    if(!pTiXmlChildElem) return FALSE;
+    if(!xmlNode) return FALSE;
     RemoveAllItems();
 
-    TiXmlElement *pItem=NULL;
-    if(strcmp("item",pTiXmlChildElem->Value())==0) pItem=pTiXmlChildElem;
-    else pItem=pTiXmlChildElem->NextSiblingElement("item");
+	pugi::xml_node xmlParent=xmlNode.parent();
+	pugi::xml_node xmlItem=xmlParent.child("item");
 
-    while(pItem)
+    while(xmlItem)
     {
         CDuiPanel *pChild=new CDuiPanel;
 
         InsertChild(pChild);
 
-        pChild->Load(pItem);
+        pChild->Load(xmlItem);
         pChild->SetVisible(TRUE);
         pChild->SetFixSize(m_nItemWid,m_nItemHei);
 
 
-        pItem=pItem->NextSiblingElement("item");
+        xmlItem=xmlItem.next_sibling("item");
     }
     return TRUE;
 }

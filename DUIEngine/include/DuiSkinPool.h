@@ -10,18 +10,16 @@ class CSkinFactory
 public:
     virtual ~CSkinFactory() {}
     virtual CDuiSkinBase * NewSkin()=NULL;
-    virtual void DeleteSkin(CDuiSkinBase *)=NULL;
     virtual const CDuiStringA & GetTypeName()=NULL;
-	virtual BOOL IsSysSkin()=NULL;
+	virtual CSkinFactory * Clone()=NULL;
 };
 
 template<typename T>
 class TplSkinFactory :public CSkinFactory
 {
 public:
-	TplSkinFactory(BOOL bSysSkin=FALSE):m_bSysSkin(bSysSkin)
+	TplSkinFactory():m_strTypeName(T::GetClassName())
     {
-        m_strTypeName=T::GetClassName();
     }
 
     virtual CDuiSkinBase * NewSkin()
@@ -29,21 +27,17 @@ public:
         return new T;
     }
 
-    virtual void DeleteSkin(CDuiSkinBase * pSkin)
-    {
-        delete static_cast<T*>(pSkin);
-    }
-
     virtual const CDuiStringA & GetTypeName()
     {
         return m_strTypeName;
     }
 
-	virtual BOOL IsSysSkin(){return m_bSysSkin;}
-
+	virtual CSkinFactory * Clone()
+	{
+		return new TplSkinFactory<T>;
+	}
 protected:
     CDuiStringA m_strTypeName;
-	BOOL	m_bSysSkin;
 };
 
 typedef CSkinFactory * CSkinFactoryPtr;
@@ -56,22 +50,20 @@ public:
         AddStandardSkin();
     }
 
-    bool RegisterFactory(CSkinFactory *pSkinFactory,bool bReplace=false)
+    bool RegisterFactory(CSkinFactory &skinFactory,bool bReplace=false)
     {
-        if(HasKey(pSkinFactory->GetTypeName()))
+        if(HasKey(skinFactory.GetTypeName()))
 		{
 			if(!bReplace) return false;
-			RemoveKeyObject(pSkinFactory->GetTypeName());
+			RemoveKeyObject(skinFactory.GetTypeName());
 		}
-        AddKeyObject(pSkinFactory->GetTypeName(),pSkinFactory);
+        AddKeyObject(skinFactory.GetTypeName(),skinFactory.Clone());
         return true;
     }
 
-    bool UnregisterFactory(CSkinFactory *pSkinFactory)
+    bool UnregisterFactory(const CDuiStringA & strClassName)
     {
-        if(!HasKey(pSkinFactory->GetTypeName())) return false;
-        m_mapNamedObj->RemoveKey(pSkinFactory->GetTypeName());
-        return true;
+		return RemoveKeyObject(strClassName);
     }
 
 	CDuiSkinBase * CreateSkinByName(LPCSTR pszClassName);
@@ -91,7 +83,7 @@ public:
 
     BOOL Init(UINT uResID);
 
-	BOOL Init(TiXmlElement *pXmlSkinRootElem);
+	BOOL Init(pugi::xml_node xmlNode);
 
     CDuiSkinBase* GetSkin(LPCSTR strSkinName);
 
@@ -101,7 +93,7 @@ public:
 protected:
     static void OnKeyRemoved(const DuiSkinPtr & obj);
 
-    TiXmlElement * m_pXmlSkinDesc;
+	pugi::xml_document m_xmlSkinDesc;
 };
 
 }//namespace DuiEngine

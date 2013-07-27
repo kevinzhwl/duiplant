@@ -17,14 +17,15 @@ class CDuiItemPanel;
 class DUI_EXP CDuiItemContainer
 {
 public:
-    virtual void OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture)=NULL;
-    virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem)=NULL;
+    virtual void OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture)=NULL;//设置or释放鼠标捕获
+    virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem)=NULL;	//获得表项的显示位置
+	virtual BOOL IsItemRedrawDelay()=NULL;									//指示表项的更新方式
 };
 
 class DUI_EXP CDuiItemPanel : public CDuiFrame
 {
 public:
-    CDuiItemPanel(CDuiWindow *pFrameHost,TiXmlElement *pXml,CDuiItemContainer *pItemContainer=NULL);
+    CDuiItemPanel(CDuiWindow *pFrameHost,pugi::xml_node xmlNode,CDuiItemContainer *pItemContainer=NULL);
     virtual ~CDuiItemPanel() {}
 
     virtual void OnFinalRelease();
@@ -54,6 +55,8 @@ public:
 
     virtual BOOL DuiSetCaretPos(int x,int y);
 
+	virtual BOOL DuiUpdateWindow();
+
     virtual void ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove);
 
     virtual HDUIWND DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText);
@@ -74,6 +77,7 @@ public:
 
 	LPARAM GetItemIndex(){return m_lpItemIndex;}
 	void SetItemIndex(LPARAM lp){m_lpItemIndex=lp;}
+
 protected:
     CDuiWindow * m_pFrmHost;
     CDuiItemContainer * m_pItemContainer;

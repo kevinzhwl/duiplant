@@ -11,16 +11,12 @@ namespace DuiEngine
 class DUI_EXP CDuiSkinBase : public CDuiObject,public CDuiRef
 {
 public:
-    CDuiSkinBase():m_pDuiImg(NULL),m_strOwner(""),m_bManaged(FALSE)
+    CDuiSkinBase():m_pDuiImg(NULL),m_strOwner("")
     {
     }
     virtual ~CDuiSkinBase()
     {
-        if(m_bManaged && m_pDuiImg)
-        {
-            delete m_pDuiImg;
-            m_pDuiImg=NULL;
-        }
+        if(m_pDuiImg) m_pDuiImg->Release();
     }
 
     void OnFinalRelease()
@@ -39,14 +35,13 @@ public:
     }
 
 
-    virtual CDuiImgBase * SetImage(CDuiImgBase *pImg)
+    virtual void SetImage(CDuiImgBase *pImg)
     {
-        if(m_bManaged && m_pDuiImg) delete m_pDuiImg;
-        CDuiImgBase * pRet=m_pDuiImg;
+		if(m_pDuiImg) m_pDuiImg->Release();
         m_pDuiImg=pImg;
-        m_bManaged=TRUE;
-        return pRet;
+		if(m_pDuiImg) m_pDuiImg->AddRef();
     }
+
     CDuiImgBase * GetImage()
     {
         return m_pDuiImg;
@@ -94,16 +89,15 @@ public:
     DUIWIN_DECLARE_ATTRIBUTES_END()
 protected:
 
-    virtual void OnAttributeFinish(TiXmlElement* pXmlElem)
+    virtual void OnAttributeFinish(pugi::xml_node xmlNode)
     {
         //加载图片文件参数，它保存在皮肤的imgparam子节点中
-        TiXmlElement *pXmlImgParam=pXmlElem->FirstChildElement("imgparam");
-        if(m_pDuiImg) m_pDuiImg->SetAttributes(pXmlImgParam);
+		pugi::xml_node xmlNode_ImgParam=xmlNode.child("imgparam");
+        if(xmlNode_ImgParam) m_pDuiImg->SetAttributes(xmlNode_ImgParam);
     }
 
     CDuiImgBase *m_pDuiImg;
     CDuiStringA	m_strOwner;
-    BOOL		m_bManaged;
 };
 
 

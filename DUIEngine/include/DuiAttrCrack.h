@@ -1,3 +1,6 @@
+//////////////////////////////////////////////////////////////////////////
+// Xml Attributes Declaration Map
+
 #ifndef DUIATTRCRACK_H
 #define DUIATTRCRACK_H
 
@@ -6,8 +9,8 @@
 #include "duifontpool.h"
 #include "DuiCSS.h"
 
-//////////////////////////////////////////////////////////////////////////
-// Xml Attributes Declaration Map
+namespace DuiEngine
+{
 
 // Attribute Declaration
 #define DUIWIN_DECLARE_ATTRIBUTES_BEGIN()                            \
@@ -252,13 +255,16 @@ public:                                                             \
 		int nPos=strValue.ReverseFind(':');\
 		if(nPos!=-1)\
 			{\
-			CDuiStringA strType=strValue.Right(strValue.GetLength()-nPos-1);\
+			CDuiStringT strType=DUI_CA2T(strValue.Right(strValue.GetLength()-nPos-1),CP_UTF8);\
 			varname = DuiImgPool::getSingleton().GetImage(StrToIntA(strValue.Left(nPos)),strType);        \
 			}else\
 			varname = DuiImgPool::getSingleton().GetImage(StrToIntA(strValue));        \
+			if(varname) varname->AddRef();							\
 			hRet = allredraw ? S_OK : S_FALSE;                      \
 		}                                                           \
 		else                                                        \
  
+
+}//end of namespace
 
 #endif//DUIATTRCRACK_H

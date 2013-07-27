@@ -30,9 +30,9 @@ public:
 	virtual ULONG STDMETHODCALLTYPE AddRef( void){return ++nRef;}
 
 	virtual ULONG STDMETHODCALLTYPE Release( void) { 
-		nRef--;
-		if(nRef==0) delete this;
-		return nRef;
+		ULONG uRet= -- nRef;
+		if(uRet==0) delete this;
+		return uRet;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -108,6 +108,25 @@ CUIHander::~CUIHander(void)
 {
 }
 
+bool Evt_Test2(CDuiWindow * pSender, LPNMHDR pNmhdr)
+{
+	pSender->GetUserData();
+// 	CUIHander * p=(CUIHander *)pSender->GetUserData();
+// 	pSender->unsubscribeEvent(DUINM_COMMAND,Subscriber(Evt_Test2));
+// 	pSender->subscribeEvent(DUINM_COMMAND,Subscriber(&CUIHander::Evt_Test,p));
+// 	DuiMessageBox(NULL,_T("这个msgbox是在全局函数中使用event的obsever显示的"),_T("事件测试"),MB_OK|MB_ICONWARNING);
+	return true;
+}
+
+bool CUIHander::Evt_Test(CDuiWindow * pSender, LPNMHDR pNmhdr)
+{
+// 	pSender->subscribeEvent(DUINM_COMMAND,Subscriber(Evt_Test2));
+// 	pSender->unsubscribeEvent(DUINM_COMMAND,Subscriber(&CUIHander::Evt_Test,this));
+// 	pSender->SetUserData((ULONG_PTR)this);
+// 	DuiMessageBox(NULL,_T("这个msgbox是在类成员函数中使用event的obsever显示的"),_T("事件测试"),MB_OK|MB_ICONWARNING);
+	return true;
+}
+
 LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 {
 	HRESULT hr=::RegisterDragDrop(hWnd,m_pMainDlg->GetDropTarget());
@@ -121,7 +140,15 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 	{
 		pList2->SetItemCount(100);
 	}
-	SetMsgHandled(FALSE); 
+	CDuiButton *pBtn=(CDuiButton *)m_pMainDlg->FindChildByCmdID(IDC_REPSEL);
+	m_pMainDlg->GetFocusManager()->RegisterAccelerator(DuiEngine::CAccelerator(VK_RETURN,true),pBtn);//给repsel按钮注册一个热键Ctrl+ENTER。
+#if defined(DLL_DUI) && !defined(_WIN64)
+	CDuiWindow *pTst=m_pMainDlg->FindChildByCmdID(btn_tstevt);
+	DuiSystem::getSingleton().GetScriptModule()->subscribeEvent(pTst,DUINM_COMMAND,"onEvtTstClick");
+#endif
+
+//	m_pMainDlg->SetTimer(100,2000,NULL);
+// 	SetMsgHandled(FALSE); 
 	//演示在程序初始化的时候通过如用户配置文件设置PANE的大小.
 // 	CDuiSplitWnd *pSplit=(CDuiSplitWnd*)m_pMainDlg->FindChildByCmdID(1180);
 // 	pSplit->SetPaneInfo(0,100,-1,-1);
@@ -139,7 +166,9 @@ void CUIHander::OnDestory()
 
 void CUIHander::OnAttrReposition()
 {
-	m_pMainDlg->FindChildByCmdID(测试)->SetAttribute("pos","|-100,|-15,|100,|15");
+//	m_pMainDlg->FindChildByCmdID(测试)->SetAttribute("pos","|-100,|-15,|100,|15");
+	CDuiTabCtrl *pTab=(CDuiTabCtrl*)m_pMainDlg->FindChildByCmdID(2000);
+	pTab->RemoveItem(3);
 }
 
 
@@ -239,10 +268,10 @@ void CUIHander::OnDuiMenu()
 void CUIHander::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 {
 // 	ATLTRACE(L"\nOnCommand nID=%d",nID);  
-	TCHAR szBuf[200];
+// 	TCHAR szBuf[200];
 // 	_stprintf(szBuf,_T("Menu Command ID=%d\\nSecond Line\\nSecond Line\\nSecond Line\\nSecond Line"),nID);
-	_stprintf(szBuf,_T("Menu Command ID=%d\\nSecond Line \\na long long line :消息窗口内容自动换行测试，hahahaha haha haha"),nID);
-	DuiMessageBox(NULL,szBuf,_T("tip"),MB_YESNOCANCEL|MB_ICONWARNING);
+// 	_stprintf(szBuf,_T("Menu Command ID=%d\\nSecond Line \\na long long line :消息窗口内容自动换行测试，hahahaha haha haha"),nID);
+// 	DuiMessageBox(NULL,szBuf,_T("tip"),MB_YESNOCANCEL|MB_ICONWARNING);
 }
 
 
@@ -291,3 +320,28 @@ LRESULT CUIHander::OnListPredraw( LPNMHDR pNHdr )
 	return S_OK;
 }
 
+void CUIHander::OnTimer( UINT_PTR nIDEvent )
+{
+	if(nIDEvent!=100) return;
+	static int nCount=0;
+	if(nCount>5) m_pMainDlg->KillTimer(nIDEvent);
+	TCHAR szMsg[100];
+	_stprintf(szMsg,_T("Msg box No. %d"),nCount);
+	nCount++;
+	DuiMessageBox(0,szMsg,_T("tip"),MB_OK);
+}
+
+//init listctrl
+void CUIHander::OnBtnInitListClick()
+{
+	CDuiListCtrl *pList=m_pMainDlg->FindChildByName2<CDuiListCtrl *>("lc_test");
+	if(pList)
+	{
+		for(int i=0;i<100;i++)
+		{
+			CDuiStringT str;
+			str.Format(_T("item %d"),i+1);
+			pList->InsertItem(i,str,0);
+		}
+	}
+}

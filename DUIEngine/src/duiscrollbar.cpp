@@ -24,6 +24,7 @@ CDuiScrollBar::CDuiScrollBar()
 {
     memset(&m_si,0,sizeof(SCROLLINFO));
     m_si.nTrackPos=-1;
+	addEvent(DUINM_SCROLL);
 }
 
 CDuiScrollBar::~CDuiScrollBar()
@@ -133,9 +134,9 @@ end:
     return rcRet;
 }
 
-void CDuiScrollBar::OnAttributeFinish(TiXmlElement* pXmlElem)
+void CDuiScrollBar::OnAttributeFinish(pugi::xml_node xmlNode)
 {
-	__super::OnAttributeFinish(pXmlElem);
+	__super::OnAttributeFinish(xmlNode);
     DUIASSERT(m_pSkin);
     if(m_uAllowSize==-1)
     {

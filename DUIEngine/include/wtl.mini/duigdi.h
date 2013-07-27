@@ -158,6 +158,11 @@ public:
     CBrushT(HBRUSH hBrush = NULL) : m_hBrush(hBrush)
     { }
 
+	CBrushT(COLORREF cr): m_hBrush(NULL)
+	{
+		CreateSolidBrush(cr);
+	}
+
     ~CBrushT()
     {
         if(t_bManaged && m_hBrush != NULL)
@@ -527,7 +532,7 @@ public:
         LOGFONT logFont = { 0 };
         logFont.lfCharSet = DEFAULT_CHARSET;
         logFont.lfHeight = nPointSize;
-        _tcsncpy_s(logFont.lfFaceName, _countof(logFont.lfFaceName), lpszFaceName);
+        _tcscpy(logFont.lfFaceName, lpszFaceName);
 
         if(bBold)
             logFont.lfWeight = FW_BOLD;

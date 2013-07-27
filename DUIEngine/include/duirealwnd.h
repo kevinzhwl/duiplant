@@ -20,7 +20,7 @@ public:
 
     CDuiStringT m_strClassName,m_strWindowName;
     DWORD	 m_dwStyle,m_dwExStyle;
-    TiXmlElement *m_pXmlParams;
+	pugi::xml_document m_xmlParams;
 };
 
 
@@ -58,10 +58,10 @@ public:
     DUIWIN_DECLARE_ATTRIBUTES_END()
 protected:
     virtual BOOL NeedRedrawWhenStateChange();
-    virtual BOOL Load(TiXmlElement* pXmlElem);
+    virtual BOOL Load(pugi::xml_node xmlNode);
 
 
-    void OnWindowPosChanged(LPDUIWNDPOS lpWndPos);
+    void OnWindowPosChanged(LPRECT lpWndPos);
 
     void OnShowWindow(BOOL bShow, UINT nStatus);
     void OnDestroy();

@@ -45,8 +45,20 @@ public:
 
     virtual BOOL IgnoreState();
     virtual int GetStates();
+	void    SetStates(int nStates){m_nStates=nStates;}
+	virtual void SetWidth(LONG width) {
+		m_lSubImageWidth=width;
+		if(m_nStates==0)
+		{
+			if(m_pDuiImg)
+				m_nStates=m_pDuiImg->GetWidth()/m_lSubImageWidth;
+			else
+				m_nStates=1;
+		}
+	}
+
 protected:
-	virtual void OnAttributeFinish(TiXmlElement* pXmlElem);
+	virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
     LONG m_lSubImageWidth;
 	int  m_nStates;
@@ -69,7 +81,7 @@ public:
 
 	void SetMargin(int nLeft,int nTop,int nRight,int nBottom);
 protected:
-	virtual void OnAttributeFinish(TiXmlElement* pXmlElem);
+	virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
 	CRect m_rcMargin;
     COLORREF m_crBg;

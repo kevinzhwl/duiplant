@@ -14,8 +14,8 @@ namespace DuiEngine
 
 #define IDC_SWITCH	65530
 
-CDuiTreeItem::CDuiTreeItem(CDuiWindow *pFrameHost,TiXmlElement *pXml)
-    : CDuiItemPanel(pFrameHost,pXml)
+	CDuiTreeItem::CDuiTreeItem(CDuiWindow *pFrameHost,pugi::xml_node xmlNode)
+    : CDuiItemPanel(pFrameHost,xmlNode)
     , m_bCollapsed(FALSE)
     , m_bVisible(TRUE)
     , m_nLevel(0)
@@ -33,35 +33,38 @@ CDuiTreeBox::CDuiTreeBox()
     , m_crItemSelBg(RGB(0,0,128))
     , m_pItemSkin(NULL)
     , m_nVisibleItems(0)
-    , m_pTiXmlSwitch(NULL)
+	, m_bItemRedrawDelay(TRUE)
 {
-
+	addEvent(DUINM_LBITEMNOTIFY);
+	addEvent(DUINM_ITEMMOUSEEVENT);
+	addEvent(DUINM_GETTBDISPINFO);
+	addEvent(DUINM_TBSELCHANGING);
+	addEvent(DUINM_TBSELCHANGED);
 }
 
 CDuiTreeBox::~CDuiTreeBox()
 {
-    if(m_pTiXmlSwitch) delete m_pTiXmlSwitch;
-    m_pTiXmlSwitch=NULL;
+
 }
 
-HSTREEITEM CDuiTreeBox::InsertItem(TiXmlElement *pTiXmlItem,DWORD dwData,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
+HSTREEITEM CDuiTreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
 {
-    CDuiTreeItem *pItemObj=new CDuiTreeItem(this,pTiXmlItem);
+    CDuiTreeItem *pItemObj=new CDuiTreeItem(this,xmlNode);
     pItemObj->m_nLevel=GetItemLevel(hParent)+1;
     pItemObj->m_bCollapsed=FALSE;
     if(hParent!=STVI_ROOT)
     {
         CDuiTreeItem * pParentItem= GetItem(hParent);
         if(pParentItem->m_bCollapsed || !pParentItem->m_bVisible) pItemObj->m_bVisible=FALSE;
-        if(!GetChildItem(hParent) && m_pTiXmlSwitch)
+        if(!GetChildItem(hParent) && m_xmlSwitch.first_child())
         {
             CDuiToggle *pToggle=new CDuiToggle;
             pToggle->SetContainer(pParentItem->GetContainer());
-            pToggle->Load(m_pTiXmlSwitch);
+            pToggle->Load(m_xmlSwitch.first_child());
             pParentItem->InsertChild(pToggle);
             pToggle->SetToggle(FALSE,FALSE);
             pToggle->SetCmdID(IDC_SWITCH);
-            pParentItem->DuiSendMessage(WM_CALCWNDPOS,0,(LPARAM)pToggle);
+			pToggle->DuiSendMessage(WM_WINDOWPOSCHANGED);
         }
     }
     pItemObj->SetItemData(dwData);
@@ -88,13 +91,12 @@ HSTREEITEM CDuiTreeBox::InsertItem(TiXmlElement *pTiXmlItem,DWORD dwData,HSTREEI
 
 CDuiTreeItem* CDuiTreeBox::InsertItem(LPCWSTR pszXml,DWORD dwData,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
 {
-    TiXmlDocument xmlDoc;
+	pugi::xml_document xmlDoc;
     CDuiStringA strXml=DUI_CW2A(pszXml,CP_UTF8);;
 
-    xmlDoc.Parse(strXml);
-    if(xmlDoc.Error()) return NULL;
+	if(!xmlDoc.load_buffer((LPCSTR)strXml,strXml.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return NULL;
 
-    HSTREEITEM hItem=InsertItem(xmlDoc.RootElement(),dwData,hParent,hInsertAfter,bEnsureVisible);
+    HSTREEITEM hItem=InsertItem(xmlDoc.first_child(),dwData,hParent,hInsertAfter,bEnsureVisible);
     return GetItem(hItem);
 }
 
@@ -119,7 +121,7 @@ BOOL CDuiTreeBox::RemoveItem(HSTREEITEM hItem)
 
     DeleteItem(hItem);
 
-    if(hParent && !GetChildItem(hParent) && m_pTiXmlSwitch)
+    if(hParent && !GetChildItem(hParent) && m_xmlSwitch)
     {
         //去掉父节点的展开标志
         CDuiTreeItem *pParent=GetItem(hParent);
@@ -222,7 +224,7 @@ BOOL CDuiTreeBox::Expand(HSTREEITEM hItem , UINT nCode)
         }
         if(bRet)
         {
-            if(m_pTiXmlSwitch)
+            if(m_xmlSwitch.first_child())
             {
                 CDuiToggle *pSwitch=(CDuiToggle*)pItem->GetChild(IDC_SWITCH);
                 DUIASSERT(pSwitch);
@@ -252,11 +254,11 @@ BOOL CDuiTreeBox::EnsureVisible(HSTREEITEM hItem)
     }
     int iVisible= GetItemShowIndex(hItem);
     int yOffset=iVisible*m_nItemHei;
-    if(yOffset+m_nItemHei>m_ptOrgin.y+m_rcClient.Height())
+    if(yOffset+m_nItemHei>m_ptOrigin.y+m_rcClient.Height())
     {
         SetScrollPos(TRUE,yOffset+m_nItemHei-m_rcClient.Height(),TRUE);
     }
-    else if(yOffset<m_ptOrgin.y)
+    else if(yOffset<m_ptOrigin.y)
     {
         SetScrollPos(TRUE,yOffset,TRUE);
     }
@@ -269,7 +271,7 @@ HSTREEITEM CDuiTreeBox::HitTest(CPoint &pt)
     CRect rcClient;
     GetClient(&rcClient);
     CPoint pt2=pt;
-    pt2.y -= rcClient.top - m_ptOrgin.y;
+    pt2.y -= rcClient.top - m_ptOrigin.y;
     int iItem=pt2.y/m_nItemHei;
     if( iItem >= m_nVisibleItems) return NULL;
 
@@ -284,7 +286,7 @@ HSTREEITEM CDuiTreeBox::HitTest(CPoint &pt)
         if(iVisible == iItem)
         {
             CRect rcItem(m_nIndent*pItem->m_nLevel,0,m_rcWindow.Width(),m_nItemHei);
-            rcItem.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrgin.y+iVisible*m_nItemHei);
+            rcItem.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrigin.y+iVisible*m_nItemHei);
             pt-=rcItem.TopLeft();
             hRet=hItem;
             break;
@@ -335,46 +337,34 @@ int CDuiTreeBox::GetScrollLineSize(BOOL bVertical)
     return m_nItemHei;
 }
 
-BOOL CDuiTreeBox::LoadChildren(TiXmlElement* pTiXmlChildElem)
+BOOL CDuiTreeBox::LoadChildren(pugi::xml_node xmlNode)
 {
-    if(!pTiXmlChildElem) return FALSE;
+    if(!xmlNode) return FALSE;
 
-    if(m_pTiXmlSwitch) delete m_pTiXmlSwitch;
-    m_pTiXmlSwitch=NULL;
+	pugi::xml_node xmlParent=xmlNode.parent();
+	pugi::xml_node xmlSwitch=xmlParent.child("switch");
 
-    TiXmlElement *pSwitch=NULL;
-    if(strcmp("switch",pTiXmlChildElem->Value())==0)
-        pSwitch=pTiXmlChildElem;
-    else
-        pSwitch=pTiXmlChildElem->NextSiblingElement("switch");
-
-    if(pSwitch)
-        m_pTiXmlSwitch=(TiXmlElement*)pSwitch->Clone();
+    if(xmlSwitch)   m_xmlSwitch.append_copy(xmlSwitch);
 
     RemoveAllItems();
 
-    TiXmlElement *pItem=NULL;
-    if(strcmp("item",pTiXmlChildElem->Value())==0) pItem=pTiXmlChildElem;
-    else pItem=pTiXmlChildElem->NextSiblingElement("item");
-
-    if(pItem) LoadBranch(STVI_ROOT,pItem);
-
+	pugi::xml_node xmlItem=xmlParent.child("item");
+    if(xmlItem) LoadBranch(STVI_ROOT,xmlItem);
 
     return TRUE;
 }
 
-void CDuiTreeBox::LoadBranch(HSTREEITEM hParent,TiXmlElement* pItem)
+void CDuiTreeBox::LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlItem)
 {
-    while(pItem)
+    while(xmlItem)
     {
-        int dwData=0;
-        pItem->Attribute("itemdata",&dwData);
-        HSTREEITEM hItem=InsertItem(pItem,dwData,hParent);
+        int dwData=xmlItem.attribute("itemdata").as_int(0);
+        HSTREEITEM hItem=InsertItem(xmlItem,dwData,hParent);
 
-        TiXmlElement *pChildItem=pItem->FirstChildElement("item");
-        if(pChildItem) LoadBranch(hItem,pChildItem);
+		pugi::xml_node xmlChild=xmlItem.child("item");
+        if(xmlChild) LoadBranch(hItem,xmlChild);
 
-        pItem=pItem->NextSiblingElement("item");
+        xmlItem=xmlItem.next_sibling("item");
     }
 }
 
@@ -422,7 +412,7 @@ int CDuiTreeBox::GetItemShowIndex(HSTREEITEM hItemObj)
 void CDuiTreeBox::RedrawItem(HSTREEITEM hItem)
 {
     if(!IsVisible(TRUE)) return;
-    int iFirstVisible=m_ptOrgin.y/m_nItemHei;
+    int iFirstVisible=m_ptOrigin.y/m_nItemHei;
     int nPageItems=(m_rcWindow.Height()+m_nItemHei-1)/m_nItemHei+1;
     int iItem=GetItemShowIndex(hItem);
 
@@ -432,7 +422,7 @@ void CDuiTreeBox::RedrawItem(HSTREEITEM hItem)
         CDuiTreeItem *pItem=CSTree<CDuiTreeItem*>::GetItem(hItem);
 
         CRect rcItem(pItem->m_nLevel*m_nIndent,0,m_rcClient.Width(),m_nItemHei);
-        rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrgin.y);
+        rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrigin.y);
         rcItem.OffsetRect(m_rcClient.TopLeft());
 
         CDCHandle dc=GetDuiDC(&rcItem,OLEDC_PAINTBKGND);
@@ -472,7 +462,7 @@ void CDuiTreeBox::OnPaint(CDCHandle dc)
     DuiDCPaint duiDC;
     BeforePaint(dc,duiDC);
 
-    int iFirstVisible=m_ptOrgin.y/m_nItemHei;
+    int iFirstVisible=m_ptOrigin.y/m_nItemHei;
     int nPageItems=(m_rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
 
     int iVisible=-1;
@@ -485,7 +475,7 @@ void CDuiTreeBox::OnPaint(CDCHandle dc)
         if(iVisible>=iFirstVisible)
         {
             CRect rcItem(m_nIndent*pItem->m_nLevel,0,m_rcWindow.Width(),m_nItemHei);
-            rcItem.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrgin.y+iVisible*m_nItemHei);
+            rcItem.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrigin.y+iVisible*m_nItemHei);
             DrawItem(dc,rcItem,hItem);
         }
         if(pItem->m_bCollapsed)
@@ -519,25 +509,38 @@ void CDuiTreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
 
     if(m_hHoverItem!=m_hSelItem)
     {
-        DUINMTBSELCHANGED nms;
-        nms.hdr.code=DUINM_TBSELCHANGED;
-        nms.hdr.hwndFrom=NULL;
-        nms.hdr.idFrom=GetCmdID();
-        nms.hOldSel=m_hSelItem;
-        nms.hNewSel=m_hHoverItem;
+		DUINMTBSELCHANGING nms2;
+		nms2.hdr.code=DUINM_TBSELCHANGING;
+		nms2.hdr.hwndFrom=NULL;
+		nms2.hdr.idFrom=GetCmdID();
+		nms2.hOldSel=m_hSelItem;
+		nms2.hNewSel=m_hHoverItem;
+		nms2.bCancel=FALSE;
+		DuiNotify((LPNMHDR)&nms2);
 
-        if(m_hSelItem)
-        {
-            CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->ModifyItemState(0,DuiWndState_Check);
-            RedrawItem(m_hSelItem);
-        }
-        m_hSelItem=m_hHoverItem;
-        if(m_hSelItem)
-        {
-            CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->ModifyItemState(DuiWndState_Check,0);
-            RedrawItem(m_hSelItem);
-        }
-        DuiNotify((LPNMHDR)&nms);
+		if(!nms2.bCancel)
+		{
+			DUINMTBSELCHANGED nms;
+			nms.hdr.code=DUINM_TBSELCHANGED;
+			nms.hdr.hwndFrom=NULL;
+			nms.hdr.idFrom=GetCmdID();
+			nms.hOldSel=m_hSelItem;
+			nms.hNewSel=m_hHoverItem;
+
+			if(m_hSelItem)
+			{
+				CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->GetFocusManager()->SetFocusedHwnd(0);
+				CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->ModifyItemState(0,DuiWndState_Check);
+				RedrawItem(m_hSelItem);
+			}
+			m_hSelItem=m_hHoverItem;
+			if(m_hSelItem)
+			{
+				CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->ModifyItemState(DuiWndState_Check,0);
+				RedrawItem(m_hSelItem);
+			}
+			DuiNotify((LPNMHDR)&nms);
+		}
     }
     if(m_hHoverItem)
     {
@@ -703,7 +706,7 @@ BOOL CDuiTreeBox::OnItemGetRect( CDuiItemPanel *pItem,CRect &rcItem )
     CDuiTreeItem *pItemObj=dynamic_cast<CDuiTreeItem*>(pItem);
     if(pItemObj->m_bVisible==FALSE) return FALSE;
 
-    int iFirstVisible=m_ptOrgin.y/m_nItemHei;
+    int iFirstVisible=m_ptOrigin.y/m_nItemHei;
     int nPageItems=(m_rcWindow.Height()+m_nItemHei-1)/m_nItemHei+1;
 
     int iVisible=-1;
@@ -716,7 +719,7 @@ BOOL CDuiTreeBox::OnItemGetRect( CDuiItemPanel *pItem,CRect &rcItem )
         if(iVisible>=iFirstVisible && pItem==pItemObj)
         {
             CRect rcRet(m_nIndent*pItemObj->m_nLevel,0,m_rcWindow.Width(),m_nItemHei);
-            rcRet.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrgin.y+iVisible*m_nItemHei);
+            rcRet.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrigin.y+iVisible*m_nItemHei);
             rcItem=rcRet;
             return TRUE;
         }

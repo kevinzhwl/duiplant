@@ -30,13 +30,31 @@
 namespace DuiEngine
 {
 
+	class CDuiHostWnd;
+	class CTranslucentHostWnd : public CSimpleWnd
+	{
+	public:
+		CTranslucentHostWnd(CDuiHostWnd* pOwner):m_pOwner(pOwner)
+		{
+		}
+
+		void OnPaint(CDCHandle dc);
+
+		BEGIN_MSG_MAP_EX(CTranslucentHostWnd)
+			MSG_WM_PAINT(OnPaint)
+			END_MSG_MAP()
+	private:
+		CDuiHostWnd *m_pOwner;
+	};
+
 class CDuiTipCtrl;
 
 class DUI_EXP CDuiHostWnd
     : public CSimpleWnd
     , public CDuiFrame
-    , IDuiRealWndHandler
+    , protected IDuiRealWndHandler
 {
+	friend class CTranslucentHostWnd;
 public:
     CDuiHostWnd(UINT uResID = 0);
     virtual ~CDuiHostWnd() {}
@@ -47,11 +65,9 @@ public:
     HWND Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight, LPVOID lpParam);
     BOOL Load(UINT uResID);
 
-    BOOL SetXml(LPCSTR lpszXml);
+    BOOL SetXml(LPSTR lpszXml,int nLen);
 
-	BOOL SetXml(TiXmlElement *pXmlEle);
-
-	BOOL IsLayoutInited();
+	BOOL SetXml(pugi::xml_node xmlNode);
 
     UINT_PTR DoModal(HWND hWndParent = NULL, LPRECT rect = NULL);
 
@@ -66,7 +82,6 @@ protected:
     BOOL m_bTrackFlag;
 
     CDuiStringA m_strWindowCaption;
-    SIZE m_sizeDefault;
     CRect m_rcNC;
 
     DWORD m_dwDlgStyle;
@@ -81,7 +96,6 @@ protected:
     CPoint m_ptCaret;		//插入符位置
     BOOL m_bNeedRepaint;
     BOOL m_bNeedAllRepaint;
-	BOOL m_bLayoutInited;
 
     CDuiTipCtrl	* m_pTipCtrl;
 
@@ -99,6 +113,9 @@ protected:
     virtual BOOL _PreTranslateMessage(MSG* pMsg);
 
     CDuiArray<CDuiMessageFilter*> m_aMsgFilter;
+
+private:
+	CTranslucentHostWnd			m_dummyWnd;	//半透明窗口使用的一个响应WM_PAINT消息的窗口
 protected:
     //////////////////////////////////////////////////////////////////////////
     // Message handler
@@ -135,6 +152,8 @@ protected:
     LRESULT OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+
+	void OnActivate(UINT nState, BOOL bMinimized, HWND wndOther);
 
     //////////////////////////////////////////////////////////////////////////
     // CDuiContainer
@@ -178,6 +197,9 @@ protected:
     /*virtual */
     BOOL DuiSetCaretPos(int x,int y);
 
+	/*virtual */
+	BOOL DuiUpdateWindow();
+
     //////////////////////////////////////////////////////////////////////////
     // IDuiRealWndHandler
     virtual HWND OnRealWndCreate(CDuiRealWnd *pRealWnd);
@@ -193,20 +215,21 @@ protected:
 
     UINT OnWndNcHitTest(CPoint point);
 
+	void OnSetFocus(HWND wndOld);
+	void OnKillFocus(HWND wndFocus);
+
     void OnClose();
-
-    LRESULT OnOK();
-
-    LRESULT OnCancel();
+	void OnOK();
 
     LRESULT OnMsgFilter(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
     void UpdateHost(CDCHandle dc,const CRect &rc);
 protected:
-    DUI_NOTIFY_MAP(IDC_RICHVIEW_WIN)
-    DUI_NOTIFY_ID_COMMAND(IDCANCEL, OnCancel)
-    DUI_NOTIFY_ID_COMMAND(IDOK, OnOK)
-    DUI_NOTIFY_MAP_END()
+
+	DUI_NOTIFY_MAP(IDC_RICHVIEW_WIN)
+		DUI_NOTIFY_ID_COMMAND(IDOK, OnOK)
+		DUI_NOTIFY_ID_COMMAND(IDCANCEL, OnClose)
+	DUI_NOTIFY_MAP_END()	
 
     BEGIN_MSG_MAP_EX(CDuiHostWnd)
     MSG_WM_SIZE(OnSize)
@@ -220,6 +243,9 @@ protected:
     MSG_WM_LBUTTONDBLCLK(OnLButtonDblClk)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_MOUSEWHEEL(OnMouseWheel)
+	MSG_WM_ACTIVATE(OnActivate)
+	MSG_WM_SETFOCUS(OnSetFocus)
+	MSG_WM_KILLFOCUS(OnKillFocus)
     MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST, WM_MOUSELAST, OnMouseEvent)
     MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST, WM_KEYLAST, OnKeyEvent)
 
@@ -231,8 +257,7 @@ protected:
     MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
     MESSAGE_HANDLER_EX(UM_MSGFILTER,OnMsgFilter)
     MSG_WM_CLOSE(OnClose)
-
-    MSG_DUI_NOTIFY(IDC_RICHVIEW_WIN)
+	MSG_DUI_NOTIFY(IDC_RICHVIEW_WIN)
     REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
     END_MSG_MAP()
 };

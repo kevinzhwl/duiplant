@@ -375,7 +375,7 @@ CDuiString(const _Elem ch) : m_pstr(NULL),m_nLength(0)
 
 CDuiString(const _Elem * lpsz, int nLen=-1) : m_pstr((_Elem *)strNull),m_nLength(0)
 {
-    if(nLen==-1 && lpsz) nLen=_Traits::length(lpsz);
+    if(nLen==-1 && lpsz) nLen=(int)_Traits::length(lpsz);
     DUIASSERT(!_Traits::IsBadStringPtr(lpsz,nLen) || lpsz==NULL);
     Assign(lpsz, nLen);
 }
@@ -402,7 +402,7 @@ operator const _Elem *() const
 
 void Append(const _Elem * pstr,int nCount=-1)
 {
-    if(nCount<0) nCount=_Traits::length(pstr);
+    if(nCount<0) nCount=(int)_Traits::length(pstr);
 	if(GetLength()==0)
 	{
 		Assign(pstr,nCount);
@@ -420,7 +420,7 @@ void Append(const _Elem * pstr,int nCount=-1)
 
 void Assign(const _Elem * pstr, int cchMax=-1)
 {
-    if(cchMax<0) cchMax=_Traits::length(pstr);
+    if(cchMax<0) cchMax=(int)_Traits::length(pstr);
 
     if( cchMax > GetLength() )
     {
@@ -617,6 +617,32 @@ CDuiString Right(int iLength) const
         iLength = GetLength();
     }
     return CDuiString(m_pstr + iPos, iLength);
+}
+
+// Delete 'nCount' characters, starting at index 'iIndex'
+int Delete( _In_ int iIndex, _In_ int nCount = 1 )
+{
+	if( iIndex < 0 )
+		iIndex = 0;
+
+	if( nCount < 0 )
+		nCount = 0;
+
+	int nLength = GetLength();
+	if( iIndex + nCount > nLength )
+	{
+		nCount = nLength-iIndex;
+	}
+	if( nCount > 0 )
+	{
+		int nNewLength = nLength-nCount;
+		int nXCHARsToCopy = nLength-(iIndex+nCount)+1;
+		memmove(m_pstr+iIndex,m_pstr+iIndex+nCount,nXCHARsToCopy*sizeof(_Elem));
+		m_nLength-=nCount;
+		m_pstr[m_nLength]=0;
+	}
+
+	return( GetLength() );
 }
 
 int Find(_Elem ch, int iPos = 0) const

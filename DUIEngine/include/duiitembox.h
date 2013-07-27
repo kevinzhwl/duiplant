@@ -51,14 +51,14 @@ protected:
 
     void OnSize(UINT nType, CSize size);
 
-    void OnCalcChildPos(CDuiWindow *pDuiWndChild);
+	virtual void UpdateChildrenPosition(){}//leave it empty
 
     void ReLayout();
     virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
 
     virtual int GetScrollLineSize(BOOL bVertical);
 
-    virtual BOOL LoadChildren(TiXmlElement* pTiXmlChildElem);
+    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("itemwid", m_nItemWid, TRUE)
@@ -69,7 +69,6 @@ protected:
 
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_SIZE(OnSize)
-    MSG_WM_CALCWNDPOS(OnCalcChildPos)
     DUIWIN_END_MSG_MAP()
 
 };

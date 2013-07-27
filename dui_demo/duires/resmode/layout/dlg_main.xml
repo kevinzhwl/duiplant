@@ -1,0 +1,30 @@
+﻿<layer title="DUI-RESOPTION" width="300" height="200" appwin="0" translucent="0"  nomaxsize="1">
+	<body  class="cls_dlg_frame">
+	      <caption id="100" pos="0,0,-0,29">
+	        <text pos="11,9" class="cls_txt_red">选择资源加载方式</text>
+	        <imgbtn id="2" skin="btn_sys_close"    pos="-45,0" tip="close"/>
+	      </caption>
+	      <tabctrl id="200" pos="10,30,-10,-50">
+	        <tab title="从文件加载">
+	          <text pos="0,10,100,30">皮肤目录:</text>
+	          <edit pos="100,10,-5,40"/>
+	        </tab>
+	        <tab title="从程序资源加载">
+	          <text pos="0,10">从EXE中的资源中加载皮肤</text>
+	        </tab>
+	        <tab title="从ZIP加载">
+	          <text pos="0,10,100,30">皮肤目录:</text>
+	          <edit pos="100,10,-5,40"/>
+	        </tab>
+
+	      </tabctrl>
+	      <dlg pos="0,-50,-0,-0">
+	      		<button pos="10,5,|-5,30" id="1">OK</button>
+	      		<button pos="|5,5,-5,30" id="2">Cancel</button>
+	    	</dlg>
+	</body>
+</layer>
+
+
+
+

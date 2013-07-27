@@ -602,7 +602,7 @@ void CDuiPanelEx::OnDuiTimer( char cTimerID )
 
 CDuiScrollView::CDuiScrollView()
     :m_szView(-1,-1)
-    ,m_ptOrgin(0,0)
+    ,m_ptOrigin(0,0)
 {
     m_bClipClient=TRUE;
 }
@@ -613,7 +613,7 @@ int CDuiScrollView::OnCreate( LPVOID )
     if(nRet!=0) return nRet;
     if(m_szView.cx==-1) m_szView.cx=m_rcClient.Width();
     if(m_szView.cy==-1) m_szView.cy=m_rcClient.Height();
-    SetViewOrigin(m_ptOrgin);
+    SetViewOrigin(m_ptOrigin);
     return 0;
 }
 
@@ -622,29 +622,22 @@ void CDuiScrollView::OnSize(UINT nType,CSize size)
     SetViewSize(m_szView);
 }
 
-CRect CDuiScrollView::GetViewRect()
+CRect CDuiScrollView::GetChildrenLayoutRect()
 {
-    CRect rcView;
-    CDuiWindow::GetClient(&rcView);
-    rcView.OffsetRect(-m_ptOrgin);
-    rcView.right=rcView.left+m_szView.cx;
-    rcView.bottom=rcView.top+m_szView.cy;
-    return rcView;
+	CRect rcRet=__super::GetChildrenLayoutRect();
+    rcRet.OffsetRect(-m_ptOrigin);
+    rcRet.right=rcRet.left+m_szView.cx;
+    rcRet.bottom=rcRet.top+m_szView.cy;
+    return rcRet;
 }
 
 
 void CDuiScrollView::SetViewOrigin(CPoint pt)
 {
-    if(m_ptOrgin==pt) return;
-    OnViewOriginChanged(m_ptOrgin,pt);
-    m_ptOrgin=pt;
-    CDuiWindow *pChild=m_pFirstChild;
-    while(pChild)
-    {
-        DuiSendMessage(WM_CALCWNDPOS,0,(LPARAM)pChild);
-        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
-    }
-
+    if(m_ptOrigin==pt) return;
+    OnViewOriginChanged(m_ptOrigin,pt);
+    m_ptOrigin=pt;
+	UpdateChildrenPosition();
     CRect rcClient;
     GetClient(&rcClient);
     NotifyInvalidateRect(rcClient);
@@ -652,7 +645,7 @@ void CDuiScrollView::SetViewOrigin(CPoint pt)
 
 CPoint CDuiScrollView::GetViewOrigin()
 {
-    return m_ptOrgin;
+    return m_ptOrigin;
 }
 
 
@@ -690,7 +683,7 @@ void CDuiScrollView::SetViewSize(CSize szView)
             m_siHoz.nMin=0;
             m_siHoz.nMax=m_siHoz.nPage-1;
             m_siHoz.nPos=0;
-            m_ptOrgin.x=0;
+            m_ptOrigin.x=0;
         }
     }
     else
@@ -700,7 +693,7 @@ void CDuiScrollView::SetViewSize(CSize szView)
         m_siVer.nMin=0;
         m_siVer.nMax=size.cy-1;
         m_siVer.nPos=0;
-        m_ptOrgin.y=0;
+        m_ptOrigin.y=0;
 
         if(size.cx<m_szView.cx)
         {
@@ -717,7 +710,7 @@ void CDuiScrollView::SetViewSize(CSize szView)
             m_siHoz.nMin=0;
             m_siHoz.nMax=m_siHoz.nPage-1;
             m_siHoz.nPos=0;
-            m_ptOrgin.x=0;
+            m_ptOrigin.x=0;
         }
     }
 
@@ -740,16 +733,16 @@ BOOL CDuiScrollView::OnScroll(BOOL bVertical,UINT uCode,int nPos)
     if(bRet)
     {
         int nPos=GetScrollPos(bVertical);
-        CPoint ptOrigin=m_ptOrgin;
+        CPoint ptOrigin=m_ptOrigin;
 
         if(bVertical) ptOrigin.y=nPos;
         else ptOrigin.x=nPos;
 
-        if(ptOrigin!=m_ptOrgin)
+        if(ptOrigin!=m_ptOrigin)
             SetViewOrigin(ptOrigin);
 
  		if(uCode==SB_THUMBTRACK)
-			::UpdateWindow(GetContainer()->GetHostHwnd());
+			GetContainer()->DuiUpdateWindow();
     }
     return bRet;
 }

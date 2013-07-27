@@ -11,8 +11,6 @@ namespace DuiEngine
 {
 
 #define TIMER_CARET	1
-#define TIMER_TRANSLUCENT	2
-
 
 //////////////////////////////////////////////////////////////////////////
 // CDuiHostWnd
@@ -34,7 +32,7 @@ CDuiHostWnd::CDuiHostWnd(UINT uResID/* =0*/)
     , m_bResizable(FALSE)
     , m_szMin(200, 200)
     , m_pTipCtrl(NULL)
-	, m_bLayoutInited(FALSE)
+	, m_dummyWnd(this)
 {
     SetContainer(this);
 }
@@ -60,9 +58,12 @@ HWND CDuiHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWO
 
         if(m_bTranslucent)
         {
-            SetWindowLong(GWL_EXSTYLE, GetWindowLong(GWL_EXSTYLE) | WS_EX_LAYERED);
+            SetWindowLongPtr(GWL_EXSTYLE, GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
+			m_dummyWnd.Create(_T("dummyLayeredWnd"),WS_POPUP|WS_VISIBLE,WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,-1,-1,1,1,NULL,NULL);
         }
     }
+
+	if(nWidth==0 || nHeight==0) CenterWindow(hWnd);
 
     SendMessage(WM_INITDIALOG, (WPARAM)hWnd);
     return hWnd;
@@ -75,102 +76,86 @@ HWND CDuiHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
 
 BOOL CDuiHostWnd::Load(UINT uResID)
 {
-    DuiResProviderBase *pRes=DuiSystem::getSingleton().GetResProvider();
-    if(!pRes) return FALSE;
+	pugi::xml_document xmlDoc;
+	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,uResID,DUIRES_XML_TYPE)) return FALSE;
 
-    DWORD dwSize=pRes->GetRawBufferSize(DUIRES_XML_TYPE,uResID);
-    if(dwSize==0) return FALSE;
-
-    CMyBuffer<char> strXml;
-    strXml.Allocate(dwSize);
-    pRes->GetRawBuffer(DUIRES_XML_TYPE,uResID,strXml,dwSize);
-
-    return SetXml(strXml);
+    return SetXml(xmlDoc.child("layer"));
 }
 
-BOOL CDuiHostWnd::SetXml(LPCSTR lpszXml)
+BOOL CDuiHostWnd::SetXml(LPSTR lpszXml,int nLen)
 {
-
-    TiXmlDocument xmlDoc;
-    {
-        // Free stack
-        xmlDoc.Parse(lpszXml, NULL, TIXML_ENCODING_UTF8);
-    }
-
-    if (xmlDoc.Error())
-    {
-        return FALSE;
-    }
-
-    TiXmlElement *pXmlRootElem = xmlDoc.RootElement();
-
-    if (strcmp(pXmlRootElem->Value(),"layer")!=0) return FALSE;
-
-	return SetXml(pXmlRootElem);
+	pugi::xml_document xmlDoc;
+	if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf8)) return FALSE;
+ 
+	return SetXml(xmlDoc.child("layer"));
 }
 
-BOOL CDuiHostWnd::SetXml(TiXmlElement *pXmlRootElem )
+BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
 {
+	if(!xmlNode) return FALSE;
+
 	m_dwDlgStyle =CSimpleWnd::GetStyle();
 	m_dwDlgExStyle  = CSimpleWnd::GetExStyle();
 
 	DuiSendMessage(WM_DESTROY);
 
 
+	CSize szDefault;
+	szDefault.cx = xmlNode.attribute("width").as_int(200);
+	szDefault.cy = xmlNode.attribute("height").as_int(200);
+
+	CDuiStringA strNC=xmlNode.attribute("ncRect").value();
+	sscanf(strNC,"%d,%d,%d,%d",&m_rcNC.left,&m_rcNC.top,&m_rcNC.right,&m_rcNC.bottom);
+	CDuiStringA strMin = xmlNode.attribute("minsize").value();
+	sscanf(strMin,"%d,%d",&m_szMin.cx, &m_szMin.cy);
+
+	m_bTranslucent=xmlNode.attribute("translucent").as_bool(false);
+	m_strWindowCaption = xmlNode.attribute("title").value();
+
+	if(m_bTranslucent)
 	{
-		m_strWindowCaption = pXmlRootElem->Attribute("title");
-		m_sizeDefault.cx = 0;
-		m_sizeDefault.cy = 0;
-		pXmlRootElem->Attribute("width", (int *)&m_sizeDefault.cx);
-		pXmlRootElem->Attribute("height", (int *)&m_sizeDefault.cy);
-		CDuiStringA strNC=pXmlRootElem->Attribute("ncRect");
-		sscanf(strNC,"%d,%d,%d,%d",&m_rcNC.left,&m_rcNC.top,&m_rcNC.right,&m_rcNC.bottom);
-		CDuiStringA strMin = pXmlRootElem->Attribute("minsize");
-		sscanf(strMin,"%d,%d",&m_szMin.cx, &m_szMin.cy);
-
-		m_bTranslucent=FALSE;
-		pXmlRootElem->Attribute("translucent",&m_bTranslucent);
-
-		if(m_bTranslucent)
-		{
-			m_dwDlgExStyle |= WS_EX_LAYERED;
-		}
-
-		BOOL bValue = FALSE;
-
-		pXmlRootElem->Attribute("appwin", &bValue);
-		if (bValue)
-		{
-			m_dwDlgExStyle |= WS_EX_APPWINDOW;
-			m_dwDlgStyle |= WS_SYSMENU;
-		}
-
-
-		m_bResizable = FALSE;
-
-		pXmlRootElem->Attribute("resize", &m_bResizable);
-
-		if (m_bResizable)
-		{
-			m_dwDlgStyle |= WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME;
-		}
-
+		m_dwDlgExStyle |= WS_EX_LAYERED;
 	}
+
+	if (xmlNode.attribute("appwin").as_bool(false))
+	{
+		m_dwDlgExStyle |= WS_EX_APPWINDOW;
+		m_dwDlgStyle |= WS_SYSMENU;
+	}else if(xmlNode.attribute("toolwindow").as_bool(false))
+	{
+		m_dwDlgExStyle |= WS_EX_TOOLWINDOW;
+	}
+
+
+	m_bResizable = xmlNode.attribute("resize").as_bool(false);
+
+	if (m_bResizable)
+	{
+		m_dwDlgStyle |= WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME;
+	}
+
 	ModifyStyle(0,m_dwDlgStyle);
 	ModifyStyleEx(0,m_dwDlgExStyle);
 	SetWindowText(DUI_CA2T(m_strWindowCaption,CP_UTF8));
+
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	if(rcClient.IsRectEmpty())//APP没有指定窗口大小，使用XML中的值
+	{
+		SetWindowPos(NULL,0,0,szDefault.cx,szDefault.cy,SWP_NOZORDER|SWP_NOMOVE);
+		GetClientRect(&rcClient);
+	}
+
 	if(!m_strWindowCaption.IsEmpty())
 	{
 		DuiSkinPool::getSingleton().LoadSkins(m_strWindowCaption);	//load skin only used in the host window
 	}
 
-	CDuiPanel::Load(pXmlRootElem->FirstChildElement("body"));
+	CDuiPanel::Load(xmlNode.child("body"));
 
 	SetAttribute("pos", "0,0,-0,-0", TRUE);
 
-
-	SetWindowPos(NULL,0,0,m_sizeDefault.cx,m_sizeDefault.cy,SWP_NOZORDER|SWP_NOMOVE);
-
+	Move(rcClient);
 	DuiSendMessage(WM_ENABLE,1);
 	DuiSendMessage(WM_SHOWWINDOW,1);
 
@@ -178,10 +163,9 @@ BOOL CDuiHostWnd::SetXml(TiXmlElement *pXmlRootElem )
 
 	RedrawRegion(CDCHandle(m_memDC),CRgn());
 
-	if(m_bTranslucent) SetDuiTimer(TIMER_TRANSLUCENT,10);
-	else KillDuiTimer(TIMER_TRANSLUCENT);
+// 	if(m_bTranslucent) SetDuiTimer(TIMER_TRANSLUCENT,10);
+// 	else KillDuiTimer(TIMER_TRANSLUCENT);
 
-	m_bLayoutInited=TRUE;
 	return TRUE;
 }
 
@@ -215,10 +199,10 @@ UINT_PTR CDuiHostWnd::DoModal(HWND hWndParent/* = NULL*/, LPRECT rect /*= NULL*/
 
     HWND hWndLastActive = DuiThreadActiveWndManager::SetActive(m_hWnd);
 
-    if (!rect)
-        CenterWindow();
-
-    ::SetWindowPos(m_hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_SHOWWINDOW);
+	if(m_dwDlgExStyle&WS_EX_TOOLWINDOW)
+		::ShowWindow(m_hWnd,SW_SHOWNOACTIVATE);
+	else
+		::ShowWindow(m_hWnd,SW_SHOWNORMAL);
 
     _ModalMessageLoop();
 
@@ -318,6 +302,8 @@ void CDuiHostWnd::_Redraw()
 
     if(!m_bTranslucent)
         Invalidate(FALSE);
+	else if(m_dummyWnd.IsWindow()) 
+		m_dummyWnd.Invalidate(FALSE);
 }
 
 BOOL CDuiHostWnd::_PreTranslateMessage(MSG* pMsg)
@@ -337,7 +323,7 @@ BOOL CDuiHostWnd::_PreTranslateMessage(MSG* pMsg)
 
 void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
 {
-    if(m_bTranslucent && !uFlags && (!m_bNeedAllRepaint && !m_bNeedRepaint)) return;
+    if(!m_bNeedAllRepaint && !m_bNeedRepaint) return;
     if (m_bNeedAllRepaint)
     {
         if (!m_rgnInvalidate.IsNull())
@@ -394,7 +380,8 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
 
 void CDuiHostWnd::OnPaint(CDCHandle dc)
 {
-    OnPrint(m_bTranslucent?NULL:CPaintDC(m_hWnd).m_hDC, 0);
+	CPaintDC dc1(m_hWnd);
+    OnPrint(m_bTranslucent?NULL:dc1.m_hDC, 0);
 }
 
 BOOL CDuiHostWnd::OnEraseBkgnd(CDCHandle dc)
@@ -419,6 +406,10 @@ void CDuiHostWnd::OnDestroy()
             m_pTipCtrl->DestroyWindow();
         delete m_pTipCtrl;
     }
+	if(m_bTranslucent && m_dummyWnd.IsWindow())
+	{
+		m_dummyWnd.DestroyWindow();
+	}
 
     DuiSendMessage(WM_DESTROY);
 
@@ -533,11 +524,7 @@ void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
 
 void CDuiHostWnd::OnDuiTimer( char cTimerID )
 {
-    if(cTimerID==TIMER_TRANSLUCENT)
-    {
-        OnPrint(NULL,0);
-    }
-    else if(cTimerID==TIMER_CARET)
+    if(cTimerID==TIMER_CARET)
     {
 		DUIASSERT(m_bCaretShowing);
         DrawCaret(m_ptCaret,TRUE);
@@ -606,30 +593,9 @@ LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    if(uMsg==WM_KEYDOWN && (wParam==VK_RETURN || wParam==VK_ESCAPE))
+	if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
     {
-        //处理默认按钮，默认按钮的ID必须是IDOK或者IDCANCEL
-        CDuiWindow *pFocus=DuiWindowManager::GetWindow(m_hFocus);
-        if(!pFocus || (wParam==VK_RETURN && !(pFocus->OnGetDuiCode()&DUIC_WANTRETURN)) || !(pFocus->OnGetDuiCode()&DUIC_WANTALLKEYS))
-        {
-            UINT uCmdID = (wParam==VK_RETURN)?IDOK:IDCANCEL;
-            CDuiWindow *pWnd=FindChildByCmdID(uCmdID);
-            if(pWnd && (pWnd->IsClass(CDuiButton::GetClassName())||pWnd->IsClass(CDuiImageBtnWnd::GetClassName())))
-            {
-                DUINMCOMMAND nms;
-                nms.hdr.code = DUINM_COMMAND;
-                nms.hdr.hwndFrom = NULL;
-                nms.hdr.idFrom = uCmdID;
-                nms.uItemID = uCmdID;
-                nms.szItemClass = pWnd->GetClassName();
-
-                return OnDuiNotify((LPNMHDR)&nms);
-            }
-        }
-    }
-    else if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
-    {
-        CDuiWindow *pFocus=DuiWindowManager::GetWindow(m_hFocus);
+        CDuiWindow *pFocus=DuiWindowManager::GetWindow(m_focusMgr.GetFocusedHwnd());
         if(!pFocus  || !(pFocus->OnGetDuiCode()&DUIC_WANTSYSKEY))
         {
             SetMsgHandled(FALSE);
@@ -643,6 +609,12 @@ BOOL CDuiHostWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     ScreenToClient(&pt);
     return DoFrameEvent(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt.x,pt.y))!=0;
+}
+
+
+void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
+{
+	DoFrameEvent(WM_ACTIVATE,MAKEWPARAM(nState,bMinimized),(LPARAM)wndOther);
 }
 
 LRESULT CDuiHostWnd::OnDuiNotify(LPNMHDR pHdr)
@@ -739,10 +711,14 @@ void CDuiHostWnd::OnRedraw(const CRect &rc)
     }
     m_bNeedRepaint = TRUE;
 
-    if(!m_bTranslucent)//半透明状态下由Timer去刷新
+    if(!m_bTranslucent)
     {
         InvalidateRect(rc, FALSE);
-    }
+    }else
+	{//半透明状态下由Timer去刷新
+		if(m_dummyWnd.IsWindow()) 
+			m_dummyWnd.Invalidate(FALSE);
+	}
 }
 
 BOOL CDuiHostWnd::OnReleaseDuiCapture()
@@ -851,6 +827,12 @@ BOOL CDuiHostWnd::DuiSetCaretPos( int x,int y )
     return TRUE;
 }
 
+
+BOOL CDuiHostWnd::DuiUpdateWindow()
+{
+	return UpdateWindow(m_bTranslucent?m_dummyWnd.m_hWnd:m_hWnd);
+}
+
 LRESULT CDuiHostWnd::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
 {
     if (bCalcValidRects && (CSimpleWnd::GetStyle() & WS_POPUP))
@@ -948,16 +930,9 @@ void CDuiHostWnd::OnClose()
     EndDialog(IDCANCEL);
 }
 
-LRESULT CDuiHostWnd::OnOK()
+void CDuiHostWnd::OnOK()
 {
-    EndDialog(IDOK);
-    return 0;
-}
-
-LRESULT CDuiHostWnd::OnCancel()
-{
-    EndDialog(IDCANCEL);
-    return 0;
+	EndDialog(IDOK);
 }
 
 LRESULT CDuiHostWnd::OnMsgFilter(UINT uMsg,WPARAM wParam,LPARAM lParam)
@@ -1026,9 +1001,23 @@ void CDuiHostWnd::OnRealWndSize( CDuiRealWnd *pRealWnd )
     }
 }
 
-BOOL CDuiHostWnd::IsLayoutInited()
+void CDuiHostWnd::OnSetFocus( HWND wndOld )
 {
-	return m_bLayoutInited;
+	DoFrameEvent(WM_ACTIVATE,WA_ACTIVE,0);
+}
+
+void CDuiHostWnd::OnKillFocus( HWND wndFocus )
+{
+	DoFrameEvent(WM_ACTIVATE,WA_INACTIVE,0);
+}
+
+//////////////////////////////////////////////////////////////////////////
+//	CTranslucentHostWnd
+//////////////////////////////////////////////////////////////////////////
+void CTranslucentHostWnd::OnPaint( CDCHandle dc )
+{
+	CPaintDC dc1(m_hWnd);
+	m_pOwner->OnPrint(NULL,0);
 }
 
 }//namespace DuiEngine

@@ -9,6 +9,7 @@
 #include "duiwnd.h"
 #include "duiwndpanel.h"
 #include "duiwndnotify.h"
+#include "Accelerator.h"
 
 namespace DuiEngine
 {
@@ -76,7 +77,7 @@ class DUI_EXP CDuiLink : public CDuiWindow
 public:
 
 protected:
-    virtual void OnAttributeFinish(TiXmlElement* pXmlElem);
+    virtual void OnAttributeFinish(pugi::xml_node xmlNode);
     virtual void DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
 
@@ -86,10 +87,10 @@ protected:
     void OnMouseHover(WPARAM wParam, CPoint ptPos);
 
     DUIWIN_BEGIN_MSG_MAP()
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_LBUTTONUP(OnLButtonUp)
-    MSG_WM_MOUSEMOVE(OnMouseMove)
-    MSG_WM_MOUSEHOVER(OnMouseHover)
+		MSG_WM_LBUTTONDOWN(OnLButtonDown)
+		MSG_WM_LBUTTONUP(OnLButtonUp)
+		MSG_WM_MOUSEMOVE(OnMouseMove)
+		MSG_WM_MOUSEHOVER(OnMouseHover)
     DUIWIN_END_MSG_MAP()
 
     CRect m_rcText;
@@ -101,7 +102,7 @@ protected:
 //
 // Usage: <button id=xx>inner text example</button>
 //
-class DUI_EXP CDuiButton : public CDuiWindow
+class DUI_EXP CDuiButton : public CDuiWindow, public CAcceleratorTarget
 {
     DUIOBJ_DECLARE_CLASS_NAME(CDuiButton, "button")
 public:
@@ -113,21 +114,12 @@ protected:
         return TRUE;
     }
 
-    virtual BOOL IsTabStop()
-    {
-        return m_bTabStop;
-    }
-
     virtual UINT OnGetDuiCode()
     {
         return DUIC_WANTCHARS;
     }
 
-    virtual void DuiDrawFocus(HDC hdc)
-    {
-        if(m_bTabStop) __super::DuiDrawFocus(hdc);
-    }
-
+	virtual bool OnAcceleratorPressed(const CAccelerator& accelerator);
 protected:
     void OnPaint(CDCHandle dc);
 
@@ -135,11 +127,9 @@ protected:
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-	BOOL m_bTabStop;
 	CDuiSkinBase *m_pSkin;
 public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("tabstop", m_bTabStop, FALSE)
 	DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 
@@ -166,12 +156,12 @@ public:
 
     void OnPaint(CDCHandle dc);
 
-    LRESULT OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize);
-
     BOOL SetSkin(CDuiSkinBase *pSkin,int nSubID=0);
 
     BOOL SetIcon(int nSubID);
 protected:
+	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+
     BOOL m_bManaged;
     int m_nSubImageID;
     CDuiSkinBase *m_pSkin;
@@ -184,7 +174,6 @@ protected:
 
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_PAINT(OnPaint)
-    MSG_WM_CALCSIZE(OnCalcSize)
     DUIWIN_END_MSG_MAP()
 };
 
@@ -196,27 +185,24 @@ public:
     CDuiAnimateImgWnd();
     virtual ~CDuiAnimateImgWnd() {}
 
-    void OnPaint(CDCHandle dc);
-
-    LRESULT OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize);
-
-    void OnDuiTimer(char cID);
-
     void Start();
 
     void Stop();
 
 	BOOL IsPlaying(){return m_bPlaying;}
-
-    void OnDestroy();
-
-    virtual BOOL Load(TiXmlElement* pTiXmlElem);
 protected:
+	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+	void OnPaint(CDCHandle dc);
+
+	void OnDuiTimer(char cID);
+	void OnShowWindow(BOOL bShow, UINT nStatus);
+	void OnDestroy();
+
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_PAINT(OnPaint)
-    MSG_WM_CALCSIZE(OnCalcSize)
     MSG_WM_DUITIMER(OnDuiTimer)
     MSG_WM_DESTROY(OnDestroy)
+	MSG_WM_SHOWWINDOW(OnShowWindow)
     DUIWIN_END_MSG_MAP()
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
@@ -255,7 +241,8 @@ public:
 
 	BOOL IsVertical(){return m_bVertical;}
 protected:
-	LRESULT OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize);
+
+	virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
 	void OnPaint(CDCHandle dc);
 
@@ -271,7 +258,6 @@ protected:
 
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_PAINT(OnPaint)
-    MSG_WM_CALCSIZE(OnCalcSize)
     DUIWIN_END_MSG_MAP()
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
@@ -368,7 +354,6 @@ class DUI_EXP CDuiCheckBox : public CDuiWindow
 
     enum
     {
-        CheckBoxSize = 15,
         CheckBoxSpacing = 4,
     };
 
@@ -377,15 +362,17 @@ public:
     CDuiCheckBox();
 
     void OnPaint(CDCHandle dc);
-    LRESULT OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize);
 protected:
 
     CDuiSkinBase *m_pSkin;
     CDuiSkinBase *m_pFocusSkin;
 
     UINT _GetDrawState();
+	CRect GetCheckRect();
 
-    virtual void GetClient(LPRECT pRect);
+	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+
+	virtual void GetTextRect(LPRECT pRect);
 
     virtual BOOL NeedRedrawWhenStateChange()
     {
@@ -397,12 +384,7 @@ protected:
         return DUIC_WANTCHARS;
     }
 
-    virtual BOOL IsTabStop()
-    {
-        return TRUE;
-    }
-
-    virtual void DuiDrawFocus(HDC hdc);
+    virtual void DuiDrawFocus(HDC dc);
 
     void OnLButtonDown(UINT nFlags, CPoint point);
 
@@ -411,16 +393,15 @@ protected:
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
-    DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
-    DUIWIN_SKIN_ATTRIBUTE("focusskin", m_pFocusSkin, FALSE)
+		DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
+		DUIWIN_SKIN_ATTRIBUTE("focusskin", m_pFocusSkin, FALSE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 
     DUIWIN_BEGIN_MSG_MAP()
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_CALCSIZE(OnCalcSize)
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_LBUTTONUP(OnLButtonUp)
-    MSG_WM_KEYDOWN(OnKeyDown)
+		MSG_WM_PAINT(OnPaint)
+		MSG_WM_LBUTTONDOWN(OnLButtonDown)
+		MSG_WM_LBUTTONUP(OnLButtonUp)
+		MSG_WM_KEYDOWN(OnKeyDown)
     DUIWIN_END_MSG_MAP()
 };
 
@@ -436,15 +417,15 @@ class DUI_EXP CDuiIconWnd : public CDuiWindow
 public:
     CDuiIconWnd();
 
-    virtual BOOL Load(TiXmlElement* pTiXmlElem);
+    virtual BOOL Load(pugi::xml_node xmlNode);
 
     void OnPaint(CDCHandle dc);
 
-    LRESULT OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize);
     HICON AttachIcon(HICON hIcon);
 
     void LoadIconFile( LPCWSTR lpFIleName );
 protected:
+	virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
     void _ReloadIcon();
 
@@ -460,7 +441,6 @@ protected:
 
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_PAINT(OnPaint)
-    MSG_WM_CALCSIZE(OnCalcSize)
     DUIWIN_END_MSG_MAP()
 };
 
@@ -475,7 +455,6 @@ class DUI_EXP CDuiRadioBox : public CDuiWindow
 
     enum
     {
-        RadioBoxSize = 15,
         RadioBoxSpacing = 4,
     };
 
@@ -486,8 +465,6 @@ public:
 
     void OnPaint(CDCHandle dc);
 
-    LRESULT OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize);
-
 protected:
 
     // CDuiRadioBoxTheme m_theme;
@@ -495,27 +472,26 @@ protected:
     CDuiSkinBase *m_pFocusSkin;
 
     UINT _GetDrawState();
+	CRect GetRadioRect();
+	virtual void GetTextRect(LPRECT pRect);
+
+	virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
     virtual BOOL NeedRedrawWhenStateChange();
 
-    virtual void  GetClient(LPRECT pRect);
-
-    virtual void DuiDrawFocus(HDC hdc);
-
-    virtual BOOL IsTabStop()
-    {
-        return TRUE;
-    }
+    virtual void DuiDrawFocus(HDC dc);
 
     virtual UINT OnGetDuiCode()
     {
-        return DUIC_WANTCHARS;
+        return 0;
     }
+
+	virtual BOOL IsSiblingsAutoGroupped() {return TRUE;}
+
     void OnLButtonDown(UINT nFlags, CPoint point);
 
-    void OnLButtonUp(UINT nFlags, CPoint point);
+	void OnSetDuiFocus();
 
-    void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
     DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
@@ -524,10 +500,8 @@ protected:
 
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_PAINT(OnPaint)
-    MSG_WM_CALCSIZE(OnCalcSize)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_LBUTTONUP(OnLButtonUp)
-    MSG_WM_KEYDOWN(OnKeyDown)
+	MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
     DUIWIN_END_MSG_MAP()
 };
 
@@ -544,8 +518,8 @@ public:
 protected:
     void OnPaint(CDCHandle dc);
     void OnLButtonUp(UINT nFlags,CPoint pt);
+	virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
-    LRESULT OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize);
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("toggled", m_bToggled, TRUE)
     DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, TRUE)
@@ -554,7 +528,6 @@ protected:
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_LBUTTONUP(OnLButtonUp)
-    MSG_WM_CALCSIZE(OnCalcSize)
     DUIWIN_END_MSG_MAP()
 protected:
     BOOL m_bToggled;

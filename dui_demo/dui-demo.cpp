@@ -9,8 +9,9 @@
 #include "DuiSkinGif.h"	//应用层定义的皮肤对象
 
 //从ZIP文件加载皮肤模块
+#if !defined(_WIN64)
 #include "zipskin/DuiResProviderZip.h"
-
+#endif
 
 #ifdef _DEBUG
 #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
@@ -27,14 +28,17 @@ public:
 
 };
 
+
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
 	HRESULT hRes = OleInitialize(NULL);
 	DUIASSERT(SUCCEEDED(hRes));
- 
-	//////////////////////////////////////////////////////////////////////////
+
+#if !defined(_WIN64)
 	//<--资源类型选择 
 	DuiSystem * pDuiModeSel = new DuiSystem(hInstance);
+	DuiSystem::getSingletonPtr();
+
 	DuiResProviderZip *pResModeSel= new DuiResProviderZip;
 	pResModeSel->Init(hInstance,IDR_ZIP_MODESEL,_T("ZIP"));
 	pDuiModeSel->SetResProvider(pResModeSel);
@@ -53,36 +57,36 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	delete pDuiModeSel;
 
 	if(nMode==-1) return -1;
-
+#else
+	int nMode=0;	//64位时直接从文件加载资源
+#endif
 	//资源类型选择完成 -->
 	
 	DuiSystem *pDuiSystem=new DuiSystem(hInstance);
 
 	//生成控件类厂并注册到系统
-	TplDuiWindowFactory<CDuiListBox2> *pFacListCtrl= new TplDuiWindowFactory<CDuiListBox2>;
-	DuiWindowFactoryManager::getSingleton().RegisterFactory(pFacListCtrl,true);
+	DuiWindowFactoryManager::getSingleton().RegisterFactory(TplDuiWindowFactory<CDuiListBox2>(),true);
 
 	//生成皮肤类厂并注册到系统
-	TplSkinFactory<CDuiSkinGif> * pFacSkinGif = new TplSkinFactory<CDuiSkinGif>;
-	DuiSkinFactoryManager::getSingleton().RegisterFactory(pFacSkinGif);
+	DuiSkinFactoryManager::getSingleton().RegisterFactory(TplSkinFactory<CDuiSkinGif>());
 
 
-	char szCurrentDir[MAX_PATH]; memset( szCurrentDir, 0, sizeof(szCurrentDir) );
-	GetModuleFileNameA( NULL, szCurrentDir, sizeof(szCurrentDir) );
-	LPSTR lpInsertPos = strrchr( szCurrentDir, L'\\' );
-	*lpInsertPos = '\0';   
+	TCHAR szCurrentDir[MAX_PATH]; memset( szCurrentDir, 0, sizeof(szCurrentDir) );
+	GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
+	LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
+	*lpInsertPos = _T('\0');   
 
 	DefaultLogger loger;
-	loger.setLogFilename(DUI_CA2T(CDuiStringA(szCurrentDir)+"\\dui-demo.log")); 
+	loger.setLogFilename(CDuiStringT(szCurrentDir)+_T("\\dui-demo.log")); 
 	pDuiSystem->SetLogger(&loger);
-	pDuiSystem->InitName2ID(IDR_NAME2ID,"XML2");//加载ID名称对照表,该资源属于APP级别，所有皮肤应该共享该名字表，名字表总是从程序资源加载
+	pDuiSystem->InitName2ID(IDR_NAME2ID,_T("XML2"));//加载ID名称对照表,该资源属于APP级别，所有皮肤应该共享该名字表，名字表总是从程序资源加载
 
 	//根据选择的资源加载模式生成resprovider 
 	switch(nMode)
 	{
 	case 0://load from files
 		{
-			lstrcatA( szCurrentDir, "\\..\\dui_demo" );
+			_tcscat( szCurrentDir, _T("\\..\\dui_demo") );
 			DuiResProviderFiles *pResFiles=new DuiResProviderFiles;
 			if(!pResFiles->Init(szCurrentDir))
 			{
@@ -101,9 +105,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 		break;
 	default://load form ZIP
 		{
+#if !defined(_WIN64)
 			//从ZIP文件加载皮肤
 			DuiResProviderZip *zipSkin=new DuiResProviderZip;
-			CDuiStringT strZip=DUI_CA2T(szCurrentDir)+_T("\\def_skin.zip");
+			CDuiStringT strZip=CDuiStringT(szCurrentDir)+_T("\\def_skin.zip");
 			if(!zipSkin->Init(strZip))
 			{ 
 				DUIASSERT(0);
@@ -111,6 +116,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 			}
 			pDuiSystem->SetResProvider(zipSkin); 
 			pDuiSystem->logEvent(_T("load resource from zip"));
+#else
+			return -1;
+#endif;
 		}
 		break;
 	}
@@ -125,6 +133,12 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 	BOOL bOK=pDuiSystem->Init(IDR_DUI_INIT); //初始化DUI系统,原来的系统初始化方式依然可以使用。
 	pDuiSystem->SetMsgBoxTemplate(IDR_DUI_MSGBOX);
+
+#if defined(DLL_DUI) && !defined(_WIN64)
+	CLuaScriptModule scriptLua;
+	scriptLua.executeScriptFile("..\\dui_demo\\lua\\test.lua");
+	pDuiSystem->SetScriptModule(&scriptLua);
+#endif
 
 	CMenuWndHook::InstallHook(hInstance,"skin_menuborder");
 	int nRet = 0; 
@@ -144,10 +158,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	DuiSkinPool::getSingleton().RemoveAll();//以DLL方式使用DuiEngine时，使用了自定义皮肤类型时需要先删除皮肤池才能正常释放皮肤类厂。
 
 	//从系统中反注册控件及皮肤类厂并删除类厂对象
-	DuiWindowFactoryManager::getSingleton().UnregisterFactory(pFacListCtrl);
-	delete pFacListCtrl;
-	DuiSkinFactoryManager::getSingleton().UnregisterFactory(pFacSkinGif);
-	delete pFacSkinGif;
+	DuiWindowFactoryManager::getSingleton().UnregisterFactory(CDuiListBox2::GetClassName());
+	DuiSkinFactoryManager::getSingleton().UnregisterFactory(CDuiSkinGif::GetClassName());
 
 	delete pDuiSystem;
 

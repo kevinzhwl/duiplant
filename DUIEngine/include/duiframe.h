@@ -9,6 +9,7 @@
 
 #include "duiwndpanel.h"
 #include "DuiFrameDropTarget.h"
+#include "FocusManager.h"
 
 namespace DuiEngine
 {
@@ -24,6 +25,8 @@ public:
 	virtual BOOL RevokeDragDrop(HDUIWND hDuiWnd);
 
 	IDropTarget * GetDropTarget(){return &m_dropTarget;}
+
+	CFocusManager * GetFocusManager() {return &m_focusMgr;}
 
     virtual LRESULT DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
@@ -50,15 +53,17 @@ protected:
     virtual void OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
     virtual void OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
     virtual void OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-    static CDuiWindow * GetNextKeyHostWnd(CDuiWindow *pCurWnd,CDuiWindow *pFirst);
+	virtual void OnActivate(UINT nState);
 
 protected:
     HDUIWND m_hCapture;
     HDUIWND m_hHover;
     BOOL	m_bNcHover;
-    HDUIWND m_hFocus;
+
+	CFocusManager m_focusMgr;
 
 	CDuiFrameDropTarget m_dropTarget;
 };

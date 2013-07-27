@@ -72,7 +72,7 @@ BOOL CDuiListBox::SetCurSel(int nIndex)
 
 int CDuiListBox::GetTopIndex() const
 {
-    return m_ptOrgin.y / m_nItemHei;
+    return m_ptOrigin.y / m_nItemHei;
 }
 
 BOOL CDuiListBox::SetTopIndex(int nIndex)
@@ -206,7 +206,7 @@ void CDuiListBox::EnsureVisible(int nIndex)
     CRect rcClient;
     GetClient(&rcClient);
 
-    int iFirstVisible = (m_ptOrgin.y + m_nItemHei -1) / m_nItemHei;
+    int iFirstVisible = (m_ptOrigin.y + m_nItemHei -1) / m_nItemHei;
     int nVisibleItems = rcClient.Height() / m_nItemHei;
     if(nIndex < iFirstVisible || nIndex > iFirstVisible+nVisibleItems-1)
     {
@@ -224,7 +224,7 @@ int CDuiListBox::HitTest(CPoint &pt)
     CRect rcClient;
     GetClient(&rcClient);
     CPoint pt2=pt;
-    pt2.y -= rcClient.top - m_ptOrgin.y;
+    pt2.y -= rcClient.top - m_ptOrigin.y;
     int nRet=pt2.y/m_nItemHei;
     if(nRet >= GetCount()) nRet=-1;
     else
@@ -236,56 +236,48 @@ int CDuiListBox::HitTest(CPoint &pt)
     return nRet;
 }
 
-BOOL CDuiListBox::Load(TiXmlElement* pTiXmlElem)
+BOOL CDuiListBox::Load(pugi::xml_node xmlNode)
 {
-    if (!__super::Load(pTiXmlElem))
+    if (!__super::Load(xmlNode))
         return FALSE;
 
-    int			nChildSrc=-1;
-    pTiXmlElem->Attribute("itemsrc",&nChildSrc);
+    int	nChildSrc= xmlNode.attribute("itemsrc").as_int(-1);
 
     if (nChildSrc == -1)
         return TRUE;
 
-	TiXmlDocument xmlDoc;
-	if(!DuiSystem::getSingleton().LoadXmlDocment(&xmlDoc,nChildSrc,DUIRES_XML_TYPE)) return FALSE;
+	pugi::xml_document xmlDoc;
+	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,nChildSrc,DUIRES_XML_TYPE)) return FALSE;
 
-	TiXmlElement *pSubTiElement = xmlDoc.RootElement();
-    return LoadChildren(pSubTiElement);
+    return LoadChildren(xmlDoc.first_child());
 }
 
-BOOL CDuiListBox::LoadChildren(TiXmlElement* pTiXmlChildElem)
+BOOL CDuiListBox::LoadChildren(pugi::xml_node xmlNode)
 {
-    if(!pTiXmlChildElem) return TRUE;
+    if(!xmlNode) return TRUE;
 
-    TiXmlElement* pParent=(TiXmlElement*)pTiXmlChildElem->Parent();
-
-    TiXmlElement* pItem=(TiXmlElement*)pParent->FirstChildElement("item");
-    while(pItem)
+	pugi::xml_node xmlParent=xmlNode.parent();
+	pugi::xml_node xmlItem=xmlParent.child("items");
+    while(xmlItem)
     {
         LPLBITEM pItemObj = new LBITEM;
-        LoadItemAttribute(pItem, pItemObj);
+        LoadItemAttribute(xmlItem, pItemObj);
         InsertItem(-1, pItemObj);
-        pItem = pItem->NextSiblingElement();
+        xmlItem = xmlItem.next_sibling();
     }
 
-    int nSelItem=-1;
-    pParent->Attribute("cursel",&nSelItem);
-    SetCurSel(nSelItem);
+    int nSelItem=xmlParent.attribute("cursel").as_int(-1);
+	SetCurSel(nSelItem);
 
     return TRUE;
 }
 
-void CDuiListBox::LoadItemAttribute(TiXmlElement *pTiXmlItem, LPLBITEM pItem)
+void CDuiListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
 {
-    for (TiXmlAttribute *pAttrib = pTiXmlItem->FirstAttribute(); NULL != pAttrib; pAttrib = pAttrib->Next())
-    {
-        if ( !_stricmp(pAttrib->Name(), "img"))
-            pItem->nImage = atoi(pAttrib->Value());
-        else if ( !_stricmp(pAttrib->Name(), "data"))
-            pItem->lParam = atol(pAttrib->Value());
-    }
-    pItem->strText =  DUI_CA2T(pTiXmlItem->GetText(), CP_UTF8);
+	pItem->nImage=xmlNode.attribute("img").as_int(pItem->nImage);
+	pItem->lParam=xmlNode.attribute("data").as_uint(pItem->lParam);
+
+    pItem->strText =  DUI_CA2T(xmlNode.text().get(), CP_UTF8);
     DuiStringPool::getSingleton().BuildString(pItem->strText);
 }
 
@@ -329,7 +321,7 @@ void CDuiListBox::RedrawItem(int iItem)
     if(iItem>=iFirstVisible && iItem<GetCount() && iItem<iFirstVisible+nPageItems)
     {
         CRect rcItem(0,0,rcClient.Width(),m_nItemHei);
-        rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrgin.y);
+        rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrigin.y);
         rcItem.OffsetRect(rcClient.TopLeft());
         CDCHandle dc=GetDuiDC(&rcItem,OLEDC_PAINTBKGND);
         DuiDCPaint duiDC;
@@ -458,7 +450,7 @@ void CDuiListBox::OnPaint(CDCHandle dc)
     for(int iItem = iFirstVisible; iItem<GetCount() && iItem <iFirstVisible+nPageItems; iItem++)
     {
         CRect rcItem(0,0,m_rcClient.Width(),m_nItemHei);
-        rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrgin.y);
+        rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrigin.y);
         rcItem.OffsetRect(m_rcClient.TopLeft());
         DrawItem(dc,rcItem,iItem);
     }

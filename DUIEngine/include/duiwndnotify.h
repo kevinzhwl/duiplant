@@ -50,7 +50,7 @@ class CDuiWindow;
 
 // void OnDuiItemCommandData(UINT uData)
 #define DUI_NOTIFY_ID_CMD_DATA(itemid, func)                                  \
-	if (DUINM_COMMAND == uCode && itemid == ((LPDUINMCOMMAND)pnmh)->uItemID)  \
+	if (DUINM_COMMAND == uCode && itemid == ((DuiEngine::LPDUINMCOMMAND)pnmh)->uItemID)  \
 	{                                                                       \
 	func(((LPDUINMCOMMAND)pnmh)->uItemData);                            \
 	return TRUE;                                                        \
@@ -58,25 +58,25 @@ class CDuiWindow;
 
 // void OnDuiItemCommand()
 #define DUI_NOTIFY_ID_COMMAND(itemid, func)                                  \
-    if (DUINM_COMMAND == uCode && itemid == ((LPDUINMCOMMAND)pnmh)->uItemID)  \
+    if (DUINM_COMMAND == uCode && itemid == ((DuiEngine::LPDUINMCOMMAND)pnmh)->uItemID)  \
     {                                                                       \
         func();                                                             \
         return TRUE;                                                        \
     }                                                                       \
  
 #define DUI_NOTIFY_ID_COMMAND_EX(itemidbegin, itemidend, func)					\
-	if (DUINM_COMMAND == uCode && itemidbegin <= ((LPDUINMCOMMAND)pnmh)->uItemID	\
+	if (DUINM_COMMAND == uCode && itemidbegin <= ((DuiEngine::LPDUINMCOMMAND)pnmh)->uItemID	\
 		&& itemidend >= ((LPDUINMCOMMAND)pnmh)->uItemID )						\
 	{																			\
 		func(((LPDUINMCOMMAND)pnmh)->uItemID);                                   \
 		return TRUE;															\
 	}																			\
  
-// void OnDuiCommand(UINT uItemID, LPCSTR szItemClass)
+// void OnDuiCommand(UINT uItemID)
 #define DUI_NOTIFY_COMMAND(func)                                                     \
     if (DUINM_COMMAND == uCode)                                                      \
     {                                                                               \
-        func(((LPDUINMCOMMAND)pnmh)->uItemID, ((LPDUINMCOMMAND)pnmh)->szItemClass);   \
+        func(((LPDUINMCOMMAND)pnmh)->uItemID);   \
         return TRUE;                                                                \
     }                                                                               \
  
@@ -87,7 +87,6 @@ typedef struct _DUINMCOMMAND
 {
     NMHDR       hdr;
     UINT        uItemID;
-    LPCSTR      szItemClass;
     ULONG_PTR   uItemData;
 } DUINMCOMMAND, *LPDUINMCOMMAND;
 
@@ -106,7 +105,7 @@ typedef struct _DUINMTABSELCHANGE
 
 // BOOL OnDuiTabSelChange(int nTabItemIDOld, int nTabItemIDNew)
 #define DUI_NOTIFY_TAB_SELCHANGE(tabid, func)                                        \
-    if (DUINM_TAB_SELCHANGING == uCode && tabid == ((LPDUINMTABSELCHANGE)pnmh)->uTabID) \
+    if (DUINM_TAB_SELCHANGING == uCode && tabid == ((DuiEngine::LPDUINMTABSELCHANGE)pnmh)->uTabID) \
     {                                                                               \
         BOOL bRet = func(                                                           \
             ((LPDUINMTABSELCHANGE)pnmh)->uTabItemIDOld,                              \
@@ -128,7 +127,7 @@ typedef struct _DUINMTABSELCHANGED
 
 // void OnDuiTabSelChanged(int nTabItemIDOld, int nTabItemIDNew)
 #define DUI_NOTIFY_TAB_SELCHANGED(tabid, func)                                        \
-	if (DUINM_TAB_SELCHANGED == uCode && tabid == ((LPDUINMTABSELCHANGE)pnmh)->uTabID) \
+	if (DUINM_TAB_SELCHANGED == uCode && tabid == ((DuiEngine::LPDUINMTABSELCHANGE)pnmh)->uTabID) \
 {                                                                               \
 	func(                                                           \
 	((LPDUINMTABSELCHANGE)pnmh)->uTabItemIDOld,                              \
@@ -147,24 +146,6 @@ typedef struct _DUINMTABITEMHOVER
 #define DUINM_TAB_ITEMLEAVE 12
 typedef DUINMTABITEMHOVER DUINMTABITEMLEAVE, *LPDUINMTABITEMLEAVE;
 
-// Dropdown Change Notify
-#define DUINM_DROPDOWN_SELCHANGED 13
-
-typedef struct _DUINMDROPDOWNSELCHANGED
-{
-    NMHDR			hdr;
-    UINT        uItemID;
-    int				nIndex;
-} DUINMDROPDOWNSELCHANGED, *LPDUINMDROPDOWNSELCHANGED;
-
-// void OnDropdownSelChanged(int nIndex)
-#define DUI_NOTIFY_DROPDOWN_SELCHANGED(itemid, func)                                  \
-	if (DUINM_DROPDOWN_SELCHANGED == uCode && itemid == ((LPDUINMDROPDOWNSELCHANGED)pnmh)->uItemID)  \
-{                                                                       \
-	func(((LPDUINMDROPDOWNSELCHANGED)pnmh)->nIndex);                                                             \
-	return TRUE;                                                        \
-}
-
 class CDuiScrollBar;
 #define DUINM_SCROLL	14
 typedef struct tagDUINMSCROLL
@@ -180,7 +161,7 @@ typedef struct tagDUINMSCROLL
 #define DUI_NOTIFY_SCROLL(id, func)                                  \
 	if (DUINM_SCROLL == uCode && id == pnmh->idFrom)  \
 {                                                                       \
-	func(((PDUINMSCROLL)pnmh)->uSbCode,((PDUINMSCROLL)pnmh)->nPos,((PDUINMSCROLL)pnmh)->pScrollBar);   \
+	func(((PDUINMSCROLL)pnmh)->uSbCode,((DuiEngine::PDUINMSCROLL)pnmh)->nPos,((DuiEngine::PDUINMSCROLL)pnmh)->pScrollBar);   \
 	return TRUE;                                                        \
 }
 
@@ -246,7 +227,17 @@ typedef struct tagDUINMGETTBDISPINFO
     CDuiWindow *	pHostDuiWin;
 } DUINMGETTBDISPINFO, *LPDUINMGETTBDISPINFO;
 
-#define DUINM_TBSELCHANGED	21
+#define DUINM_TBSELCHANGING	21
+typedef struct tagDUINMTBSELCHANGING
+{
+	NMHDR       hdr;
+	HSTREEITEM hNewSel;
+	HSTREEITEM hOldSel;
+	BOOL		bCancel;
+} DUINMTBSELCHANGING, *LPDUINMTBSELCHANGING;
+
+
+#define DUINM_TBSELCHANGED	22
 typedef struct tagDUINMTBSELCHANGED
 {
     NMHDR       hdr;
@@ -273,6 +264,53 @@ typedef struct tagDUINMSLIDER
 	int	 nPos;
 	BOOL bVertical;
 } DUINMSLIDER,*LPDUINMSLIDER;
+
+//headerctrl
+#define DUINM_HDCLICK	31	//点击表头
+typedef struct tagDUINMHDCLICK
+{
+	NMHDR hdr;
+	CDuiWindow *pSender;
+	int   iItem;
+} DUINMHDCLICK,*LPDUINMHDCLICK;
+
+#define DUINM_HDSIZECHANGING	32	//调整表头宽度中
+typedef struct tagDUINMHDSIZECHANGING
+{
+	NMHDR hdr;
+	CDuiWindow *pSender;
+	int   iItem;
+	int   nWidth;
+} DUINMHDSIZECHANGING,*LPDUINMHDSIZECHANGING;
+
+#define DUINM_HDSIZECHANGED	33	//调整表头宽度完成
+typedef struct tagDUINMHDSIZECHANGED
+{
+	NMHDR hdr;
+	CDuiWindow *pSender;
+	int   iItem;
+	int   nWidth;
+} DUINMHDSIZECHANGED,*LPDUINMHDSIZECHANGED;
+
+#define DUINM_HDSWAP	34	//拖动表项调整位置
+typedef struct tagDUINMHDSWAP
+{
+	NMHDR hdr;
+	CDuiWindow *pSender;
+	int   iOldIndex;
+	int	  iNewIndex;
+} DUINMHDSWAP,*LPDUINMHDSWAP;
+
+//calendar
+#define DUINM_CALENDAR_SELECTDAY	40
+typedef struct tagDUINMCALENDARSELECTDAY
+{
+	NMHDR hdr;
+	CDuiWindow *pSender;
+	WORD   wOldDay;
+	WORD   wNewDay;
+} DUINMCALENDARSELECTDAY,*LPDUINMCALENDARSELECTDAY;
+
 
 //////////////////////////////////////////////////////////////////////////
 //  internal notify message

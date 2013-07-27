@@ -28,7 +28,7 @@ public:
 
     void DeleteItem(int iItem);
 
-    int InsertItem(int iItem,TiXmlElement *pXmlItem,DWORD dwData=0);
+    int InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData=0);
 
     int InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData=0);
 
@@ -68,16 +68,18 @@ public:
     //自动修改pt的位置为相对当前项的偏移量
     int HitTest(CPoint &pt);
 
-    virtual BOOL Load(TiXmlElement* pTiXmlElem);
+    virtual BOOL Load(pugi::xml_node xmlNode);
 
 	BOOL IsVirtual(){return m_bVirtual;}
+protected:
+	virtual void OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture);
+	virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem);
+	virtual BOOL IsItemRedrawDelay(){return m_bItemRedrawDelay;}
 protected:
 	void UpdatePanelsIndex(UINT nFirst=0,UINT nLast=-1);
 
 	CRect	GetItemRect(int iItem);
 
-    virtual void OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture);
-    virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem);
 
     virtual int GetScrollLineSize(BOOL bVertical);
 
@@ -87,7 +89,7 @@ protected:
 
     virtual void OnDrawItem(CDCHandle & dc, CRect & rc, int iItem);
 
-    virtual BOOL LoadChildren(TiXmlElement* pTiXmlChildElem);
+    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
     // Get tooltip Info
     virtual BOOL OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
 
@@ -106,6 +108,14 @@ protected:
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
 
     void OnDestroy();
+
+	void OnSetDuiFocus();
+
+	void OnKillDuiFocus();
+
+	LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
+
+	void Relayout();
 protected:
     CDuiArray<CDuiItemPanel *> m_arrItems;
 
@@ -115,17 +125,19 @@ protected:
 
 	CDuiItemPanel	* m_pTemplPanel;	//虚拟列表使用的DUI模板
 	int		m_nItems;					//虚拟列表中记录列表项
-	TiXmlElement	* m_pXmlTempl;		//列表模板XML
+	pugi::xml_document m_xmlTempl;		////列表模板XML
     CDuiItemPanel	*	m_pCapturedFrame;
     CDuiSkinBase * m_pItemSkin;
 	int		m_nItemHei;
 	BOOL	m_bVirtual;
+	BOOL	m_bItemRedrawDelay;			//表项重绘时缓冲
 public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
 		DUIWIN_INT_ATTRIBUTE("scrollspeed", m_iScrollSpeed, FALSE)
 		DUIWIN_INT_ATTRIBUTE("itemheight", m_nItemHei, FALSE)
 		DUIWIN_INT_ATTRIBUTE("virtual", m_bVirtual, TRUE)
 		DUIWIN_SKIN_ATTRIBUTE("itemskin", m_pItemSkin, TRUE)
+		DUIWIN_INT_ATTRIBUTE("itemredrawdelay", m_bItemRedrawDelay, TRUE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 
     DUIWIN_BEGIN_MSG_MAP()
@@ -135,6 +147,9 @@ public:
     MSG_WM_KEYDOWN(OnKeyDown)
     MSG_WM_CHAR(OnChar)
 	MSG_WM_SIZE(OnSize)
+	MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+	MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+	MSG_WM_NCCALCSIZE(OnNcCalcSize)
 	MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MBUTTONDBLCLK,OnMouseEvent)
     DUIWIN_END_MSG_MAP()
 };

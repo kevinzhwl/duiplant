@@ -1,18 +1,4 @@
-// Change these values to use different versions
-#define WINVER		0x0500
-#define _WIN32_WINNT	0x0501
-#define _WIN32_IE	0x0601
-#define _RICHEDIT_VER	0x0200
-
-#define _CRT_SECURE_NO_WARNINGS
-#define _CRT_NON_CONFORMING_SWPRINTFS
-
-#ifndef GET_X_LPARAM
-#define GET_X_LPARAM(lParam)	((int)(short)LOWORD(lParam))
-#endif
-#ifndef GET_Y_LPARAM
-#define GET_Y_LPARAM(lParam)	((int)(short)HIWORD(lParam))
-#endif
+#include "duidef.h"
 
 #ifdef DLL_DUI
 # ifdef DUIENGINE_EXPORTS
@@ -25,6 +11,7 @@
 #define DUI_EXP
 #endif
 
+
 # pragma warning(disable:4661)
 # pragma warning(disable:4251)
 
@@ -33,35 +20,44 @@
 #include <Shlwapi.h>
 #include <OleCtl.h>
 #include <tchar.h>
+#include <stdio.h>
 
-
-
-#include "..\dependencies\tinyxml\tinyxml.h"
-
-#ifdef DEBUG
-#pragma comment(lib,"tinyxml_d.lib")
-#else
-#pragma comment(lib,"tinyxml.lib")
-#endif//DEBUG
+//export pugixml interface
+#include "../dependencies/pugixml/pugixml.hpp"
 
 #include "DuiUtilities.h"
 
-#ifndef NO_DUITYPES
-#define _WTYPES_NS DuiEngine
-#include "wtl.mini/duicrack.h"
-#include "wtl.mini/duimisc.h"
-#include "wtl.mini/duigdi.h"
-#endif
+#ifdef USING_ATL
+	#define _COLL_NS	ATL
+	#include <atlbase.h>
+	#include <atlapp.h>
+	#include <atlmisc.h>
+	#include <atlgdi.h>
+	#include <atlstr.h>
+	#include <atlcoll.h>
+	#include "wtl.mini/duicrack.h"
+	#define CDuiArray	CAtlArray
+	#define CDuiList	CAtlList
+	#define CDuiMap		CAtlMap
+	#define CDuiStringA	CAtlStringA
+	#define CDuiStringW CAtlStringW
+	#define CDuiStringT CAtlString
+	#define DUI_CA2A	CA2A
+	#define DUI_CA2W	CA2W
+	#define DUI_CW2A	CW2A
+	#define DUI_CA2T	CA2T
+	#define DUI_CW2T	CW2T
+	#define DUI_CT2A	CT2A
+	#define DUI_CT2W	CT2W
+#else//ATL_FREE
+	#define _WTYPES_NS DuiEngine
+	#define _COLL_NS	DuiEngine
+	#include "wtl.mini/duicrack.h"
+	#include "wtl.mini/duimisc.h"
+	#include "wtl.mini/duigdi.h"
+	#include "wtl.mini/duistr.h" 
+	#include "wtl.mini/duicoll.h"
+#endif//USING_ATL
 
-#include "wtl.mini/duistr.h" //注意：如果CDuiStringT已经定义，可以定义NO_DUISTR来防止命名冲突
-#include "wtl.mini/duicoll.h"
 
 #include "DuiAttrCrack.h"
-
-#ifndef max
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
-#endif
-
-#ifndef min
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-#endif

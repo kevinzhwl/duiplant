@@ -26,8 +26,8 @@ public:
         Clear();
     }
 
-    virtual BOOL LoadFromResource(HINSTANCE hInst,LPCSTR pszType,UINT uID);
-    virtual BOOL LoadFromFile(LPCSTR pszPath);
+    virtual BOOL LoadFromResource(HINSTANCE hInst,LPCTSTR pszType,UINT uID);
+    virtual BOOL LoadFromFile(LPCTSTR pszPath);
     virtual BOOL LoadFromMemory(LPVOID pBuf,DWORD dwSize);
 
     CDuiBitmap(HBITMAP hBitmap);
@@ -49,7 +49,7 @@ public:
 
     virtual BOOL TileBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha=0xFF);
 
-    virtual void SetAttributes(TiXmlElement *pTiXmlEle);
+    virtual void SetAttributes(pugi::xml_node xmlNode);
 
     void SetMaskColor(COLORREF crMask)
     {
@@ -89,8 +89,8 @@ public:
         Clear();
     }
 
-    virtual BOOL LoadFromResource(HINSTANCE hInst,LPCSTR pszType,UINT uID);
-    virtual BOOL LoadFromFile(LPCSTR pszPath);
+    virtual BOOL LoadFromResource(HINSTANCE hInst,LPCTSTR pszType,UINT uID);
+    virtual BOOL LoadFromFile(LPCTSTR pszPath);
     virtual BOOL LoadFromMemory(LPVOID pBuf,DWORD dwSize);
 
     virtual void Clear();

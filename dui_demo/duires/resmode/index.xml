@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--XML 资源，id_name and id:将写入到resource.h中的define,type and file :将写入到rc2的资源定义,layer:窗口定义XML，resbuilder使用它来自动为对应的XML生成控件ID-->
+<resid type="XML" id="100" file="layout\def_skin.xml"/>
+<resid type="XML" id="101" file="layout\def_style.xml" />
+<resid type="XML" id="102" file="layout\def_string.xml" />
+<resid type="XML" id="104" file="layout\def_objattr.xml" />
+<resid type="XML" id="105" layer="1" file="layout\dlg_main.xml"  />
+
+<resid type="IMGX" id_name="IDP_MAIN_DLG_FRAME"   id="1"    file="skins\dlg_bg_frame.png"  />
+
+<resid type="IMGX" id_name="IDP_BTN_SYS_CLOSE"  id="80"  file="skins\btn_sys_close.png"    />
+
+<resid type="IMGX" id_name="IDP_TAB_COMMON"  id="103"  file="skins\tab_common.png" />
+<resid type="IMGX" id_name="IDP_SCROLL"  id="104"  file="skins\scrollbar.png" />
+<resid type="IMGX" id_name="IDP_EDIT_BORDER"  id="105"  file="skins\img_edit_border.png" />

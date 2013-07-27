@@ -127,13 +127,15 @@ public:
 
     BOOL SetCurSel(int nIndex);
 
+	BOOL SetCurSel(LPCTSTR pszTitle);
+
     BOOL SetItemTitle(int nIndex, LPCTSTR lpszTitle);
 
-    BOOL LoadChildren(TiXmlElement* pTiXmlChildElem);
+    BOOL LoadChildren(pugi::xml_node xmlNode);
 
     BOOL InsertItem(LPCWSTR lpContent,int iInsert=-1);
 
-    int InsertItem(TiXmlElement *pXmlElement,int iInsert=-1,BOOL bLoading=FALSE);
+    int InsertItem(pugi::xml_node xmlNode,int iInsert=-1,BOOL bLoading=FALSE);
 
     int GetItemCount()
     {
@@ -143,18 +145,22 @@ public:
     CDuiTab* GetItem(int nIndex);
 
 
-    BOOL RemoveItem(int nIndex);
+    BOOL RemoveItem(int nIndex, int nSelPage=0);
 
     void RemoveAllItems(void);
-
 protected:
+	virtual CRect GetChildrenLayoutRect();
+
     virtual BOOL GetItemRect(int nIndex, CRect &rcItem);
-    virtual void DrawItem(CDCHandle dc,const CRect &rcItem,int iItem,DWORD dwState);
 
-protected:
+	virtual void DrawItem(CDCHandle dc,const CRect &rcItem,int iItem,DWORD dwState);
+
+	virtual UINT OnGetDuiCode()
+	{
+		return DUIC_WANTARROWS;
+	}
+
     void OnPaint(CDCHandle dc);
-
-    void OnCalcChildPos(CDuiWindow *pDuiWndChild);
 
     void OnLButtonDown(UINT nFlags, CPoint point);
 
@@ -164,6 +170,8 @@ protected:
     {
         OnMouseMove(0,CPoint(-1,-1));
     }
+
+	void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     void OnDestroy();
 
@@ -176,7 +184,7 @@ protected:
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_MOUSEMOVE(OnMouseMove)
     MSG_WM_MOUSELEAVE(OnMouseLeave)
-    MSG_WM_CALCWNDPOS(OnCalcChildPos)
+	MSG_WM_KEYDOWN(OnKeyDown)
     DUIWIN_END_MSG_MAP()
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()

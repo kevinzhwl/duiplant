@@ -50,12 +50,13 @@ public:
     BOOL HidePanel(int iPane);
 
 protected:
+	virtual void UpdateChildrenPosition(){}//empty
 
     int GetVisiblePanelCount();
 
     int GetNextVisiblePanel(int iPanel);
 
-    virtual BOOL LoadChildren(TiXmlElement* pTiXmlChildElem);
+    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
 
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
 
@@ -63,9 +64,7 @@ protected:
 
     void OnPaint(CDCHandle dc);
 
-    void OnCalcChildPos(CDuiWindow *pDuiWndChild) {} //empty function
-
-    void OnWindowPosChanged(LPDUIWNDPOS lpWndPos);
+    void OnWindowPosChanged(LPRECT lpWndPos);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
 
@@ -87,7 +86,6 @@ protected:
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_CALCWNDPOS(OnCalcChildPos)
     MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_LBUTTONUP(OnLButtonUp)

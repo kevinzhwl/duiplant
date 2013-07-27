@@ -80,38 +80,50 @@ void CDuiStatic::DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UIN
 // Only For Header Drag Test
 // Usage: <link>inner text example</link>
 //
-
 void CDuiLink::DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
 {
-    if(!(uFormat&DT_CALCRECT))
-    {
-        CRect rc(pRect);
-        rc.bottom=rc.top;
-        DrawText(hdc,pszBuf,cchText,&rc,DT_LEFT|DT_CALCRECT);
-        m_rcText=rc;
-        m_rcText.right=min(rc.right,pRect->right);
-        if(GetTextAlign()&DT_VCENTER)
-        {
-            m_rcText.top=pRect->top+ (pRect->bottom-pRect->top-rc.Height())/2;
-            m_rcText.bottom=m_rcText.top+rc.Height();
-        }
-        else if(GetTextAlign()&DT_BOTTOM)
-        {
-            m_rcText.bottom=m_rcText.bottom;
-            m_rcText.top=m_rcText.bottom-rc.Height();
-        }
-        else
-        {
-            m_rcText.top=m_rcText.top;
-            m_rcText.bottom=m_rcText.top+rc.Height();
-        }
-    }
-    __super::DuiDrawText(hdc,pszBuf,cchText,pRect,uFormat);
+	if(!(uFormat&DT_CALCRECT))
+	{
+		CRect rc;		
+		DrawText(hdc,pszBuf,cchText,&rc,DT_LEFT|DT_CALCRECT);
+
+		if (m_style.GetTextAlign()&DT_CENTER)
+		{
+			m_rcText.left = pRect->left + (pRect->right-pRect->left - rc.Width())/2;
+			m_rcText.right = m_rcText.left + rc.Width();
+		}
+		else if (m_style.GetTextAlign()&DT_RIGHT)
+		{
+			m_rcText.left = pRect->right - rc.Width();
+			m_rcText.right = pRect->right;
+		}
+		else
+		{
+			m_rcText.left = pRect->left;
+			m_rcText.right = pRect->left + rc.Width();
+		}
+
+		if(m_style.GetTextAlign()&DT_VCENTER)
+		{
+			m_rcText.top=pRect->top+ (pRect->bottom-pRect->top-rc.Height())/2;
+			m_rcText.bottom=m_rcText.top+rc.Height();
+		}else if(m_style.GetTextAlign()&DT_BOTTOM)
+		{
+			m_rcText.bottom=m_rcText.bottom;
+			m_rcText.top=m_rcText.bottom-rc.Height();
+		}else
+		{
+			m_rcText.top=m_rcText.top;
+			m_rcText.bottom=m_rcText.top+rc.Height();
+		}
+	}
+	__super::DuiDrawText(hdc,pszBuf,cchText,pRect,uFormat);
 }
 
-void CDuiLink::OnAttributeFinish( TiXmlElement* pXmlElem )
+
+void CDuiLink::OnAttributeFinish( pugi::xml_node xmlNode)
 {
-	__super::OnAttributeFinish(pXmlElem);
+	__super::OnAttributeFinish(xmlNode);
     if(m_strToolTipText.IsEmpty()) m_strToolTipText=m_strLinkUrl;
 }
 
@@ -163,9 +175,9 @@ void CDuiLink::OnMouseHover( WPARAM wParam, CPoint pt )
 // Usage: <button id=xx>inner text example</button>
 //
 
-CDuiButton::CDuiButton() :m_bTabStop(FALSE),m_pSkin(NULL)
+CDuiButton::CDuiButton() :m_pSkin(NULL)
 {
-
+	m_bTabStop=TRUE;
 }
 
 void CDuiButton::OnPaint(CDCHandle dc)
@@ -186,17 +198,31 @@ void CDuiButton::OnLButtonDown(UINT uFlag,CPoint pt)
 
 void CDuiButton::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    if(nChar==VK_SPACE && GetCmdID())
+    if(nChar==VK_SPACE || nChar==VK_RETURN && GetCmdID())
     {
         DUINMCOMMAND nms;
         nms.hdr.code = DUINM_COMMAND;
         nms.hdr.hwndFrom = NULL;
         nms.hdr.idFrom = GetCmdID();
         nms.uItemID = GetCmdID();
-        nms.szItemClass = GetObjectClass();
-        nms.uItemData = GetCmdData();
+        nms.uItemData = GetUserData();
         DuiNotify((LPNMHDR)&nms);
     }
+}
+
+bool CDuiButton::OnAcceleratorPressed( const CAccelerator& accelerator )
+{
+	if(IsDisabled(TRUE)) return false;
+
+	DUINMCOMMAND nms;
+	nms.hdr.code = DUINM_COMMAND;
+	nms.hdr.hwndFrom = NULL;
+	nms.hdr.idFrom = GetCmdID();
+	nms.uItemID = GetCmdID();
+	nms.uItemData = GetUserData();
+	DuiNotify((LPNMHDR)&nms);
+
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -228,26 +254,6 @@ void CDuiImageWnd::OnPaint(CDCHandle dc)
         m_pSkin->Draw(dc, m_rcWindow, m_nSubImageID);
 }
 
-LRESULT CDuiImageWnd::OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize)
-{
-    __super::OnCalcSize(bCalcValidRects, pSize);
-
-
-    if (m_pSkin && (m_dlgpos.nCount==2 || m_dlgpos.nCount==0))	// 如果设置的pos参数是2个则重新计算矩形大小
-    {
-        SIZE sizeImage;
-        sizeImage = m_pSkin->GetSkinSize();
-
-        if (sizeImage.cx)
-            pSize->cx = sizeImage.cx;
-        if (sizeImage.cy)
-            pSize->cy = sizeImage.cy;
-
-        return TRUE;
-    }
-    return 0;
-}
-
 BOOL CDuiImageWnd::SetSkin(CDuiSkinBase *pSkin,int nSubID/*=0*/)
 {
     if(IsVisible(TRUE)) NotifyInvalidate();
@@ -261,10 +267,13 @@ BOOL CDuiImageWnd::SetSkin(CDuiSkinBase *pSkin,int nSubID/*=0*/)
     m_pSkin->AddRef();
     m_bManaged=TRUE;
     m_nSubImageID=nSubID;
-    if(m_dlgpos.nCount==2 && m_pParent)
+
+	DUIASSERT(GetParent());
+
+    if(m_dlgpos.nCount==2)
     {
         //重新计算坐标
-        m_pParent->DuiSendMessage(WM_CALCWNDPOS,0,(LPARAM)this);
+		DuiSendMessage(WM_WINDOWPOSCHANGED);
     }
     if(IsVisible(TRUE)) NotifyInvalidate();
     return TRUE;
@@ -276,6 +285,13 @@ BOOL CDuiImageWnd::SetIcon( int nSubID )
     if(nSubID<0 || nSubID>m_pSkin->GetStates()-1) return FALSE;
     m_nSubImageID=nSubID;
     return TRUE;
+}
+
+CSize CDuiImageWnd::GetDesiredSize(LPRECT pRcContainer)
+{
+	CSize szRet;
+	if(m_pSkin) szRet=m_pSkin->GetSkinSize();
+	return szRet;
 }
 
 CDuiAnimateImgWnd::CDuiAnimateImgWnd()
@@ -294,24 +310,6 @@ void CDuiAnimateImgWnd::OnPaint(CDCHandle dc)
         m_pSkin->Draw(dc, m_rcWindow, m_iCurFrame);
 }
 
-LRESULT CDuiAnimateImgWnd::OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize)
-{
-    __super::OnCalcSize(bCalcValidRects, pSize);
-
-    if (m_pSkin && m_dlgpos.nCount==2)	// 如果设置的pos参数是2个则重新计算矩形大小
-    {
-        SIZE sizeImage;
-        sizeImage = m_pSkin->GetSkinSize();
-
-        if (sizeImage.cx)
-            pSize->cx = sizeImage.cx;
-        if (sizeImage.cy)
-            pSize->cy = sizeImage.cy;
-
-        return TRUE;
-    }
-    return 0;
-}
 
 void CDuiAnimateImgWnd::OnDuiTimer(char cID)
 {
@@ -328,6 +326,7 @@ void CDuiAnimateImgWnd::OnDuiTimer(char cID)
 
 void CDuiAnimateImgWnd::Start()
 {
+	if(!IsVisible(TRUE)) return;
     if(!m_bPlaying)
 	{
 		SetDuiTimer(1,m_nSpeed);
@@ -349,13 +348,25 @@ void CDuiAnimateImgWnd::OnDestroy()
     Stop();
 }
 
-BOOL CDuiAnimateImgWnd::Load(TiXmlElement* pTiXmlElem)
+CSize CDuiAnimateImgWnd::GetDesiredSize(LPRECT pRcContainer)
 {
-    BOOL bRet=__super::Load(pTiXmlElem);
-    if(m_bAutoStart) Start();
-    return bRet;
+	CSize szRet;
+	if(m_pSkin) szRet=m_pSkin->GetSkinSize();
+	return szRet;
 }
 
+void CDuiAnimateImgWnd::OnShowWindow( BOOL bShow, UINT nStatus )
+{
+	__super::OnShowWindow(bShow,nStatus);
+	if(!bShow)
+	{
+		if(IsPlaying()) KillDuiTimer(1);
+	}else
+	{
+		if(IsPlaying()) SetDuiTimer(1,m_nSpeed);
+		else if(m_bAutoStart) Start();
+	}
+}
 //////////////////////////////////////////////////////////////////////////
 // Progress Control
 // Use id attribute to process click event
@@ -376,31 +387,26 @@ CDuiProgress::CDuiProgress()
 }
 
 
-LRESULT CDuiProgress::OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize)
+CSize CDuiProgress::GetDesiredSize(LPRECT pRcContainer)
 {
-	if(m_dlgpos.nCount==4) //指定了4个坐标时由基类计算大小
-		CDuiWindow::OnCalcSize(bCalcValidRects, pSize);
-	else 
-    {
-        SIZE sizeBg = m_pSkinBg->GetSkinSize();
-		if(IsVertical())
-		{
-			pSize->cx = sizeBg.cx + 2 * m_style.m_nMarginX;
-			if(m_uPositionType & SizeY_Specify)
-				pSize->cy=m_lSpecifyHeight;
-			else
-				pSize->cy = sizeBg.cy +2 * m_style.m_nMarginY;
-		}else
-		{
-			pSize->cy = sizeBg.cy + 2 * m_style.m_nMarginY;
-			if(m_uPositionType & SizeX_Specify)
-				pSize->cx=m_lSpecifyWidth;
-			else
-				pSize->cx = sizeBg.cx +2 * m_style.m_nMarginX;
-		}
-    }
-
-    return 0;
+	CSize szRet;
+	SIZE sizeBg = m_pSkinBg->GetSkinSize();
+	if(IsVertical())
+	{
+		szRet.cx = sizeBg.cx + 2 * m_style.m_nMarginX;
+		if(m_uPositionType & SizeY_Specify)
+			szRet.cy=m_lSpecifyHeight;
+		else
+			szRet.cy = sizeBg.cy +2 * m_style.m_nMarginY;
+	}else
+	{
+		szRet.cy = sizeBg.cy + 2 * m_style.m_nMarginY;
+		if(m_uPositionType & SizeX_Specify)
+			szRet.cx=m_lSpecifyWidth;
+		else
+			szRet.cx = sizeBg.cx +2 * m_style.m_nMarginX;
+	}
+	return szRet;
 }
 
 void CDuiProgress::OnPaint(CDCHandle dc)
@@ -411,25 +417,16 @@ void CDuiProgress::OnPaint(CDCHandle dc)
 
 	DUIASSERT(m_pSkinBg && m_pSkinPos);
 	
-	CSize szBg=m_pSkinBg->GetSkinSize();
-	CSize szValue=m_pSkinPos->GetSkinSize();
-	
 	m_pSkinBg->Draw(dc, DuiDC.rcClient, DuiWndState_Normal);
 	CRect rcValue=DuiDC.rcClient;
 
 	if(IsVertical())
 	{
 		rcValue.bottom=rcValue.top+rcValue.Height()*(m_nValue-m_nMinValue)/(m_nMaxValue-m_nMinValue);
-		int nMargin=(szBg.cx-szValue.cx)/2;
-		rcValue.left += nMargin;
-		rcValue.right -= nMargin;
 	}
 	else
 	{
 		rcValue.right=rcValue.left+rcValue.Width()*(m_nValue-m_nMinValue)/(m_nMaxValue-m_nMinValue);
-		int nMargin=(szBg.cy-szValue.cy)/2;
-		rcValue.top += nMargin;
-		rcValue.bottom -= nMargin;
 	}
 	if(m_nValue>m_nMinValue)
 	{
@@ -562,18 +559,18 @@ CDuiLine::CDuiLine()
 // Do nothing
 void CDuiLine::OnPaint(CDCHandle dc)
 {
-    CGdiAlpha::DrawLine(dc,m_rcWindow.left,m_rcWindow.top,m_rcWindow.right,m_rcWindow.bottom,m_style.m_crBg,m_nPenStyle);
+    CGdiAlpha::DrawLine(dc,m_rcWindow.left,m_rcWindow.top,m_rcWindow.right,m_rcWindow.bottom,m_style.m_crBg,m_nPenStyle, m_nLineSize);
 
     // 画阴影线
     if (m_bLineShadow)
     {
         if ((m_rcWindow.left+m_nLineSize-1) == m_rcWindow.right)
         {
-            CGdiAlpha::DrawLine(dc,m_rcWindow.right+1,m_rcWindow.top,m_rcWindow.right+1,m_rcWindow.bottom,m_crShadow,m_nPenStyle);
+            CGdiAlpha::DrawLine(dc,m_rcWindow.right+1,m_rcWindow.top,m_rcWindow.right+1,m_rcWindow.bottom,m_crShadow,m_nPenStyle, m_nLineSize);
         }
         else
         {
-            CGdiAlpha::DrawLine(dc,m_rcWindow.left,m_rcWindow.bottom+1,m_rcWindow.right,m_rcWindow.bottom+1,m_crShadow,m_nPenStyle);
+            CGdiAlpha::DrawLine(dc,m_rcWindow.left,m_rcWindow.bottom+1,m_rcWindow.right,m_rcWindow.bottom+1,m_crShadow,m_nPenStyle, m_nLineSize);
         }
     }
 }
@@ -588,40 +585,56 @@ CDuiCheckBox::CDuiCheckBox()
     : m_pSkin(DuiSkinPool::getSingleton().GetSkin("btncheckbox"))
     , m_pFocusSkin(DuiSkinPool::getSingleton().GetSkin("focuscheckbox"))
 {
+	m_bTabStop=TRUE;
 }
 
-void CDuiCheckBox::GetClient(LPRECT pRect)
+
+CRect CDuiCheckBox::GetCheckRect()
 {
-    *pRect=m_rcWindow;
-    pRect->left+=CheckBoxSize+CheckBoxSpacing;
+	CRect rcClient;
+	GetClient(rcClient);
+	DUIASSERT(m_pSkin);
+	CSize szCheck=m_pSkin->GetSkinSize();
+	CRect rcCheckBox(rcClient.TopLeft(),szCheck);
+	rcCheckBox.OffsetRect(0,(rcClient.Height()-szCheck.cy)/2);
+	return rcCheckBox;
+}
+
+void CDuiCheckBox::GetTextRect( LPRECT pRect )
+{
+	GetClient(pRect);
+	DUIASSERT(m_pSkin);
+	CSize szCheck=m_pSkin->GetSkinSize();
+	pRect->left+=szCheck.cx+CheckBoxSpacing;	
 }
 
 void CDuiCheckBox::OnPaint(CDCHandle dc)
 {
-    CRect rcCheckBox(0,0,CheckBoxSize,CheckBoxSize);
-    rcCheckBox.MoveToXY(m_rcWindow.left,m_rcWindow.top+(m_rcWindow.Height()-CheckBoxSize)/2);
-
+	CRect rcCheckBox=GetCheckRect();
     m_pSkin->Draw(dc, rcCheckBox, _GetDrawState());
-
     __super::OnPaint(dc);
 }
 
-void CDuiCheckBox::DuiDrawFocus( HDC hdc )
+void CDuiCheckBox::DuiDrawFocus( HDC dc )
 {
-    if(!m_pFocusSkin) return;
-    CRect rcCheckBox(0,0,CheckBoxSize,CheckBoxSize);
-    rcCheckBox.MoveToXY(m_rcWindow.left,m_rcWindow.top+(m_rcWindow.Height()-CheckBoxSize)/2);
-    m_pFocusSkin->Draw(hdc,rcCheckBox,0);
+    if(m_pFocusSkin)
+	{
+		CRect rcCheckBox=GetCheckRect();
+		m_pFocusSkin->Draw(dc,rcCheckBox,0);
+	}else
+	{
+		__super::DuiDrawFocus(dc);
+	}
 }
 
-LRESULT CDuiCheckBox::OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize)
+CSize CDuiCheckBox::GetDesiredSize(LPRECT pRcContainer)
 {
-    __super::OnCalcSize(bCalcValidRects, pSize);
-
-    pSize->cx += CheckBoxSize + CheckBoxSpacing;
-    pSize->cy = max(pSize->cy, CheckBoxSize);
-
-    return FALSE;
+	DUIASSERT(m_pSkin);
+	CSize szCheck=m_pSkin->GetSkinSize();
+	CSize szRet=__super::GetDesiredSize(pRcContainer);
+	szRet.cx+=szCheck.cx + CheckBoxSpacing;
+	szRet.cy=max(szRet.cy, szCheck.cy);
+	return szRet;
 }
 
 
@@ -692,8 +705,7 @@ void CDuiCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
             nms.hdr.hwndFrom = NULL;
             nms.hdr.idFrom = GetCmdID();
             nms.uItemID = GetCmdID();
-            nms.szItemClass = GetObjectClass();
-            nms.uItemData = GetCmdData();
+            nms.uItemData = GetUserData();
             DuiNotify((LPNMHDR)&nms);
         }
     }
@@ -713,9 +725,9 @@ CDuiIconWnd::CDuiIconWnd()
 
 }
 
-BOOL CDuiIconWnd::Load(TiXmlElement* pTiXmlElem)
+BOOL CDuiIconWnd::Load(pugi::xml_node xmlNode)
 {
-    if (!CDuiWindow::Load(pTiXmlElem))
+    if (!CDuiWindow::Load(xmlNode))
         return FALSE;
 
     _ReloadIcon();
@@ -743,18 +755,10 @@ void CDuiIconWnd::OnPaint(CDCHandle dc)
     }
 }
 
-LRESULT CDuiIconWnd::OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize)
-{
-	if(m_dlgpos.nCount!=4)
-	{
-		pSize->cx = m_nSize;
-		pSize->cy = m_nSize;
-	}else
-	{
-		__super::OnCalcSize(bCalcValidRects,pSize);
-	}
 
-    return TRUE;
+CSize CDuiIconWnd::GetDesiredSize(LPRECT pRcContainer)
+{
+	return CSize(m_nSize,m_nSize);
 }
 
 HICON CDuiIconWnd::AttachIcon(HICON hIcon)
@@ -788,43 +792,58 @@ CDuiRadioBox::CDuiRadioBox()
     : m_pSkin(DuiSkinPool::getSingleton().GetSkin("btnRadio"))
     , m_pFocusSkin(DuiSkinPool::getSingleton().GetSkin("focusRadio"))
 {
+	m_bTabStop=TRUE;
 }
 
-void CDuiRadioBox::GetClient(LPRECT pRect)
+
+CRect CDuiRadioBox::GetRadioRect()
 {
-    *pRect=m_rcWindow;
-    pRect->left+=RadioBoxSize+RadioBoxSpacing;
+	CRect rcClient;
+	GetClient(rcClient);
+	DUIASSERT(m_pSkin);
+	CSize szRadioBox=m_pSkin->GetSkinSize();
+	CRect rcRadioBox(rcClient.TopLeft(),szRadioBox);
+	rcRadioBox.OffsetRect(0,(rcClient.Height()-szRadioBox.cy)/2);
+	return rcRadioBox;
+}
+
+
+void CDuiRadioBox::GetTextRect( LPRECT pRect )
+{
+	GetClient(pRect);
+	DUIASSERT(m_pSkin);
+	CSize szRadioBox=m_pSkin->GetSkinSize();
+	pRect->left+=szRadioBox.cx+RadioBoxSpacing;
 }
 
 void CDuiRadioBox::OnPaint(CDCHandle dc)
 {
-    CRect rcRadioBox(0, 0, RadioBoxSize, RadioBoxSize);
-
-    rcRadioBox.MoveToXY(m_rcWindow.left, m_rcWindow.top + (m_rcWindow.Height() - RadioBoxSize) / 2);
-
-    if (m_pSkin)
-    {
-        m_pSkin->Draw(dc, rcRadioBox, _GetDrawState());
-    }
+	DUIASSERT(m_pSkin);
+    CRect rcRadioBox=GetRadioRect();
+    m_pSkin->Draw(dc, rcRadioBox, _GetDrawState());
     __super::OnPaint(dc);
 }
 
-void CDuiRadioBox::DuiDrawFocus(HDC hdc)
+void CDuiRadioBox::DuiDrawFocus(HDC dc)
 {
-    if(!m_pFocusSkin) return;
-    CRect rcCheckBox(0,0,RadioBoxSize,RadioBoxSize);
-    rcCheckBox.MoveToXY(m_rcWindow.left,m_rcWindow.top+(m_rcWindow.Height()-RadioBoxSize)/2);
-    m_pFocusSkin->Draw(hdc,rcCheckBox,0);
+    if(m_pFocusSkin)
+	{
+		CRect rcCheckBox=GetRadioRect();
+		m_pFocusSkin->Draw(dc,rcCheckBox,0);
+	}else
+	{
+		__super::DuiDrawFocus(dc);
+	}
 }
 
-LRESULT CDuiRadioBox::OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize)
+
+CSize CDuiRadioBox::GetDesiredSize(LPRECT pRcContainer)
 {
-    __super::OnCalcSize(bCalcValidRects, pSize);
-
-    pSize->cx += RadioBoxSize + RadioBoxSpacing;
-    pSize->cy = max(pSize->cy, RadioBoxSize);
-
-    return FALSE;
+	CSize szRet=__super::GetDesiredSize(pRcContainer);
+	CSize szRaio=m_pSkin->GetSkinSize();
+	szRet.cx+=szRaio.cx + RadioBoxSpacing;
+	szRet.cy=max(szRet.cy,szRaio.cy);
+	return szRet;
 }
 
 
@@ -872,48 +891,11 @@ void CDuiRadioBox::OnLButtonDown(UINT nFlags, CPoint point)
     __super::OnLButtonDown(nFlags,point);
 }
 
-
-void CDuiRadioBox::OnLButtonUp(UINT nFlags, CPoint point)
+void CDuiRadioBox::OnSetDuiFocus()
 {
-    __super::OnLButtonUp(nFlags,point);
-    CDuiWindow *pParent=GetParent();
-    if(pParent->IsClass("div"))
-    {
-        pParent->CheckRadioButton(this);
-    }
-    else
-    {
-        DUIASSERT(FALSE);
-    }
-}
-
-void CDuiRadioBox::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
-{
-    if(nChar==VK_SPACE)
-    {
-        CDuiWindow *pParent=GetParent();
-        if(pParent->IsClass("div"))
-        {
-            pParent->CheckRadioButton(this);
-
-            if (GetCmdID())
-            {
-                DUINMCOMMAND nms;
-                nms.hdr.code = DUINM_COMMAND;
-                nms.hdr.hwndFrom = NULL;
-                nms.hdr.idFrom = GetCmdID();
-                nms.uItemID = GetCmdID();
-                nms.szItemClass = GetObjectClass();
-                nms.uItemData = GetCmdData();
-                DuiNotify((LPNMHDR)&nms);
-            }
-        }
-        else
-        {
-            DUIASSERT(FALSE);
-        }
-
-    }
+	CDuiWindow *pParent=GetParent();
+	pParent->CheckRadioButton(this);
+	NotifyInvalidate();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -950,25 +932,12 @@ void CDuiToggle::OnLButtonUp(UINT nFlags,CPoint pt)
     __super::OnLButtonUp(nFlags,pt);
 }
 
-LRESULT CDuiToggle::OnCalcSize(BOOL bCalcValidRects, LPSIZE pSize)
+CSize CDuiToggle::GetDesiredSize(LPRECT pRcContainer)
 {
-    __super::OnCalcSize(bCalcValidRects, pSize);
-
-    if (m_pSkin && m_dlgpos.nCount==2)	// 如果设置的pos参数是2个则重新计算矩形大小
-    {
-        SIZE sizeImage;
-        sizeImage = m_pSkin->GetSkinSize();
-
-        if (sizeImage.cx)
-            pSize->cx = sizeImage.cx;
-        if (sizeImage.cy)
-            pSize->cy = sizeImage.cy;
-
-        return TRUE;
-    }
-    return 0;
+	CSize sz;
+	if(m_pSkin) sz=m_pSkin->GetSkinSize();
+	return sz;
 }
-
 
 #define GROUP_HEADER		20
 #define GROUP_ROUNDCORNOR	4

@@ -14,6 +14,10 @@
 #include "DuiWndFactoryManager.h"
 #include "DuiLogger.h"
 #include "DuiMessageBox.h"
+#include "DuiScriptModule.h"
+
+#include <Richedit.h>
+#include <TextServ.h>
 
 namespace DuiEngine
 {
@@ -79,53 +83,51 @@ public:
         return m_pLogger;
     }
 
+	IScriptModule * GetScriptModule()
+	{
+		return m_pScriptModule;
+	}
+
+	IScriptModule * SetScriptModule(IScriptModule *pScriptModule)
+	{
+		IScriptModule *pRet=m_pScriptModule;
+		m_pScriptModule=pScriptModule;
+		return pRet;
+	}
+
     void logEvent(LPCTSTR message, LoggingLevel level = Standard);
 
     void logEvent(LoggingLevel level , LPCTSTR format, ...);
 
     UINT Name2ID(LPCSTR strName);
 
-    size_t InitName2ID(UINT uXmlResID ,LPCSTR pszType=DUIRES_XML_TYPE);
+    size_t InitName2ID(UINT uXmlResID ,LPCTSTR pszType=DUIRES_XML_TYPE);
 
-	BOOL Init(UINT uXmlResID ,LPCSTR pszType=DUIRES_XML_TYPE);
+	BOOL Init(UINT uXmlResID ,LPCTSTR pszType=DUIRES_XML_TYPE);
 
-	BOOL LoadXmlDocment(TiXmlDocument *pXmlDoc,UINT uXmlResID ,LPCSTR pszType=DUIRES_XML_TYPE);
+	BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,UINT uXmlResID ,LPCTSTR pszType=DUIRES_XML_TYPE);
 
-	BOOL SetMsgBoxTemplate(UINT uXmlResID,LPCSTR pszType=DUIRES_XML_TYPE);
+	BOOL SetMsgBoxTemplate(UINT uXmlResID,LPCTSTR pszType=DUIRES_XML_TYPE);
+
+	HRESULT CreateTextServices(IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk);
 protected:
-	TiXmlElement * GetMsgBoxTemplate(){return m_pTiXmlMsgBoxTempl;}
-	void LockSharePtr( void * pObj );
-	void * GetSharePtr();
-	void * ReleaseSharePtr();
-
-	ATOM GetHostWndAtom()
-	{
-		return m_atomWnd;
-	}
-
-	HANDLE GetExecutableHeap()
-	{
-		return m_hHeapExecutable;
-	}
+	pugi::xml_node GetMsgBoxTemplate(){return m_xmlMsgBoxTempl;}
 
     void createSingletons();
     void destroySingletons();
-    void * m_p;
-    HANDLE m_hHeapExecutable;
-
-    CRITICAL_SECTION m_cs;
-
-    ATOM			m_atomWnd;
 
     DuiResProviderBase	* m_pResProvider;
+	IScriptModule		* m_pScriptModule;
     DuiLogger * m_pLogger;
     HINSTANCE m_hInst;
 
+	HINSTANCE	m_rich20;	//richedit module
+	PCreateTextServices	m_funCreateTextServices;
     //name-id map
     CNamedID *m_pBuf;
     int		  m_nCount;
 
-	TiXmlElement *m_pTiXmlMsgBoxTempl;
+	pugi::xml_document	m_xmlMsgBoxTempl;
 };
 
 }//namespace DuiEngine

@@ -9,6 +9,8 @@ class CUIHander
 public:
 	CUIHander(CMainDlg *pMainDlg);
 	~CUIHander(void);
+	
+	bool Evt_Test(CDuiWindow * pSender, LPNMHDR pNmhdr);
 
 protected:
 	LRESULT OnInitDialog(HWND hWnd, LPARAM lParam);
@@ -38,15 +40,22 @@ protected:
 	void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
 
 	LRESULT OnListBtnClick(LPNMHDR pNHdr);
+	void OnTimer(UINT_PTR nIDEvent);
+
+
+	void OnBtnInitListClick();
 
 	BEGIN_MSG_MAP_EX(CUIHander)
 		MSG_DUI_NOTIFY(IDC_RICHVIEW_WIN)
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_DESTROY(OnDestory)
 		MSG_WM_COMMAND(OnCommand)
+		MSG_WM_TIMER(OnTimer)
 	END_MSG_MAP()
 
 	DUI_NOTIFY_MAP(IDC_RICHVIEW_WIN)
+		DUI_NOTIFY_ID_COMMAND(btn_lst_init, OnBtnInitListClick)
+		
 		DUI_NOTIFY_ID_COMMAND(≤‚ ‘, OnAttrReposition)
 		DUI_NOTIFY_ID_COMMAND(IDC_REPSEL, OnRepEditSel)
 		DUI_NOTIFY_ID_COMMAND(1307, OnIECtrl)

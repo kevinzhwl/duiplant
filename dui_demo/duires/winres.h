@@ -23,4 +23,13 @@
 #define	ctrl_media		65550
 #define	ctrl_hk2		65551
 #define	idx		65552
+#define	btn_tstevt		65553
+#define	rw_edit_test		65554
+#define	de_test		65555
+#define	mp_test		65556
+#define	label_today		65557
+#define	btn_today		65558
+#define	hd_test		65559
+#define	lc_test		65560
+#define	btn_lst_init		65561
 /*----------------------------RES_BUILDER:end------------------------------------->*/
