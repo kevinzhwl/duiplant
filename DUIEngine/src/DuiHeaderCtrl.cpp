@@ -43,6 +43,13 @@ namespace DuiEngine
 		item.iOrder=iItem;
 		item.lParam=lParam;
 		m_arrItems.InsertAt(iItem,item);
+		//需要更新列的序号
+		for(int i=0;i<GetItemCount();i++)
+		{
+			if(i==iItem) continue;
+			if(m_arrItems[i].iOrder>=iItem)
+				m_arrItems[i].iOrder++;
+		}
 		NotifyInvalidate();
 		return iItem;
 	}
@@ -76,6 +83,12 @@ namespace DuiEngine
 			DrawItem(dc,rcItem,m_arrItems.GetData()+i);
 			if(rcItem.right>=rcClient.right) break;
 		}
+		if(rcItem.right<rcClient.right)
+		{
+			rcItem.left=rcItem.right;
+			rcItem.right=rcClient.right;
+			m_pSkinItem->Draw(dc,rcItem,0);
+		}
 		AfterPaint(dc,duiDC);
 	}
 
@@ -100,8 +113,15 @@ namespace DuiEngine
 	{
 		if(iItem<0 || iItem>=m_arrItems.GetCount()) return FALSE;
 
+		int iOrder=m_arrItems[iItem].iOrder;
 		if(m_arrItems[iItem].pszText) free(m_arrItems[iItem].pszText);
 		m_arrItems.RemoveAt(iItem);
+		//更新排序
+		for(int i=0;i<m_arrItems.GetCount();i++)
+		{
+			if(m_arrItems[i].iOrder>iOrder)
+				m_arrItems[i].iOrder--;
+		}
 		NotifyInvalidate();
 		return TRUE;
 	}
@@ -172,8 +192,10 @@ namespace DuiEngine
 			{//拖动表头项
 				if(m_bItemSwapEnable)
 				{
-					ImageList_DragLeave(GetDesktopWindow());
+					ImageList_DragLeave(NULL);
 					ImageList_EndDrag();
+// 					ShowCursor(TRUE);
+
 					ImageList_Destroy(m_hDragImglst);
 					m_hDragImglst=NULL;
 					if(m_dwDragTo!=m_dwHitTest && IsItemHover(m_dwDragTo))
@@ -240,8 +262,10 @@ namespace DuiEngine
 					CRect rcItem=GetItemRect(LOWORD(m_dwHitTest));
 					DrawDraggingState(m_dwDragTo);
 					m_hDragImglst=CreateDragImage(LOWORD(m_dwHitTest));
+// 					ShowCursor(FALSE);
+// 					ImageList_SetDragCursorImage(m_hDragImglst,0,(m_ptClick.x-rcItem.left),(m_ptClick.y-rcItem.top));
 					ImageList_BeginDrag(m_hDragImglst,0,(m_ptClick.x-rcItem.left),(m_ptClick.y-rcItem.top));
-					ImageList_DragEnter(GetDesktopWindow(),pt.x,pt.y);
+					ImageList_DragEnter(NULL,pt.x,pt.y);
 				}
 			}
 			if(IsItemHover(m_dwHitTest))
@@ -319,7 +343,7 @@ namespace DuiEngine
 	BOOL CDuiHeaderCtrl::LoadChildren( pugi::xml_node xmlNode )
 	{
 		if(!xmlNode || strcmp(xmlNode.name(),"items")!=0)
-			return FALSE;
+			return TRUE;
 		pugi::xml_node xmlItem=xmlNode.child("item");
 		int iOrder=0;
 		while(xmlItem)
@@ -419,15 +443,29 @@ namespace DuiEngine
 			rcItem.right=rcItem.left+m_arrItems[i].cx;
 			DrawItem(dc,rcItem,m_arrItems.GetData()+i);
 		}
+		if(rcItem.right<rcClient.right)
+		{
+			rcItem.left=rcItem.right;
+			rcItem.right=rcClient.right;
+			m_pSkinItem->Draw(dc,rcItem,0);
+		}
 		AfterPaint(dc,duidc);
 		ReleaseDuiDC(dc);
 	}
 
-	int CDuiHeaderCtrl::GetWidth()
+	int CDuiHeaderCtrl::GetTotalWidth()
 	{
 		int nRet=0;
 		for(int i=0;i<m_arrItems.GetCount();i++)
 			nRet+=m_arrItems[i].cx;
 		return nRet;
 	}
+
+	int CDuiHeaderCtrl::GetItemWidth( int iItem )
+	{
+		if(iItem<0 || iItem>= m_arrItems.GetCount()) return -1;
+		return m_arrItems[iItem].cx;
+	}
+
+
 }//end of namespace DuiEngine
