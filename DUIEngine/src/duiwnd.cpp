@@ -47,6 +47,7 @@ CDuiWindow::CDuiWindow()
     , m_pNcSkin(NULL)
     , m_nSaveDC(0)
     , m_gdcFlags(-1)
+	, m_pos2Type(POS2_LEFTTOP)
 {
 	m_dlgpos.nCount=0;
 	addEvent(DUINM_COMMAND);
@@ -836,40 +837,59 @@ void CDuiWindow::OnWindowPosChanged(LPRECT lpRcContainer)
 		lpRcContainer=&rcContainer;
 	}
 
-	//首先计算窗口左上角坐标
-	if(m_uPositionType & (SizeX_FitParent|SizeY_FitParent))
-	{//充满父窗口
-		m_rcWindow.left=lpRcContainer->left;
-		m_rcWindow.top=lpRcContainer->top;
-	}else if(m_dlgpos.nCount==0)
-	{//自动排版
-		CDuiWindow *pSibling=GetDuiWindow(GDUI_PREVSIBLING);
-		if(!pSibling)
-		{
-			m_rcWindow.left=lpRcContainer->left;
-			m_rcWindow.top=lpRcContainer->top;
-		}else
-		{
-			CRect rcSib;
-			pSibling->GetRect(&rcSib);
-			m_rcWindow.left=rcSib.right+m_nSepSpace;
-			m_rcWindow.top=rcSib.top;
-		}
-	}else
-	{//从指定的坐标获得左上角
-		m_rcWindow.left=PositionItem2Value(m_dlgpos.Left,lpRcContainer->left,lpRcContainer->right);
-		m_rcWindow.top=PositionItem2Value(m_dlgpos.Top,lpRcContainer->top,lpRcContainer->bottom);
-	}
 
 	if(m_dlgpos.nCount==4)
-	{//从指定的坐标获得右下角
+	{//指定了4个坐标
+		m_rcWindow.left=PositionItem2Value(m_dlgpos.Left,lpRcContainer->left,lpRcContainer->right);
+		m_rcWindow.top=PositionItem2Value(m_dlgpos.Top,lpRcContainer->top,lpRcContainer->bottom);
 		m_rcWindow.right=PositionItem2Value(m_dlgpos.Right,lpRcContainer->left,lpRcContainer->right);
 		m_rcWindow.bottom=PositionItem2Value(m_dlgpos.Bottom,lpRcContainer->top,lpRcContainer->bottom);
-	}else
-	{//计算出窗口期望大小
+	}else 
+	{
+		CPoint pt;
 		CSize sz=CalcSize(lpRcContainer);
-		m_rcWindow.right=m_rcWindow.left+sz.cx;
-		m_rcWindow.bottom=m_rcWindow.top+sz.cy;
+		if(m_uPositionType & (SizeX_FitParent|SizeY_FitParent))
+		{//充满父窗口
+			pt.x=lpRcContainer->left;
+			pt.y=lpRcContainer->top;
+		}else if(m_dlgpos.nCount==2)
+		{//只指定了两个坐标
+			pt.x=PositionItem2Value(m_dlgpos.Left,lpRcContainer->left,lpRcContainer->right);
+			pt.y=PositionItem2Value(m_dlgpos.Top,lpRcContainer->top,lpRcContainer->bottom);
+			switch(m_pos2Type)
+			{
+			case POS2_CENTER:
+				pt.Offset(-sz.cx/2,-sz.cy/2);
+				break;
+			case POS2_RIGHTTOP:
+				pt.Offset(-sz.cx,0);
+				break;
+			case POS2_LEFTBOTTOM:
+				pt.Offset(0,-sz.cy);
+				break;
+			case POS2_RIGHTBOTTOM:
+				pt.Offset(-sz.cx,-sz.cy);
+				break;
+			case POS2_LEFTTOP:
+			default:
+				break;
+			}
+		}else //if(m_dlgpos.nCount==0)
+		{//自动排版
+			CDuiWindow *pSibling=GetDuiWindow(GDUI_PREVSIBLING);
+			if(!pSibling)
+			{
+				pt.x=lpRcContainer->left;
+				pt.y=lpRcContainer->top;
+			}else
+			{
+				CRect rcSib;
+				pSibling->GetRect(&rcSib);
+				pt.x=rcSib.right+m_nSepSpace;
+				pt.y=rcSib.top;
+			}
+		}
+		m_rcWindow=CRect(pt,sz);
 	}
 
 	m_rcWindow.NormalizeRect();
