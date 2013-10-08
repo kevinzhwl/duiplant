@@ -279,6 +279,8 @@ protected:
 
     LRESULT OnSetTextColor(const CDuiStringA &  strValue,BOOL bLoading);
 
+	void OnEnableDragDrop(BOOL bEnable);
+
 protected:
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_CREATE(OnCreate)
@@ -327,7 +329,7 @@ protected:
     CRect		m_rcInsetPixel;			// inset margin in pixel
     TEXTMETRIC	m_tmFont;				//
     DWORD	m_dwStyle;
-
+	
     UINT	m_fEnableAutoWordSel	:1;	// enable Word style auto word selection?
     UINT	m_fWordWrap			:1;	// Whether control should word wrap
     UINT	m_fRich				:1;	// Whether control is rich text
@@ -338,6 +340,7 @@ protected:
     UINT	m_fWantTab			:1;	// Whether control will deal with tab input
     UINT	m_fSingleLineVCenter:1;	// Whether control that is single line will be vertical centered
     UINT	m_fScrollPending	:1; // Whether scroll is activated by richedit or by panelex.
+	UINT	m_fEnableDragDrop	:1;	// 允许在该控件中使用拖放
     CDuiTextHost	*m_pTxtHost;
 };
 
