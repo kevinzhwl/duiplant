@@ -36,6 +36,10 @@
 	#include <atlgdi.h>
 	#include <atlstr.h>
 	#include <atlcoll.h>
+	#include <atlcomcli.h>
+	#define CDuiComPtr	CComPtr
+	#define CDuiComQIPtr	CComQIPtr
+
 	#include "wtl.mini/duicrack.h"
 	#define CDuiArray	CAtlArray
 	#define CDuiList	CAtlList
@@ -60,6 +64,9 @@
 	#include "wtl.mini/tstring.h" 
 	#include "wtl.mini/strcpcvt.h"
 	#include "wtl.mini/duicoll.h"
+	#include "atl.mini/atldef.h"
+	#include "atl.mini/duicomcli.h"
+
 #endif//USING_ATL
 
 

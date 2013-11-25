@@ -11,12 +11,21 @@
 
       <tabctrl pos="5,29,-5,-5" id="2000" cursel="0" animatesteps="10" tabstop="0">
         <tab id="110" title="listctrl">
-          <button name="btn_lst_init" pos="10,0,100,25" class="normalbtn">init list</button>
-          <button name="btn_lst_insertcol" pos="110,0,200,25" class="normalbtn">insert col</button>
-          <listctrl name="lc_test" pos="10,30,-10,-10" itemHeight="20" headerHeight="30">
-            <header name="hd_test" itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+          <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" sbskin="sb_vertical" sbwid="8">
+            <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
             </header>
           </listctrl>
+          <button name="btn_ani" pos="-100,0,-56,30" class="normalbtn">ani list</button>
+        </tab>
+        <tab id="111" title="align">
+          <text pos="100,10" pos2type="center">center align1</text>
+          <text pos="100,30" pos2type="center">center align align</text>
+          <text pos="200,50" pos2type="righttop">align right top</text>
+          <text pos="200,70" pos2type="righttop">align right top 2</text>
+          <check pos="200,90" pos2type="righttop">check right top</check>
+
+          <text pos="200,110" class="cls_txt_red">text left top</text>
+          <text pos="200,130,400,300" align="left" valign="top">text left top</text>
         </tab>
         <tab id="113" title="miscellaneous" sep="5">
           <animateimg name="ani_test" pos="20,100" skin="icons"/>
@@ -71,7 +80,7 @@
 <!--           <realwnd name="realwnd_edit1" id="1309" wndclass="edit" pos="-200,50,-110,80" rem="半透明窗口时不能使用realwnd，除了窗口不能显示外，还会干扰宿主窗口的timer消息"/> -->
         </tab>
         <tab id="114" title="richedit">
-          <richedit id="1140" show="1" number="0" class="cls_edit" font="0004:隶书" inset="30,0,0,0" wordwrap="1"  pos="10,10,-10,|0" multilines="1" wantreturn="1" vscrollbar="1" autovscroll="1" crtext="ff0000" align="left" hscrollbar="1" autohscroll="1" transparent="1">richedit test 2012 中文字体</richedit>
+          <richedit id="1140" show="1" number="0" enabledragdrop="1" class="cls_edit" font="0004:隶书" inset="30,0,0,0" wordwrap="1"  pos="10,10,-10,|0" multilines="1" wantreturn="1" vscrollbar="1" autovscroll="1" crtext="ff0000" align="left" hscrollbar="1" autohscroll="1" transparent="1">richedit test 2012 中文字体</richedit>
           <check id="1142" pos="10,|10">check 1</check>
           <check id="1143" pos="100,|10">check 2</check>
           <button name="IDC_REPSEL"  pos="200,|10,300,|35" class="normalbtn">repsel</button>
@@ -210,13 +219,13 @@
         <tab id="120" title="splitwnd">
           <splitrow id="1180" pos="10,0,-10,-10" skinsep="skin_split_horz" sepsize="6">
             <pane idealsize="250" minsize="30" priority="0" crbg="FF0000">
-              <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://player.ku6.com/refer/Z8kgmuUYqXdnwv8L/v.swf" delayinit="1"/>
+              <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://www.flash1890.com/swf3/mtv/20131031/asnw.swf" delayinit="1"/>
               <text pos="|-50,|-20">pane1 priority=2</text>
             </pane>
             <pane idealsize="400" minsize="30" priority="1">
               <splitcol id="1180" pos="0,0,-0,-0" skinsep="skin_split_vert" sepsize="6">
                 <pane idealsize="200" minsize="30" priority="0" crbg="000088">
-<!--                   <mediaplayer pos="0,0,-0,-0" name="ctrl_media" url="E:\dui.work\x-framework\bin\fullscreen.wmv" delayinit="1"/> -->
+<!--                   <mediaplayer pos="0,0,-0,-0" name="ctrl_media" url="E:\DUI.WORK\x-framework\bin\fullscreen.wmv" delayinit="1"/> -->
                   <text pos="|-50,|-20">pane2.1 priority=0</text>
                 </pane>
                 <pane idealsize="400" minsize="30" priority="1" crbg="008800">

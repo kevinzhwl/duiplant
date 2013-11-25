@@ -23,6 +23,7 @@ public:
 			*ppvObject=(IUnknown*) this,hr=S_OK;
 		else if(riid==__uuidof(IDropTarget))
 			*ppvObject=(IDropTarget*)this,hr=S_OK;
+		if(SUCCEEDED(hr)) AddRef();
 		return hr;
 
 	}
@@ -147,6 +148,7 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 	DuiSystem::getSingleton().GetScriptModule()->subscribeEvent(pTst,DUINM_COMMAND,"onEvtTstClick");
 #endif
 
+	OnBtnInitListClick();
 //	m_pMainDlg->SetTimer(100,2000,NULL);
 // 	SetMsgHandled(FALSE); 
 	//演示在程序初始化的时候通过如用户配置文件设置PANE的大小.
@@ -161,14 +163,18 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 void CUIHander::OnDestory()
 {
 	::RevokeDragDrop(m_pMainDlg->m_hWnd);
+	CDuiListCtrl *pList=m_pMainDlg->FindChildByName2<CDuiListCtrl*>("lc_test");
+	for(int i=0;i<pList->GetItemCount();i++)
+	{
+		student *pst=(student*) pList->GetItemData(i);
+		delete pst;
+	}
 	SetMsgHandled(FALSE); 
 }
 
 void CUIHander::OnAttrReposition()
 {
-//	m_pMainDlg->FindChildByCmdID(测试)->SetAttribute("pos","|-100,|-15,|100,|15");
-	CDuiTabCtrl *pTab=(CDuiTabCtrl*)m_pMainDlg->FindChildByCmdID(2000);
-	pTab->RemoveItem(3);
+	m_pMainDlg->FindChildByCmdID(测试)->SetAttribute("pos","|-100,|-15,|100,|15");
 }
 
 
@@ -274,35 +280,6 @@ void CUIHander::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 // 	DuiMessageBox(NULL,szBuf,_T("tip"),MB_YESNOCANCEL|MB_ICONWARNING);
 }
 
-
-void CUIHander::OnWebkit_GoBack()
-{
-// 	CDuiWebkit *pWebkitCtrl=static_cast<CDuiWebkit*>(m_pMainDlg->FindChildByCmdID(1205));
-// 	pWebkitCtrl->GoBack();
-}
-
-void CUIHander::OnWebkit_GoForward()
-{
-// 	CDuiWebkit *pWebkitCtrl=static_cast<CDuiWebkit*>(m_pMainDlg->FindChildByCmdID(1205));
-// 	pWebkitCtrl->GoForward();
-}
-
-void CUIHander::OnWebkit_Refresh()
-{
-// 	CDuiWebkit *pWebkitCtrl=static_cast<CDuiWebkit*>(m_pMainDlg->FindChildByCmdID(1205));
-// 	pWebkitCtrl->Refresh();
-}
-
-void CUIHander::OnWebkit_Go()
-{
-// 	CDuiWebkit *pWebkitCtrl=static_cast<CDuiWebkit*>(m_pMainDlg->FindChildByCmdID(1205));
-// 	CDuiRichEdit *pEdit=static_cast<CDuiRichEdit*>(m_pMainDlg->FindChildByCmdID(1203));
-// 	WCHAR szURI[200];
-// 	pEdit->GetWindowText(szURI,200);
-// 	CDuiStringA strURI=CW2A(szURI,CP_UTF8);
-// 	pWebkitCtrl->SetURI(strURI);
-}
-
 //演示列表中的按钮控件的响应
 LRESULT CUIHander::OnListBtnClick( LPNMHDR pNHdr )
 {
@@ -320,16 +297,6 @@ LRESULT CUIHander::OnListPredraw( LPNMHDR pNHdr )
 	return S_OK;
 }
 
-void CUIHander::OnTimer( UINT_PTR nIDEvent )
-{
-	if(nIDEvent!=100) return;
-	static int nCount=0;
-	if(nCount>5) m_pMainDlg->KillTimer(nIDEvent);
-	TCHAR szMsg[100];
-	_stprintf(szMsg,_T("Msg box No. %d"),nCount);
-	nCount++;
-	DuiMessageBox(0,szMsg,_T("tip"),MB_OK);
-}
 
 //init listctrl
 void CUIHander::OnBtnInitListClick()
@@ -337,30 +304,82 @@ void CUIHander::OnBtnInitListClick()
 	CDuiListCtrl *pList=m_pMainDlg->FindChildByName2<CDuiListCtrl *>("lc_test");
 	if(pList)
 	{
+		CDuiWindow *pHeader=pList->GetDuiWindow(GDUI_FIRSTCHILD);
+		pHeader->subscribeEvent(DUINM_HDCLICK,Subscriber(&CUIHander::OnListHeaderClick,this));
+
+		TCHAR szColNames[][20]={_T("name"),_T("sex"),_T("age"),_T("score")};
+		for(int i=0;i<ARRAYSIZE(szColNames);i++)
+			pList->InsertColumn(i,szColNames[i],50);
+		TCHAR szSex[][5]={_T("男"),_T("女"),_T("人妖")};
 		for(int i=0;i<100;i++)
 		{
-			CDuiStringT str;
-			str.Format(_T("item %d"),i+1);
-			pList->InsertItem(i,str,0);
+			student *pst=new student;
+			_stprintf(pst->szName,_T("学生_%d"),i+1);
+			_tcscpy(pst->szSex,szSex[rand()%3]);
+			pst->age=rand()%30;
+			pst->score=rand()%60+40;
+
+			int iItem=pList->InsertItem(i,pst->szName);
+			pList->SetItemData(iItem,(DWORD)pst);
+			pList->SetSubItemText(iItem,1,pst->szSex);
+			TCHAR szBuf[10];
+			_stprintf(szBuf,_T("%d"),pst->age);
+			pList->SetSubItemText(iItem,2,szBuf);
+			_stprintf(szBuf,_T("%d"),pst->score);
+			pList->SetSubItemText(iItem,3,szBuf);
 		}
 	}
 }
 
-//init listctrl
-void CUIHander::OnBtnInsertColClick()
+int funCmpare(void* pCtx,const void *p1,const void *p2)
 {
-	CDuiListCtrl *pList=m_pMainDlg->FindChildByName2<CDuiListCtrl *>("lc_test");
+	int iCol=*(int*)pCtx;
+
+	const DXLVITEM *plv1=(const DXLVITEM*)p1;
+	const DXLVITEM *plv2=(const DXLVITEM*)p2;
+
+	const CUIHander::student *pst1=(const CUIHander::student *)plv1->dwData;
+	const CUIHander::student *pst2=(const CUIHander::student *)plv2->dwData;
+
+	switch(iCol)
+	{
+	case 0://name
+		return _tcscmp(pst1->szName,pst2->szName);
+	case 1://sex
+		return _tcscmp(pst1->szSex,pst2->szSex);
+	case 2://age
+		return pst1->age-pst2->age;
+	case 3://score
+		return pst1->score-pst2->score;
+	default:
+		return 0;
+	}
+}
+
+bool CUIHander::OnListHeaderClick( CDuiWindow * pSender, LPNMHDR pNmhdr )
+{
+	CDuiHeaderCtrl *pHeader=(CDuiHeaderCtrl*)pSender;
+	LPDUINMHDCLICK pClick=(LPDUINMHDCLICK)pNmhdr;
+	CDuiListCtrl *pList=m_pMainDlg->FindChildByName2<CDuiListCtrl*>("lc_test");
+
+	DUIHDITEM hditem;
+	hditem.mask=DUIHDI_ORDER;
+	pHeader->GetItem(pClick->iItem,&hditem);
+	pList->SortItems(funCmpare,&hditem.iOrder);
+	return true;
+}
+
+void CUIHander::OnBtnAniList()
+{
+	CDuiWindow *pList=m_pMainDlg->FindChildByName("lc_test");
 	if(pList)
 	{
-		CDuiStringT strCol;
-		int iCol=pList->GetColumnCount();
-		strCol.Format(_T("col %d"),iCol);
-		pList->InsertColumn(iCol,strCol,70);
-		for(int i=0;i<pList->GetItemCount();i++)
+		if(pList->IsVisible(TRUE))
 		{
-			CDuiStringT subStr;
-			subStr.Format(_T("(%d,%d)"),i,iCol);
-			pList->SetSubItemText(i,iCol,subStr);
+			pList->AnimateWindow(100,AW_SLIDE|AW_VER_NEGATIVE|AW_HIDE);
+		}else
+		{
+			pList->AnimateWindow(100,AW_SLIDE|AW_VER_NEGATIVE);//AW_SLIDE|AW_VER_NEGATIVE|AW_HOR_POSITIVE
 		}
 	}
 }
