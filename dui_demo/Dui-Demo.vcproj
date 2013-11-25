@@ -56,7 +56,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies;..\duiengine\dependencies\eastl\include"
+				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -80,9 +80,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="zlib_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib"
+				AdditionalLibraryDirectories="..\lib"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -244,7 +245,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies;..\duiengine\dependencies\eastl\include"
+				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -771,7 +772,7 @@
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			UseOfATL="0"
+			UseOfATL="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -804,7 +805,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies;..\duiengine\dependencies\eastl\include"
+				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;USING_ATL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -830,7 +831,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib"
+				AdditionalLibraryDirectories="..\lib"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"

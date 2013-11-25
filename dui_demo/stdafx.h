@@ -37,7 +37,9 @@ using namespace DuiEngine;
 #pragma comment(lib,"zlib_d.lib")
 #endif
 
-	#ifdef DLL_DUI
+	#ifdef USING_ATL
+	# pragma comment(lib, "duiengine_static_atl_d.lib")
+	#elif DLL_DUI
 	# pragma comment(lib, "duiengine_d.lib")
 	#else
 	# pragma comment(lib, "duiengine_static_d.lib")
