@@ -48,3 +48,9 @@
 #   define DUIRES_ASSERTW
 #	define DUIRES_ASSERTA
 #endif
+
+#ifdef _UNICODE 
+#   define DUIRES_ASSERT	DUIRES_ASSERTW
+#else
+#   define DUIRES_ASSERT	DUIRES_ASSERTA
+#endif//_UNICODE

@@ -71,7 +71,11 @@ void DuiWindowFactoryManager::OnWndFactoryRemoved( const CDuiWindowFactoryPtr & 
 
 CDuiWindow * DuiWindowFactoryManager::CreateWindowByName( LPCSTR pszClassName )
 {
-	if(!HasKey(pszClassName)) return NULL;
+	if(!HasKey(pszClassName))
+	{
+		DUIRES_ASSERTA(FALSE,"no window type:%s in DuiSystem",pszClassName);
+		return NULL;
+	}
 	return GetKeyObject(pszClassName)->NewWindow();
 }
 
