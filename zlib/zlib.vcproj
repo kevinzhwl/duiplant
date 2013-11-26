@@ -141,7 +141,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\x64\lib\zlibd.lib"
+				OutputFile="..\x64\lib\zlib_d.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
