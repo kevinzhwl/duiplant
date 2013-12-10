@@ -106,7 +106,7 @@ class DUI_EXP CDuiWindow : public CDuiObject
 	, public CDuiEventSet
     , public CDuiRef
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiWindow, "duiwindow")
+    DUIOBJ_DECLARE_CLASS_NAME(CDuiWindow, "window")
 public:
     CDuiWindow();
 

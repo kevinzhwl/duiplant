@@ -514,6 +514,18 @@ public:
 		return ::SetWindowRgn(m_hWnd,hRgn,bRedraw);
 	}
 
+	BOOL SetLayeredWindowAttributes(COLORREF crKey,BYTE bAlpha,DWORD dwFlags)
+	{
+		DUIASSERT(::IsWindow(m_hWnd));
+		return ::SetLayeredWindowAttributes(m_hWnd,crKey,bAlpha,dwFlags);
+	}
+
+	BOOL UpdateLayeredWindow(HDC hdcDst, POINT *pptDst, SIZE *psize, HDC hdcSrc, POINT *pptSrc,COLORREF crKey, BLENDFUNCTION *pblend,DWORD dwFlags)
+	{
+		DUIASSERT(::IsWindow(m_hWnd));
+		return ::UpdateLayeredWindow(m_hWnd,hdcDst,pptDst,psize,hdcSrc,pptSrc,crKey,pblend,dwFlags);
+	}
+
     LRESULT DefWindowProc()
     {
         const MSG* pMsg = m_pCurrentMsg;

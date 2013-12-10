@@ -48,4 +48,29 @@ namespace DuiEngine
 #endif
 	}
 
+	void DUI_EXP DuiTraceA(LPCSTR pstrFormat, ...)
+	{
+#ifdef _DEBUG
+		char szBuffer[300] = { 0 };
+		va_list args;
+		va_start(args, pstrFormat);
+		::wvnsprintfA(szBuffer, ARRAYSIZE(szBuffer)-1, pstrFormat, args);
+		strcat(szBuffer, "\n");
+		va_end(args);
+		::OutputDebugStringA(szBuffer);
+#endif
+	}
+
+	void DUI_EXP DuiTraceW(LPCWSTR pstrFormat, ...)
+	{
+#ifdef _DEBUG
+		wchar_t szBuffer[300] = { 0 };
+		va_list args;
+		va_start(args, pstrFormat);
+		::wvnsprintfW(szBuffer, ARRAYSIZE(szBuffer)-1, pstrFormat, args);
+		wcscat(szBuffer, L"\n");
+		va_end(args);
+		::OutputDebugStringW(szBuffer);
+#endif
+	}
 }//end of namespace DuiEngine

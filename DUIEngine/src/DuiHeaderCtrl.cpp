@@ -1,6 +1,8 @@
 #include "duistd.h"
 #include "DuiHeaderCtrl.h"
 #include "MemDC.h"
+#include "DragWnd.h"
+
 #pragma comment(lib,"comctl32.lib")
 
 namespace DuiEngine
@@ -15,7 +17,7 @@ namespace DuiEngine
 		,m_pSkinSort(NULL)
 		,m_dwHitTest(-1)
 		,m_bDragging(FALSE)
-		,m_hDragImglst(NULL)
+		,m_hDragImg(NULL)
 	{
 		m_bClipClient=TRUE;
 		addEvent(DUINM_HDCLICK);
@@ -192,12 +194,10 @@ namespace DuiEngine
 			{//拖动表头项
 				if(m_bItemSwapEnable)
 				{
-					ImageList_DragLeave(NULL);
-					ImageList_EndDrag();
-// 					ShowCursor(TRUE);
+					CDragWnd::EndDrag();
+					DeleteObject(m_hDragImg);
+					m_hDragImg=NULL;
 
-					ImageList_Destroy(m_hDragImglst);
-					m_hDragImglst=NULL;
 					if(m_dwDragTo!=m_dwHitTest && IsItemHover(m_dwDragTo))
 					{
 						DUIHDITEM t=m_arrItems[LOWORD(m_dwHitTest)];
@@ -261,11 +261,9 @@ namespace DuiEngine
 					m_dwDragTo=m_dwHitTest;
 					CRect rcItem=GetItemRect(LOWORD(m_dwHitTest));
 					DrawDraggingState(m_dwDragTo);
-					m_hDragImglst=CreateDragImage(LOWORD(m_dwHitTest));
-// 					ShowCursor(FALSE);
-// 					ImageList_SetDragCursorImage(m_hDragImglst,0,(m_ptClick.x-rcItem.left),(m_ptClick.y-rcItem.top));
-					ImageList_BeginDrag(m_hDragImglst,0,(m_ptClick.x-rcItem.left),(m_ptClick.y-rcItem.top));
-					ImageList_DragEnter(NULL,pt.x,pt.y);
+					m_hDragImg=CreateDragImage(LOWORD(m_dwHitTest));
+					CPoint pt=m_ptClick-rcItem.TopLeft();
+					CDragWnd::BeginDrag(m_hDragImg,pt,0,128,LWA_ALPHA|LWA_COLORKEY);
 				}
 			}
 			if(IsItemHover(m_dwHitTest))
@@ -273,17 +271,15 @@ namespace DuiEngine
 				if(m_bItemSwapEnable)
 				{
 					DWORD dwDragTo=HitTest(pt);
+					CPoint pt2(pt.x,m_ptClick.y);
+					ClientToScreen(GetContainer()->GetHostHwnd(),&pt2);
 					if(IsItemHover(dwDragTo) && m_dwDragTo!=dwDragTo)
 					{
 						m_dwDragTo=dwDragTo;
 						DUITRACE(_T("\n!!! dragto %d"),LOWORD(dwDragTo));
-						ImageList_DragShowNolock(FALSE);
 						DrawDraggingState(dwDragTo);
-						ImageList_DragShowNolock(TRUE);
 					}
-					CPoint pt2(pt.x,m_ptClick.y);
-					ClientToScreen(GetContainer()->GetHostHwnd(),&pt2);
-					ImageList_DragMove(pt2.x,pt2.y);
+					CDragWnd::DragMove(pt2);
 				}
 			}else if(m_dwHitTest!=-1)
 			{//调节宽度
@@ -401,7 +397,7 @@ namespace DuiEngine
 		return -1;
 	}
 
-	HIMAGELIST CDuiHeaderCtrl::CreateDragImage( int iItem )
+	HBITMAP CDuiHeaderCtrl::CreateDragImage( int iItem )
 	{
 		if(iItem<0 || iItem>=m_arrItems.GetCount()) return NULL;
 		CRect rcClient;
@@ -413,12 +409,9 @@ namespace DuiEngine
 		CDCHandle hmemdc=memdc;
 		BeforePaintEx(hmemdc);
 		DrawItem(hmemdc,rcItem,m_arrItems.GetData()+iItem);
-		HIMAGELIST hImglst=ImageList_Create(rcItem.Width(),rcItem.Height(),ILC_COLOR32,0,1);
 		HBITMAP hItemBmp=memdc.SelectBitmap(NULL);
-		ImageList_Add(hImglst,hItemBmp,NULL);
-		DeleteObject(hItemBmp);
 		ReleaseDuiDC(dc);
-		return hImglst;
+		return hItemBmp;
 	}
 
 	void CDuiHeaderCtrl::DrawDraggingState(DWORD dwDragTo)
@@ -439,14 +432,13 @@ namespace DuiEngine
 		}
 		items.InsertAt(iDragTo,iDragFrom);
 		
+		m_pSkinItem->Draw(dc,rcClient,0);
 		for(int i=0;i<items.GetCount();i++)
 		{
 			rcItem.left=rcItem.right;
 			rcItem.right=rcItem.left+m_arrItems[items[i]].cx;
 			if(items[i]!=iDragFrom)
 				DrawItem(dc,rcItem,m_arrItems.GetData()+items[i]);
-			else//draw background
-				m_pSkinItem->Draw(dc,rcItem,0);
 		}
 		AfterPaint(dc,duidc);
 		ReleaseDuiDC(dc);

@@ -553,7 +553,7 @@ void CDuiHostWnd::DrawCaret(CPoint pt,BOOL bUpdate/*=FALSE*/)
 			GetWindowRect(&rc);
 			BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
 			CDCHandle dc=GetDC();
-			UpdateLayeredWindow(m_hWnd,dc,&rc.TopLeft(),&rc.Size(),m_memDC,&CPoint(0,0),0,&bf,ULW_ALPHA);
+			UpdateLayeredWindow(dc,&rc.TopLeft(),&rc.Size(),m_memDC,&CPoint(0,0),0,&bf,ULW_ALPHA);
 			ReleaseDC(dc);
 		}else
 		{
@@ -686,7 +686,7 @@ void CDuiHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
 		GetWindowRect(&rc);
 		BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
 		CDCHandle hdcSrc=::GetDC(NULL);
-		UpdateLayeredWindow(m_hWnd,hdcSrc,&rc.TopLeft(),&rc.Size(),m_memDC,&CPoint(0,0),0,&bf,ULW_ALPHA);
+		UpdateLayeredWindow(hdcSrc,&rc.TopLeft(),&rc.Size(),m_memDC,&CPoint(0,0),0,&bf,ULW_ALPHA);
 		::ReleaseDC(NULL,hdcSrc);
 	}
 	else
@@ -1022,7 +1022,7 @@ void CDuiHostWnd::UpdateLayerFromDC(HDC hdc,BYTE byAlpha)
 	GetWindowRect(&rc);
 	BLENDFUNCTION bf= {AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
 	CDCHandle dc=GetDC();
-	UpdateLayeredWindow(m_hWnd,dc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
+	UpdateLayeredWindow(dc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
 	ReleaseDC(dc);
 }
 

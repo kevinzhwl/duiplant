@@ -6,10 +6,16 @@ namespace DuiEngine
 {
 	void DUI_EXP DuiHiMetricToPixel(const SIZEL * lpSizeInHiMetric, LPSIZEL lpSizeInPix);
 	void DUI_EXP DuiPixelToHiMetric(const SIZEL * lpSizeInPix, LPSIZEL lpSizeInHiMetric);
-	void DUI_EXP DuiTrace(LPCTSTR pstrFormat, ...);
+	void DUI_EXP DuiTraceA(LPCSTR pstrFormat, ...);
+	void DUI_EXP DuiTraceW(LPCWSTR pstrFormat, ...);
 }//end of namespace DuiEngine
 
-#define DUITRACE DuiTrace
+#ifdef _UNICODE
+#define DUITRACE DuiTraceW
+#else
+#define DUITRACE DuiTraceA
+#endif
+
 #define DUIASSERT(x) assert(x)
 #define DUIASSERT_NE(a,b) DUIASSERT(a!=b)
 

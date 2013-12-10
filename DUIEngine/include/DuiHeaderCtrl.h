@@ -70,7 +70,7 @@ namespace DuiEngine
 			return dwHitTest!=-1 && LOWORD(dwHitTest)==HIWORD(dwHitTest);
 		}
 
-		HIMAGELIST CreateDragImage(int iItem);
+		HBITMAP CreateDragImage(int iItem);
 
 		void OnLButtonDown(UINT nFlags,CPoint pt);
 		void OnLButtonUp(UINT nFlags,CPoint pt);
@@ -94,7 +94,7 @@ namespace DuiEngine
 		BOOL			m_bItemSwapEnable;//允许拖动调整位置开关
 
 		BOOL			m_bDragging;
-		HIMAGELIST		m_hDragImglst;
+		HBITMAP			m_hDragImg;
 		CPoint			m_ptClick;
 		DWORD			m_dwHitTest;
 		DWORD			m_dwDragTo;

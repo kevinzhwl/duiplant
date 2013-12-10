@@ -7,6 +7,6 @@
   <divex sbskin="sb_common" sbwid="16"/>
   <edit baseClass="divex" transparent="1"/>
   <scrollview baseClass="divex"/>
-  <duilistbox baseClass="divex"/>
+  <listbox baseClass="divex"/>
   <treectrl baseClass="divex" toggleskin="TreeToggle" checkskin="TreeCheckBox" critembg="FFFFFF" critemselbg="000088" critemtext="000000" critemseltext="FFFFFF" indent="17" itemmargin="4"/>
 </objattr>

@@ -17,6 +17,7 @@ DuiWindowFactoryManager::DuiWindowFactoryManager(void)
 
 void DuiWindowFactoryManager::AddStandardWindowFactory()
 {
+	AddKeyObject(CDuiWindow::GetClassName(),new TplDuiWindowFactory<CDuiWindow>);
     AddKeyObject(CDuiPanel::GetClassName(),new TplDuiWindowFactory<CDuiPanel>);
     AddKeyObject(CDuiPanelEx::GetClassName(),new TplDuiWindowFactory<CDuiPanelEx>);
     AddKeyObject(CDuiScrollView::GetClassName(),new TplDuiWindowFactory<CDuiScrollView>);
@@ -73,7 +74,7 @@ CDuiWindow * DuiWindowFactoryManager::CreateWindowByName( LPCSTR pszClassName )
 {
 	if(!HasKey(pszClassName))
 	{
-		DUIRES_ASSERTA(FALSE,"no window type:%s in DuiSystem",pszClassName);
+		DuiTraceA("Warning: no window type:%s in DuiSystem!!",pszClassName);
 		return NULL;
 	}
 	return GetKeyObject(pszClassName)->NewWindow();

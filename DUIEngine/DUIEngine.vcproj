@@ -771,6 +771,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\DragWnd.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\DuiActiveX.cpp"
 				>
 			</File>
@@ -1130,6 +1134,10 @@
 			</File>
 			<File
 				RelativePath=".\include\auto_reset.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\DragWnd.h"
 				>
 			</File>
 			<File

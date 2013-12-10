@@ -540,6 +540,7 @@ BOOL CDuiWindow::LoadChildren(pugi::xml_node xmlNode)
 {
 	for (pugi::xml_node xmlChild=xmlNode; xmlChild; xmlChild=xmlChild.next_sibling())
     {
+		if(xmlChild.type() != pugi::node_element) continue;
         CDuiWindow *pChild = DuiWindowFactoryManager::getSingleton().CreateWindowByName(xmlChild.name());
 		if(!pChild) continue;
 

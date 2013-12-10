@@ -19,6 +19,7 @@ public:
 
 	pugi::xml_node GetDefAttribute(LPCSTR pszClassName);
 protected:
+	pugi::xml_node _GetDefAttribute(LPCSTR pszClassName);
 	void BuildClassAttribute(pugi::xml_node & xmlNode, LPCSTR pszClassName);
 	LPCSTR GetBaseClassName(LPCSTR pszClassName);
 

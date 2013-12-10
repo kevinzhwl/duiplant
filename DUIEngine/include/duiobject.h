@@ -86,7 +86,8 @@ public:
 			m_strXml=DUI_CA2A(CDuiStringA(writer.buffer(),writer.size()),CP_UTF8);
         }
 #endif
-        //检索并设置类的默认属性
+        
+		//检索并设置类的默认属性
 		pugi::xml_node defAttr = DuiCSS::getSingleton().GetDefAttribute(GetObjectClass());
 		if(defAttr)
 		{

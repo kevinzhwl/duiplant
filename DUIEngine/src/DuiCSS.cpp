@@ -65,11 +65,18 @@ void DuiCSS::BuildClassAttribute( pugi::xml_node & xmlNode, LPCSTR pszClassName)
 pugi::xml_node DuiCSS::GetDefAttribute(LPCSTR pszClassName )
 {
 	DUIASSERT(pszClassName);
+	if(!DuiWindowFactoryManager::getSingletonPtr()->HasKey(pszClassName))
+		return pugi::xml_node();//节点是窗口时才有默认属性
+	return _GetDefAttribute(pszClassName);
+}
+
+pugi::xml_node DuiCSS::_GetDefAttribute(LPCSTR pszClassName )
+{
 	if(!HasKey(pszClassName))
 	{
 		LPCSTR pszBaseClassName=GetBaseClassName(pszClassName);
 		if(!pszBaseClassName) return pugi::xml_node();
-		return GetDefAttribute(pszBaseClassName);
+		return _GetDefAttribute(pszBaseClassName);
 	}else
 	{
 		return GetKeyObject(pszClassName);

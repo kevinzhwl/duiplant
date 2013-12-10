@@ -20,7 +20,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(ConfigurationName)"
+			OutputDirectory="..\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="0"
@@ -81,7 +81,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="zlib_d.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
+				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\lib"
 				DelayLoadDLLs=""
@@ -110,7 +110,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetPath) ..\bin\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -209,7 +209,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(ConfigurationName)"
+			OutputDirectory="..\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="0"
@@ -268,7 +268,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName).exe"
+				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib"
 				GenerateManifest="true"
@@ -297,7 +297,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetPath) ..\bin\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -395,7 +395,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_Dll|Win32"
-			OutputDirectory="$(ConfigurationName)"
+			OutputDirectory="..\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="0"
@@ -456,7 +456,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName)_Dll_d.exe"
+				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib;..\scriptModule\luaScriptModule\Debug;&quot;..\scriptModule\luaScriptModule\tolua++-1.0.93\lib&quot;"
 				DelayLoadDLLs=""
@@ -484,7 +484,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetPath) ..\bin\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -583,7 +583,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release_Dll|Win32"
-			OutputDirectory="$(ConfigurationName)"
+			OutputDirectory="..\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="0"
@@ -642,7 +642,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName)_DLL.exe"
+				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib;..\scriptModule\luaScriptModule\Release;&quot;..\scriptModule\luaScriptModule\tolua++-1.0.93\lib&quot;"
 				GenerateManifest="true"
@@ -671,7 +671,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetPath) ..\bin\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -769,7 +769,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_ATL|Win32"
-			OutputDirectory="$(ConfigurationName)"
+			OutputDirectory="..\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="1"
@@ -829,7 +829,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
+				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\lib"
 				DelayLoadDLLs=""
@@ -858,7 +858,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetPath) ..\bin\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration

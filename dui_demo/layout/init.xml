@@ -97,7 +97,7 @@
     <divex sbskin="sb_common" sbwid="16"/>
     <edit baseClass="divex" transparent="1" x-margin="2" y-margin="2" ncskin="skin_editnc"/>
     <scrollview baseClass="divex"/>
-    <duilistbox baseClass="divex"/>
+    <listbox baseClass="divex"/>
     <dateedit baseClass="edit"/>
     <treectrl baseClass="divex" toggleskin="TreeToggle" checkskin="TreeCheckBox" critembg="FFFFFF" critemselbg="000088" critemtext="000000" critemseltext="FFFFFF" indent="17" itemmargin="4"/>
   </objattr>
