@@ -143,7 +143,7 @@ public:
 		szDuiEngineDir[nLen]=0;
 		//设置环境变量
 
-		CRegKeyEx reg;
+		CRegKey reg;
 		if(ERROR_SUCCESS==reg.Open(HKEY_LOCAL_MACHINE,_T("System\\CurrentControlSet\\Control\\Session Manager\\Environment"),KEY_SET_VALUE))
 		{
 			reg.SetStringValue(_T("DUIENGINEPATH"),szDuiEngineDir);
