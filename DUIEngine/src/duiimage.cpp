@@ -297,34 +297,30 @@ BOOL CDuiImgX::BitBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,BY
     if(IsEmpty()) return FALSE;
 	if(nWid==0 || nHei==0) return TRUE;
 
-    Gdiplus::Graphics graphics(hdc);
-    Gdiplus::ImageAttributes *pImgAttr=NULL;
-    if(byAlpha!=0xFF)
-    {
-        Gdiplus::ColorMatrix ClrMatrix =
-        {
-            1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, float(byAlpha)/0xFF, 0.0f,
-            0.0f, 0.0f, 0.0f, 0.0f, 1.0f
-        };
-        pImgAttr=new Gdiplus::ImageAttributes;
-        pImgAttr->SetColorMatrix(&ClrMatrix);
-    }
-    BOOL bRet= 0==graphics.DrawImage(m_pImg,Gdiplus::Rect(x,y,nWid,nHei),xSrc,ySrc,nWid,nHei,Gdiplus::UnitPixel,pImgAttr);
-    if(byAlpha!=0xFF)
-    {
-        delete pImgAttr;
-    }
-    return bRet;
+	Gdiplus::ImageAttributes ImgAtt;
+	ImgAtt.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
+	if(byAlpha!=0xFF)
+	{
+		Gdiplus::ColorMatrix ClrMatrix =
+		{
+			1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, float(byAlpha)/0xFF, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f, 1.0f
+		};
+		ImgAtt.SetColorMatrix(&ClrMatrix);
+	}
+
+	return S_OK==graphics.DrawImage(m_pImg,Gdiplus::Rect(x,y,nWid,nHei),xSrc,ySrc,nWid,nHei,Gdiplus::UnitPixel,&ImgAtt);
 }
 
 BOOL CDuiImgX::StretchBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha/*=0xFF*/)
 {
     if(IsEmpty()) return FALSE;
     Gdiplus::Graphics graphics(hdc);
-    Gdiplus::ImageAttributes *pImgAttr=NULL;
+	Gdiplus::ImageAttributes ImgAtt;
+	ImgAtt.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
     if(byAlpha!=0xFF)
     {
         Gdiplus::ColorMatrix ClrMatrix =
@@ -335,16 +331,12 @@ BOOL CDuiImgX::StretchBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySr
             0.0f, 0.0f, 0.0f, float(byAlpha)/0xFF, 0.0f,
             0.0f, 0.0f, 0.0f, 0.0f, 1.0f
         };
-        pImgAttr=new Gdiplus::ImageAttributes;
-        pImgAttr->SetColorMatrix(&ClrMatrix);
+        ImgAtt.SetColorMatrix(&ClrMatrix);
     }
-    BOOL bRet= 0==graphics.DrawImage(m_pImg,Gdiplus::Rect(x,y,nWid,nHei),xSrc,ySrc,nWidSrc,nHeiSrc,Gdiplus::UnitPixel,pImgAttr);
-    if(byAlpha!=0xFF)
-    {
-        delete pImgAttr;
-    }
-    return bRet;
+
+    return S_OK==graphics.DrawImage(m_pImg,Gdiplus::Rect(x,y,nWid,nHei),xSrc,ySrc,nWidSrc,nHeiSrc,Gdiplus::UnitPixel,&ImgAtt);
 }
+
 BOOL CDuiImgX::TileBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha/*=0xFF*/)
 {
     if(IsEmpty()) return FALSE;
