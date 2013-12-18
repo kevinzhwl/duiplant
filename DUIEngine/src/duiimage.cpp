@@ -297,6 +297,7 @@ BOOL CDuiImgX::BitBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,BY
     if(IsEmpty()) return FALSE;
 	if(nWid==0 || nHei==0) return TRUE;
 
+	Gdiplus::Graphics graphics(hdc);
 	Gdiplus::ImageAttributes ImgAtt;
 	ImgAtt.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
 	if(byAlpha!=0xFF)
