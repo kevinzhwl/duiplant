@@ -364,19 +364,9 @@ BOOL CDuiImgX::TileBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,i
         pImgAttr=new Gdiplus::ImageAttributes;
         pImgAttr->SetColorMatrix(&ClrMatrix);
     }
-    int yt=y;
-    while(yt<y+nHei)
-    {
-        int xt=x;
-        int nHeiT=min(nHeiSrc,y+nHei-yt);
-        while(xt<x+nWid)
-        {
-            int nWidT=min(nWidSrc,x+nWid-xt);
-            graphics.DrawImage(m_pImg,Gdiplus::Rect(xt,yt,nWidT,nHeiT),xSrc,ySrc,nWidSrc,nHeiSrc,Gdiplus::UnitPixel,pImgAttr);
-            xt+=nWidT;
-        }
-        yt+=nHeiT;
-    }
+
+	Gdiplus::TextureBrush br(m_pImg,Gdiplus::WrapModeTile,Gdiplus::Rect(xSrc,ySrc,nWidSrc,nHeiSrc));
+	graphics.FillRectangle(&br,Gdiplus::Rect(x,y,nWid,nHei));
     if(byAlpha!=0xFF)
     {
         delete pImgAttr;
