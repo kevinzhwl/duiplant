@@ -46,7 +46,7 @@ public:
 			return FALSE;
 		}
 
-        return LoadChildren(xmlDoc);
+        return LoadChildren(xmlDoc.first_child());
     }
 
 };
