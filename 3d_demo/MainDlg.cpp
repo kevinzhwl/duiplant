@@ -6,7 +6,7 @@
 #include "MainDlg.h"
 #include "UIHander.h"
 
-CMainDlg::CMainDlg() : CDuiHostWnd(IDR_DUI_MAIN_DIALOG)
+CMainDlg::CMainDlg() : CDuiHostWnd(_T("IDR_DUI_MAIN_DIALOG"))
 {
 	m_pUiHandler = new CUIHander(this);
 } 

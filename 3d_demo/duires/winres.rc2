@@ -1,0 +1,21 @@
+#pragma once
+#include "duires.h"
+
+#pragma message("include winres.rc2")
+
+/*<---------------------------RES_BUILDER:begin-----------------------------------*/
+DEFINE_XML(IDR_DUI_INIT,	"skin\\xml\\init.xml")
+DEFINE_XML(IDR_DUI_MSGBOX,	"skin\\xml\\dlg_msgbox.xml")
+DEFINE_XML(IDR_DUI_MAIN_DIALOG,	"skin\\xml\\dlg_main.xml")
+DEFINE_IMGX(IDP_MAIN_DLG_FRAME,	"skin\\image\\dlg_bg_frame.png")
+DEFINE_IMGX(IDP_BTN_WND_CHECKBOX,	"skin\\image\\btn_wnd_checkbox.png")
+DEFINE_IMGX(IDP_BTN_WND_RADIO,	"skin\\image\\btn_wnd_radio.png")
+DEFINE_IMGX(IDP_FOCUS_CHECK,	"skin\\image\\focus_checkbox.png")
+DEFINE_IMGX(IDP_FOCUS_RADIO,	"skin\\image\\focus_radio.png")
+DEFINE_IMGX(IDP_BTN_SYS_CLOSE,	"skin\\image\\btn_sys_close.png")
+DEFINE_IMGX(IDP_SCROLL,	"skin\\image\\scrollbar.bmp")
+DEFINE_IMGX(IDP_IMAGE_TEST,	"skin\\image\\test.png")
+DEFINE_IMGX(IDP_SLIDETHUMB,	"skin\\image\\slider.png")
+DEFINE_IMGX(IDP_PROG_BAR,	"skin\\image\\mini_progress_bar.png")
+DEFINE_IMGX(IDP_PROG_BG,	"skin\\image\\mini_progress_bg.png")
+/*----------------------------RES_BUILDER:end------------------------------------->*/

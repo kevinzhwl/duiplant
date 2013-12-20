@@ -7,24 +7,24 @@
   </string>
   
   <skins>
-  <imgframe name="dlg_frame" owner="DUI-DEMO"   src="1" left="5" right="5" top="40" bottom="40"/>
+  <imgframe name="dlg_frame" owner="DUI-DEMO"   src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
   
-	<imglst name="btncheckbox"         src="51" subwidth="15"  />
-	<imglst name="btnRadio"            src="52" subwidth="15"  />
-  <imglst name="focuscheckbox" src="53"/>
-  <imglst name="focusRadio" src="54"/>
-  <scrollbar name="sb_common" src="104" thumbleft="3"/>
+	<imglst name="btncheckbox"         src="IDP_BTN_WND_CHECKBOX" subwidth="15"  />
+	<imglst name="btnRadio"            src="IDP_BTN_WND_RADIO" subwidth="15"  />
+  <imglst name="focuscheckbox" src="IDP_FOCUS_CHECK"/>
+  <imglst name="focusRadio" src="IDP_FOCUS_RADIO"/>
+  <scrollbar name="sb_common" src="IDP_SCROLL" thumbleft="3"/>
 
-  <imglst name="btn_sys_close"    src="80" subwidth="38" />
+  <imglst name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" subwidth="38" />
 
   <button name="normalbtn" border="7D9EBC" bg="FBFCFD" bgup="FEFEFE"
     bgdown="C6E2FD" bguphover="FEFEFE" bgdownhover="DBEDFE"
     bguppush="C6E2FD" bgdownpush="FEFEFE"/>
 
-    <imglst name="skin_test" src="200"/>
-    <imglst name="slidethumb" src="505" states="4"/>
-    <imgframe name="prog_bar" src="506" left="3"/>
-    <imgframe name="prog_bg" src="507" left="4"/>
+    <imglst name="skin_test" src="IDP_IMAGE_TEST"/>
+    <imglst name="slidethumb" src="IDP_SLIDETHUMB" states="4"/>
+    <imgframe name="prog_bar" src="IDP_PROG_BAR" left="3"/>
+    <imgframe name="prog_bg" src="IDP_PROG_BG" left="4"/>
   </skins>
 <style>
   <class name="cls_dlg_frame" skin="dlg_frame" font="0000" crtext="FFFFFF" x-margin="0"/>

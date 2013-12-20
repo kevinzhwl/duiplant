@@ -24,7 +24,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Building XML Resource"
-				CommandLine="$(DUIENGINEPATH)\tool\residbuilder -y -p skin -i skin\index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h"
+				CommandLine="$(DUIENGINEPATH)\tool\residbuilder2 -y -p skin -i skin\index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -99,7 +99,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Building XML Resource"
-				CommandLine="$(DUIENGINEPATH)\tool\residbuilder -y -p skin -i skin\index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h"
+				CommandLine="$(DUIENGINEPATH)\tool\residbuilder2 -y -p skin -i skin\index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -241,14 +241,6 @@
 			</File>
 			<File
 				RelativePath=".\3d_demo.rc"
-				>
-			</File>
-			<File
-				RelativePath=".\duires\name2id.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\duires\res.h"
 				>
 			</File>
 			<File
