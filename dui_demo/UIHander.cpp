@@ -149,7 +149,7 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 #endif
 
 	OnBtnInitListClick();
-//	m_pMainDlg->SetTimer(100,2000,NULL);
+	m_pMainDlg->SetTimer(100,10,NULL);
 // 	SetMsgHandled(FALSE); 
 	//演示在程序初始化的时候通过如用户配置文件设置PANE的大小.
 // 	CDuiSplitWnd *pSplit=(CDuiSplitWnd*)m_pMainDlg->FindChildByCmdID(1180);
@@ -382,4 +382,22 @@ void CUIHander::OnBtnAniList()
 			pList->AnimateWindow(100,AW_SLIDE|AW_VER_NEGATIVE);//AW_SLIDE|AW_VER_NEGATIVE|AW_HOR_POSITIVE
 		}
 	}
+}
+
+void CUIHander::OnTimer( UINT_PTR uEventID )
+{
+	if(uEventID==100)
+	{
+		CDuiProgress *pProg=m_pMainDlg->FindChildByName2<CDuiProgress *>("IDC_PROGTEST");
+		if(pProg)
+		{
+			int nValue=pProg->GetValue();
+			int nMin,nMax;
+			pProg->GetRange(&nMin,&nMax);
+			nValue++;
+			if(nValue>nMax) nValue=nMin;
+			pProg->SetValue(nValue);
+		}
+	}
+	SetMsgHandled(FALSE);
 }

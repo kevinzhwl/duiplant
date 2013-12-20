@@ -53,7 +53,7 @@
 
     <imglst name="slidethumb" src="IDP_SLIDETHUMB" subwidth="18"/>
     <imgframe name="prog_bar" src="IDP_PROG_BAR" left="3"/>
-    <imgframe name="prog_bg" src="IDP_PROG_BG" left="3"/>
+    <imgframe name="prog_bg" src="IDP_PROG_BG" left="5"/>
     <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" left="3" states="4"/>
 
   </skins>

@@ -30,6 +30,8 @@ protected:
 	void OnDuiMenu();
 	void OnBtnAniList();
 
+	void OnTimer(UINT_PTR uEventID);
+
 	LRESULT OnEditNotify(LPDUINMHDR pNHdr);
 
 	LRESULT OnComboListSelChanging( LPDUINMHDR pNHdr );
@@ -53,6 +55,7 @@ protected:
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_DESTROY(OnDestory)
 		MSG_WM_COMMAND(OnCommand)
+		MSG_WM_TIMER(OnTimer)
 	END_MSG_MAP()
 
 	DUI_NOTIFY_MAP_BEGIN()

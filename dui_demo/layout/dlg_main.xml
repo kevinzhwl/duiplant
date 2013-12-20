@@ -43,7 +43,7 @@
           <button id="1360" class="normalbtn" pos="10,200,150,230">dui menu</button>
           <hotkey id="1340" pos="350,20,450,45" class="cls_edit"/>
           <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
-          <progress name="IDC_PROGTEST" pos="200,100,-10,110" bgskin="prog_bg" posskin="prog_bar" thumbskin="slidethumb" value="20" min="0" max="100"/>
+          <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="prog_bg" posskin="prog_bar" value="20" min="0" max="100" showpercent="1"/>
           <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" width="200" bgskin="prog_bg" posskin="prog_bar" thumbskin="slidethumb" value="20" min="0" max="100"/>
           <combobox show="1" id="1310" pos="100,40,300,64" dropdown="0" dropheight="250" class="cls_edit" font="8300" dotted="0" cursel="0" itempanel="1">
             <liststyle  class="cls_edit" crbg="FF0000" itemheight="50" id_text="1" id_icon="2">
@@ -76,6 +76,7 @@
               <item text="combobox.item6" icon="0" data="100"/>                          
             </items>
           </combobox>
+          
           <button name="btn_tstevt" pos="300,300,400,330" class="normalbtn">test event</button>
 <!--           <realwnd name="realwnd_edit1" id="1309" wndclass="edit" pos="-200,50,-110,80" rem="半透明窗口时不能使用realwnd，除了窗口不能显示外，还会干扰宿主窗口的timer消息"/> -->
         </tab>
