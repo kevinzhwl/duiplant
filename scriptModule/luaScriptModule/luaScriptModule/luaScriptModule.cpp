@@ -38,7 +38,7 @@ public:
 		, m_luaFun(pszLuaFun)
 	  {}
 
-	  virtual bool operator()(CDuiWindow * pSender,LPNMHDR pNmhdr)
+	  virtual bool operator()(CDuiWindow * pSender,LPDUINMHDR pNmhdr)
 	  {
 		  return lua_tinker::call<bool>(m_pLuaState,m_luaFun,pSender,pNmhdr);
 	  }
@@ -108,7 +108,7 @@ void CLuaScriptModule::executeScriptFile( LPCSTR pszScriptFile )
  	luaL_dofile(d_state,pszScriptFile);
 }
 
-bool CLuaScriptModule::executeScriptedEventHandler( LPCSTR handler_name, DuiEngine::CDuiWindow *pSender, LPNMHDR pNmhdr)
+bool CLuaScriptModule::executeScriptedEventHandler( LPCSTR handler_name, DuiEngine::CDuiWindow *pSender, LPDUINMHDR pNmhdr)
 {
 	LuaFunctionSlot luaFunSlot(d_state,handler_name);
 	return luaFunSlot(pSender,pNmhdr);

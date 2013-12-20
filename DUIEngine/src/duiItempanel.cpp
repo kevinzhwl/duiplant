@@ -61,28 +61,30 @@ LRESULT CDuiItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     {
         DUINMITEMMOUSEEVENT nms;
         nms.hdr.code=DUINM_ITEMMOUSEEVENT;
-        nms.hdr.hwndFrom=NULL;
+        nms.hdr.hDuiWnd=m_pFrmHost->GetDuiHwnd();
         nms.hdr.idFrom=m_pFrmHost->GetCmdID();
+		nms.hdr.pszNameFrom= m_pFrmHost->GetName();
         nms.pItem=this;
         nms.uMsg=uMsg;
         nms.wParam=wParam;
         nms.lParam=lParam;
-        m_pFrmHost->DuiNotify((LPNMHDR)&nms);
+        m_pFrmHost->DuiNotify((LPDUINMHDR)&nms);
     }
     Release();
     return lRet;
 }
 
-LRESULT CDuiItemPanel::OnDuiNotify(LPNMHDR pHdr)
+LRESULT CDuiItemPanel::OnDuiNotify(LPDUINMHDR pHdr)
 {
     DUINMITEMNOTIFY nmsItem;
     nmsItem.hdr.code=DUINM_LBITEMNOTIFY;
-    nmsItem.hdr.hwndFrom=NULL;
+    nmsItem.hdr.hDuiWnd=m_pFrmHost->GetDuiHwnd();
     nmsItem.hdr.idFrom=m_pFrmHost->GetCmdID();
+	nmsItem.hdr.pszNameFrom=m_pFrmHost->GetName();
     nmsItem.pItem=this;
     nmsItem.pHostDuiWin=(CDuiWindow*)m_pFrmHost;
     nmsItem.pOriginHdr=pHdr;
-    return m_pFrmHost->DuiNotify((LPNMHDR)&nmsItem);
+    return m_pFrmHost->DuiNotify((LPDUINMHDR)&nmsItem);
 }
 
 CRect CDuiItemPanel::GetContainerRect()

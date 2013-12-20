@@ -200,12 +200,12 @@ void CDuiButton::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     if(nChar==VK_SPACE || nChar==VK_RETURN && GetCmdID())
     {
         DUINMCOMMAND nms;
+		nms.hdr.hDuiWnd=m_hDuiWnd;
         nms.hdr.code = DUINM_COMMAND;
-        nms.hdr.hwndFrom = NULL;
         nms.hdr.idFrom = GetCmdID();
-        nms.uItemID = GetCmdID();
+        nms.hdr.pszNameFrom = GetName();
         nms.uItemData = GetUserData();
-        DuiNotify((LPNMHDR)&nms);
+        DuiNotify((LPDUINMHDR)&nms);
     }
 }
 
@@ -215,11 +215,11 @@ bool CDuiButton::OnAcceleratorPressed( const CAccelerator& accelerator )
 
 	DUINMCOMMAND nms;
 	nms.hdr.code = DUINM_COMMAND;
-	nms.hdr.hwndFrom = NULL;
+	nms.hdr.hDuiWnd=m_hDuiWnd;
 	nms.hdr.idFrom = GetCmdID();
-	nms.uItemID = GetCmdID();
+	nms.hdr.pszNameFrom= GetName();
 	nms.uItemData = GetUserData();
-	DuiNotify((LPNMHDR)&nms);
+	DuiNotify((LPDUINMHDR)&nms);
 
 	return true;
 }
@@ -700,12 +700,12 @@ void CDuiCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         if (GetCmdID())
         {
             DUINMCOMMAND nms;
+			nms.hdr.hDuiWnd=m_hDuiWnd;
             nms.hdr.code = DUINM_COMMAND;
-            nms.hdr.hwndFrom = NULL;
             nms.hdr.idFrom = GetCmdID();
-            nms.uItemID = GetCmdID();
+			nms.hdr.pszNameFrom = GetName();
             nms.uItemData = GetUserData();
-            DuiNotify((LPNMHDR)&nms);
+            DuiNotify((LPDUINMHDR)&nms);
         }
     }
 }
@@ -717,9 +717,7 @@ void CDuiCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 // Usage: <icon src=xx oem="0" size="16"/>
 //
 CDuiIconWnd::CDuiIconWnd()
-    : m_uResID(-1)
-    , m_nSize(16)
-	, m_uResIDCurrent(-1)
+    : m_nSize(16)
 {
 
 }
@@ -736,7 +734,7 @@ BOOL CDuiIconWnd::Load(pugi::xml_node xmlNode)
 
 void CDuiIconWnd::OnPaint(CDCHandle dc)
 {
-    if (m_uResIDCurrent != m_uResID)
+    if (m_strCurIconName != m_strIconName)
         _ReloadIcon();
 
     CRect rcClient;
@@ -777,8 +775,8 @@ void CDuiIconWnd::LoadIconFile( LPCWSTR lpFIleName )
 void CDuiIconWnd::_ReloadIcon()
 {
     if (m_theIcon)		DestroyIcon(m_theIcon);
-    m_theIcon=DuiSystem::getSingleton().GetResProvider()->LoadIcon(DUIRES_ICON_TYPE,m_uResID,m_nSize,m_nSize);
-    if(m_theIcon) m_uResIDCurrent = m_uResID;
+    m_theIcon=DuiSystem::getSingleton().GetResProvider()->LoadIcon(DUIRES_ICON_TYPE,m_strIconName,m_nSize,m_nSize);
+    if(m_theIcon) m_strCurIconName = m_strIconName;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -30,7 +30,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -125,7 +125,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -219,7 +219,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -312,7 +312,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -405,7 +405,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -458,7 +458,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib;..\scriptModule\luaScriptModule\Debug;&quot;..\scriptModule\luaScriptModule\tolua++-1.0.93\lib&quot;"
+				AdditionalLibraryDirectories="..\lib"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -499,7 +499,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -593,7 +593,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -686,7 +686,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -779,7 +779,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -873,7 +873,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="build resouce id to winres2.rc"
-				CommandLine="..\tool\residbuilder -y -i index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h "
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -1089,10 +1089,6 @@
 			Name="duires"
 			>
 			<File
-				RelativePath=".\duires\res.h"
-				>
-			</File>
-			<File
 				RelativePath=".\duires\winres.h"
 				>
 			</File>
@@ -1174,22 +1170,6 @@
 		<Filter
 			Name="XML"
 			>
-			<File
-				RelativePath=".\layout\def_objattr.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\layout\def_skin.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\layout\def_string.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\layout\def_style.xml"
-				>
-			</File>
 			<File
 				RelativePath=".\layout\dlg_main.xml"
 				>

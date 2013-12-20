@@ -212,10 +212,10 @@ void CDuiBitmap::SetAttributes( pugi::xml_node xmlNode )
     }
 }
 
-BOOL CDuiBitmap::LoadFromResource( HINSTANCE hInst,LPCTSTR pszType,UINT uID )
+BOOL CDuiBitmap::LoadFromResource( HINSTANCE hInst,LPCTSTR pszType,LPCTSTR pszName )
 {
     assert(m_hBitmap==NULL);
-    m_hBitmap = (HBITMAP)::LoadImage(hInst, MAKEINTRESOURCE(uID), IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
+    m_hBitmap = (HBITMAP)::LoadImage(hInst, pszName, IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
     return m_hBitmap!=NULL;
 }
 
@@ -367,11 +367,11 @@ BOOL CDuiImgX::TileBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,i
     return TRUE;
 }
 
-BOOL CDuiImgX::LoadFromResource( HINSTANCE hInst,LPCTSTR pszType,UINT uID )
+BOOL CDuiImgX::LoadFromResource( HINSTANCE hInst,LPCTSTR pszType,LPCTSTR pszName )
 {
     assert(m_pImg==NULL);
 
-    HRSRC hRsrc = ::FindResource(hInst, MAKEINTRESOURCE(uID), pszType);
+    HRSRC hRsrc = ::FindResource(hInst, pszName, pszType);
 
     if (NULL == hRsrc)
         return NULL;

@@ -4,12 +4,6 @@
 #include "DuiThreadActiveWndManager.h"
 
 #include "duiresprovider.h"
-#include "DuiCSS.h"
-#include "duistringpool.h"
-#include "duifontpool.h"
-#include "duiskin.h"
-#include "duiwndstyle.h"
-#include "duiimgpool.h"
 #include "DuiWindowManager.h"
 #include "DuiWndFactoryManager.h"
 #include "DuiLogger.h"
@@ -19,37 +13,24 @@
 #include <Richedit.h>
 #include <TextServ.h>
 
+#include "DuiCSS.h"
+#include "duistringpool.h"
+#include "duifontpool.h"
+#include "duiskin.h"
+#include "duiwndstyle.h"
+#include "duiimgpool.h"
+#include "Name2ID.h"
+
+#define DUI_VERSION	_T("2.0.0.1")
+
 namespace DuiEngine
 {
-
-#define DUI_MAX_NAME	30	//控件名字的最大长度
 
 class DUI_EXP DuiSystem :
     public Singleton<DuiSystem>
 {
 	friend class CSimpleWnd;
 	friend class CDuiMessageBox;
-    class CNamedID
-    {
-    public:
-        CNamedID() {}
-        CNamedID(LPCSTR name,UINT id)
-        {
-            DUIASSERT(strlen(name)<=DUI_MAX_NAME);
-            strcpy_s(strName,DUI_MAX_NAME,name);
-            uID=id;
-        }
-
-        static int Compare( __in const void * id1, __in const void * id2 )
-        {
-            CNamedID *pid1=(CNamedID*)id1;
-            CNamedID *pid2=(CNamedID*)id2;
-            return strcmp(pid1->strName,pid2->strName);
-        }
-
-        char 		strName[DUI_MAX_NAME+1];
-        UINT		uID;
-    };
 
 public:
     DuiSystem(HINSTANCE hInst,LPCTSTR pszHostClassName=_T("DuiHostWnd"));
@@ -60,6 +41,8 @@ public:
     {
         return m_hInst;
     }
+
+	LPCTSTR GetVersion(){return DUI_VERSION;}
 
     DuiResProviderBase * SetResProvider(DuiResProviderBase *pNewResProvider)
     {
@@ -99,15 +82,11 @@ public:
 
     void logEvent(LoggingLevel level , LPCTSTR format, ...);
 
-    UINT Name2ID(LPCSTR strName);
+	BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=DUIRES_XML_TYPE);
 
-    size_t InitName2ID(UINT uXmlResID ,LPCTSTR pszType=DUIRES_XML_TYPE);
+	BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType=DUIRES_XML_TYPE);
 
-	BOOL Init(UINT uXmlResID ,LPCTSTR pszType=DUIRES_XML_TYPE);
-
-	BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,UINT uXmlResID ,LPCTSTR pszType=DUIRES_XML_TYPE);
-
-	BOOL SetMsgBoxTemplate(UINT uXmlResID,LPCTSTR pszType=DUIRES_XML_TYPE);
+	BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=DUIRES_XML_TYPE);
 
 	HRESULT CreateTextServices(IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk);
 protected:
@@ -123,9 +102,6 @@ protected:
 
 	HINSTANCE	m_rich20;	//richedit module
 	PCreateTextServices	m_funCreateTextServices;
-    //name-id map
-    CNamedID *m_pBuf;
-    int		  m_nCount;
 
 	pugi::xml_document	m_xmlMsgBoxTempl;
 };

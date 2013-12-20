@@ -69,10 +69,10 @@ BOOL DuiStylePool::GetStyle(LPCSTR lpszName, DuiStyle& style)
     return TRUE;
 }
 
-BOOL DuiStylePool::Init(UINT uResID)
+BOOL DuiStylePool::Init(LPCTSTR pszXmlName)
 {
 	pugi::xml_document xmlDoc;
-	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,uResID)) return FALSE;
+	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,pszXmlName)) return FALSE;
 	return Init(xmlDoc.child("style"));
 }
 

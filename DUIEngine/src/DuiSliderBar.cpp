@@ -258,14 +258,15 @@ LRESULT CDuiSliderBar::NotifySbCode(UINT uCode, int nPos)
 {
     DUINMSLIDER nms;
     nms.hdr.code     = DUINM_SLIDER;
+	nms.hdr.hDuiWnd  = m_hDuiWnd;
     nms.hdr.idFrom   = GetCmdID();
-    nms.hdr.hwndFrom = NULL;
+    nms.hdr.pszNameFrom= GetName();
     nms.uSbCode      = uCode;
     nms.pSliderBar   = this;
     nms.nPos         = nPos;
     nms.bVertical    = IsVertical();
 
-    return DuiNotify((LPNMHDR)&nms);
+    return DuiNotify((LPDUINMHDR)&nms);
 }
 
 CSize CDuiSliderBar::GetDesiredSize(LPRECT pRcContainer)

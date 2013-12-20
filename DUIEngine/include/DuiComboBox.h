@@ -30,7 +30,7 @@ protected:
 
 	void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-	virtual LRESULT DuiNotify(LPNMHDR pnms);
+	virtual LRESULT DuiNotify(LPDUINMHDR pnms);
 
 	DUIWIN_BEGIN_MSG_MAP()
 		MSG_WM_MOUSEHOVER(OnMouseHover)
@@ -69,7 +69,7 @@ public:
 	
 	BOOL SetWindowText(LPCTSTR strText);
 
-	virtual LRESULT DuiNotify(LPNMHDR pnms);
+	virtual LRESULT DuiNotify(LPDUINMHDR pnms);
 
 	void DropDown();
 	void CloseUp();

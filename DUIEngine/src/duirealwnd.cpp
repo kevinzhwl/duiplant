@@ -56,11 +56,11 @@ void CDuiRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
     {
         DUINMREALWNDCMN nms;
         nms.hdr.code = DUINM_REALWND_SIZE;
-        nms.hdr.hwndFrom = NULL;
+        nms.hdr.hDuiWnd=m_hDuiWnd;
         nms.hdr.idFrom = GetCmdID();
-        nms.uItemID = GetCmdID();
+		nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
-        DuiNotify((LPNMHDR)&nms);
+        DuiNotify((LPDUINMHDR)&nms);
     }
 }
 
@@ -76,11 +76,11 @@ void CDuiRealWnd::OnDestroy()
     {
         DUINMREALWNDCMN nms;
         nms.hdr.code = DUINM_REALWND_DESTROY;
-        nms.hdr.hwndFrom = NULL;
+        nms.hdr.hDuiWnd = m_hDuiWnd;
         nms.hdr.idFrom = GetCmdID();
-        nms.uItemID = GetCmdID();
+		nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
-        DuiNotify((LPNMHDR)&nms);
+        DuiNotify((LPDUINMHDR)&nms);
     }
 }
 
@@ -113,11 +113,11 @@ BOOL CDuiRealWnd::InitRealWnd()
 
     DUINMREALWNDCMN nms;
     nms.hdr.code = DUINM_REALWND_CREATE;
-    nms.hdr.hwndFrom = NULL;
+    nms.hdr.hDuiWnd = m_hDuiWnd;
     nms.hdr.idFrom = GetCmdID();
-    nms.uItemID = GetCmdID();
+    nms.hdr.pszNameFrom=GetName();
     nms.pRealWnd=this;
-    HWND hWnd =(HWND) DuiNotify((LPNMHDR)&nms);
+    HWND hWnd =(HWND) DuiNotify((LPDUINMHDR)&nms);
 
     if(::IsWindow(hWnd))
     {
@@ -132,12 +132,12 @@ BOOL CDuiRealWnd::InitRealWnd()
 
         DUINMREALWNDCMN nms;
         nms.hdr.code = DUINM_REALWND_INIT;
-        nms.hdr.hwndFrom = NULL;
+        nms.hdr.hDuiWnd = m_hDuiWnd;
         nms.hdr.idFrom = GetCmdID();
-        nms.uItemID = GetCmdID();
+        nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
 
-        BOOL bFocus=(BOOL)DuiNotify((LPNMHDR)&nms);
+        BOOL bFocus=(BOOL)DuiNotify((LPDUINMHDR)&nms);
         if(bFocus)
         {
             SetFocus(m_hRealWnd);

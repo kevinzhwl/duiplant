@@ -9,8 +9,6 @@ namespace DuiEngine
 {
 
 class CDuiWindow;
-// DuiWindow Handle
-typedef DWORD HDUIWND;
 
 class DUI_EXP DuiWindowManager :public DuiSingletonMap<DuiWindowManager,CDuiWindow*,HDUIWND>
 {

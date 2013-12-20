@@ -420,7 +420,7 @@ public:
 
     virtual HDUIWND DuiGetHWNDFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
-    virtual LRESULT DuiNotify(LPNMHDR pnms);
+    virtual LRESULT DuiNotify(LPDUINMHDR pnms);
 
     virtual UINT OnGetDuiCode();
 

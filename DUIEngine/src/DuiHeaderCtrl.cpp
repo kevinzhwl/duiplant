@@ -207,13 +207,13 @@ namespace DuiEngine
 						m_arrItems.InsertAt(LOWORD(m_dwDragTo),t);
 						//发消息通知宿主表项位置发生变化
 						DUINMHDSWAP	nm;
+						nm.hdr.hDuiWnd=m_hDuiWnd;
 						nm.hdr.code=DUINM_HDSWAP;
 						nm.hdr.idFrom=GetCmdID();
-						nm.hdr.hwndFrom=0;
-						nm.pSender=this;
+						nm.hdr.pszNameFrom=GetName();
 						nm.iOldIndex=LOWORD(m_dwHitTest);
 						nm.iNewIndex=nPos;
-						DuiNotify((LPNMHDR)&nm);
+						DuiNotify((LPDUINMHDR)&nm);
 					}
 					m_dwHitTest=HitTest(pt);
 					m_dwDragTo=-1;
@@ -226,24 +226,24 @@ namespace DuiEngine
 					m_arrItems[LOWORD(m_dwHitTest)].state=1;//hover
 					RedrawItem(LOWORD(m_dwHitTest));
 					DUINMHDCLICK	nm;
+					nm.hdr.hDuiWnd=m_hDuiWnd;
 					nm.hdr.code=DUINM_HDCLICK;
 					nm.hdr.idFrom=GetCmdID();
-					nm.hdr.hwndFrom=0;
-					nm.pSender=this;
+					nm.hdr.pszNameFrom=GetName();
 					nm.iItem=LOWORD(m_dwHitTest);
-					DuiNotify((LPNMHDR)&nm);
+					DuiNotify((LPDUINMHDR)&nm);
 				}
 			}
 		}else if(m_dwHitTest!=-1)
 		{//调整表头宽度，发送一个调整完成消息
 			DUINMHDSIZECHANGED	nm;
+			nm.hdr.hDuiWnd=m_hDuiWnd;
 			nm.hdr.code=DUINM_HDSIZECHANGED;
 			nm.hdr.idFrom=GetCmdID();
-			nm.hdr.hwndFrom=0;
-			nm.pSender=this;
+			nm.hdr.pszNameFrom=GetName();
 			nm.iItem=LOWORD(m_dwHitTest);
 			nm.nWidth=m_arrItems[nm.iItem].cx;
-			DuiNotify((LPNMHDR)&nm);
+			DuiNotify((LPDUINMHDR)&nm);
 		}
 		m_bDragging=FALSE;
 		ReleaseDuiCapture();
@@ -290,12 +290,12 @@ namespace DuiEngine
 				GetContainer()->DuiUpdateWindow();//立即更新窗口
 				//发出调节宽度消息
 				DUINMHDSIZECHANGING	nm;
+				nm.hdr.hDuiWnd=m_hDuiWnd;
 				nm.hdr.code=DUINM_HDSIZECHANGING;
 				nm.hdr.idFrom=GetCmdID();
-				nm.hdr.hwndFrom=0;
-				nm.pSender=this;
+				nm.hdr.pszNameFrom=GetName();
 				nm.nWidth=cxNew;
-				DuiNotify((LPNMHDR)&nm);
+				DuiNotify((LPDUINMHDR)&nm);
 			}
 		}else
 		{

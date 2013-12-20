@@ -50,7 +50,7 @@ public:
 		- true if the event was handled.
 		- false if the event was not handled.
 	*/
-	virtual	bool	executeScriptedEventHandler(LPCSTR handler_name, DuiEngine::CDuiWindow *pSender, LPNMHDR pNmhdr);
+	virtual	bool	executeScriptedEventHandler(LPCSTR handler_name, DuiEngine::CDuiWindow *pSender, LPDUINMHDR pNmhdr);
 
 
     /*!

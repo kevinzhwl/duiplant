@@ -188,7 +188,7 @@ public:
     ~CDuiMenu(void);
 	CDuiMenu(const CDuiMenu & src);
 
-    BOOL LoadMenu(UINT uResID);
+    BOOL LoadMenu(LPCTSTR pszResName);
 
     BOOL InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR strText, int iIcon);
 

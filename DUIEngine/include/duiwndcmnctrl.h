@@ -437,12 +437,12 @@ protected:
     void _ReloadIcon();
 
     HICON m_theIcon;
-    UINT m_uResID;
-    UINT m_uResIDCurrent;
+    CDuiStringT m_strIconName;
+    CDuiStringT m_strCurIconName;
     int m_nSize;
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
-    DUIWIN_UINT_ATTRIBUTE("src", m_uResID, FALSE)
+    DUIWIN_TSTRING_ATTRIBUTE("src", m_strIconName, FALSE)
     DUIWIN_INT_ATTRIBUTE("size", m_nSize, FALSE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 

@@ -81,7 +81,7 @@ public:
 
     virtual ~DuiSkinPool();
 
-    BOOL Init(UINT uResID);
+    BOOL Init(LPCTSTR pszXmlName);
 
 	BOOL Init(pugi::xml_node xmlNode);
 

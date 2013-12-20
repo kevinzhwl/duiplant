@@ -40,10 +40,10 @@ BOOL DuiStringPool::BuildString(CDuiStringT &strContainer)
     return bRet;
 }
 
-BOOL DuiStringPool::Init(UINT uResID)
+BOOL DuiStringPool::Init(LPCTSTR pszXmlName)
 {
 	pugi::xml_document xmlDoc;
-	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,uResID)) return FALSE;
+	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,pszXmlName)) return FALSE;
 	return Init(xmlDoc.first_child());
 }
 

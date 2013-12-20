@@ -99,9 +99,9 @@ namespace DuiEngine
 		void            OnPaint(CDCHandle dc);
 		void            OnDestroy();
 
-		bool            OnHeaderClick(CDuiWindow* pSender, LPNMHDR pNmhdr);
-		bool            OnHeaderSizeChanging(CDuiWindow* pSender, LPNMHDR pNmhdr);
-		bool            OnHeaderSwap(CDuiWindow* pSender, LPNMHDR pNmhdr);
+		bool            OnHeaderClick(CDuiWindow* pSender, LPDUINMHDR pNmhdr);
+		bool            OnHeaderSizeChanging(CDuiWindow* pSender, LPDUINMHDR pNmhdr);
+		bool            OnHeaderSwap(CDuiWindow* pSender, LPDUINMHDR pNmhdr);
 
 		virtual BOOL    OnScroll(BOOL bVertical,UINT uCode,int nPos);
 		virtual void    OnLButtonDown(UINT nFlags, CPoint pt);

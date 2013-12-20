@@ -57,14 +57,14 @@ class DUI_EXP CDuiHostWnd
 {
 	friend class CTranslucentHostWnd;
 public:
-    CDuiHostWnd(UINT uResID = 0);
+	CDuiHostWnd(LPCTSTR pszResName = NULL);
     virtual ~CDuiHostWnd() {}
 
 public:
 
     HWND Create(HWND hWndParent,int x,int y,int nWidth,int nHeight);
     HWND Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight, LPVOID lpParam);
-    BOOL Load(UINT uResID);
+    BOOL Load(LPCTSTR pszXmlName);
 
     BOOL SetXml(LPSTR lpszXml,int nLen);
 
@@ -79,7 +79,7 @@ public:
 protected:
     UINT m_uRetCode;
     BOOL m_bExitModalLoop;
-    UINT m_uResID;
+    CDuiStringT m_strXmlLayout;
     int m_nIdleCount;
 
     // Tracking flag
@@ -163,7 +163,7 @@ protected:
     // CDuiContainer
 
     /*virtual */
-    LRESULT OnDuiNotify(LPNMHDR pHdr);
+    LRESULT OnDuiNotify(LPDUINMHDR pHdr);
 
     /*virtual */
     CRect GetContainerRect();
@@ -231,7 +231,7 @@ protected:
 	void UpdateLayerFromDC(HDC hdc,BYTE byAlpha);
 protected:
 
-	DUI_NOTIFY_MAP(IDC_RICHVIEW_WIN)
+	DUI_NOTIFY_MAP_BEGIN()
 		DUI_NOTIFY_ID_COMMAND(IDOK, OnOK)
 		DUI_NOTIFY_ID_COMMAND(IDCANCEL, OnClose)
 	DUI_NOTIFY_MAP_END()	
@@ -262,7 +262,7 @@ protected:
     MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
     MESSAGE_HANDLER_EX(UM_MSGFILTER,OnMsgFilter)
     MSG_WM_CLOSE(OnClose)
-	MSG_DUI_NOTIFY(IDC_RICHVIEW_WIN)
+	MSG_DUI_NOTIFY()
     REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
     END_MSG_MAP()
 };

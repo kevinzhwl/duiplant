@@ -1,3 +1,7 @@
+2013年12月20日
+1、将系统消息的响应整体切换到使用name。
+2、为DuiSystem增加接口:GetVersion()，目前为2.0.0.1，升级程序参考doc目前下的<Duiengine2.0 移植说明.doc>
+
 2013年8月5日
 1、为duihostwnd增加一个接口：AnimateHostWindow.
 2、实现了原来duiwindow中的animatewindow接口

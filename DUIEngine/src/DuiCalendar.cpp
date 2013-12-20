@@ -465,16 +465,16 @@ void CDuiCalendar::OnLButtonDown(UINT nFlags, CPoint point)
 	if(day !=0 && day != m_iDay)
 	{
 		DUINMCALENDARSELECTDAY nm;
+		nm.hdr.hDuiWnd=m_hDuiWnd;
 		nm.hdr.code=DUINM_HDSIZECHANGING;
 		nm.hdr.idFrom=GetCmdID();
-		nm.hdr.hwndFrom=0;
-		nm.pSender=this;
+		nm.hdr.pszNameFrom=GetName();
 		nm.wOldDay=m_iDay;
 		nm.wNewDay=day;
 
 		m_iDay = day;
 		NotifyInvalidate();
-		DuiNotify((LPNMHDR)&nm);
+		DuiNotify((LPDUINMHDR)&nm);
     }
 }
 
@@ -526,7 +526,7 @@ BOOL CDuiCalendar::Load( pugi::xml_node xmlNode )
 	return bLoad;
 }
 
-bool CDuiCalendar::OnTodayClick( CDuiWindow * pSender, LPNMHDR pNmhdr )
+bool CDuiCalendar::OnTodayClick( CDuiWindow * pSender, LPDUINMHDR pNmhdr )
 {
 	CTime today=CTime::GetCurrentTime();
 	SetDate(today.GetYear(),today.GetMonth(),today.GetDay());

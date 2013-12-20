@@ -9,8 +9,6 @@ stdafx.h
 UIHander.cpp
 UIHander.h
 
-[duires]name2id.xml
-[duires]res.h
 [duires]winres.h
 [duires]winres.rc2
 [duires]dui-demo.ico

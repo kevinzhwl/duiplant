@@ -108,7 +108,7 @@ public:
     // Get style object from pool by class name
     static BOOL GetStyle(LPCSTR lpszName,DuiStyle& style);
 
-    BOOL Init(UINT uResID);
+    BOOL Init(LPCTSTR pszXmlName);
 
 	BOOL Init(pugi::xml_node xmlNode);
 };

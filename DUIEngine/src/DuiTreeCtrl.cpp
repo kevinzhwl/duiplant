@@ -35,7 +35,6 @@ CDuiTreeCtrl::CDuiTreeCtrl()
 , m_nItemOffset(0)
 , m_nItemHoverBtn(DuiTVIBtn_None)
 , m_nItemPushDownBtn(DuiTVIBtn_None)
-, m_uPopMenuID(0)
 {
 	m_bClipClient = TRUE;
 }
@@ -992,11 +991,11 @@ void CDuiTreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
 
 			DUINMCOMMAND nms;
 			nms.hdr.code = DUINM_COMMAND;
-			nms.hdr.hwndFrom = NULL;
+			nms.hdr.hDuiWnd=m_hDuiWnd;
 			nms.hdr.idFrom = GetCmdID();
-			nms.uItemID = GetCmdID();
+			nms.hdr.pszNameFrom=GetName();
 			nms.uItemData = hItem; 
-			DuiNotify((LPNMHDR)&nms);
+			DuiNotify((LPDUINMHDR)&nms);
 		}
 
 		m_nItemPushDownBtn = DuiTVIBtn_None;
@@ -1075,8 +1074,9 @@ void CDuiTreeCtrl::NotifyParent()
 {
 	DUINMTBSELCHANGED nms;
 	nms.hdr.code=DUINM_TBSELCHANGED;
-	nms.hdr.hwndFrom=NULL;
+	nms.hdr.hDuiWnd=m_hDuiWnd;
 	nms.hdr.idFrom=GetCmdID();
+	nms.hdr.pszNameFrom=GetName();
 	nms.hOldSel=m_hSelItem;
 	nms.hNewSel=m_hHoverItem;
 
@@ -1092,7 +1092,7 @@ void CDuiTreeCtrl::NotifyParent()
 	if(m_hSelItem)
 	RedrawItem(m_hSelItem);
 
-	DuiNotify((LPNMHDR)&nms);
+	DuiNotify((LPDUINMHDR)&nms);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1173,17 +1173,6 @@ void CDuiTreeCtrl::OnRButtonDown(UINT nFlags, CPoint pt)
 		NotifyParent();
 }
 
-void CDuiTreeCtrl::OnRButtonUp(UINT nFlags,CPoint pt)
-{
-	if (m_uPopMenuID)
-	{
-		CDuiMenu menu;  
-		menu.LoadMenu(m_uPopMenuID); 
-		::ClientToScreen(GetContainer()->GetHostHwnd(), &pt);
-		menu.TrackPopupMenu(0,pt.x,pt.y,GetContainer()->GetHostHwnd());
-	}
-}
-
 void CDuiTreeCtrl::OnLButtonUp(UINT nFlags,CPoint pt)
 {
 	m_hHoverItem=HitTest(pt);
@@ -1209,14 +1198,15 @@ void CDuiTreeCtrl::OnLButtonDbClick(UINT nFlags,CPoint pt)
 	}else
 	{
 		DUINMITEMMOUSEEVENT nms;
+		nms.hdr.hDuiWnd=m_hDuiWnd;
 		nms.hdr.code=DUINM_ITEMMOUSEEVENT;
-		nms.hdr.hwndFrom=NULL;
 		nms.hdr.idFrom=GetCmdID();
+		nms.hdr.pszNameFrom=GetName();
 		nms.pItem=NULL;
 		nms.uMsg=WM_LBUTTONDBLCLK;
 		nms.wParam=nFlags;
 		nms.lParam=MAKELPARAM(pt.x,pt.y);
-		DuiNotify((LPNMHDR)&nms);
+		DuiNotify((LPDUINMHDR)&nms);
 	}
 }
 

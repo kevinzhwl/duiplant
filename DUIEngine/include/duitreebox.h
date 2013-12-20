@@ -93,7 +93,7 @@ protected:
     void OnMouseMove(UINT nFlags,CPoint pt);
     void OnMouseLeave();
 
-    virtual LRESULT DuiNotify(LPNMHDR pnms);
+    virtual LRESULT DuiNotify(LPDUINMHDR pnms);
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
 
     BOOL IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2);

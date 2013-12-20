@@ -442,15 +442,16 @@ void CDuiTreeBox::DrawItem(CDCHandle & dc, CRect & rc, HSTREEITEM hItem)
     CDuiTreeItem *pItem=CSTree<CDuiTreeItem*>::GetItem(hItem);
     DUINMGETTBDISPINFO nms;
     nms.hdr.code    = DUINM_GETTBDISPINFO;
-    nms.hdr.hwndFrom = NULL;
+    nms.hdr.hDuiWnd = m_hDuiWnd;
     nms.hdr.idFrom  = GetCmdID();
+	nms.hdr.pszNameFrom = GetName();
     nms.bHover      = hItem==m_hHoverItem;
     nms.bSelect     = hItem == m_hSelItem;
     nms.hItem = hItem;
     nms.pItem = pItem;
     nms.pHostDuiWin   = this;
     LockUpdate();
-    GetContainer()->OnDuiNotify((LPNMHDR)&nms);
+    GetContainer()->OnDuiNotify((LPDUINMHDR)&nms);
     UnlockUpdate();
     pItem->Draw(dc,rc);
 }
@@ -511,19 +512,21 @@ void CDuiTreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
     {
 		DUINMTBSELCHANGING nms2;
 		nms2.hdr.code=DUINM_TBSELCHANGING;
-		nms2.hdr.hwndFrom=NULL;
+		nms2.hdr.hDuiWnd=m_hDuiWnd;
 		nms2.hdr.idFrom=GetCmdID();
+		nms2.hdr.pszNameFrom=GetName();
 		nms2.hOldSel=m_hSelItem;
 		nms2.hNewSel=m_hHoverItem;
 		nms2.bCancel=FALSE;
-		DuiNotify((LPNMHDR)&nms2);
+		DuiNotify((LPDUINMHDR)&nms2);
 
 		if(!nms2.bCancel)
 		{
 			DUINMTBSELCHANGED nms;
 			nms.hdr.code=DUINM_TBSELCHANGED;
-			nms.hdr.hwndFrom=NULL;
+			nms.hdr.hDuiWnd=m_hDuiWnd;
 			nms.hdr.idFrom=GetCmdID();
+			nms.hdr.pszNameFrom=GetName();
 			nms.hOldSel=m_hSelItem;
 			nms.hNewSel=m_hHoverItem;
 
@@ -539,7 +542,7 @@ void CDuiTreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
 				CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->ModifyItemState(DuiWndState_Check,0);
 				RedrawItem(m_hSelItem);
 			}
-			DuiNotify((LPNMHDR)&nms);
+			DuiNotify((LPDUINMHDR)&nms);
 		}
     }
     if(m_hHoverItem)
@@ -590,13 +593,14 @@ void CDuiTreeBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
     {
         DUINMITEMMOUSEEVENT nms;
         nms.hdr.code=DUINM_ITEMMOUSEEVENT;
-        nms.hdr.hwndFrom=NULL;
+        nms.hdr.hDuiWnd=m_hDuiWnd;
         nms.hdr.idFrom=GetCmdID();
+		nms.hdr.pszNameFrom=GetName();
         nms.pItem=NULL;
         nms.uMsg=WM_LBUTTONDBLCLK;
         nms.wParam=nFlags;
         nms.lParam=MAKELPARAM(pt.x,pt.y);
-        DuiNotify((LPNMHDR)&nms);
+        DuiNotify((LPDUINMHDR)&nms);
     }
 
 }
@@ -641,7 +645,7 @@ void CDuiTreeBox::OnMouseLeave()
     }
 }
 
-LRESULT CDuiTreeBox::DuiNotify(LPNMHDR pnms)
+LRESULT CDuiTreeBox::DuiNotify(LPDUINMHDR pnms)
 {
     if(pnms->code==DUINM_LBITEMNOTIFY)
     {

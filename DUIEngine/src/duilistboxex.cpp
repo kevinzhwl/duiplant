@@ -357,9 +357,10 @@ void CDuiListBoxEx::OnDrawItem(CDCHandle & dc, CRect & rc, int iItem)
 	{//虚拟列表，由APP控制显示
 		DUIASSERT(m_pTemplPanel);
 		DUINMGETLBDISPINFO nms;
+		nms.hdr.hDuiWnd=m_hDuiWnd;
 		nms.hdr.code    = DUINM_GETLBDISPINFO;
-		nms.hdr.hwndFrom = NULL;
 		nms.hdr.idFrom  = GetCmdID();
+		nms.hdr.pszNameFrom= GetName();
 		nms.bHover      = iItem == m_iHoverItem;
 		nms.bSelect     = iItem == m_iSelItem;
 		nms.nListItemID = iItem;
@@ -381,7 +382,7 @@ void CDuiListBoxEx::OnDrawItem(CDCHandle & dc, CRect & rc, int iItem)
 		m_pTemplPanel->UnlockUpdate();
 
 		LockUpdate();
-		GetContainer()->OnDuiNotify((LPNMHDR)&nms);
+		GetContainer()->OnDuiNotify((LPDUINMHDR)&nms);
 		UnlockUpdate();
 		m_pTemplPanel->Draw(dc,rc);
 	}else
@@ -395,13 +396,13 @@ BOOL CDuiListBoxEx::Load(pugi::xml_node xmlNode)
     if (!__super::Load(xmlNode))
         return FALSE;
 
-    int			nChildSrc= xmlNode.attribute("itemsrc").as_int(-1);
+    CDuiStringT strSrcName= DUI_CA2T(xmlNode.attribute("itemsrc").value(),CP_UTF8);
 
-    if (nChildSrc == -1)
+    if (strSrcName.IsEmpty())
         return TRUE;
 
 	pugi::xml_document xmlDoc;
-	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,nChildSrc,DUIRES_XML_TYPE))
+	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,strSrcName,DUIRES_XML_TYPE))
 		return FALSE;
 
     return LoadChildren(xmlDoc);
@@ -448,8 +449,10 @@ BOOL CDuiListBoxEx::LoadChildren(pugi::xml_node xmlNode)
 void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
 {
     DUINMLBSELCHANGE nms;
-    nms.hdr.hwndFrom=NULL;
+	nms.hdr.code=DUINM_LBSELCHANGING;
+	nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom=GetCmdID();
+	nms.hdr.pszNameFrom=GetName();
     nms.nOldSel=nOldSel;
     nms.nNewSel=nNewSel;
     nms.uMsg=uMsg;
@@ -468,8 +471,7 @@ void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
 		}
     }
 
-    nms.hdr.code=DUINM_LBSELCHANGING;
-    if(S_OK!=DuiNotify((LPNMHDR)&nms)) return ;
+    if(S_OK!=DuiNotify((LPDUINMHDR)&nms)) return ;
 
 	if(!IsVirtual() && nOldSel!=-1)
 	{
@@ -489,7 +491,7 @@ void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
 
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.code=DUINM_LBSELCHANGED;
-    DuiNotify((LPNMHDR)&nms);
+    DuiNotify((LPDUINMHDR)&nms);
 }
 
 void CDuiListBoxEx::OnMouseLeave()

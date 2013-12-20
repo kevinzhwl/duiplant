@@ -251,15 +251,18 @@ public:                                                             \
 
 #define DUIWIN_IMAGE_ATTRIBUTE(attribname, varname, allredraw)        \
 	if (attribname == strAttribName)                            \
-		{                                                           \
-		int nPos=strValue.ReverseFind(':');\
+		{                                                       \
+		CDuiStringT strValueT=DUI_CA2T(strValue,CP_UTF8);		\
+		int nPos=strValueT.ReverseFind(':');\
 		if(nPos!=-1)\
-			{\
-			CDuiStringT strType=DUI_CA2T(strValue.Right(strValue.GetLength()-nPos-1),CP_UTF8);\
-			varname = DuiImgPool::getSingleton().GetImage(StrToIntA(strValue.Left(nPos)),strType);        \
-			}else\
-			varname = DuiImgPool::getSingleton().GetImage(StrToIntA(strValue));        \
-			if(varname) varname->AddRef();							\
+		{\
+			CDuiStringT strType=strValueT.Right(strValue.GetLength()-nPos-1);\
+			varname = DuiImgPool::getSingleton().GetImage(strValueT.Left(nPos),strType);        \
+			if(varname) varname->AddRef();	\
+			hRet = allredraw ? S_OK : S_FALSE;                      \
+		}else\
+			varname = DuiImgPool::getSingleton().GetImage(strValueT);        \
+			if(varname) varname->AddRef();	\
 			hRet = allredraw ? S_OK : S_FALSE;                      \
 		}                                                           \
 		else                                                        \

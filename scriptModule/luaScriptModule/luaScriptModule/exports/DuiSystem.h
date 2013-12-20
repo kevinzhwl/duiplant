@@ -14,7 +14,6 @@ BOOL ExpLua_DuiSystem(lua_State *L)
 		lua_tinker::class_def<DuiSystem>(L,"SetLogger",&DuiSystem::SetLogger);
 		lua_tinker::class_def<DuiSystem>(L,"GetLogger",&DuiSystem::GetLogger);
 		lua_tinker::class_def<DuiSystem>(L,"logEvent",(FUN_LOGEVENT)&DuiSystem::logEvent);
-		lua_tinker::class_def<DuiSystem>(L,"Name2ID",&DuiSystem::Name2ID);
 		lua_tinker::class_def<DuiSystem>(L,"GetScriptModule",&DuiSystem::GetScriptModule);
 		lua_tinker::class_def<DuiSystem>(L,"SetScriptModule",&DuiSystem::SetScriptModule);
 		lua_tinker::def(L,"DuiSystem_getSingleton",&DuiSystem::getSingletonPtr);

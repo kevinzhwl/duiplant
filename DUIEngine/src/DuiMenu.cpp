@@ -190,12 +190,12 @@ CDuiMenu::~CDuiMenu(void)
     DestroyMenu();
 }
 
-BOOL CDuiMenu::LoadMenu( UINT uResID )
+BOOL CDuiMenu::LoadMenu( LPCTSTR pszResName )
 {
     if(::IsMenu(m_hMenu)) return FALSE;
 
 	pugi::xml_document xmlDoc;
-	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,uResID,DUIRES_XML_TYPE)) return FALSE;
+	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,pszResName,DUIRES_XML_TYPE)) return FALSE;
 
 	pugi::xml_node xmlMenu=xmlDoc.child("menu");
     if(!xmlMenu)  return FALSE;

@@ -53,14 +53,14 @@ public:
 	\param CDuiWindow *pSender
 		CDuiWindow based object that should be passed, by any appropriate means, to the scripted function.
 
-	\param LPNMHDR pNmhdr
+	\param LPDUINMHDR pNmhdr
 		notify message 
 
 	\return
 		- true if the event was handled.
 		- false if the event was not handled.
 	*/
-	virtual	bool	executeScriptedEventHandler(LPCSTR handler_name, CDuiWindow *pSender, LPNMHDR pNmhdr)=0;
+	virtual	bool	executeScriptedEventHandler(LPCSTR handler_name, CDuiWindow *pSender, LPDUINMHDR pNmhdr)=0;
 
 
     /*!

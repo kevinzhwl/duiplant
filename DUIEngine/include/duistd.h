@@ -1,4 +1,3 @@
-#include "duidef.h"
 
 #ifdef DLL_DUI
 # ifdef DUIENGINE_EXPORTS
@@ -11,6 +10,15 @@
 #define DUI_EXP
 #endif
 
+// Change these values to use different versions
+#define WINVER		0x0500
+#define _WIN32_WINNT	0x0501
+#define _WIN32_IE	0x0601
+#define _RICHEDIT_VER	0x0200
+
+#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_NON_CONFORMING_SWPRINTFS
+
 
 # pragma warning(disable:4661)
 # pragma warning(disable:4251)
@@ -22,6 +30,8 @@
 #include <OleCtl.h>
 #include <tchar.h>
 #include <stdio.h>
+
+#include "duidef.h"
 
 //export pugixml interface
 #include "../dependencies/pugixml/pugixml.hpp"

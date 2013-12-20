@@ -14,7 +14,7 @@ public:
     {
     }
 
-    BOOL Init(UINT uXmlID);
+    BOOL Init(LPCTSTR pszXmlName);
 	BOOL Init(pugi::xml_node xmlNode);
 
 	pugi::xml_node GetDefAttribute(LPCSTR pszClassName);

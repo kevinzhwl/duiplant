@@ -2,7 +2,6 @@
 #include "DuiSystem.h"
 #include "mybuffer.h"
 #include "SimpleWnd.h"
-#include <search.h>
 
 
 namespace DuiEngine
@@ -15,7 +14,6 @@ DuiSystem::DuiSystem(HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")
     ,m_pResProvider(NULL)
     ,m_pLogger(NULL)
 	,m_pScriptModule(NULL)
-    ,m_pBuf(NULL),m_nCount(0)
 	,m_funCreateTextServices(NULL)
 {
     createSingletons();
@@ -28,64 +26,9 @@ DuiSystem::~DuiSystem(void)
 {
     destroySingletons();
 	CSimpleWndHelper::Destroy();
-    //name id map
-    if(m_pBuf && m_nCount) delete []m_pBuf;
-    m_nCount=0;
-    m_pBuf=NULL;
 
 	if(m_rich20) FreeLibrary(m_rich20);
 	m_funCreateTextServices=NULL;
-}
-
-size_t DuiSystem::InitName2ID( UINT uXmlResID ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/)
-{
-    if(m_nCount)
-    {
-        DUIASSERT(m_pBuf);
-        delete []m_pBuf;
-        m_pBuf=NULL;
-        m_nCount=0;
-    }
-
-    DuiResProviderPE resProvider(m_hInst,NULL);
-
-    DWORD dwSize=resProvider.GetRawBufferSize(pszType,uXmlResID);
-    if(dwSize==0) return 0;
-
-    CMyBuffer<char> strXml;
-    strXml.Allocate(dwSize);
-    resProvider.GetRawBuffer(pszType,uXmlResID,strXml,dwSize);
-
-	pugi::xml_document xmlDoc;
-	if(!xmlDoc.load_buffer(strXml,strXml .size(),pugi::parse_default,pugi::encoding_utf8)) return 0;
-
-	pugi::xml_node xmlNode=xmlDoc.first_child();
-	while(xmlNode)
-	{
-		DUIASSERT(strcmp(xmlNode.name(),"name2id")==0);
-		xmlNode=xmlNode.next_sibling();
-		m_nCount++;
-	}
-	m_pBuf=new CNamedID[m_nCount];
-
-	xmlNode=xmlDoc.first_child();
-	int iItem=0;
-	while(xmlNode)
-	{
-		m_pBuf[iItem++]=CNamedID(xmlNode.attribute("name").value(),xmlNode.attribute("id").as_int(0));
-		xmlNode=xmlNode.next_sibling();
-	}
-	qsort(m_pBuf,m_nCount,sizeof(CNamedID),CNamedID::Compare);
-
-	return m_nCount;
-}
-
-UINT DuiSystem::Name2ID( LPCSTR strName )
-{
-    if(m_nCount==0) return 0;
-    CNamedID *pFind=(CNamedID*)bsearch(&CNamedID(strName,0),m_pBuf,m_nCount,sizeof(CNamedID),CNamedID::Compare);
-    if(pFind) return pFind->uID;
-    else return 0;
 }
 
 void DuiSystem::createSingletons()
@@ -101,7 +44,7 @@ void DuiSystem::createSingletons()
     new DuiFontPool();
     new DuiStylePool();
     new DuiImgPool();
-
+	new DuiName2ID();
 }
 
 void DuiSystem::destroySingletons()
@@ -117,6 +60,7 @@ void DuiSystem::destroySingletons()
     delete DuiImgPool::getSingletonPtr();
     delete DuiThreadActiveWndManager::getSingletonPtr();
     delete DuiWindowManager::getSingletonPtr();
+	delete DuiName2ID::getSingletonPtr();
 }
 
 void DuiSystem::logEvent( LPCTSTR message, LoggingLevel level /*= Standard*/ )
@@ -135,10 +79,10 @@ void DuiSystem::logEvent(LoggingLevel level , LPCTSTR pszFormat, ...)
     m_pLogger->logEvent(szBuffer,level);
 }
 
-BOOL DuiSystem::Init( UINT uXmlResID ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 {
 	pugi::xml_document xmlDoc;
-	if(!LoadXmlDocment(xmlDoc,uXmlResID,pszType)) return FALSE;
+	if(!LoadXmlDocment(xmlDoc,pszName,pszType)) return FALSE;
 	//set default font
 	pugi::xml_node xmlFont;
 	xmlFont=xmlDoc.first_child().child("font");
@@ -174,27 +118,27 @@ BOOL DuiSystem::Init( UINT uXmlResID ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 	return TRUE;
 }
 
-BOOL DuiSystem::LoadXmlDocment(pugi::xml_document & xmlDoc, UINT uXmlResID ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL DuiSystem::LoadXmlDocment(pugi::xml_document & xmlDoc, LPCTSTR pszXmlName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 {
 	DUIASSERT(GetResProvider());
 	DuiResProviderBase *pRes=DuiSystem::getSingleton().GetResProvider();
 	if(!pRes) return FALSE;
 
-	DWORD dwSize=pRes->GetRawBufferSize(pszType,uXmlResID);
+	DWORD dwSize=pRes->GetRawBufferSize(pszType,pszXmlName);
 	if(dwSize==0) return FALSE;
 
 	CMyBuffer<char> strXml;
 	strXml.Allocate(dwSize);
-	pRes->GetRawBuffer(pszType,uXmlResID,strXml,dwSize);
+	pRes->GetRawBuffer(pszType,pszXmlName,strXml,dwSize);
 
 	pugi::xml_parse_result result= xmlDoc.load_buffer(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8);
-	DUIRES_ASSERTA(result,"parse xml error! resid=%d,desc=%s,offset=%d",uXmlResID,result.description(),result.offset);
+	DUIRES_ASSERTA(result,"parse xml error! xmlName=%s,desc=%s,offset=%d",pszXmlName,result.description(),result.offset);
 	return result;
 }
 
-BOOL DuiSystem::SetMsgBoxTemplate( UINT uXmlResID,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL DuiSystem::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 {
-	if(!LoadXmlDocment(m_xmlMsgBoxTempl,uXmlResID,pszType)) goto format_error;
+	if(!LoadXmlDocment(m_xmlMsgBoxTempl,pszXmlName,pszType)) goto format_error;
 	if(!m_xmlMsgBoxTempl.child("layer").attribute("frame_size").value()[0]) goto format_error;
 	if(!m_xmlMsgBoxTempl.child("layer").attribute("minsize").value()[0]) goto format_error;
 

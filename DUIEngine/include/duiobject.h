@@ -91,15 +91,24 @@ public:
 		pugi::xml_node defAttr = DuiCSS::getSingleton().GetDefAttribute(GetObjectClass());
 		if(defAttr)
 		{
+			//优先处理"class"属性
+			pugi::xml_attribute attrClass=defAttr.attribute("class");
+			if(attrClass) SetAttribute(attrClass.name(), attrClass.value(), TRUE);
 			for (pugi::xml_attribute attr = defAttr.first_attribute(); attr; attr = attr.next_attribute())
 			{
+				if(strcmp(attr.name(),"class")==0) continue;
 				SetAttribute(attr.name(), attr.value(), TRUE);
 			}
 		}
 
         //设置当前对象的属性
+
+		//优先处理"class"属性
+		pugi::xml_attribute attrClass=xmlNode.attribute("class");
+		if(attrClass) SetAttribute(attrClass.name(), attrClass.value(), TRUE);
 		for (pugi::xml_attribute attr = xmlNode.first_attribute(); attr; attr = attr.next_attribute())
         {
+			if(strcmp(attr.name(),"class")==0) continue;
             SetAttribute(attr.name(), attr.value(), TRUE);
         }
         OnAttributeFinish(xmlNode);

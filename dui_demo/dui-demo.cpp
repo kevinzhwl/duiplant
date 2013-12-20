@@ -84,7 +84,18 @@ protected:
 	int m_nStates;
 };
 
-
+BOOL LoadXmlFromResource(pugi::xml_document & xmlDoc,HINSTANCE hInst,LPCTSTR pszName,LPCTSTR pszType)
+{
+	DuiResProviderPE res(hInst);
+	DWORD dwSize=res.GetRawBufferSize(pszType,pszName);
+	if(dwSize==0) return FALSE;
+	CMyBuffer<char> strXml;
+	strXml.Allocate(dwSize);
+	res.GetRawBuffer(pszType,pszName,strXml,dwSize);
+	pugi::xml_parse_result result= xmlDoc.load_buffer(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8);
+	DUIRES_ASSERTA(result,"parse xml error! xmlName=%s,desc=%s,offset=%d",pszName,result.description(),result.offset);
+	return result;
+}
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
@@ -97,11 +108,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	DuiSystem::getSingletonPtr();
 
 	DuiResProviderZip *pResModeSel= new DuiResProviderZip;
-	pResModeSel->Init(hInstance,IDR_ZIP_MODESEL,_T("ZIP"));
+	pResModeSel->Init(hInstance,MAKEINTRESOURCE(IDR_ZIP_MODESEL),_T("ZIP"));
 	pDuiModeSel->SetResProvider(pResModeSel);
- 	DuiSkinPool::getSingleton().Init(100); // 加载皮肤,为了不依赖于程序中的宏定义，此处的ID采用硬编码
- 	DuiStylePool::getSingleton().Init(101); // 加载风格
- 	DuiCSS::getSingleton().Init(104);//加载类默认属性
+ 	DuiSkinPool::getSingleton().Init(_T("xml_skin")); // 加载皮肤,为了不依赖于程序中的宏定义，此处的ID采用硬编码
+ 	DuiStylePool::getSingleton().Init(_T("xml_style")); // 加载风格
+ 	DuiCSS::getSingleton().Init(_T("xml_defattr"));//加载类默认属性
 	int nMode=-1;
  	{
  		CResModeSelDlg dlgModeSel;  
@@ -137,7 +148,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	DefaultLogger loger;
 	loger.setLogFilename(CDuiStringT(szCurrentDir)+_T("\\dui-demo.log")); 
 	pDuiSystem->SetLogger(&loger);
-	pDuiSystem->InitName2ID(IDR_NAME2ID,_T("XML2"));//加载ID名称对照表,该资源属于APP级别，所有皮肤应该共享该名字表，名字表总是从程序资源加载
+
+	//加载ID名称对照表
+	pugi::xml_document xmlNamedID;
+	LoadXmlFromResource(xmlNamedID,hInstance,MAKEINTRESOURCE(IDR_NAME2ID),_T("XML2"));
+	DuiName2ID::getSingletonPtr()->Init(xmlNamedID.first_child());
 
 	//根据选择的资源加载模式生成resprovider 
 	switch(nMode)
@@ -189,8 +204,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 // 	bOK=DuiStylePool::getSingleton().Init(IDR_DUI_STYLE_DEF); // 加载风格
 // 	bOK=DuiCSS::getSingleton().Init(IDR_DUI_OBJATTR_DEF);//加载类默认属性
 
-	BOOL bOK=pDuiSystem->Init(IDR_DUI_INIT); //初始化DUI系统,原来的系统初始化方式依然可以使用。
-	pDuiSystem->SetMsgBoxTemplate(IDR_DUI_MSGBOX);
+	BOOL bOK=pDuiSystem->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
+	pDuiSystem->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
 
 #if defined(DLL_DUI) && !defined(_WIN64)
 	CLuaScriptModule scriptLua;

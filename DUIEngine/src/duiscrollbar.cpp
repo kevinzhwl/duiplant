@@ -379,13 +379,14 @@ LRESULT CDuiScrollBar::NotifySbCode(UINT uCode,int nPos)
 {
     DUINMSCROLL nms;
     nms.hdr.code=DUINM_SCROLL;
+	nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom=GetCmdID();
-    nms.hdr.hwndFrom=NULL;
+    nms.hdr.pszNameFrom=GetName();
     nms.uSbCode=uCode;
     nms.pScrollBar=this;
     nms.nPos=nPos;
     nms.bVertical=IsVertical();
-    return DuiNotify((LPNMHDR)&nms);
+    return DuiNotify((LPDUINMHDR)&nms);
 }
 
 }//namespace DuiEngine

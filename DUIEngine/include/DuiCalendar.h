@@ -97,7 +97,7 @@ namespace DuiEngine
 		void DrawDay(CDCHandle &dc,CRect & rcDay,WORD iDay );
 		void RedrawDay(WORD iDay);
 
-		bool OnTodayClick(CDuiWindow * pSender, LPNMHDR pNmhdr);
+		bool OnTodayClick(CDuiWindow * pSender, LPDUINMHDR pNmhdr);
 
 		DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
 			DUIWIN_INT_ATTRIBUTE("titleHeight", m_nTitleHei, FALSE)

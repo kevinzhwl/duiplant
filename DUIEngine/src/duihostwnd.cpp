@@ -16,28 +16,27 @@ namespace DuiEngine
 //////////////////////////////////////////////////////////////////////////
 // CDuiHostWnd
 //////////////////////////////////////////////////////////////////////////
-CDuiHostWnd::CDuiHostWnd(UINT uResID/* =0*/)
-    : m_uResID(uResID)
-    , m_uRetCode(0)
-    , m_nIdleCount(0)
-    , m_bExitModalLoop(FALSE)
-    , m_bTrackFlag(FALSE)
-    , m_dwDlgStyle(0)
-    , m_dwDlgExStyle(0)
-    , m_bTranslucent(FALSE)
-    , m_bCaretShowing(FALSE)
-    , m_hBmpCaret(NULL)
-    , m_bCaretActive(FALSE)
-    , m_bNeedRepaint(FALSE)
-    , m_bNeedAllRepaint(TRUE)
-    , m_bResizable(FALSE)
-    , m_szMin(200, 200)
-    , m_pTipCtrl(NULL)
-	, m_dummyWnd(this)
+CDuiHostWnd::CDuiHostWnd( LPCTSTR pszResName /*= NULL*/ )
+:m_strXmlLayout(pszResName)
+, m_uRetCode(0)
+, m_nIdleCount(0)
+, m_bExitModalLoop(FALSE)
+, m_bTrackFlag(FALSE)
+, m_dwDlgStyle(0)
+, m_dwDlgExStyle(0)
+, m_bTranslucent(FALSE)
+, m_bCaretShowing(FALSE)
+, m_hBmpCaret(NULL)
+, m_bCaretActive(FALSE)
+, m_bNeedRepaint(FALSE)
+, m_bNeedAllRepaint(TRUE)
+, m_bResizable(FALSE)
+, m_szMin(200, 200)
+, m_pTipCtrl(NULL)
+, m_dummyWnd(this)
 {
-    SetContainer(this);
+	SetContainer(this);
 }
-
 
 HWND CDuiHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight,LPVOID lpParam)
 {
@@ -53,7 +52,7 @@ HWND CDuiHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWO
 
     SetContainer(this);
 
-    if(m_uResID)  Load(m_uResID);
+    if(!m_strXmlLayout.IsEmpty())  Load(m_strXmlLayout);
 
 	if(nWidth==0 || nHeight==0) CenterWindow(hWnd);
     return hWnd;
@@ -64,10 +63,10 @@ HWND CDuiHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
     return Create(hWndParent, NULL,WS_POPUP | WS_CLIPCHILDREN | WS_TABSTOP,0,x,y,nWidth,nHeight,0);
 }
 
-BOOL CDuiHostWnd::Load(UINT uResID)
+BOOL CDuiHostWnd::Load(LPCTSTR pszXmlName)
 {
 	pugi::xml_document xmlDoc;
-	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,uResID,DUIRES_XML_TYPE)) return FALSE;
+	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,pszXmlName,DUIRES_XML_TYPE)) return FALSE;
 
     return SetXml(xmlDoc.child("layer"));
 }
@@ -618,7 +617,7 @@ void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
 	DoFrameEvent(WM_ACTIVATE,MAKEWPARAM(nState,bMinimized),(LPARAM)wndOther);
 }
 
-LRESULT CDuiHostWnd::OnDuiNotify(LPNMHDR pHdr)
+LRESULT CDuiHostWnd::OnDuiNotify(LPDUINMHDR pHdr)
 {
     if(pHdr->code==DUINM_REALWND_CREATE) return (LRESULT)OnRealWndCreate(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
     else if(pHdr->code==DUINM_REALWND_INIT) return OnRealWndInit(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
@@ -633,7 +632,7 @@ LRESULT CDuiHostWnd::OnDuiNotify(LPNMHDR pHdr)
         return 0;
     }
 
-    return SendMessage(WM_NOTIFY,IDC_RICHVIEW_WIN,(LPARAM)pHdr);
+    return SendMessage(UM_DUI_NOTIFY,IDC_RICHVIEW_WIN,(LPARAM)pHdr);
 }
 
 CRect CDuiHostWnd::GetContainerRect()

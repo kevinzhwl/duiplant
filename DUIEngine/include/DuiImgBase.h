@@ -8,7 +8,7 @@ namespace DuiEngine
 class DUI_EXP CDuiImgBase : public CDuiRef
 {
 public:
-    virtual BOOL LoadFromResource(HINSTANCE hInst,LPCTSTR pszType,UINT uID)=NULL;
+    virtual BOOL LoadFromResource(HINSTANCE hInst,LPCTSTR pszType,LPCTSTR pszResName)=NULL;
     virtual BOOL LoadFromFile(LPCTSTR pszPath)=NULL;
     virtual BOOL LoadFromMemory(LPVOID pBuf,DWORD dwSize)=NULL;
 

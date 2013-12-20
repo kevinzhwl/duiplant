@@ -9,10 +9,10 @@ namespace DuiEngine
 template<> DuiCSS *Singleton<DuiCSS>::ms_Singleton =0;
 
 
-BOOL DuiCSS::Init(UINT uXmlID)
+BOOL DuiCSS::Init(LPCTSTR pszXmlName)
 {
 	pugi::xml_document xmlDoc;
-	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,uXmlID)) return FALSE;
+	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,pszXmlName)) return FALSE;
 	return Init(xmlDoc.child("objattr"));
 }
 

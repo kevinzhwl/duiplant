@@ -23,20 +23,20 @@ public:
         if (!CDuiWindow::Load(xmlNode))
             return FALSE;
 
-        int			nChildSrc=xmlNode.attribute("src").as_int(-1);
+        CDuiStringT	strChildSrc=DUI_CA2T(xmlNode.attribute("src").value(),CP_UTF8);
 
-        if (nChildSrc == -1)
+        if (strChildSrc.IsEmpty())
             return FALSE;
 
         DuiResProviderBase *pRes=DuiSystem::getSingleton().GetResProvider();
         if(!pRes) return FALSE;
 
-        DWORD dwSize=pRes->GetRawBufferSize(DUIRES_XML_TYPE,nChildSrc);
+        DWORD dwSize=pRes->GetRawBufferSize(DUIRES_XML_TYPE,strChildSrc);
         if(dwSize==0) return FALSE;
 
         CMyBuffer<char> strXml;
         strXml.Allocate(dwSize);
-        pRes->GetRawBuffer(DUIRES_XML_TYPE,nChildSrc,strXml,dwSize);
+        pRes->GetRawBuffer(DUIRES_XML_TYPE,strChildSrc,strXml,dwSize);
 
 		pugi::xml_document xmlDoc;
 

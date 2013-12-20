@@ -32,7 +32,7 @@ public:
 
     virtual LRESULT DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
-    virtual LRESULT CDuiItemPanel::OnDuiNotify(LPNMHDR pHdr);
+    virtual LRESULT CDuiItemPanel::OnDuiNotify(LPDUINMHDR pHdr);
 
     virtual CRect GetContainerRect();
 

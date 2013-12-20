@@ -625,15 +625,16 @@ int CDuiListCtrl::GetTopIndex() const
 void CDuiListCtrl::NotifySelChange(int nOldSel, int nNewSel, UINT uMsg)
 {
     DUINMLBSELCHANGE nms;
-    nms.hdr.hwndFrom = NULL;
+	nms.hdr.code     = DUINM_LBSELCHANGING;
+    nms.hdr.hDuiWnd = m_hDuiWnd;
     nms.hdr.idFrom   = GetCmdID();
+	nms.hdr.pszNameFrom=GetName();
     nms.nOldSel      = nOldSel;
     nms.nNewSel      = nNewSel;
     nms.uMsg         = uMsg;
     nms.uHoverID     = 0;
-    nms.hdr.code     = DUINM_LBSELCHANGING;
 
-    if (S_OK != DuiNotify((LPNMHDR)&nms))
+    if (S_OK != DuiNotify((LPDUINMHDR)&nms))
         return;
 
     m_nSelectItem = nNewSel;
@@ -645,7 +646,7 @@ void CDuiListCtrl::NotifySelChange(int nOldSel, int nNewSel, UINT uMsg)
 
     nms.hdr.idFrom = GetCmdID();
     nms.hdr.code   = DUINM_LBSELCHANGED;
-    DuiNotify((LPNMHDR)&nms);            
+    DuiNotify((LPDUINMHDR)&nms);            
 }
 
 BOOL CDuiListCtrl::OnScroll(BOOL bVertical, UINT uCode, int nPos)
@@ -699,12 +700,12 @@ void CDuiListCtrl::OnSize(UINT nType, CSize size)
 	UpdateHeaderCtrl();
 }
 
-bool CDuiListCtrl::OnHeaderClick(CDuiWindow* pSender, LPNMHDR pNmhdr)
+bool CDuiListCtrl::OnHeaderClick(CDuiWindow* pSender, LPDUINMHDR pNmhdr)
 {
     return true;
 }
 
-bool CDuiListCtrl::OnHeaderSizeChanging(CDuiWindow* pSender, LPNMHDR pNmhdr)
+bool CDuiListCtrl::OnHeaderSizeChanging(CDuiWindow* pSender, LPDUINMHDR pNmhdr)
 {
 	UpdateScrollBar();
     NotifyInvalidateRect(GetListRect());
@@ -712,7 +713,7 @@ bool CDuiListCtrl::OnHeaderSizeChanging(CDuiWindow* pSender, LPNMHDR pNmhdr)
     return true;
 }
 
-bool CDuiListCtrl::OnHeaderSwap(CDuiWindow* pSender, LPNMHDR pNmhdr)
+bool CDuiListCtrl::OnHeaderSwap(CDuiWindow* pSender, LPDUINMHDR pNmhdr)
 {
     NotifyInvalidateRect(GetListRect());
 

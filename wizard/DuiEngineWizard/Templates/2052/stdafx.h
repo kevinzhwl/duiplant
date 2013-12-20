@@ -12,7 +12,7 @@
 #include <DuiCSS.h>
 
 #include "resource.h"	//APP资源
-#include "duires/res.h" //包含DUI资源定义
+#include "duires/winres.h" //包含DUI资源定义
 
 using namespace DuiEngine;
 

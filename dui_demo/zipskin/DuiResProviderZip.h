@@ -19,18 +19,18 @@ public:
 	DuiResProviderZip(CDuiImgDecoder *pImgDecoder=NULL);
 	~DuiResProviderZip(void);
 
-	HBITMAP	LoadBitmap(LPCTSTR strType,UINT uID);
-	HICON   LoadIcon(LPCTSTR strType,UINT uID,int cx=0,int cy=0);
-	CDuiImgBase * LoadImage(LPCTSTR strType,UINT uID);
-	size_t GetRawBufferSize(LPCTSTR strType,UINT uID);
-	BOOL GetRawBuffer(LPCTSTR strType,UINT uID,LPVOID pBuf,size_t size);
-	BOOL HasResource(LPCTSTR strType,UINT uID);
+	HBITMAP	LoadBitmap(LPCTSTR strType,LPCTSTR pszResName);
+	HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0);
+	CDuiImgBase * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
+	size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
+	BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
+	BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
 
 	BOOL Init(LPCTSTR pszZipFile);
-	BOOL Init(HINSTANCE hInst,UINT uID,LPCTSTR pszType=_T("ZIP"));
+	BOOL Init(HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszType=_T("ZIP"));
 protected:
 	BOOL LoadSkin();
-	CDuiStringT GetFilePath(UINT uID,LPCTSTR pszType);
+	CDuiStringT GetFilePath(LPCTSTR pszResName,LPCTSTR pszType);
 	CDuiMap<DuiResID,CDuiStringT> m_mapFiles;
 
 	CZipArchive m_zipFile;

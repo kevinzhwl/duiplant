@@ -241,13 +241,13 @@ BOOL CDuiListBox::Load(pugi::xml_node xmlNode)
     if (!__super::Load(xmlNode))
         return FALSE;
 
-    int	nChildSrc= xmlNode.attribute("itemsrc").as_int(-1);
+    CDuiStringT strChildSrc = DUI_CA2T(xmlNode.attribute("itemsrc").value(),CP_UTF8);
 
-    if (nChildSrc == -1)
+    if (strChildSrc.IsEmpty())
         return TRUE;
 
 	pugi::xml_document xmlDoc;
-	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,nChildSrc,DUIRES_XML_TYPE)) return FALSE;
+	if(!DuiSystem::getSingleton().LoadXmlDocment(xmlDoc,strChildSrc,DUIRES_XML_TYPE)) return FALSE;
 
     return LoadChildren(xmlDoc.first_child());
 }
@@ -417,15 +417,16 @@ void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
 void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
 {
     DUINMLBSELCHANGE nms;
-    nms.hdr.hwndFrom=NULL;
+	nms.hdr.code=DUINM_LBSELCHANGING;
+    nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom=GetCmdID();
+	nms.hdr.pszNameFrom=GetName();
     nms.nOldSel=nOldSel;
     nms.nNewSel=nNewSel;
     nms.uMsg=uMsg;
     nms.uHoverID=0;
 
-    nms.hdr.code=DUINM_LBSELCHANGING;
-    if(S_OK!=DuiNotify((LPNMHDR)&nms)) return ;
+    if(S_OK!=DuiNotify((LPDUINMHDR)&nms)) return ;
 
     m_iSelItem=nNewSel;
     if(nOldSel!=-1)
@@ -436,7 +437,7 @@ void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
 
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.code=DUINM_LBSELCHANGED;
-    DuiNotify((LPNMHDR)&nms);
+    DuiNotify((LPDUINMHDR)&nms);
 }
 
 void CDuiListBox::OnPaint(CDCHandle dc)

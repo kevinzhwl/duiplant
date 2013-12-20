@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "tinyxml/tinyxml.h"
 
 #define RB_HEADER_W	L"/*<---------------------------RES_BUILDER:begin-----------------------------------*/"
 #define RB_TAILOR_W	L"/*----------------------------RES_BUILDER:end------------------------------------->*/"
@@ -18,8 +19,7 @@
 struct IDMAPRECORD
 {
 	WCHAR szType[100];
-	int	 nID;
-	WCHAR szID[200];
+	WCHAR szName[200];
 	WCHAR szPath[MAX_PATH];
 };
 
@@ -189,6 +189,8 @@ int UpdateName2ID(map<string,int> *pmapName2ID,TiXmlDocument *pXmlDocName2ID,TiX
 
 #define ID_AUTO_START	65536
 
+
+//residbuilder -y -p skin -i skin\index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h
 int _tmain(int argc, _TCHAR* argv[])
 {
 	string strSkinPath;	//皮肤路径,相对于程序的.rc文件
@@ -337,10 +339,8 @@ int _tmain(int argc, _TCHAR* argv[])
 							const char *pszValue;
 							pszValue=xmlEle->Attribute("type");
 							if(pszValue) MultiByteToWideChar(CP_UTF8,0,pszValue,-1,rec.szType,100);
-							pszValue=xmlEle->Attribute("id");
-							if(pszValue) rec.nID=atoi(pszValue);
-							pszValue=xmlEle->Attribute("id_name");
-							if(pszValue) MultiByteToWideChar(CP_UTF8,0,pszValue,-1,rec.szID,200);
+							pszValue=xmlEle->Attribute("name");
+							if(pszValue) MultiByteToWideChar(CP_UTF8,0,pszValue,-1,rec.szName,200);
 							pszValue=xmlEle->Attribute("file");
 							if(pszValue)
 							{
@@ -350,11 +350,7 @@ int _tmain(int argc, _TCHAR* argv[])
 								MultiByteToWideChar(CP_UTF8,0,str.c_str(),str.length(),rec.szPath,MAX_PATH);
 							}
 
-							if(rec.szType[0] && rec.nID && rec.szPath[0])
-							{
-								if(rec.szID[0]==0) swprintf(rec.szID,L"IDC_%s_%d",rec.szType,rec.nID);
-								vecIdMapRecord.push_back(rec);
-							}
+							vecIdMapRecord.push_back(rec);
 						}
 						xmlEle=xmlEle->NextSiblingElement();
 					}
@@ -372,7 +368,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				WCHAR szRec[2000];
 				wstring strFile=BuildPath(it2->szPath);
-				swprintf(szRec,L"DEFINE_%s(%s,\t%d,\t\"%s\")\n",it2->szType,it2->szID,it2->nID,strFile.c_str());
+				swprintf(szRec,L"DEFINE_%s(%s,\t%\"%s\")\n",it2->szType,it2->szName,strFile.c_str());
 				strOut+=szRec;
 				it2++;
 			}

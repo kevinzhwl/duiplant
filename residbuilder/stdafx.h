@@ -24,10 +24,3 @@ using namespace std;
 
 #include "XGetopt.h"
 
-#include <tinyxml.h>
-#ifdef _DEBUG
-#pragma comment(lib,"tinyxml_d.lib")
-#else
-#pragma comment(lib,"tinyxml.lib")
-#endif // _DEBUG
-

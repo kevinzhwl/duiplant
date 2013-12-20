@@ -109,7 +109,7 @@ CUIHander::~CUIHander(void)
 {
 }
 
-bool Evt_Test2(CDuiWindow * pSender, LPNMHDR pNmhdr)
+bool Evt_Test2(CDuiWindow * pSender, LPDUINMHDR pNmhdr)
 {
 	pSender->GetUserData();
 // 	CUIHander * p=(CUIHander *)pSender->GetUserData();
@@ -119,7 +119,7 @@ bool Evt_Test2(CDuiWindow * pSender, LPNMHDR pNmhdr)
 	return true;
 }
 
-bool CUIHander::Evt_Test(CDuiWindow * pSender, LPNMHDR pNmhdr)
+bool CUIHander::Evt_Test(CDuiWindow * pSender, LPDUINMHDR pNmhdr)
 {
 // 	pSender->subscribeEvent(DUINM_COMMAND,Subscriber(Evt_Test2));
 // 	pSender->unsubscribeEvent(DUINM_COMMAND,Subscriber(&CUIHander::Evt_Test,this));
@@ -199,7 +199,7 @@ void CUIHander::OnRepEditSel()
 
 }
 
-LRESULT CUIHander::OnEditNotify( LPNMHDR pNHdr )
+LRESULT CUIHander::OnEditNotify( LPDUINMHDR pNHdr )
 {
 	LPDUIRICHEDITNOTIFY pEditNotify=(LPDUIRICHEDITNOTIFY)pNHdr;
 	if(pEditNotify->iNotify==EN_CHANGE)
@@ -209,14 +209,14 @@ LRESULT CUIHander::OnEditNotify( LPNMHDR pNHdr )
 }
 
 //演示阻止combobox继续发送selchanged消息。
-LRESULT CUIHander::OnComboListSelChanging( LPNMHDR pNHdr )
+LRESULT CUIHander::OnComboListSelChanging( LPDUINMHDR pNHdr )
 {
 	LPDUINMLBSELCHANGE pLbSelChange=(LPDUINMLBSELCHANGE)pNHdr;
 	return pLbSelChange->uHoverID==3?S_FALSE:S_OK;//点击删除按钮时下拉窗口不关闭
 }
   
 //演示combobox选择改变的事件响应
-LRESULT CUIHander::OnComboListSelChanged( LPNMHDR pNHdr )
+LRESULT CUIHander::OnComboListSelChanged( LPDUINMHDR pNHdr )
 {
 	LPDUINMLBSELCHANGE pLbSelChange=(LPDUINMLBSELCHANGE)pNHdr;
 	CDuiComboBox *pCombobox=(CDuiComboBox*)m_pMainDlg->FindChildByCmdID(1310);
@@ -224,7 +224,7 @@ LRESULT CUIHander::OnComboListSelChanged( LPNMHDR pNHdr )
 }
 
 //演示响应combobox选项中按钮事件的响应
-LRESULT CUIHander::OnComboListItemNotify( LPNMHDR pNHdr )
+LRESULT CUIHander::OnComboListItemNotify( LPDUINMHDR pNHdr )
 {
 	LPDUINMITEMNOTIFY pItemNHdr=(LPDUINMITEMNOTIFY)pNHdr;
 	if(pItemNHdr->pOriginHdr->idFrom==3) 
@@ -259,7 +259,7 @@ void CUIHander::OnDuiMenu()
 	CPoint pt; 
 	GetCursorPos(&pt);
 	CDuiMenu menu;  
-	menu.LoadMenu(IDR_MENU_TEST); //load menu
+	menu.LoadMenu(_T("IDR_MENU_TEST")); //load menu
 	CDuiMenu subMenu=menu.GetSubMenu(5);
 	CheckMenuRadioItem(subMenu.m_hMenu,51,53,52,MF_BYCOMMAND);
 // 	CDuiMenu subMenu2; 
@@ -281,14 +281,14 @@ void CUIHander::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 }
 
 //演示列表中的按钮控件的响应
-LRESULT CUIHander::OnListBtnClick( LPNMHDR pNHdr )
+LRESULT CUIHander::OnListBtnClick( LPDUINMHDR pNHdr )
 {
 	DUINMITEMNOTIFY *pNHdrEx=(DUINMITEMNOTIFY*)pNHdr;
 
 	return S_OK;
 }
 
-LRESULT CUIHander::OnListPredraw( LPNMHDR pNHdr )
+LRESULT CUIHander::OnListPredraw( LPDUINMHDR pNHdr )
 {
 	LPDUINMGETLBDISPINFO lpNHdrEx=(LPDUINMGETLBDISPINFO)pNHdr;
 	CDuiStringT str;
@@ -356,7 +356,7 @@ int funCmpare(void* pCtx,const void *p1,const void *p2)
 	}
 }
 
-bool CUIHander::OnListHeaderClick( CDuiWindow * pSender, LPNMHDR pNmhdr )
+bool CUIHander::OnListHeaderClick( CDuiWindow * pSender, LPDUINMHDR pNmhdr )
 {
 	CDuiHeaderCtrl *pHeader=(CDuiHeaderCtrl*)pSender;
 	LPDUINMHDCLICK pClick=(LPDUINMHDCLICK)pNmhdr;

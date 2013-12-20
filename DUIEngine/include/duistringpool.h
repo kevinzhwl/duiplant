@@ -16,7 +16,7 @@ class DUI_EXP DuiStringPool :public DuiSingletonMap<DuiStringPool,CDuiStringT,UI
 {
 public:
     BOOL BuildString(CDuiStringT &strContainer);
-    BOOL Init(UINT uResID);
+    BOOL Init(LPCTSTR pszXmlName);
 	BOOL Init(pugi::xml_node xmlNode);
     LPCTSTR Get(UINT uID);
 protected:

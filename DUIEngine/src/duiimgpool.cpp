@@ -27,9 +27,9 @@ DuiImgPool::~DuiImgPool()
     RemoveAll();//需要先清理图片，再释放gdi+，否则基类释放内存时会出错。
 }
 
-CDuiImgBase * DuiImgPool::GetImage(UINT uResID,LPCTSTR pszType)
+CDuiImgBase * DuiImgPool::GetImage(LPCTSTR pszImgName,LPCTSTR pszType)
 {
-    DuiResID resid(pszType,uResID);
+    DuiResID resid(pszType,pszImgName);
     if(HasKey(resid))
     {
         return GetKeyObject(resid);
@@ -41,7 +41,7 @@ CDuiImgBase * DuiImgPool::GetImage(UINT uResID,LPCTSTR pszType)
         CDuiImgBase *pImg=NULL;
         if(pszType)
         {
-            pImg=pResProvider->LoadImage(pszType,uResID);
+            pImg=pResProvider->LoadImage(pszType,pszImgName);
         }
         else
         {
@@ -51,9 +51,9 @@ CDuiImgBase * DuiImgPool::GetImage(UINT uResID,LPCTSTR pszType)
             LPCTSTR pszTypes=pImgDecoder->GetSupportTypes();
             while(*pszTypes)
             {
-                if(pResProvider->HasResource(pszTypes,uResID))
+                if(pResProvider->HasResource(pszTypes,pszImgName))
                 {
-                    pImg=pResProvider->LoadImage(pszTypes,uResID);
+                    pImg=pResProvider->LoadImage(pszTypes,pszImgName);
                     if(pImg) break;
                 }
                 pszTypes+=_tcslen(pszTypes)+1;
@@ -65,7 +65,7 @@ CDuiImgBase * DuiImgPool::GetImage(UINT uResID,LPCTSTR pszType)
             if(pszType!=NULL)
 			{
 				pImg->AddRef();
-				AddKeyObject(DuiResID(NULL,uResID),pImg);//ID唯一时保证不使用类型也能找到该图片资源
+				AddKeyObject(DuiResID(NULL,pszImgName),pImg);//name唯一时保证不使用类型也能找到该图片资源
 			}
         }
         return pImg;

@@ -10,6 +10,7 @@
 #include "duiwnd.h"
 #include "duiwndfactorymanager.h"
 #include "DuiSystem.h"
+#include "Name2ID.h"
 
 namespace DuiEngine
 {
@@ -773,7 +774,7 @@ void CDuiWindow::BringWindowToTop()
     m_pParent->InsertChild(this);
 }
 
-LRESULT CDuiWindow::DuiNotify(LPNMHDR pnms)
+LRESULT CDuiWindow::DuiNotify(LPDUINMHDR pnms)
 {
 	EventArgs args(pnms,this);
 	FireEvent(pnms->code,args);
@@ -1244,15 +1245,15 @@ void CDuiWindow::OnLButtonUp(UINT nFlags,CPoint pt)
     {
         ::ShellExecute(NULL, L"open", lpszUrl, NULL, NULL, SW_SHOWNORMAL);
     }
-    else if (GetCmdID())
+    else if (GetCmdID() || GetName())
     {
         DUINMCOMMAND nms;
+		nms.hdr.hDuiWnd=m_hDuiWnd;
         nms.hdr.code = DUINM_COMMAND;
-        nms.hdr.hwndFrom = NULL;
         nms.hdr.idFrom = GetCmdID();
-        nms.uItemID = GetCmdID();
+		nms.hdr.pszNameFrom=GetName();
         nms.uItemData = GetUserData();
-        DuiNotify((LPNMHDR)&nms);
+        DuiNotify((LPDUINMHDR)&nms);
     }
 }
 
@@ -1284,7 +1285,7 @@ HRESULT CDuiWindow::OnAttributeName(const CDuiStringA& strValue, BOOL bLoading)
 	m_strName=strValue;
     if(m_uCmdID==0)
     {
-        m_uCmdID=DuiSystem::getSingleton().Name2ID(strValue);
+        m_uCmdID=DuiName2ID::getSingleton().Name2ID(strValue);
     }
     return S_FALSE;
 }

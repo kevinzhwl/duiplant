@@ -217,7 +217,6 @@ protected:
 		DUIWIN_COLOR_ATTRIBUTE("critemselbg",m_crItemSelBg,FALSE)
 		DUIWIN_COLOR_ATTRIBUTE("critemtext",m_crItemText,FALSE)
 		DUIWIN_COLOR_ATTRIBUTE("critemseltext",m_crItemSelText,FALSE)
-		DUIWIN_UINT_ATTRIBUTE("popmenu", m_uPopMenuID,  FALSE)
 	DUIWIN_DECLARE_ATTRIBUTES_END()
 
 	DUIWIN_BEGIN_MSG_MAP()
@@ -227,7 +226,6 @@ protected:
 		MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
 		MSG_WM_LBUTTONUP(OnLButtonUp)
 		MSG_WM_RBUTTONDOWN(OnRButtonDown);
-		MSG_WM_RBUTTONUP(OnRButtonUp)
 		MSG_WM_MOUSEMOVE(OnMouseMove)
 		MSG_WM_MOUSELEAVE(OnMouseLeave)
 	DUIWIN_END_MSG_MAP()

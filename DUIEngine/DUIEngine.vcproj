@@ -1063,6 +1063,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Name2ID.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SimpleWnd.cpp"
 				>
 				<FileConfiguration
@@ -1342,6 +1346,10 @@
 			</File>
 			<File
 				RelativePath=".\include\mybuffer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Name2ID.h"
 				>
 			</File>
 			<File

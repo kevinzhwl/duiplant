@@ -12,7 +12,7 @@ public:
 
 	virtual BOOL RevokeDragDrop(HDUIWND hDuiWnd)=NULL;
 
-    virtual LRESULT OnDuiNotify(LPNMHDR pHdr)=NULL;
+    virtual LRESULT OnDuiNotify(LPDUINMHDR pHdr)=NULL;
 
     virtual HWND GetHostHwnd()=NULL;
 

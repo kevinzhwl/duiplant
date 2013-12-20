@@ -308,11 +308,12 @@ void CDuiTabCtrl::OnMouseMove( UINT nFlags, CPoint point )
                 NotifyInvalidateRect(rcItem);
             DUINMTABITEMLEAVE nms;
             nms.hdr.code=DUINM_TAB_ITEMLEAVE;
-            nms.hdr.hwndFrom=0;
+            nms.hdr.hDuiWnd=m_hDuiWnd;
             nms.hdr.idFrom=GetCmdID();
+			nms.hdr.pszNameFrom=GetName();
             nms.iItem=nOldHover;
             nms.rcItem=rcItem;
-            DuiNotify((LPNMHDR)&nms);
+            DuiNotify((LPDUINMHDR)&nms);
         }
         if(m_nHoverTabItem!=-1)
         {
@@ -321,11 +322,12 @@ void CDuiTabCtrl::OnMouseMove( UINT nFlags, CPoint point )
                 NotifyInvalidateRect(rcItem);
             DUINMTABITEMHOVER nms;
             nms.hdr.code = DUINM_TAB_ITEMHOVER;
-            nms.hdr.hwndFrom = 0;
+            nms.hdr.hDuiWnd=m_hDuiWnd;
             nms.hdr.idFrom = GetCmdID();
+			nms.hdr.pszNameFrom=GetName();
             nms.iItem = m_nHoverTabItem;
             nms.rcItem = rcItem;
-            DuiNotify((LPNMHDR)&nms);
+            DuiNotify((LPDUINMHDR)&nms);
         }
     }
 }
@@ -347,14 +349,14 @@ BOOL CDuiTabCtrl::SetCurSel( int nIndex )
 
     DUINMTABSELCHANGE nms;
     nms.hdr.code = DUINM_TAB_SELCHANGING;
-    nms.hdr.hwndFrom = NULL;
+    nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom = GetCmdID();
-    nms.uTabID = GetCmdID();
+	nms.hdr.pszNameFrom=GetName();
     nms.uTabItemIDNew = nIndex;
     nms.uTabItemIDOld = nOldPage;
     nms.bCancel = FALSE;
 
-    LRESULT lRet = DuiNotify((LPNMHDR)&nms);
+    LRESULT lRet = DuiNotify((LPDUINMHDR)&nms);
 
     if (nms.bCancel)
         return FALSE;
@@ -391,9 +393,9 @@ BOOL CDuiTabCtrl::SetCurSel( int nIndex )
 
     DUINMTABSELCHANGED nms2;
     nms2.hdr.code = DUINM_TAB_SELCHANGED;
-    nms2.hdr.hwndFrom = NULL;
+    nms2.hdr.hDuiWnd=m_hDuiWnd;
     nms2.hdr.idFrom = GetCmdID();
-    nms2.uTabID = GetCmdID();
+    nms2.hdr.pszNameFrom=GetName();
     nms2.uTabItemIDNew = nIndex;
     nms2.uTabItemIDOld = nOldPage;
 
@@ -416,7 +418,7 @@ BOOL CDuiTabCtrl::SetCurSel( int nIndex )
 
 		delete pTabSlider;
     }
-    DuiNotify((LPNMHDR)&nms2);
+    DuiNotify((LPDUINMHDR)&nms2);
     if(IsVisible(TRUE))
     {
         NotifyInvalidate();
