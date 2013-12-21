@@ -3,7 +3,7 @@
 
 namespace DuiEngine
 {
-	class DuiName2ID : public Singleton<DuiName2ID>
+	class DUI_EXP DuiName2ID : public Singleton<DuiName2ID>
 	{
 	public:
 		DuiName2ID(void);
