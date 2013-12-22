@@ -19,7 +19,6 @@
 #include "duistd.h"
 #include "DuiAxContainer.h"
 
-#pragma comment(lib,"urlmon.lib")
 
 namespace DuiEngine
 {
@@ -92,7 +91,12 @@ HRESULT CDuiAxContainer::CreateMoniker(LPOLESTR szName, IBindCtx* /*pBC*/,
                          IMoniker** ppmk, DWORD /*dwReserved*/)
 {
     HRESULT hr;
-    hr = CreateURLMonikerEx(NULL, szName, ppmk, URL_MK_UNIFORM);
+    typedef HRESULT (WINAPI* pfnCreateURLMonikerEx)(IMoniker *pMkCtx,LPCWSTR szURL,IMoniker **ppmk,DWORD dwFlags);
+    HMODULE urlmon = ::GetModuleHandleA("urlmon.dll");
+    if(!urlmon)
+      urlmon = ::LoadLibraryA("urlmon.dll");
+    pfnCreateURLMonikerEx OrigCreateURLMonikerEx = (pfnCreateURLMonikerEx)::GetProcAddress(urlmon,"CreateURLMonikerEx");
+    hr = OrigCreateURLMonikerEx(NULL, szName, ppmk, URL_MK_UNIFORM);
     return hr;
 }
 
@@ -111,7 +115,12 @@ HRESULT CDuiAxContainer::MonikerBindToStorage(IMoniker *pMk, IBindCtx *pBC,
     {
         if ( pBSC != NULL )
         {
-            hr = RegisterBindStatusCallback(pBCCtx, pBSC, NULL, 0);
+          typedef HRESULT (WINAPI* pfnRegisterBindStatusCallback)( IBindCtx *pbc,IBindStatusCallback *pbsc,IBindStatusCallback **ppbscPrevious,DWORD dwReserved);
+          HMODULE urlmon = ::GetModuleHandleA("urlmon.dll");
+          if(!urlmon)
+            urlmon = ::LoadLibraryA("urlmon.dll");
+          pfnRegisterBindStatusCallback OrigRegisterBindStatusCallback = (pfnRegisterBindStatusCallback)::GetProcAddress(urlmon,"RegisterBindStatusCallback");
+          hr = OrigRegisterBindStatusCallback(pBCCtx, pBSC, NULL, 0);
         }
         hr = pMk->BindToStorage(pBCCtx, NULL, riid, ppvObj);
     }
