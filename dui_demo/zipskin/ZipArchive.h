@@ -36,7 +36,7 @@ protected:
 #endif
 
 public:
-	CZipFile();
+	CZipFile(DWORD dwSize=0);
 	~CZipFile();
 	BOOL Read(void* pBuffer, DWORD dwSize, LPDWORD pdwRead = NULL);
 	BOOL Close();
@@ -46,8 +46,9 @@ public:
 	DWORD GetPosition() const;
 	DWORD Seek(DWORD dwOffset, UINT nFrom);
 
+	BOOL Attach(LPBYTE pData, DWORD dwSize);
+	void Detach();
 protected:
-	void _Initialize(LPBYTE pData, DWORD dwSize);
 
 #ifdef ZLIB_DECRYPTION
 	BOOL _DecryptFile(LPCSTR pstrPassword, LPBYTE& pData, DWORD& dwSize, DWORD crc32);
@@ -67,8 +68,6 @@ protected:
 	BOOL _DecryptData(LPBYTE& pData, DWORD& dwSize);
 #endif	//	ZLIB_DECRYPTION
 
-	void _Attach(LPBYTE pData, DWORD dwSize);
-	void _Detach();
 };
 
 //	ZIP Archive class, load files from a zip archive
@@ -180,8 +179,17 @@ public:
 
 	// ZIP File API
 
+	int GetFileIndex(LPCTSTR pszFileName);
 	BOOL GetFile(LPCTSTR pszFileName, CZipFile& file);
 	BOOL GetFile(int iIndex, CZipFile& file);
+	DWORD GetFileSize(LPCTSTR pszFileName);
+	DWORD GetFileSize(int iIndex);
+	//file对象中已经分配好内存。
+	BOOL GetFile2(LPCTSTR pszFileName, CZipFile& file)
+	{
+		return GetFile2(GetFileIndex(pszFileName),file);
+	}
+	BOOL GetFile2(int iIndex, CZipFile& file);
 	// FindFile API
 
 	HANDLE FindFirstFile(LPCTSTR pszFileName, LPZIP_FIND_DATA lpFindFileData) const;

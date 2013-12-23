@@ -22,7 +22,7 @@
 #endif
 
 
-CZipFile::CZipFile()
+CZipFile::CZipFile(DWORD dwSize/*=0*/)
 		: m_pData(NULL),
 		m_dwSize(0),
 		m_dwPos(0)
@@ -30,6 +30,11 @@ CZipFile::CZipFile()
 #ifdef ZLIB_DECRYPTION
 		m_pCrcTable = NULL;
 #endif
+		if(dwSize!=0)
+		{
+			m_pData=new BYTE[dwSize];
+			m_dwSize=dwSize;
+		}
 	}
 	CZipFile::~CZipFile()
 	{
@@ -107,17 +112,6 @@ CZipFile::CZipFile()
 		if (m_dwPos >= m_dwSize)
 			m_dwPos = m_dwSize;
 		return dwPos;
-	}
-
-	void CZipFile::_Initialize(LPBYTE pData, DWORD dwSize)
-	{
-		_ASSERTE(pData);
-		_ASSERTE(!::IsBadReadPtr(pData,dwSize));
-
-		Close();
-
-		m_pData = pData;
-		m_dwSize = dwSize;
 	}
 
 #ifdef ZLIB_DECRYPTION
@@ -203,15 +197,18 @@ CZipFile::CZipFile()
 	}
 #endif	//	ZLIB_DECRYPTION
 
-	void CZipFile::_Attach(LPBYTE pData, DWORD dwSize)
+	BOOL CZipFile::Attach(LPBYTE pData, DWORD dwSize)
 	{
+		if(m_pData) return FALSE;
 		_ASSERTE(pData);
 		_ASSERTE(!::IsBadReadPtr(pData,dwSize));
 
 		m_pData = pData;
 		m_dwSize = dwSize;
+		return TRUE;
 	}
-	void CZipFile::_Detach()
+
+	void CZipFile::Detach()
 	{
 		m_pData = NULL;
 		m_dwSize = 0;
@@ -342,18 +339,92 @@ CZipFile::CZipFile()
 
 	BOOL CZipArchive::GetFile(LPCTSTR pszFileName, CZipFile& file)
 	{
-		_ASSERTE(IsOpen());
-		_ASSERTE(!::IsBadStringPtr(pszFileName, MAX_PATH));
+		return GetFile(GetFileIndex(pszFileName),file);
+	}
 
-		ZIP_FIND_DATA fd;
-		HANDLE hFindFile = FindFirstFile(pszFileName, &fd);
-		if (hFindFile == INVALID_HANDLE_VALUE)
+	BOOL CZipArchive::GetFile2(int iIndex, CZipFile& file)
+	{
+		_ASSERTE(IsOpen());
+		_ASSERTE(iIndex >= 0 && iIndex < m_Header.nDirEntries);
+
+		if (m_hFile == INVALID_HANDLE_VALUE)
+			return FALSE;
+		if (iIndex < 0 || iIndex >= m_Header.nDirEntries)
 			return FALSE;
 
-		BOOL bRet = GetFile(fd.nIndex, file);
-		FindClose(hFindFile);
-		return bRet;
+		ZipLocalHeader hdr;
+		SeekFile(m_Files[iIndex]->hdrOffset, FILE_BEGIN);
+
+		DWORD dwRead = ReadFile(&hdr, sizeof(hdr));
+		if (dwRead != sizeof(hdr))
+			return FALSE;
+
+		if (hdr.sig != LOCAL_SIGNATURE)
+			return FALSE;
+
+		SeekFile(hdr.fnameLen + hdr.xtraLen, FILE_CURRENT);
+
+		DWORD dwSize = hdr.cSize;
+		if (hdr.flag & 1)
+		{//这个接口不支持加密
+			return FALSE;
+		}
+
+		switch (hdr.compression)
+		{
+		case LOCAL_COMP_STORE:
+			_ASSERTE(hdr.cSize == hdr.ucSize);
+			dwRead = ReadFile(file.GetData(), hdr.cSize);
+			return dwRead==hdr.cSize;
+		case LOCAL_COMP_DEFLAT: 
+			{
+				if(file.GetSize()<hdr.ucSize) return FALSE;
+				// Read Source Data.
+				LPBYTE pData=new BYTE[hdr.cSize];
+
+				if (pData == NULL)
+					return FALSE;
+
+				dwRead = ReadFile(pData, hdr.cSize);
+				if (dwRead != hdr.cSize)
+				{
+					delete[] pData;
+					return FALSE;
+				}
+
+				LPBYTE pTarget=file.GetData();
+
+				z_stream stream = { 0 };
+				stream.next_in = (Bytef*) pData;
+				stream.avail_in = (uInt) hdr.cSize;
+				stream.next_out = (Bytef*) pTarget;
+				stream.avail_out = hdr.ucSize;
+				stream.zalloc = (alloc_func) NULL;
+				stream.zfree = (free_func) NULL;
+				// Perform inflation; wbits < 0 indicates no zlib header inside the data.
+				int err = inflateInit2(&stream, -MAX_WBITS);
+				if (err == Z_OK)
+				{
+					err = inflate(&stream, Z_OK);
+					if (err != Z_OK && err != Z_STREAM_END)
+						_ASSERTE(err == Z_OK);
+					inflateEnd(&stream);
+					if (err == Z_STREAM_END)
+						err = Z_OK;
+					inflateEnd(&stream);
+				}
+
+				delete[] pData;
+
+				return err == Z_OK;
+			}
+		default:
+			_ASSERTE(FALSE); // unsupported compression scheme
+			return FALSE;
+		}
 	}
+
+
 	BOOL CZipArchive::GetFile(int iIndex, CZipFile& file)
 	{
 		_ASSERTE(IsOpen());
@@ -460,7 +531,7 @@ CZipFile::CZipFile()
 		}
 		// The memory we allocated is passed to the file, which
 		// takes ownership of it.
-		file._Initialize(pData, hdr.ucSize);
+		file.Attach(pData, hdr.ucSize);
 
 		return TRUE;
 	}
@@ -595,14 +666,14 @@ CZipFile::CZipFile()
 
 		Close();
 
-		m_fileRes._Attach(pData, dwLength);
+		m_fileRes.Attach(pData, dwLength);
 
 		m_hFile = (HANDLE)hResInfo;
 
 		BOOL bOK=OpenZip();
 		if(!bOK)
 		{
-			m_fileRes._Detach();
+			m_fileRes.Detach();
 			m_hFile=INVALID_HANDLE_VALUE;
 		}
 		return bOK;
@@ -613,7 +684,7 @@ CZipFile::CZipFile()
 		if (m_hFile != INVALID_HANDLE_VALUE)
 		{
 			if (m_fileRes.IsOpen())
-				m_fileRes._Detach();
+				m_fileRes.Detach();
 			else
 				::CloseHandle(m_hFile);
 			m_hFile = INVALID_HANDLE_VALUE;
@@ -644,4 +715,40 @@ CZipFile::CZipFile()
 		}
 
 		return ::SetFilePointer(m_hFile, lOffset, NULL, nFrom);
+	}
+
+	DWORD CZipArchive::GetFileSize( LPCTSTR pszFileName )
+	{
+		return GetFileSize(GetFileIndex(pszFileName));
+	}
+
+	DWORD CZipArchive::GetFileSize( int iIndex )
+	{
+		if(iIndex==-1) return 0;
+
+		if (m_hFile == INVALID_HANDLE_VALUE)
+			return 0;
+		if (iIndex < 0 || iIndex >= m_Header.nDirEntries)
+			return 0;
+
+		ZipLocalHeader hdr;
+		SeekFile(m_Files[iIndex]->hdrOffset, FILE_BEGIN);
+
+		DWORD dwRead = ReadFile(&hdr, sizeof(hdr));
+		if (dwRead != sizeof(hdr))
+			return 0;
+		return hdr.ucSize;
+	}
+
+	int CZipArchive::GetFileIndex( LPCTSTR pszFileName )
+	{
+		_ASSERTE(IsOpen());
+		_ASSERTE(!::IsBadStringPtr(pszFileName, MAX_PATH));
+
+		ZIP_FIND_DATA fd;
+		HANDLE hFindFile = FindFirstFile(pszFileName, &fd);
+		if (hFindFile == INVALID_HANDLE_VALUE)
+			return -1;
+		FindClose(hFindFile);
+		return fd.nIndex;
 	}
