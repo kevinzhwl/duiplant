@@ -84,6 +84,7 @@ public:
 
 	BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=DUIRES_XML_TYPE);
 
+	size_t InitName2ID( UINT uXmlResID,LPCTSTR pszType );
 	BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType=DUIRES_XML_TYPE);
 
 	BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=DUIRES_XML_TYPE);

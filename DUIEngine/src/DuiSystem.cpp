@@ -153,4 +153,21 @@ HRESULT DuiSystem::CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHos
 	if(!m_funCreateTextServices) return E_NOTIMPL;
 	return m_funCreateTextServices(punkOuter,pITextHost,ppUnk);
 }
+
+size_t DuiSystem::InitName2ID( UINT uXmlResID,LPCTSTR pszType )
+{
+	DuiResProviderPE resProvider(m_hInst,NULL);
+
+	DWORD dwSize=resProvider.GetRawBufferSize(pszType,MAKEINTRESOURCE(uXmlResID));
+	if(dwSize==0) return 0;
+
+	CMyBuffer<char> strXml;
+	strXml.Allocate(dwSize);
+	resProvider.GetRawBuffer(pszType,MAKEINTRESOURCE(uXmlResID),strXml,dwSize);
+
+	pugi::xml_document xmlDoc;
+	if(!xmlDoc.load_buffer(strXml,strXml .size(),pugi::parse_default,pugi::encoding_utf8)) return 0;
+
+	return DuiName2ID::getSingletonPtr()->Init(xmlDoc.first_child());
+}
 }//namespace DuiEngine
