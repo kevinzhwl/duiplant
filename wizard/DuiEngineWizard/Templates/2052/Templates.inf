@@ -9,6 +9,9 @@ stdafx.h
 UIHander.cpp
 UIHander.h
 
+[!if CHECKBOX_NAMEDID_SUPPORT]
+[duires]name2id.xml
+[!endif]
 [duires]winres.h
 [duires]winres.rc2
 [duires]dui-demo.ico

@@ -2,7 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by dui-demo.rc
 //
-#define IDR_NAME2ID                     112
 #define IDI_MAINWND                     113
 
 // Next default values for new objects

@@ -31,7 +31,7 @@ function CreateCustomProject(strProjectName, strProjectPath)
 	{
 		var strProjTemplatePath = wizard.FindSymbol('PROJECT_TEMPLATE_PATH');
 		var strProjTemplate = '';
-		strProjTemplate = strProjTemplatePath + '\\default.vcxproj';
+		strProjTemplate = strProjTemplatePath + '\\default.vcproj';
 
 		var Solution = dte.Solution;
 		var strSolutionName = "";
@@ -373,17 +373,33 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		fileConfig = file.FileConfigurations('Release');
 		fileConfig.Tool.UsePrecompiledHeader = 1;
 		//指定index.xml的编译命令
+		var isSupportNamedID = wizard.FindSymbol('CHECKBOX_NAMEDID_SUPPORT');
+		var cmdline;
+		var outfiles;
+		if(isSupportNamedID)
+		{//支持namedid
+			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i $(InputPath) -y -p skin -r .\\duires\\winres.rc2 -n .\\duires\\name2id.xml -h .\\duires\\winres.h';
+			outfiles=".\\duires\\winres.rc2;.\\duires\\winres.h;.\\duires\\name2id.xml";
+		}else
+		{
+			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i $(InputPath) -y -p skin -r .\\duires\\winres.rc2 -h .\\duires\\winres.h';
+			outfiles=".\\duires\\winres.rc2;.\\duires\\winres.h";
+		}
+		
 		var file = files.Item('index.xml');
 		var fileConfig = file.FileConfigurations('Debug');
 		buildTool=fileConfig.Tool;
-		buildTool.CommandLine = '$(DUIENGINEPATH)\\tool\\residbuilder2 -i $(InputPath) -y -p skin -r .\\duires\\winres.rc2 -n .\\duires\\name2id.xml -h .\\duires\\winres.h';
+		buildTool.CommandLine = cmdline;
 		buildTool.Description = 'Building XML Resource';
-		buildTool.Outputs = ".\\duires\\winres.rc2;.\\duires\\winres.h;.\\duires\\name2id.xml"
+		buildTool.Outputs = outfiles;
+		buildTool.AdditionalDependencies="skin\\xml\\dlg_main.xml";
 		fileConfig = file.FileConfigurations('Release');
 		buildTool=fileConfig.Tool;
-		buildTool.CommandLine = '$(DUIENGINEPATH)\\tool\\residbuilder2 -i $(InputPath) -y -p skin -r .\\duires\\winres.rc2 -n .\\duires\\name2id.xml -h .\\duires\\winres.h';
+		buildTool.CommandLine = cmdline;
 		buildTool.Description = 'Building XML Resource';
-		buildTool.Outputs = ".\\duires\\winres.rc2;.\\duires\\winres.h;.\\duires\\name2id.xml"
+		buildTool.Outputs = outfiles;
+		buildTool.AdditionalDependencies="skin\\xml\\dlg_main.xml";
+
 	}
 	catch(e)
 	{
