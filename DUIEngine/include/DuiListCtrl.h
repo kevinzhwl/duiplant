@@ -127,7 +127,7 @@ namespace DuiEngine
 
 		int             m_nMargin;
 
-		COLORREF        m_crItemBg1;
+		COLORREF        m_crItemBg;
 		COLORREF        m_crItemBg2;
 		COLORREF        m_crItemSelBg;
 		COLORREF        m_crText;
@@ -149,7 +149,7 @@ namespace DuiEngine
 			DUIWIN_INT_ATTRIBUTE("itemHeight", m_nItemHeight, FALSE)
 			DUIWIN_SKIN_ATTRIBUTE("itemskin", m_pItemSkin, TRUE)
 			DUIWIN_SKIN_ATTRIBUTE("iconskin", m_pIconSkin, TRUE)
-			DUIWIN_COLOR_ATTRIBUTE("critembg1", m_crItemBg1, FALSE)
+			DUIWIN_COLOR_ATTRIBUTE("critembg", m_crItemBg, FALSE)
 			DUIWIN_COLOR_ATTRIBUTE("critembg2", m_crItemBg2, FALSE)
 			DUIWIN_COLOR_ATTRIBUTE("critemselbg", m_crItemSelBg, FALSE)
 			DUIWIN_COLOR_ATTRIBUTE("crtext", m_crText, FALSE)

@@ -14,7 +14,7 @@ CDuiListCtrl::CDuiListCtrl()
     , m_nItemHeight(20)
     , m_pHeader(NULL)
     , m_nSelectItem(-1)
-    , m_crItemBg1(RGB(255,255,255))
+    , m_crItemBg(RGB(255,255,255))
     , m_crItemBg2(RGB(226,226,226))
     , m_crItemSelBg(RGB(140,160,240))
     , m_crText(RGB(0,0,0))
@@ -505,7 +505,7 @@ void CDuiListCtrl::DrawItem(CDCHandle dc, CRect rcItem, int nItem)
     BOOL bTextColorChanged = FALSE;
     int nBgImg = 0;
     COLORREF crOldText;
-    COLORREF crItemBg = m_crItemBg1;
+    COLORREF crItemBg = m_crItemBg;
     COLORREF crText = m_crText;
     DXLVITEM lvItem = m_arrItems[nItem];
     CRect rcIcon, rcText;
