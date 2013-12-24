@@ -11,8 +11,8 @@ UIHander.h
 
 [!if CHECKBOX_NAMEDID_SUPPORT]
 [duires]name2id.xml
-[!endif]
 [duires]winres.h
+[!endif]
 [duires]winres.rc2
 [duires]dui-demo.ico
 

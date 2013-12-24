@@ -111,6 +111,8 @@ function AddConfig(proj, strProjectName)
 	    config.CharacterSet = charSetUNICODE;
 	    config.IntermediateDirectory = 'Debug';
 	    config.OutputDirectory = 'Debug';
+	    
+		var isDllDuiEngine = wizard.FindSymbol('CHECKBOX_DUIEENGINE_DLL');//从用户界面中获取DUIENGINE的链接方式
 
 		var CLTool = config.Tools('VCCLCompilerTool');
 		// TODO: 添加编译器设置
@@ -118,7 +120,10 @@ function AddConfig(proj, strProjectName)
 		CLTool.SuppressStartupBanner = true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
 		CLTool.AdditionalIncludeDirectories = '$(DUIENGINEPATH)\\duiengine\\include;';//%(AdditionalIncludeDirectories)';
-		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;_DEBUG;'; //%(PreprocessorDefinitions)';
+		if(isDllDuiEngine)
+			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;_DEBUG;DLL_DUI';
+		else
+			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;_DEBUG;';
 		CLTool.RuntimeLibrary = 1; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
 		CLTool.BrowseInformation = browseInfoOption.brAllInfo;// FR
 		CLTool.Optimization = optimizeOption.optimizeDisabled;// Od
@@ -148,7 +153,10 @@ function AddConfig(proj, strProjectName)
 		CLTool.SuppressStartupBanner = true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
 		CLTool.AdditionalIncludeDirectories = '$(DUIENGINEPATH)\\duiengine\\include;';//%(AdditionalIncludeDirectories)';
-		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;NDEBUG;'; //%(PreprocessorDefinitions)';
+		if(isDllDuiEngine)
+			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;NDEBUG;DLL_DUI';
+		else
+			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;NDEBUG;';
 		CLTool.RuntimeLibrary = 0; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
 
 		var LinkTool = config.Tools('VCLinkerTool');
@@ -382,8 +390,8 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 			outfiles=".\\duires\\winres.rc2;.\\duires\\winres.h;.\\duires\\name2id.xml";
 		}else
 		{
-			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i $(InputPath) -y -p skin -r .\\duires\\winres.rc2 -h .\\duires\\winres.h';
-			outfiles=".\\duires\\winres.rc2;.\\duires\\winres.h";
+			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i $(InputPath) -y -p skin -r .\\duires\\winres.rc2';
+			outfiles=".\\duires\\winres.rc2;";
 		}
 		
 		var file = files.Item('index.xml');
