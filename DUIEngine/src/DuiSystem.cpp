@@ -154,16 +154,16 @@ HRESULT DuiSystem::CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHos
 	return m_funCreateTextServices(punkOuter,pITextHost,ppUnk);
 }
 
-size_t DuiSystem::InitName2ID( UINT uXmlResID,LPCTSTR pszType )
+size_t DuiSystem::InitName2ID(LPCTSTR pszRes,LPCTSTR pszType )
 {
 	DuiResProviderPE resProvider(m_hInst,NULL);
 
-	DWORD dwSize=resProvider.GetRawBufferSize(pszType,MAKEINTRESOURCE(uXmlResID));
+	DWORD dwSize=resProvider.GetRawBufferSize(pszType,pszRes);
 	if(dwSize==0) return 0;
 
 	CMyBuffer<char> strXml;
 	strXml.Allocate(dwSize);
-	resProvider.GetRawBuffer(pszType,MAKEINTRESOURCE(uXmlResID),strXml,dwSize);
+	resProvider.GetRawBuffer(pszType,pszRes,strXml,dwSize);
 
 	pugi::xml_document xmlDoc;
 	if(!xmlDoc.load_buffer(strXml,strXml .size(),pugi::parse_default,pugi::encoding_utf8)) return 0;
