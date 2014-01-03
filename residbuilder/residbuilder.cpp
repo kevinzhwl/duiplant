@@ -145,6 +145,8 @@ typedef map<string,int> NAME2IDMAP;
 
 BOOL IsName2IDMapChanged(NAME2IDMAP & map1,NAME2IDMAP & map2)
 {
+	if(map1.size()!=map2.size()) return TRUE;
+
 	NAME2IDMAP::iterator it=map1.begin();
 	while(it!=map1.end())
 	{
