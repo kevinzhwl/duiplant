@@ -26,6 +26,19 @@ struct NAME2IDRECORD
 	WCHAR szRemark[300];
 };
 
+//获得文件的最后修改时间
+__int64 GetLastWriteTime(LPCSTR pszFileName)
+{
+	__int64 tmFile=0;
+	WIN32_FIND_DATAA findFileData;
+	HANDLE hFind = FindFirstFileA(pszFileName, &findFileData);
+	if (hFind != INVALID_HANDLE_VALUE)
+	{
+		tmFile= *(__int64*)&findFileData.ftLastWriteTime;
+		FindClose(hFind);
+	}
+	return tmFile;
+}
 
 //将单反斜扛转换成双反斜扛
 wstring BuildPath(LPCWSTR pszPath)
@@ -88,7 +101,42 @@ int UpdateName2ID(map<string,int> *pmapName2ID,TiXmlDocument *pXmlDocName2ID,TiX
 }
 
 #define ID_AUTO_START	65536
+#define STAMP_FORMAT	L"//stamp:0000000000000000\r\n"
+#define STAMP_FORMAT2	L"//stamp:%08x%08x\r\n"
 
+#pragma pack(push,1)
+
+class FILEHEAD
+{
+public:
+	char szBom[2];
+	WCHAR szHeadLine[ARRAYSIZE(STAMP_FORMAT)];
+
+	FILEHEAD(__int64 ts=0)
+	{
+		szBom[0]=0xFF,szBom[1]=0xFE;
+		swprintf(szHeadLine,STAMP_FORMAT2,(ULONG)((ts>>32)&0xffffffff),(ULONG)(ts&0xffffffff));		
+	}
+	static __int64 ExactTimeStamp(LPCSTR pszFile)
+	{
+		__int64 ts=0;
+		FILE *f=fopen(pszFile,"rb");
+		if(f)
+		{
+			FILEHEAD head;
+			fread(&head,sizeof(FILEHEAD),1,f);
+			DWORD dHi=0,dLow=0;
+			if(wcsncmp(head.szHeadLine,STAMP_FORMAT2,8)==0)
+			{
+				swscanf(head.szHeadLine,STAMP_FORMAT2,&dHi,&dLow);
+				ts=((__int64)dHi)<<32|dLow;
+			}
+			fclose(f);
+		}
+		return ts;
+	}
+};
+#pragma  pack(pop)
 
 //residbuilder -y -p skin -i skin\index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h
 int _tmain(int argc, _TCHAR* argv[])
@@ -155,7 +203,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 		xmlEle=xmlEle->NextSiblingElement();
 	}
-	char szUtf16LE[2]={0xFF,0xFE};
 	if(strRes.length())
 	{//编译资源.rc2文件
 		//build output string by wide char
@@ -171,16 +218,25 @@ int _tmain(int argc, _TCHAR* argv[])
 			it2++;
 		}
 
+		__int64 tmIdx=GetLastWriteTime(strIndexFile.c_str());
+		__int64 tmSave=FILEHEAD::ExactTimeStamp(strRes.c_str());
 		//write output string to target res file
-		FILE * f=fopen(strRes.c_str(),"wb");
-		if(f)
+		if(tmIdx!=tmSave)
 		{
-			fwrite(szUtf16LE,sizeof(WCHAR),1,f);//写UTF16文件头。
-			fwrite(RB_HEADER,sizeof(WCHAR),wcslen(RB_HEADER),f);
-			fwrite(RB_RC2INCLUDE,2,wcslen(RB_RC2INCLUDE),f);
-			fwrite(strOut.c_str(),sizeof(WCHAR),strOut.length(),f);
-			fclose(f);
-			printf("build resource succeed!\n");
+			FILE * f=fopen(strRes.c_str(),"wb");
+			if(f)
+			{
+				FILEHEAD tmStamp(tmIdx);
+				fwrite(&tmStamp,sizeof(FILEHEAD)-sizeof(WCHAR),1,f);//写UTF16文件头及时间。-sizeof(WCHAR)用来去除stamp最后一个\0
+				fwrite(RB_HEADER,sizeof(WCHAR),wcslen(RB_HEADER),f);
+				fwrite(RB_RC2INCLUDE,2,wcslen(RB_RC2INCLUDE),f);
+				fwrite(strOut.c_str(),sizeof(WCHAR),strOut.length(),f);
+				fclose(f);
+				printf("build resource succeed!\n");
+			}
+		}else
+		{
+			printf("%s has not been modified\n",strIndexFile.c_str());
 		}
 
 	}
@@ -189,9 +245,21 @@ int _tmain(int argc, _TCHAR* argv[])
 	if(strName2ID.length() && strHead.length())
 	{
 		TiXmlDocument xmlName2ID;
-
+		xmlName2ID.LoadFile(strName2ID.c_str());
 		map<string,int> mapNamedID;
+		TiXmlElement *pXmlName2ID=xmlName2ID.FirstChildElement("name2id");
 		int nCurID=ID_AUTO_START;
+		while(pXmlName2ID)
+		{
+			string strName=pXmlName2ID->Attribute("name");
+			int uID=0;
+			pXmlName2ID->Attribute("id",&uID);
+			mapNamedID[strName]=uID;
+
+			if(uID>nCurID) nCurID=uID;	//获得当前的最大ID
+
+			pXmlName2ID=pXmlName2ID->NextSiblingElement("name2id");
+		}
 
 		int nNewNamedID=0;
 		TiXmlElement *pXmlIdmap=xmlIndexFile.FirstChildElement("resid");
@@ -212,60 +280,67 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			pXmlIdmap=pXmlIdmap->NextSiblingElement("resid");
 		}
-
-		FILE *f=fopen(strName2ID.c_str(),"w");
-		if(f)
+		if(nNewNamedID==0)
 		{
-			xmlName2ID.Print(f);
-			fclose(f);
-			printf("build name2id succeed!");
-		}
-
-		vector<NAME2IDRECORD> vecName2ID;
-		//load xml description of resource to vector
-		TiXmlElement *xmlEle=xmlName2ID.RootElement();
-		while(xmlEle)
+			printf("name2id map doesn't need to be updated!");
+		}else
 		{
-			if(strcmp(xmlEle->Value(),"name2id")==0)
+
+			FILE *f=fopen(strName2ID.c_str(),"w");
+			if(f)
 			{
-				NAME2IDRECORD rec={0};
-				const char *pszValue;
-				pszValue=xmlEle->Attribute("name");
-				if(pszValue) MultiByteToWideChar(CP_UTF8,0,pszValue,-1,rec.szName,100);
-				pszValue=xmlEle->Attribute("id");
-				if(pszValue) rec.nID=atoi(pszValue);
-				pszValue=xmlEle->Attribute("remark");
-				if(pszValue) MultiByteToWideChar(CP_UTF8,0,pszValue,-1,rec.szRemark,300);
-
-				if(rec.szName[0] && rec.nID) vecName2ID.push_back(rec);
+				xmlName2ID.Print(f);
+				fclose(f);
+				printf("build name2id succeed!");
 			}
-			xmlEle=xmlEle->NextSiblingElement();
-		}
 
-		//build output string by wide char
-		wstring strOut;
-		strOut+=RB_HEADER;
+			vector<NAME2IDRECORD> vecName2ID;
+			//load xml description of resource to vector
+			TiXmlElement *xmlEle=xmlName2ID.RootElement();
+			while(xmlEle)
+			{
+				if(strcmp(xmlEle->Value(),"name2id")==0)
+				{
+					NAME2IDRECORD rec={0};
+					const char *pszValue;
+					pszValue=xmlEle->Attribute("name");
+					if(pszValue) MultiByteToWideChar(CP_UTF8,0,pszValue,-1,rec.szName,100);
+					pszValue=xmlEle->Attribute("id");
+					if(pszValue) rec.nID=atoi(pszValue);
+					pszValue=xmlEle->Attribute("remark");
+					if(pszValue) MultiByteToWideChar(CP_UTF8,0,pszValue,-1,rec.szRemark,300);
 
-		vector<NAME2IDRECORD>::iterator it2=vecName2ID.begin();
-		while(it2!=vecName2ID.end())
-		{
-			WCHAR szRec[2000];
-			if(it2->szRemark[0])
-				swprintf(szRec,L"#define\t%s\t\t%d	\t//%s\n",it2->szName,it2->nID,it2->szRemark);
-			else
-				swprintf(szRec,L"#define\t%s\t\t%d\n",it2->szName,it2->nID);
-			strOut+=szRec;
-			it2++;
-		}
+					if(rec.szName[0] && rec.nID) vecName2ID.push_back(rec);
+				}
+				xmlEle=xmlEle->NextSiblingElement();
+			}
 
-		//write output string to target res file
-		f=fopen(strHead.c_str(),"wb");
-		if(f)
-		{
-			fwrite(szUtf16LE,2,1,f);//写UTF16文件头。
-			fwrite(strOut.c_str(),sizeof(WCHAR),strOut.length(),f);
-			fclose(f);
-			printf("build header succeed!\n");
+			//build output string by wide char
+			wstring strOut;
+			strOut+=RB_HEADER;
+
+			vector<NAME2IDRECORD>::iterator it2=vecName2ID.begin();
+			while(it2!=vecName2ID.end())
+			{
+				WCHAR szRec[2000];
+				if(it2->szRemark[0])
+					swprintf(szRec,L"#define\t%s\t\t%d	\t//%s\n",it2->szName,it2->nID,it2->szRemark);
+				else
+					swprintf(szRec,L"#define\t%s\t\t%d\n",it2->szName,it2->nID);
+				strOut+=szRec;
+				it2++;
+			}
+
+			//write output string to target res file
+			f=fopen(strHead.c_str(),"wb");
+			if(f)
+			{
+				char szBom[2]={0xFF,0xFE};
+				fwrite(szBom,2,1,f);//写UTF16文件头。
+				fwrite(strOut.c_str(),sizeof(WCHAR),strOut.length(),f);
+				fclose(f);
+				printf("build header succeed!\n");
+			}
 		}
 	}
 
