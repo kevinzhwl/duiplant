@@ -72,35 +72,38 @@ wstring BuildPath(LPCWSTR pszPath)
 	return wstring(szBuf);
 }
 
-int UpdateName2ID(map<string,int> *pmapName2ID,TiXmlDocument *pXmlDocName2ID,TiXmlElement *pXmlEleLayer,int & nCurID)
+void UpdateName2ID(map<string,int> *pmapName2ID,TiXmlDocument *pXmlDocName2ID,TiXmlElement *pXmlEleLayer,int & nCurID)
 {
-	int nRet=0;
 	const char * strName=pXmlEleLayer->Attribute("name");
 	int nID=0;
 	pXmlEleLayer->Attribute("id",&nID);
-	if(strName && pmapName2ID->find(strName)==pmapName2ID->end())
-	{
-		TiXmlElement pNewNamedID=TiXmlElement("name2id");
-		pNewNamedID.SetAttribute("name",strName);
-		if(nID==0) nID=++nCurID;
-		pNewNamedID.SetAttribute("id",nID);
-		const char * strRemark=pXmlEleLayer->Attribute("fun");
-		if(strRemark)
+	if(strName)
+	{//找到一个节点有name属性
+		if(pmapName2ID->find(strName)==pmapName2ID->end())//当前name不在表中
 		{
-			pNewNamedID.SetAttribute("remark",strRemark);
+			TiXmlElement pNewNamedID=TiXmlElement("name2id");
+			pNewNamedID.SetAttribute("name",strName);
+			if(nID==0) nID=++nCurID;
+			pNewNamedID.SetAttribute("id",nID);
+			const char * strRemark=pXmlEleLayer->Attribute("fun");
+			if(strRemark)
+			{
+				pNewNamedID.SetAttribute("remark",strRemark);
+			}
+			pXmlDocName2ID->InsertEndChild(pNewNamedID);
+			(*pmapName2ID)[strName]=nID;
+		}else
+		{
+			printf("find a element which uses a used name attribute %s \n",strName);
 		}
-		pXmlDocName2ID->InsertEndChild(pNewNamedID);
-		(*pmapName2ID)[strName]=nID;
-		nRet++;
 	}
 	TiXmlElement *pXmlChild=pXmlEleLayer->FirstChildElement();
-	if(pXmlChild) nRet+=UpdateName2ID(pmapName2ID,pXmlDocName2ID,pXmlChild,nCurID);
+	if(pXmlChild) UpdateName2ID(pmapName2ID,pXmlDocName2ID,pXmlChild,nCurID);
 	TiXmlElement *pXmlSibling=pXmlEleLayer->NextSiblingElement();
-	if(pXmlSibling) nRet+=UpdateName2ID(pmapName2ID,pXmlDocName2ID,pXmlSibling,nCurID);
-	return nRet;
+	if(pXmlSibling) UpdateName2ID(pmapName2ID,pXmlDocName2ID,pXmlSibling,nCurID);
 }
 
-#define ID_AUTO_START	65536
+#define ID_AUTO_START	65535
 #define STAMP_FORMAT	L"//stamp:0000000000000000\r\n"
 #define STAMP_FORMAT2	L"//stamp:%08x%08x\r\n"
 
@@ -137,6 +140,21 @@ public:
 	}
 };
 #pragma  pack(pop)
+
+typedef map<string,int> NAME2IDMAP;
+
+BOOL IsName2IDMapChanged(NAME2IDMAP & map1,NAME2IDMAP & map2)
+{
+	NAME2IDMAP::iterator it=map1.begin();
+	while(it!=map1.end())
+	{
+		NAME2IDMAP::iterator it2=map2.find(it->first);
+		if(it2==map2.end()) return TRUE;
+		if(it2->second!=it->second) return TRUE;
+		it++;
+	}
+	return FALSE;
+}
 
 //residbuilder -y -p skin -i skin\index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h
 int _tmain(int argc, _TCHAR* argv[])
@@ -246,23 +264,21 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		TiXmlDocument xmlName2ID;
 		xmlName2ID.LoadFile(strName2ID.c_str());
-		map<string,int> mapNamedID;
+		NAME2IDMAP mapNamedID_Old;
 		TiXmlElement *pXmlName2ID=xmlName2ID.FirstChildElement("name2id");
-		int nCurID=ID_AUTO_START;
 		while(pXmlName2ID)
 		{
 			string strName=pXmlName2ID->Attribute("name");
 			int uID=0;
 			pXmlName2ID->Attribute("id",&uID);
-			mapNamedID[strName]=uID;
-
-			if(uID>nCurID) nCurID=uID;	//获得当前的最大ID
-
+			mapNamedID_Old[strName]=uID;
 			pXmlName2ID=pXmlName2ID->NextSiblingElement("name2id");
 		}
+		xmlName2ID.Clear();
 
-		int nNewNamedID=0;
+		NAME2IDMAP mapNamedID;
 		TiXmlElement *pXmlIdmap=xmlIndexFile.FirstChildElement("resid");
+		int nCurID=ID_AUTO_START;
 		while(pXmlIdmap)
 		{
 			int layer=0;
@@ -273,14 +289,16 @@ int _tmain(int argc, _TCHAR* argv[])
 				if(!strSkinPath.empty()) strXmlLayer=strSkinPath+"\\"+strXmlLayer;
 				if(strXmlLayer.length())
 				{//找到一个窗口描述XML
+					printf("extracting named element from %s\n",strXmlLayer.c_str());
 					TiXmlDocument xmlDocLayer;
 					xmlDocLayer.LoadFile(strXmlLayer.c_str());
-					nNewNamedID+=UpdateName2ID(&mapNamedID,&xmlName2ID,xmlDocLayer.RootElement(),nCurID);
+					UpdateName2ID(&mapNamedID,&xmlName2ID,xmlDocLayer.RootElement(),nCurID);
 				}
 			}
 			pXmlIdmap=pXmlIdmap->NextSiblingElement("resid");
 		}
-		if(nNewNamedID==0)
+
+		if(!IsName2IDMapChanged(mapNamedID,mapNamedID_Old))
 		{
 			printf("name2id map doesn't need to be updated!");
 		}else
