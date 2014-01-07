@@ -15,6 +15,8 @@ namespace DuiEngine
 
 		WORD GetModifier() const {return m_wModifier;}
 		WORD GetKey() const {return m_wVK;}
+
+		static DWORD Str2Accel(LPCTSTR pszKeyName);
 	protected:
 		WORD 	m_wModifier;
 		WORD	m_wVK;
