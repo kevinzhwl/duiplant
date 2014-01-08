@@ -40,7 +40,7 @@
           </dlg>
           <link id="1380" pos="10,250" maxwidth="100" class="cls_btn_weblink" dotted="1" href="www.yy.com">link</link>
           <img skin="icons" name="testimg" fun="test image remark"/>
-          <button id="1360" class="normalbtn" pos="10,200,150,230">dui menu</button>
+          <button id="1360" class="normalbtn" pos="10,200,150,230" accel="ctrl+alt+num 8">dui menu</button>
           <hotkey id="1340" pos="350,20,450,45" class="cls_edit"/>
           <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
           <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="prog_bg" posskin="prog_bar" value="20" min="0" max="100" showpercent="1"/>

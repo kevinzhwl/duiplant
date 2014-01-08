@@ -3,6 +3,7 @@
 
 namespace DuiEngine
 {
+struct IAcceleratorMgr;
 
 class DUI_EXP CDuiContainer
 {
@@ -45,6 +46,8 @@ public:
     virtual BOOL DuiSetCaretPos(int x,int y)=NULL;
 
 	virtual BOOL DuiUpdateWindow()=NULL;
+
+	virtual IAcceleratorMgr* GetAcceleratorMgr()=NULL;
 };
 
 

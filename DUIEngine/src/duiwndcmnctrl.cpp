@@ -174,7 +174,7 @@ void CDuiLink::OnMouseHover( WPARAM wParam, CPoint pt )
 // Usage: <button id=xx>inner text example</button>
 //
 
-CDuiButton::CDuiButton() :m_pSkin(NULL)
+CDuiButton::CDuiButton() :m_pSkin(NULL),m_accel(0)
 {
 	m_bTabStop=TRUE;
 }
@@ -222,6 +222,29 @@ bool CDuiButton::OnAcceleratorPressed( const CAccelerator& accelerator )
 	DuiNotify((LPDUINMHDR)&nms);
 
 	return true;
+}
+
+void CDuiButton::OnDestroy()
+{
+	if(m_accel)
+	{
+		CAccelerator acc(m_accel);
+		GetContainer()->GetAcceleratorMgr()->UnregisterAccelerator(acc,this);
+	}
+	__super::OnDestroy();
+}
+
+HRESULT CDuiButton::OnAttrAccel( CDuiStringA strAccel,BOOL bLoading )
+{
+	CDuiStringT strAccelT=DUI_CA2T(strAccel,CP_UTF8);
+	m_accel=CAccelerator::TranslateAccelKey(strAccelT);
+	if(m_accel)
+	{
+		CAccelerator acc(m_accel);
+		GetContainer()->GetAcceleratorMgr()->RegisterAccelerator(acc,this);
+		return S_OK;
+	}
+	return S_FALSE;
 }
 
 //////////////////////////////////////////////////////////////////////////

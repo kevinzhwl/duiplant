@@ -124,7 +124,7 @@ namespace DuiEngine
 	};
 
 
-	class DUI_EXP CFocusManager
+	class DUI_EXP CFocusManager : public IAcceleratorMgr
 	{
 	public:
 		// The reason why the focus changed.
@@ -169,6 +169,8 @@ namespace DuiEngine
 
 		bool IsFocusChanging(){return is_changing_focus_;}
 
+		// IAcceleratorMgr
+
 		// Register a keyboard accelerator for the specified target. If multiple
 		// targets are registered for an accelerator, a target registered later has
 		// higher priority.
@@ -179,14 +181,14 @@ namespace DuiEngine
 		// - any F key (F1, F2, F3 ...)
 		// - any browser specific keys (as available on special keyboards)
 		void RegisterAccelerator(const CAccelerator& accelerator,
-			CAcceleratorTarget* target);
+			IAcceleratorTarget* target);
 
 		// Unregister the specified keyboard accelerator for the specified target.
 		void UnregisterAccelerator(const CAccelerator& accelerator,
-			CAcceleratorTarget* target);
+			IAcceleratorTarget* target);
 
 		// Unregister all keyboard accelerator for the specified target.
-		void UnregisterAccelerators(CAcceleratorTarget* target);
+		void UnregisterAccelerators(IAcceleratorTarget* target);
 
 		// Activate the target associated with the specified accelerator.
 		// First, AcceleratorPressed handler of the most recently registered target
@@ -218,7 +220,7 @@ namespace DuiEngine
 
 		CDuiWindow *m_pOwner;
 
-		typedef CDuiList<CAcceleratorTarget*> AcceleratorTargetList;
+		typedef CDuiList<IAcceleratorTarget*> AcceleratorTargetList;
 		typedef CDuiMap<CAccelerator, AcceleratorTargetList> AcceleratorMap;
 		AcceleratorMap accelerators_;
 

@@ -42,6 +42,7 @@ public:
 
     virtual HDUIWND GetDuiHover();
 
+	virtual IAcceleratorMgr* GetAcceleratorMgr(){return &m_focusMgr;}
 protected:
     virtual void OnFrameMouseMove(UINT uFlag,CPoint pt);
 

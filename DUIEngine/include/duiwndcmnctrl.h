@@ -107,7 +107,7 @@ protected:
 //
 // Usage: <button id=xx>inner text example</button>
 //
-class DUI_EXP CDuiButton : public CDuiWindow, public CAcceleratorTarget
+class DUI_EXP CDuiButton : public CDuiWindow, public IAcceleratorTarget
 {
     DUIOBJ_DECLARE_CLASS_NAME(CDuiButton, "button")
 public:
@@ -132,16 +132,24 @@ protected:
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
+	void OnDestroy();
+
+	HRESULT OnAttrAccel(CDuiStringA strAccel,BOOL bLoading);
+
 	CDuiSkinBase *m_pSkin;
+
+	DWORD		  m_accel;
 public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
 	DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
+	DUIWIN_CUSTOM_ATTRIBUTE("accel",OnAttrAccel)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_KEYDOWN(OnKeyDown)
+	MSG_WM_DESTROY(OnDestroy)
     DUIWIN_END_MSG_MAP()
 };
 

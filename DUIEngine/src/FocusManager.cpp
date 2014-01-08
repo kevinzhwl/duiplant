@@ -360,13 +360,13 @@ namespace DuiEngine
 		}
 	}
 
-	void CFocusManager::RegisterAccelerator( const CAccelerator& accelerator, CAcceleratorTarget* target )
+	void CFocusManager::RegisterAccelerator( const CAccelerator& accelerator, IAcceleratorTarget* target )
 	{
 		AcceleratorTargetList& targets = accelerators_[accelerator];
 		targets.AddHead(target);
 	}
 
-	void CFocusManager::UnregisterAccelerator( const CAccelerator& accelerator, CAcceleratorTarget* target )
+	void CFocusManager::UnregisterAccelerator( const CAccelerator& accelerator, IAcceleratorTarget* target )
 	{
 		if(!accelerators_.Lookup(accelerator)) return;
 		AcceleratorTargetList* targets=&accelerators_[accelerator];
@@ -374,7 +374,7 @@ namespace DuiEngine
 		if(pos) targets->RemoveAt(pos);
 	}
 
-	void CFocusManager::UnregisterAccelerators( CAcceleratorTarget* target )
+	void CFocusManager::UnregisterAccelerators( IAcceleratorTarget* target )
 	{
 		POSITION pos=accelerators_.GetStartPosition();
 		while(pos)
@@ -399,7 +399,7 @@ namespace DuiEngine
 
 		while(pos)
 		{
-			CAcceleratorTarget *pTarget=targets.GetNext(pos);
+			IAcceleratorTarget *pTarget=targets.GetNext(pos);
 			if(pTarget->OnAcceleratorPressed(accelerator))
 			{
 				return true;
