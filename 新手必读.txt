@@ -1,0 +1,11 @@
+DuiEngine是启程软件深度改写金山卫士的bkwin界面库形成的一个开源界面库，目前由本人维护。
+本界面库为全免费开源库，采用MIT协议，无需授权，不提供任何担保，但是请在产品中保持一份DuiEngine的license。
+使用中碰到问题可以到QQ群提问，本人一般时间都在，尽量是在自己尝试后不能解决时再提问。QQ群： 229313785
+
+使用前建议先安装wizard目录下的VS向导，安装后会在VS的新建工程中增加一个DuiEngineWizard的工程类型，使用这个向导可以一步生成一个最简单的使用DuiEngine的框架程序。
+doc文件夹下有几个简单的文档，无聊时可以随便看看。
+dui-demo是一个介绍内置控件使用的工程，有问题请先比较与dui-demo的差异。
+编译碰到问题请尝试重新编译duiengine，再编译其它的使用duiengine的程序，如dui-demo。
+dui-demo的debug_dll配置还需要lua脚本及zip支持，请先编译zip及scriptModule下相关目录。
+
+启程软件 2014年1月9日
