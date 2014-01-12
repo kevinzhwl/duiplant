@@ -19,7 +19,7 @@ namespace DuiEngine{
 		// IUnknown
 		virtual HRESULT STDMETHODCALLTYPE QueryInterface( 
 			/* [in] */ REFIID riid,
-			/* [iid_is][out] */ __RPC__deref_out void __RPC_FAR *__RPC_FAR *ppvObject);
+			/* [iid_is][out] */  void __RPC_FAR *__RPC_FAR *ppvObject);
 
 		virtual ULONG STDMETHODCALLTYPE AddRef( void){return 1;}
 
@@ -29,23 +29,23 @@ namespace DuiEngine{
 		// IDropTarget
 
 		virtual HRESULT STDMETHODCALLTYPE DragEnter( 
-			/* [unique][in] */ __RPC__in_opt IDataObject *pDataObj,
+			/* [unique][in] */ IDataObject *pDataObj,
 			/* [in] */ DWORD grfKeyState,
 			/* [in] */ POINTL pt,
-			/* [out][in] */ __RPC__inout DWORD *pdwEffect);
+			/* [out][in] */ DWORD *pdwEffect);
 
 		virtual HRESULT STDMETHODCALLTYPE DragOver( 
 			/* [in] */ DWORD grfKeyState,
 			/* [in] */ POINTL pt,
-			/* [out][in] */ __RPC__inout DWORD *pdwEffect);
+			/* [out][in] */ DWORD *pdwEffect);
 
 		virtual HRESULT STDMETHODCALLTYPE DragLeave( void);
 
 		virtual HRESULT STDMETHODCALLTYPE Drop( 
-			/* [unique][in] */ __RPC__in_opt IDataObject *pDataObj,
+			/* [unique][in] */  IDataObject *pDataObj,
 			/* [in] */ DWORD grfKeyState,
 			/* [in] */ POINTL pt,
-			/* [out][in] */ __RPC__inout DWORD *pdwEffect);
+			/* [out][in] */  DWORD *pdwEffect);
 
 	protected:
 		POINT PointL2FrameClient(const POINTL & pt);

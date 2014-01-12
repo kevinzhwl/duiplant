@@ -467,7 +467,7 @@ public:
         return ::SetWindowText(m_hWnd, lpszString);
     }
 
-    int GetWindowText(_Out_z_cap_post_count_(nMaxCount, return + 1) LPTSTR lpszStringBuf, _In_ int nMaxCount) const throw()
+    int GetWindowText(LPTSTR lpszStringBuf, int nMaxCount) const throw()
     {
         DUIASSERT(::IsWindow(m_hWnd));
         return ::GetWindowText(m_hWnd, lpszStringBuf, nMaxCount);

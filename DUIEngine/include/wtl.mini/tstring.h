@@ -1344,7 +1344,7 @@ namespace DuiEngine
 		typedef typename T::pctstr INARGTYPE;
 		typedef T& OUTARGTYPE;
 
-		static void __cdecl CopyElements( _Out_capcount_(nElements) T* pDest, _In_count_(nElements) const T* pSrc, _In_ size_t nElements )
+		static void __cdecl CopyElements( T* pDest, const T* pSrc, size_t nElements )
 		{
 			for( size_t iElement = 0; iElement < nElements; iElement++ )
 			{
@@ -1352,12 +1352,12 @@ namespace DuiEngine
 			}
 		}
 
-		static void __cdecl RelocateElements( _Out_capcount_(nElements) T* pDest, _In_count_(nElements) T* pSrc, _In_ size_t nElements )
+		static void __cdecl RelocateElements(  T* pDest, T* pSrc,size_t nElements )
 		{
 			memmove_s( pDest, nElements*sizeof( T ), pSrc, nElements*sizeof( T ) );
 		}
 
-		static ULONG __cdecl Hash( _In_ INARGTYPE  str )
+		static ULONG __cdecl Hash(  INARGTYPE  str )
 		{
 			DUIASSERT( str != NULL );
 			ULONG nHash = 0;
@@ -1371,12 +1371,12 @@ namespace DuiEngine
 			return( nHash );
 		}
 
-		static bool __cdecl CompareElements( _In_ INARGTYPE str1, _In_ INARGTYPE str2 )
+		static bool __cdecl CompareElements(  INARGTYPE str1,  INARGTYPE str2 )
 		{
 			return( T::_tchar_traits::StrCmp( str1, str2 ) == 0 );
 		}
 
-		static int __cdecl CompareElementsOrdered( _In_ INARGTYPE str1, _In_ INARGTYPE str2 )
+		static int __cdecl CompareElementsOrdered(  INARGTYPE str1,  INARGTYPE str2 )
 		{
 			return( T::_tchar_traits::StrCmp( str1, str2 ) );
 		}

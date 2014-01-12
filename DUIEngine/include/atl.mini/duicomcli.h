@@ -28,7 +28,7 @@ namespace DuiEngine
 // Smart Pointer helpers
 
 
-inline IUnknown* DuiComPtrAssign(_Inout_opt_ _Deref_post_opt_valid_  IUnknown** pp, _In_opt_ IUnknown* lp)
+inline IUnknown* DuiComPtrAssign(IUnknown** pp, IUnknown* lp)
 {
 	if (pp == NULL)
 		return NULL;
@@ -41,7 +41,7 @@ inline IUnknown* DuiComPtrAssign(_Inout_opt_ _Deref_post_opt_valid_  IUnknown** 
 	return lp;
 }
 
-inline IUnknown* DuiComQIPtrAssign(_Inout_opt_ _Deref_post_opt_valid_ IUnknown** pp, _In_opt_ IUnknown* lp, REFIID riid)
+inline IUnknown* DuiComQIPtrAssign(IUnknown** pp, IUnknown* lp, REFIID riid)
 {
 	if (pp == NULL)
 		return NULL;
@@ -77,13 +77,13 @@ protected:
 	{
 		p = NULL;
 	}
-	CDuiComPtrBase(_In_ int nNull) throw()
+	CDuiComPtrBase( int nNull) throw()
 	{
 		DUIASSERT(nNull == 0);
 		(void)nNull;
 		p = NULL;
 	}
-	CDuiComPtrBase(_In_opt_ T* lp) throw()
+	CDuiComPtrBase( T* lp) throw()
 	{
 		p = lp;
 		if (p != NULL)
@@ -121,15 +121,15 @@ public:
 	{
 		return (p == NULL);
 	}
-	bool operator<(_In_opt_ T* pT) const throw()
+	bool operator<( T* pT) const throw()
 	{
 		return p < pT;
 	}
-	bool operator!=(_In_opt_ T* pT) const
+	bool operator!=( T* pT) const
 	{
 		return !operator==(pT);
 	}
-	bool operator==(_In_opt_ T* pT) const throw()
+	bool operator==( T* pT) const throw()
 	{
 		return p == pT;
 	}
@@ -145,7 +145,7 @@ public:
 		}
 	}
 	// Compare two objects for equivalence
-	bool IsEqualObject(_In_opt_ IUnknown* pOther) throw()
+	bool IsEqualObject( IUnknown* pOther) throw()
 	{
 		if (p == NULL && pOther == NULL)
 			return true;	// They are both NULL objects
@@ -160,7 +160,7 @@ public:
 		return punk1 == punk2;
 	}
 	// Attach to an existing interface (does not AddRef)
-	void Attach(_In_opt_ T* p2) throw()
+	void Attach( T* p2) throw()
 	{
 		if (p)
 			p->Release();
@@ -173,7 +173,7 @@ public:
 		p = NULL;
 		return pt;
 	}
-	_Check_return_ HRESULT CopyTo(_Deref_out_opt_ T** ppT) throw()
+	 HRESULT CopyTo( T** ppT) throw()
 	{
 		DUIASSERT(ppT != NULL);
 		if (ppT == NULL)
@@ -183,12 +183,12 @@ public:
 			p->AddRef();
 		return S_OK;
 	}
-	_Check_return_ HRESULT CoCreateInstance(_In_ REFCLSID rclsid, _In_opt_ LPUNKNOWN pUnkOuter = NULL, _In_ DWORD dwClsContext = CLSCTX_ALL) throw()
+	 HRESULT CoCreateInstance( REFCLSID rclsid,  LPUNKNOWN pUnkOuter = NULL,  DWORD dwClsContext = CLSCTX_ALL) throw()
 	{
 		DUIASSERT(p == NULL);
 		return ::CoCreateInstance(rclsid, pUnkOuter, dwClsContext, __uuidof(T), (void**)&p);
 	}
-	_Check_return_ HRESULT CoCreateInstance(_In_ LPCOLESTR szProgID, _In_opt_ LPUNKNOWN pUnkOuter = NULL, _In_ DWORD dwClsContext = CLSCTX_ALL) throw()
+	 HRESULT CoCreateInstance( LPCOLESTR szProgID,  LPUNKNOWN pUnkOuter = NULL,  DWORD dwClsContext = CLSCTX_ALL) throw()
 	{
 		CLSID clsid;
 		HRESULT hr = CLSIDFromProgID(szProgID, &clsid);
@@ -198,7 +198,7 @@ public:
 		return hr;
 	}
 	template <class Q>
-	_Check_return_ HRESULT QueryInterface(_Deref_out_opt_ Q** pp) const throw()
+	 HRESULT QueryInterface( Q** pp) const throw()
 	{
 		DUIASSERT(pp != NULL);
 		return p->QueryInterface(__uuidof(Q), (void**)pp);
@@ -222,11 +222,11 @@ public:
 
 	{
 	}
-	CDuiComPtr(_In_ const CDuiComPtr<T>& lp) throw() :
+	CDuiComPtr( const CDuiComPtr<T>& lp) throw() :
 		CDuiComPtrBase<T>(lp.p)
 	{
 	}
-	T* operator=(_In_opt_ T* lp) throw()
+	T* operator=( T* lp) throw()
 	{
         if(*this!=lp)
         {
@@ -235,7 +235,7 @@ public:
         return *this;
 	}
 	template <typename Q>
-	T* operator=(_In_ const CDuiComPtr<Q>& lp) throw()
+	T* operator=( const CDuiComPtr<Q>& lp) throw()
 	{
         if( !IsEqualObject(lp) )
         {
@@ -243,7 +243,7 @@ public:
         }
         return *this;
 	}
-	T* operator=(_In_ const CDuiComPtr<T>& lp) throw()
+	T* operator=( const CDuiComPtr<T>& lp) throw()
 	{
         if(*this!=lp)
         {
@@ -287,7 +287,7 @@ public:
 	}
 
 // IDispatch specific stuff
-	_Check_return_ HRESULT GetPropertyByName(_In_ LPCOLESTR lpsz, _Out_ VARIANT* pVar) throw()
+	 HRESULT GetPropertyByName( LPCOLESTR lpsz,  VARIANT* pVar) throw()
 	{
 		DUIASSERT(p);
 		DUIASSERT(pVar);
@@ -297,11 +297,11 @@ public:
 			hr = GetProperty(dwDispID, pVar);
 		return hr;
 	}
-	_Check_return_ HRESULT GetProperty(_In_ DISPID dwDispID, _Out_ VARIANT* pVar) throw()
+	 HRESULT GetProperty( DISPID dwDispID,  VARIANT* pVar) throw()
 	{
 		return GetProperty(p, dwDispID, pVar);
 	}
-	_Check_return_ HRESULT PutPropertyByName(_In_ LPCOLESTR lpsz, _In_ VARIANT* pVar) throw()
+	 HRESULT PutPropertyByName( LPCOLESTR lpsz,  VARIANT* pVar) throw()
 	{
 		DUIASSERT(p);
 		DUIASSERT(pVar);
@@ -311,22 +311,22 @@ public:
 			hr = PutProperty(dwDispID, pVar);
 		return hr;
 	}
-	_Check_return_ HRESULT PutProperty(_In_ DISPID dwDispID, _In_ VARIANT* pVar) throw()
+	 HRESULT PutProperty( DISPID dwDispID,  VARIANT* pVar) throw()
 	{
 		return PutProperty(p, dwDispID, pVar);
 	}
-	_Check_return_ HRESULT GetIDOfName(_In_ LPCOLESTR lpsz, _Out_ DISPID* pdispid) throw()
+	 HRESULT GetIDOfName( LPCOLESTR lpsz,  DISPID* pdispid) throw()
 	{
 		return p->GetIDsOfNames(IID_NULL, const_cast<LPOLESTR*>(&lpsz), 1, LOCALE_USER_DEFAULT, pdispid);
 	}
 	// Invoke a method by DISPID with no parameters
-	_Check_return_ HRESULT Invoke0(_In_ DISPID dispid, _Out_opt_ VARIANT* pvarRet = NULL) throw()
+	 HRESULT Invoke0( DISPID dispid,  VARIANT* pvarRet = NULL) throw()
 	{
 		DISPPARAMS dispparams = { NULL, NULL, 0, 0};
 		return p->Invoke(dispid, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &dispparams, pvarRet, NULL, NULL);
 	}
 	// Invoke a method by name with no parameters
-	_Check_return_ HRESULT Invoke0(_In_ LPCOLESTR lpszName, _Out_opt_ VARIANT* pvarRet = NULL) throw()
+	 HRESULT Invoke0( LPCOLESTR lpszName,  VARIANT* pvarRet = NULL) throw()
 	{
 		HRESULT hr;
 		DISPID dispid;
@@ -336,13 +336,13 @@ public:
 		return hr;
 	}
 	// Invoke a method by DISPID with a single parameter
-	_Check_return_ HRESULT Invoke1(_In_ DISPID dispid, VARIANT* pvarParam1, _Out_opt_ VARIANT* pvarRet = NULL) throw()
+	 HRESULT Invoke1( DISPID dispid, VARIANT* pvarParam1,  VARIANT* pvarRet = NULL) throw()
 	{
 		DISPPARAMS dispparams = { pvarParam1, NULL, 1, 0};
 		return p->Invoke(dispid, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &dispparams, pvarRet, NULL, NULL);
 	}
 	// Invoke a method by name with a single parameter
-	_Check_return_ HRESULT Invoke1(_In_ LPCOLESTR lpszName, VARIANT* pvarParam1, _Out_opt_ VARIANT* pvarRet = NULL) throw()
+	 HRESULT Invoke1( LPCOLESTR lpszName, VARIANT* pvarParam1,  VARIANT* pvarRet = NULL) throw()
 	{
 		HRESULT hr;
 		DISPID dispid;
@@ -352,9 +352,9 @@ public:
 		return hr;
 	}
 	// Invoke a method by DISPID with two parameters
-	_Check_return_ HRESULT Invoke2(_In_ DISPID dispid, _In_ VARIANT* pvarParam1, _In_ VARIANT* pvarParam2, _Out_opt_ VARIANT* pvarRet = NULL) throw();
+	 HRESULT Invoke2( DISPID dispid,  VARIANT* pvarParam1,  VARIANT* pvarParam2,  VARIANT* pvarRet = NULL) throw();
 	// Invoke a method by name with two parameters
-	_Check_return_ HRESULT Invoke2(_In_ LPCOLESTR lpszName, _In_ VARIANT* pvarParam1, _In_ VARIANT* pvarParam2, _Out_opt_ VARIANT* pvarRet = NULL) throw()
+	 HRESULT Invoke2( LPCOLESTR lpszName,  VARIANT* pvarParam1,  VARIANT* pvarParam2,  VARIANT* pvarRet = NULL) throw()
 	{
 		HRESULT hr;
 		DISPID dispid;
@@ -364,13 +364,13 @@ public:
 		return hr;
 	}
 	// Invoke a method by DISPID with N parameters
-	_Check_return_ HRESULT InvokeN(DISPID dispid, VARIANT* pvarParams, int nParams, VARIANT* pvarRet = NULL) throw()
+	 HRESULT InvokeN(DISPID dispid, VARIANT* pvarParams, int nParams, VARIANT* pvarRet = NULL) throw()
 	{
 		DISPPARAMS dispparams = { pvarParams, NULL, nParams, 0};
 		return p->Invoke(dispid, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &dispparams, pvarRet, NULL, NULL);
 	}
 	// Invoke a method by name with Nparameters
-	_Check_return_ HRESULT InvokeN(LPCOLESTR lpszName, VARIANT* pvarParams, int nParams, VARIANT* pvarRet = NULL) throw()
+	 HRESULT InvokeN(LPCOLESTR lpszName, VARIANT* pvarParams, int nParams, VARIANT* pvarRet = NULL) throw()
 	{
 		HRESULT hr;
 		DISPID dispid;
@@ -379,7 +379,7 @@ public:
 			hr = InvokeN(dispid, pvarParams, nParams, pvarRet);
 		return hr;
 	}
-	_Check_return_ static HRESULT PutProperty(_Inout_ IDispatch* p, _In_ DISPID dwDispID, _In_ VARIANT* pVar) throw()
+	 static HRESULT PutProperty( IDispatch* p,  DISPID dwDispID,  VARIANT* pVar) throw()
 	{
 		DUIASSERT(p);
 		DUIASSERT(pVar != NULL);
@@ -407,7 +407,7 @@ public:
 				LOCALE_USER_DEFAULT, DISPATCH_PROPERTYPUT,
 				&dispparams, NULL, NULL, NULL);
 	}
-	_Check_return_ static HRESULT GetProperty(_In_ IDispatch* p, _In_ DISPID dwDispID, _Out_ VARIANT* pVar) throw()
+	 static HRESULT GetProperty( IDispatch* p,  DISPID dwDispID,  VARIANT* pVar) throw()
 	{
 		DUIASSERT(p);
 		DUIASSERT(pVar != NULL);
@@ -431,20 +431,20 @@ public:
 	CDuiComQIPtr() throw()
 	{
 	}
-	CDuiComQIPtr(_In_opt_ T* lp) throw() :
+	CDuiComQIPtr( T* lp) throw() :
 		CDuiComPtr<T>(lp)
 	{
 	}
-	CDuiComQIPtr(_In_ const CDuiComQIPtr<T,piid>& lp) throw() :
+	CDuiComQIPtr( const CDuiComQIPtr<T,piid>& lp) throw() :
 		CDuiComPtr<T>(lp.p)
 	{
 	}
-	CDuiComQIPtr(_In_opt_ IUnknown* lp) throw()
+	CDuiComQIPtr( IUnknown* lp) throw()
 	{
 		if (lp != NULL)
 			lp->QueryInterface(*piid, (void **)&p);
 	}
-	T* operator=(_In_opt_ T* lp) throw()
+	T* operator=( T* lp) throw()
 	{
         if(*this!=lp)
         {
@@ -452,7 +452,7 @@ public:
         }
         return *this;
 	}
-	T* operator=(_In_ const CDuiComQIPtr<T,piid>& lp) throw()
+	T* operator=( const CDuiComQIPtr<T,piid>& lp) throw()
 	{
         if(*this!=lp)
         {
@@ -460,7 +460,7 @@ public:
         }
         return *this;
 	}
-	T* operator=(_In_opt_ IUnknown* lp) throw()
+	T* operator=( IUnknown* lp) throw()
 	{
         if(*this!=lp)
         {
@@ -478,17 +478,17 @@ public:
 	CDuiComQIPtr() throw()
 	{
 	}
-	CDuiComQIPtr(_In_opt_ IUnknown* lp) throw()
+	CDuiComQIPtr( IUnknown* lp) throw()
 	{
 		//Actually do a QI to get identity
 		if (lp != NULL)
 			lp->QueryInterface(__uuidof(IUnknown), (void **)&p);
 	}
-	CDuiComQIPtr(_In_ const CDuiComQIPtr<IUnknown,&IID_IUnknown>& lp) throw() :
+	CDuiComQIPtr( const CDuiComQIPtr<IUnknown,&IID_IUnknown>& lp) throw() :
 		CDuiComPtr<IUnknown>(lp.p)
 	{
 	}
-	IUnknown* operator=(_In_opt_ IUnknown* lp) throw()
+	IUnknown* operator=( IUnknown* lp) throw()
 	{
         if(*this!=lp)
         {
@@ -498,7 +498,7 @@ public:
         return *this;
 	}
 
-	IUnknown* operator=(_In_ const CDuiComQIPtr<IUnknown,&IID_IUnknown>& lp) throw()
+	IUnknown* operator=( const CDuiComQIPtr<IUnknown,&IID_IUnknown>& lp) throw()
 	{
         if(*this!=lp)
         {
