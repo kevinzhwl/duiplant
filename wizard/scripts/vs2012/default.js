@@ -386,11 +386,11 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		var outfiles;
 		if(isSupportNamedID)
 		{//Ö§³Önamedid
-			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i %(FullPath) -y -p skin -r .\\duires\\winres.rc2 -n .\\duires\\name2id.xml -h .\\duires\\winres.h';
+			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i "%(FullPath)" -y -p skin -r .\\duires\\winres.rc2 -n .\\duires\\name2id.xml -h .\\duires\\winres.h';
 			outfiles=".\\duires\\winres.rc2;.\\duires\\winres.h;.\\duires\\name2id.xml";
 		}else
 		{
-			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i %(FullPath) -y -p skin -r .\\duires\\winres.rc2';
+			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i "%(FullPath)" -y -p skin -r .\\duires\\winres.rc2';
 			outfiles=".\\duires\\winres.rc2;";
 		}
 		
