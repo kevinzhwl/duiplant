@@ -148,7 +148,7 @@ public:
 		{
 			reg.SetStringValue(_T("DUIENGINEPATH"),szDuiEngineDir);
 			reg.Close();
-			SendMessage(HWND_BROADCAST,WM_SETTINGCHANGE,0,(LPARAM)_T("Environment"));//广播环境变量修改消息。
+			::PostMessage(HWND_BROADCAST,WM_SETTINGCHANGE,0,(LPARAM)_T("Environment"));//广播环境变量修改消息。
 		}else
 		{
 			MessageBox(_T("添加环境变量失败"),_T("错误"),MB_OK|MB_ICONSTOP);
