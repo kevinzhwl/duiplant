@@ -1,0 +1,11 @@
+﻿<dlg pos="50,0,-0,-0">
+  <text pos="100,10" pos2type="center">center align1</text>
+  <text pos="100,30" pos2type="center">center align align</text>
+  <text pos="200,50" pos2type="righttop">align right top</text>
+  <text pos="200,70" pos2type="righttop">align right top 2</text>
+  <check pos="200,90" pos2type="righttop">check right top</check>
+  <check pos="200,110" pos2type="righttop">check right top1235</check>
+
+  <text pos="200,130" class="cls_txt_red">text left top</text>
+  <text pos="200,150,400,300" align="left" valign="top">text left top</text>
+</dlg>

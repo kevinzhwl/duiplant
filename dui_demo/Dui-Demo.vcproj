@@ -1190,6 +1190,10 @@
 				RelativePath=".\layout\menu_test.xml"
 				>
 			</File>
+			<File
+				RelativePath=".\layout\page2.xml"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="resource files"

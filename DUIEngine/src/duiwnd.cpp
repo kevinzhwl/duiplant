@@ -543,7 +543,23 @@ BOOL CDuiWindow::LoadChildren(pugi::xml_node xmlNode)
     {
 		if(xmlChild.type() != pugi::node_element) continue;
         CDuiWindow *pChild = DuiWindowFactoryManager::getSingleton().CreateWindowByName(xmlChild.name());
-		if(!pChild) continue;
+		if(!pChild)
+		{//在窗口布局中支持include标签
+			if(stricmp(xmlChild.name(),"include")==0)
+			{
+				pugi::xml_document xmlDoc;
+				CDuiStringT strName=DUI_CA2T(xmlChild.attribute("src").value(),CP_UTF8);
+				if(DuiSystem::getSingletonPtr()->LoadXmlDocment(xmlDoc,strName,DUIRES_XML_TYPE))
+				{
+					LoadChildren(xmlDoc.first_child());
+				}else
+				{
+					DUIASSERT(FALSE);
+				}
+
+			}
+			continue;
+		}
 
 		InsertChild(pChild);
         pChild->Load(xmlChild);
