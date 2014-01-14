@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "DuiGifControl.h"
 
-CDuiGifControl::CDuiGifControl() : m_iCurFrame(0)
+CDuiGifControl::CDuiGifControl() :m_pgif(NULL), m_iCurFrame(0)
 {
 
 }

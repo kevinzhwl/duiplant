@@ -13,7 +13,7 @@ public:
 	~CDuiGifControl();
 
 	DUIWIN_DECLARE_ATTRIBUTES_BEGIN()		
-		DUIWIN_CUSTOM_ATTRIBUTE("gif", OnAttrGif)		
+		DUIWIN_CUSTOM_ATTRIBUTE("skin", OnAttrGif)		
 	DUIWIN_DECLARE_ATTRIBUTES_END()
 
 protected:
