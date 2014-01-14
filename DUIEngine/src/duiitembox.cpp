@@ -34,7 +34,7 @@ CDuiPanel* CDuiItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureV
     CDuiPanel *pPanel=new CDuiPanel;
     InsertChild(pPanel, pPrevChild);
 
-    pPanel->LoadChildren(xmlDoc);
+    pPanel->LoadChildren(xmlDoc.first_child());
     pPanel->SetVisible(TRUE);
     pPanel->SetFixSize(m_nItemWid,m_nItemHei);
 
