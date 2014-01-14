@@ -47,9 +47,9 @@ CDuiPanel* CDuiItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureV
     return pPanel;
 }
 
-CDuiPanel* CDuiItemBox::InsertItem(pugi::xml_node *pXmlNode,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
+CDuiPanel* CDuiItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
 {
-	if (!pXmlDocTmpl) return NULL;	
+	if (!xmlNode) return NULL;	
 
 	CDuiWindow *pChild=m_pFirstChild,*pPrevChild=ICWND_FIRST;
 	for(int iChild=0; iChild<iItem || iItem==-1; iChild++)
@@ -62,7 +62,7 @@ CDuiPanel* CDuiItemBox::InsertItem(pugi::xml_node *pXmlNode,int iItem/*=-1*/,BOO
 	CDuiPanel *pPanel=new CDuiPanel;
 	InsertChild(pPanel, pPrevChild);
 
-	pPanel->LoadChildren(pXmlNode);
+	pPanel->LoadChildren(xmlNode);
 	pPanel->SetVisible(TRUE);
 	pPanel->SetFixSize(m_nItemWid,m_nItemHei);
 

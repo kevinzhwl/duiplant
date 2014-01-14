@@ -22,7 +22,7 @@ public:
 
     CDuiPanel* InsertItem(LPCWSTR pszXml,int iItem=-1,BOOL bEnsureVisible=FALSE);
 
-	CDuiPanel* InsertItem(pugi::xml_node *pXmlNode, int iItem=-1,BOOL bEnsureVisible=FALSE);
+	CDuiPanel* InsertItem(pugi::xml_node xmlNode, int iItem=-1,BOOL bEnsureVisible=FALSE);
 
     BOOL RemoveItem(UINT iItem);
 
