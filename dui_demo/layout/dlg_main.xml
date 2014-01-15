@@ -9,7 +9,7 @@
         <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="0" />
       </caption>
 
-      <tabctrl pos="5,29,-5,-5" id="2000" cursel="0" animatesteps="10" tabstop="0">
+      <tabctrl pos="5,29,-5,-5" id="2000" cursel="0" animatesteps="10" tabstop="0" inset="10,0,3,0">
         <tab id="110" title="listctrl">
           <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" sbskin="sb_vertical" sbwid="8">
             <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
@@ -94,7 +94,7 @@
           </scrollview>
         </tab>
         <tab id="116" title="attribute">
-          <button class="normalbtn" tabstop="1"  name="测试" pos="20,50,200,80">reposition</button>
+          <button class="normalbtn" tabstop="1"  name="测试" font2="bold:1;italic:1;underline:1;adding:15;facename:隶书" pos="20,50,200,80">reposition测试</button>
         </tab>
         <tab id="117" title="duilistbox">
           <text pos="10,0">一般列表</text>

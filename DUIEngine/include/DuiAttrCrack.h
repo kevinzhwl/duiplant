@@ -190,7 +190,7 @@ public:                                                             \
 		}                                                           \
 		else                                                        \
  
-// HFONT = %04X StringA
+// font = "1007:ËÎÌו"
 #define DUIWIN_FONT_ATTRIBUTE(attribname, varname, allredraw)        \
 	if (attribname == strAttribName)                            \
 		{                                                           \
@@ -209,7 +209,51 @@ public:                                                             \
 			hRet = allredraw ? S_OK : S_FALSE;                      \
 		}                                                           \
 		else                                                        \
- 
+
+
+//font2="facename:ËÎÌו;bold:1;italic:1;underline:1;adding:10"
+#define DUIWIN_FONT2_ATTRIBUTE(attribname, varname, allredraw)        \
+	if (attribname == strAttribName)									\
+	{																	\
+		BOOL bBold=0,bItalic=0,bUnderline=0;							\
+		CDuiStringT strFace;											\
+		char  nAdding=0;												\
+		CDuiStringT attr=DUI_CA2T(strValue,CP_UTF8);					\
+		attr.MakeLower();												\
+		int nPosBegin=attr.Find(_T("facename:"));						\
+		if(nPosBegin!=-1)												\
+		{																\
+			nPosBegin+=9;												\
+			int nPosEnd=attr.Find(_T(";"),nPosBegin);					\
+			if(nPosEnd==-1) nPosEnd=attr.GetLength();					\
+			strFace=attr.Mid(nPosBegin,nPosEnd-nPosBegin);				\
+		}																\
+		nPosBegin=attr.Find(_T("bold:"));								\
+		if(nPosBegin!=-1)												\
+		{																\
+			bBold=attr.Mid(nPosBegin+5,1)!=_T("0");							\
+		}																\
+		nPosBegin=attr.Find(_T("underline:"));							\
+		if(nPosBegin!=-1)												\
+		{																\
+			bUnderline=attr.Mid(nPosBegin+10,1)!=_T("0");					\
+		}																\
+		nPosBegin=attr.Find(_T("italic:"));								\
+		if(nPosBegin!=-1)												\
+		{																\
+			bItalic=attr.Mid(nPosBegin+7,1)!=_T("0");						\
+		}																\
+		nPosBegin=attr.Find(_T("adding:"));								\
+		if(nPosBegin!=-1)												\
+		{																\
+			nAdding=(char)_ttoi((LPCTSTR)attr+nPosBegin+7);						\
+		}																\
+		varname = DuiFontPool::getSingleton().GetFont(bBold,bUnderline,bItalic,nAdding,strFace); \
+		hRet = allredraw ? S_OK : S_FALSE;								\
+	}																	\
+	else																\
+
+
 // Value In {String1 : Value1, String2 : Value2 ...}
 #define DUIWIN_ENUM_ATTRIBUTE(attribname, vartype, allredraw)        \
 	if (attribname == strAttribName)                            \

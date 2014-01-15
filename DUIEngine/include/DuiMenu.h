@@ -29,6 +29,7 @@ public:
     DUIWIN_INT_ATTRIBUTE("textmargin",m_nTextMargin,FALSE)
     DUIWIN_SIZE_ATTRIBUTE("iconsize",m_szIcon,FALSE)
     DUIWIN_FONT_ATTRIBUTE("font",m_hFont,FALSE)
+	DUIWIN_FONT2_ATTRIBUTE("font2",m_hFont,FALSE)
     DUIWIN_COLOR_ATTRIBUTE("crtxt",m_crTxtNormal,FALSE);
     DUIWIN_COLOR_ATTRIBUTE("crtxtsel",m_crTxtSel,FALSE);
     DUIWIN_COLOR_ATTRIBUTE("crtxtgray",m_crTxtGray,FALSE);

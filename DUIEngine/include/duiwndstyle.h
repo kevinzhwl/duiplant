@@ -87,6 +87,9 @@ protected:
     DUIWIN_FONT_ATTRIBUTE("font", m_ftText, TRUE)
     DUIWIN_FONT_ATTRIBUTE("hoverfont", m_ftHover, TRUE)
     DUIWIN_FONT_ATTRIBUTE("pushfont", m_ftPush, TRUE)
+	DUIWIN_FONT2_ATTRIBUTE("font2", m_ftText, TRUE)
+	DUIWIN_FONT2_ATTRIBUTE("hoverfont2", m_ftHover, TRUE)
+	DUIWIN_FONT2_ATTRIBUTE("pushfont2", m_ftPush, TRUE)
     DUIWIN_INT_ATTRIBUTE("x-margin", m_nMarginX, TRUE)
     DUIWIN_INT_ATTRIBUTE("y-margin", m_nMarginY, TRUE)
     DUIWIN_INT_ATTRIBUTE("margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
