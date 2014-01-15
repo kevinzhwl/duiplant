@@ -9,7 +9,7 @@ namespace DuiEngine
 
 #define MARGIN_TIP		5
 
-CDuiTipCtrl::CDuiTipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0),m_bSetDelayTimer(FALSE)
+CDuiTipCtrl::CDuiTipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0)
 {
 }
 
@@ -51,11 +51,10 @@ void CDuiTipCtrl::RelayEvent( const MSG *pMsg )
         {
             OnTimer(TIMERID_SPAN);//hide tip
         }
-        else if(!IsWindowVisible() && !m_strTip.IsEmpty()&&!m_bSetDelayTimer)
+        else if(!IsWindowVisible() && !m_strTip.IsEmpty())
         {
             KillTimer(TIMERID_DELAY);
-            SetTimer(TIMERID_DELAY,m_nDelay);
-            m_bSetDelayTimer = TRUE;
+            SetTimer(TIMERID_DELAY,m_nDelay);           
             ::ClientToScreen(pMsg->hwnd,&pt);
             SetWindowPos(0,pt.x,pt.y+24,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOSENDCHANGING|SWP_NOACTIVATE);
         }
@@ -106,8 +105,7 @@ void CDuiTipCtrl::OnTimer( UINT_PTR idEvent )
     switch(idEvent)
     {
     case TIMERID_DELAY:
-        KillTimer(TIMERID_DELAY);
-        m_bSetDelayTimer = FALSE;
+        KillTimer(TIMERID_DELAY);       
         ShowTip(TRUE);
         SetTimer(TIMERID_SPAN,m_nShowSpan);
         break;
