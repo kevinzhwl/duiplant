@@ -10,7 +10,7 @@ namespace DuiEngine
 CDuiHotKeyCtrl::CDuiHotKeyCtrl(void)
 {
     m_hTxtFont=0;
-    m_wInvalidModifier=HOTKEYF_CONTROL;
+    m_wInvalidModifier=0;
     m_wInvalidComb=HKCOMB_NONE;
     m_bInSetting=FALSE;
 	m_bTabStop=TRUE;
