@@ -520,22 +520,14 @@ void CDuiImageBtnWnd::OnPaint(CDCHandle dc)
         if(GetState()&DuiWndState_Hover)
         {
             //get hover
-            /*m_pSkin->Draw(
-            dc, m_rcWindow,
-            0,0xFF-m_byAlpha
-            );*/
-            m_pSkin->Draw(
-                dc, m_rcWindow,
-                1,m_byAlpha
-            );
+            m_pSkin->Draw(dc, m_rcWindow, 0, 0xFF);
+            m_pSkin->Draw(dc, m_rcWindow, 1, m_byAlpha);
         }
         else
         {
             //lose hover
-            m_pSkin->Draw(
-                dc, m_rcWindow,
-                0,m_byAlpha
-            );
+			m_pSkin->Draw(dc, m_rcWindow,1, 0xFF);
+            m_pSkin->Draw(dc, m_rcWindow, 0, m_byAlpha);
         }
     }
 
