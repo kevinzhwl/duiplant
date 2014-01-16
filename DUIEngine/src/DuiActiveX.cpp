@@ -61,6 +61,7 @@ namespace DuiEngine
 	CDuiActiveX::CDuiActiveX() 
 		: m_axContainer(new CDuiAxContainerImpl(this))
 		,m_clsid(CLSID_NULL)
+		,m_clsCtx(CLSCTX_ALL)
 		,m_bDelayInit(FALSE)
 	{
 	}
@@ -72,18 +73,14 @@ namespace DuiEngine
 
 	BOOL CDuiActiveX::InitActiveX()
 	{
-		if(m_bDelayInit)
+		BOOL bRet=m_axContainer->CreateControl(m_rcWindow,m_clsid,m_clsCtx);
+		if(bRet)
 		{
-			BOOL bRet=m_axContainer->CreateControl(m_rcWindow,m_clsid);
-			if(bRet)
-			{
-				m_axContainer->ActivateAx(NULL);
-				SetActiveXVisible(IsVisible(TRUE));
-			}
-			m_bDelayInit=FALSE;//防止重入
+			m_axContainer->ActivateAx(NULL);
+			SetActiveXVisible(IsVisible(TRUE));
 		}
 		OnInitActiveXFinished();
-		return m_axContainer!=NULL;
+		return bRet;
 	}
 
 	void CDuiActiveX::OnPaint(CDCHandle dc)
@@ -111,7 +108,11 @@ namespace DuiEngine
 	{
 		__super::OnShowWindow(bShow, nStatus);
 
-		if(bShow && m_bDelayInit) InitActiveX();//窗口显示时才初始化
+		if(bShow && m_bDelayInit)
+		{
+			InitActiveX();//窗口显示时才初始化
+			m_bDelayInit=FALSE;
+		}
 
 		SetActiveXVisible(bShow);
 	}
@@ -163,6 +164,12 @@ namespace DuiEngine
 
 			ShowWindow(window, bVisible ? SW_SHOW : SW_HIDE);
 		}
+	}
+
+	IUnknown * CDuiActiveX::GetIUnknow()
+	{
+		if(!m_axContainer) return NULL;
+		return m_axContainer->GetActiveXControl();
 	}
 
 	//////////////////////////////////////////////////////////////////////////

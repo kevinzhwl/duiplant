@@ -15,6 +15,7 @@ namespace DuiEngine
 		explicit CDuiActiveX();
 		virtual ~CDuiActiveX();
 
+		IUnknown * GetIUnknow();
 	protected:
 		virtual void OnAxActivate(IUnknown *pUnknwn){}
 
@@ -41,6 +42,7 @@ namespace DuiEngine
 
 		DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
 			DUIWIN_CUSTOM_ATTRIBUTE("clsid",OnAttrClsid)
+			DUIWIN_DWORD_ATTRIBUTE("clsctx",m_clsCtx,FALSE)
 			DUIWIN_UINT_ATTRIBUTE("delayinit",m_bDelayInit,FALSE)
 		DUIWIN_DECLARE_ATTRIBUTES_END()
 
@@ -51,6 +53,7 @@ namespace DuiEngine
 	protected:
 		CDuiAxContainerImpl * m_axContainer;
 		CLSID	m_clsid;
+		DWORD	m_clsCtx;
 		BOOL		m_bDelayInit;
 	};
 

@@ -710,7 +710,7 @@ class DUI_NO_VTABLE CDuiAxContainer :   public IOleContainer,
     CDuiAxContainer();
     virtual ~CDuiAxContainer();
 
-	BOOL CreateControl(LPCRECT pRect, REFGUID guid);
+	BOOL CreateControl(LPCRECT pRect, REFGUID guid, DWORD dwClsCtx=CLSCTX_INPROC_SERVER);
 
     ///////////////////////////////////////////////////////////////////////////
     // IOleContainer

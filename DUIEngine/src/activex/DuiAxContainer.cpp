@@ -32,12 +32,12 @@ CDuiAxContainer::~CDuiAxContainer()
 {
 }
 
-BOOL CDuiAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid )
+BOOL CDuiAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid ,DWORD dwClsCtx /*=CLSCTX_INPROC_SERVER*/)
 {
 	DUIASSERT(m_pAxHostDelegate);
 	HRESULT hr = E_FAIL;
 	CDuiComPtr<IUnknown> pControl;
-	hr = CoCreateInstance(clsid, NULL, CLSCTX_INPROC_SERVER, __uuidof(IUnknown), reinterpret_cast<void**>(&pControl));
+	hr = CoCreateInstance(clsid, NULL,dwClsCtx , __uuidof(IUnknown), reinterpret_cast<void**>(&pControl));
 	if ( SUCCEEDED(hr) )
 	{
 		Init(pControl,pRect);
