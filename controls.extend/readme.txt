@@ -2,8 +2,6 @@
 使用时先注册.
 假定一个控件名为CTestCtrl
 控件注册:
-	TplDuiWindowFactory<CTestCtrl> *pFacTestCtrl= new TplDuiWindowFactory<CTestCtrl>;
-	DuiWindowFactoryManager::getSingleton().RegisterFactory(pFacTestCtrl);
+	DuiWindowFactoryManager::getSingleton().RegisterFactory(TplDuiWindowFactory<CTestCtrl>());
 反注册:
-	DuiWindowFactoryManager::getSingleton().UnregisterFactory(pFacTestCtrl);
-	delete pFacTestCtrl;
+	DuiWindowFactoryManager::getSingleton().UnregisterFactory(CTestCtrl::GetClassName());

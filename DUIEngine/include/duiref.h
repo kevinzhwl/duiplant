@@ -20,13 +20,14 @@ public:
         return ++m_nRef;
     }
 
-    void Release()
+    int Release()
     {
-        --m_nRef;
-        if(m_nRef==0)
+        int nRet=--m_nRef;
+        if(nRet==0)
         {
             OnFinalRelease();
         }
+		return nRet;
     }
 
 protected:
