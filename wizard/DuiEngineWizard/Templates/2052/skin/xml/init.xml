@@ -1,8 +1,8 @@
-<DuiEngine>
+﻿<DuiEngine>
   <font face="宋体" size="12"/>
   
   <string>
-    <s id="1">[!output APP_TITLE]</s>
+    <s id="1">duiengine-ie</s>
     <s id="2">1.0</s>
   </string>
   
@@ -16,7 +16,7 @@
   <scrollbar name="sb_common" src="IDP_SCROLL" thumbleft="3"/>
 
   <imglst name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" subwidth="38" />
-
+  <imgframe name="skin_edit_border" src="IDP_BORDER_EDIT" states="2" left="2" top="2"/>
   <button name="normalbtn" border="7D9EBC" bg="FBFCFD" bgup="FEFEFE"
     bgdown="C6E2FD" bguphover="FEFEFE" bgdownhover="DBEDFE"
     bguppush="C6E2FD" bgdownpush="FEFEFE"/>
@@ -48,6 +48,7 @@
 	<class name="Arial_txt_gray"   font="0000:Arial" textmode="25" crtext="565656" />
   
 	<class name="linkimage" cursor="hand"/>
+  <class name="cls_border" cursor="hand" ncskin="skin_edit_border" x-margin="2" y-margin="2"/>
 </style>
 
 <objattr>

@@ -9,6 +9,7 @@
 <resid type="IMGX" name="IDP_BTN_WND_RADIO"  file="image\btn_wnd_radio.png"   />
 <resid type="IMGX" name="IDP_FOCUS_CHECK"    file="image\focus_checkbox.png"/>
 <resid type="IMGX" name="IDP_FOCUS_RADIO"    file="image\focus_radio.png"   />
+<resid type="IMGX" name="IDP_BORDER_EDIT"    file="image\img_edit_border.png"   />
 
 
 <resid type="IMGX" name="IDP_BTN_SYS_CLOSE"   file="image\btn_sys_close.png"    />
