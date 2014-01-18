@@ -4,15 +4,23 @@
 
 #pragma once
 
-#define NAME_DUIWIZARD	_T("DuiEngineWizard")
-
 class CMainDlg : public CDialogImpl<CMainDlg>
 {
+	struct VSENVCFG
+	{
+		CString strName;
+		CString strVsDir;
+		CString strDataTarget;
+		CString strEntrySrc;
+		CString strEntryTarget;
+		CString strScriptSrc;
+	};
 public:
 	enum { IDD = IDD_MAINDLG };
 
 	BEGIN_MSG_MAP_EX(CMainDlg)
 		MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
 		COMMAND_ID_HANDLER(IDCANCEL, OnCancel)
 		COMMAND_ID_HANDLER(IDC_BROWSE2, OnBrowseDuiEngineDir)
 		COMMAND_ID_HANDLER(IDC_INSTALL, OnInstall)
@@ -20,21 +28,25 @@ public:
 		COMMAND_ID_HANDLER(IDC_SETOUTSOFT, OnSetoutsoft)
 	END_MSG_MAP()
 
-	enum {VS2005=0,VS2008,VS2010,VS2012};
+	CString m_strWizardDir;//数据目录
 
-	//"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\Tools\"
-	//"C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\"
-	CString GetVSDir(int VSID)
+	CString GetVSDir(LPCTSTR pszEnvName)
 	{
-		TCHAR szVName[][30]={
-			_T("VS80COMNTOOLS"),
-			_T("VS90COMNTOOLS"),
-			_T("VS100COMNTOOLS"),
-			_T("VS110COMNTOOLS")
-		};
-		TCHAR szBuf[MAX_PATH+1]={0};
-		GetEnvironmentVariable(szVName[VSID],szBuf,MAX_PATH);
-		return szBuf;
+		CString strRet;
+		strRet.GetEnvironmentVariable(pszEnvName);
+		if(!strRet.IsEmpty()) strRet=strRet.Left(strRet.GetLength()-14);//14=length("Common7\Tools\")
+		return strRet;
+	}
+
+	LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+	{
+		CListViewCtrl vslist;
+		vslist.Attach(GetDlgItem(IDC_VSLIST));
+		for(int i=0;i<vslist.GetItemCount();i++)
+		{
+			delete (VSENVCFG*)vslist.GetItemData(i);
+		}
+		return 0;
 	}
 
 	LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
@@ -48,30 +60,46 @@ public:
 		HICON hIconSmall = AtlLoadIconImage(IDR_MAINFRAME, LR_DEFAULTCOLOR, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON));
 		SetIcon(hIconSmall, FALSE);
 
-		CString strDirVs05=GetVSDir(VS2005);
-		CString strDirVs08=GetVSDir(VS2008);
-		CString strDirVs10=GetVSDir(VS2010);
-		CString strDirVs12=GetVSDir(VS2012);
+		CListViewCtrl vslist;
+		vslist.Attach(GetDlgItem(IDC_VSLIST));
+		ListView_SetExtendedListViewStyleEx(vslist.m_hWnd,LVS_EX_CHECKBOXES,LVS_EX_CHECKBOXES);
 		
-		if(strDirVs05.IsEmpty())
-			::EnableWindow(GetDlgItem(IDC_VS2005),FALSE);
-		else
-			::CheckDlgButton(m_hWnd,IDC_VS2005,1);
+		TCHAR szDir[1000];
+		GetCurrentDirectory(1000,szDir);
+		m_strWizardDir=szDir;
 
-		if(strDirVs08.IsEmpty())
-			::EnableWindow(GetDlgItem(IDC_VS2008),FALSE);
-		else
-			::CheckDlgButton(m_hWnd,IDC_VS2008,1);
+		CString szVsList=m_strWizardDir+=_T("\\vslist.ini");
+		int i=0;
+		for(;;)
+		{
+			CString entry;
+			entry.Format(_T("vs_%d"),++i);
+			TCHAR szBuf[1000];
+			if(0==GetPrivateProfileString(entry,_T("name"),NULL,szBuf,1000,szVsList))
+				break;
 
-		if(strDirVs10.IsEmpty())
-			::EnableWindow(GetDlgItem(IDC_VS2010),FALSE);
-		else
-			::CheckDlgButton(m_hWnd,IDC_VS2010,1);
+			VSENVCFG *pEnvCfg=new VSENVCFG;
+			pEnvCfg->strName=szBuf;
+			GetPrivateProfileString(entry,_T("envname"),NULL,szBuf,1000,szVsList);
+			pEnvCfg->strVsDir=GetVSDir(szBuf);
+			if(pEnvCfg->strVsDir.IsEmpty())
+			{
+				delete pEnvCfg;
+				continue;
+			}
+			GetPrivateProfileString(entry,_T("entryfilesrc"),NULL,szBuf,1000,szVsList);
+			pEnvCfg->strEntrySrc=szBuf;
+			GetPrivateProfileString(entry,_T("entryfiletarget"),NULL,szBuf,1000,szVsList);
+			pEnvCfg->strEntryTarget=szBuf;
+			GetPrivateProfileString(entry,_T("wizarddatatarget"),NULL,szBuf,1000,szVsList);
+			pEnvCfg->strDataTarget=szBuf;
+			
+			GetPrivateProfileString(entry,_T("scriptsrc"),NULL,szBuf,1000,szVsList);
+			pEnvCfg->strScriptSrc=szBuf;
 
-		if(strDirVs12.IsEmpty())
-			::EnableWindow(GetDlgItem(IDC_VS2012),FALSE);
-		else
-			::CheckDlgButton(m_hWnd,IDC_VS2012,1);
+			vslist.InsertItem(i-1,pEnvCfg->strName);
+			vslist.SetItemData(i-1,(DWORD_PTR)pEnvCfg);
+		}
 
 		TCHAR szPath[MAX_PATH];
 		if(GetEnvironmentVariable(_T("DUIENGINEPATH"),szPath,MAX_PATH))
@@ -94,6 +122,7 @@ public:
 
 		return TRUE;
 	}
+
 	LRESULT OnSetoutsoft(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 	{
 		ShellExecute(0,_T("open"),_T("http://www.setoutsoft.cn"),NULL,NULL,SW_SHOWNORMAL);
@@ -112,20 +141,12 @@ public:
 
 	LRESULT OnInstall(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 	{
-		char toVS[4]={0},empty[4]={0};
-		if(IsDlgButtonChecked(IDC_VS2005)) toVS[VS2005]=1;
-		if(IsDlgButtonChecked(IDC_VS2008)) toVS[VS2008]=1;
-		if(IsDlgButtonChecked(IDC_VS2010)) toVS[VS2010]=1;
-		if(IsDlgButtonChecked(IDC_VS2012)) toVS[VS2012]=1;
-		
-		
-		if(memcmp(toVS,empty,4)==0)
-		{
-			MessageBox(_T("请先指定目标VS"),_T("错误"),MB_OK|MB_ICONSTOP);
-			return 0;
-		}
+		SetCurrentDirectory(m_strWizardDir);
 
-		if(GetFileAttributes(_T("DuiEngineWizard.vsdir"))==INVALID_FILE_ATTRIBUTES)
+		CListViewCtrl vslist;
+		vslist.Attach(GetDlgItem(IDC_VSLIST));
+
+		if(GetFileAttributes(_T("DuiEngineWizard"))==INVALID_FILE_ATTRIBUTES)
 		{
 			MessageBox(_T("当前目录下没有找到DuiEngine的向导数据"),_T("错误"),MB_OK|MB_ICONSTOP);
 			return 0;
@@ -156,158 +177,103 @@ public:
 		}
 
 		//准备复制文件
-		TCHAR szBuf[1024]={0};
+		TCHAR szFrom[1024]={0};
 		TCHAR szTo[1024]={0};
+		SHFILEOPSTRUCT shfo;
+		shfo.pFrom=szFrom;
+		shfo.pTo=szTo;
 
-		TCHAR *p=szBuf;
-
-		CString str=NAME_DUIWIZARD;
-		str=CString(NAME_DUIWIZARD)+_T(".ico");
-		_tcscpy(p,str);
-		p+=str.GetLength()+1;
-		str=CString(NAME_DUIWIZARD)+_T(".vsdir");
-		_tcscpy(p,str);
-		p+=str.GetLength()+1;
-		str=CString(NAME_DUIWIZARD);
-		_tcscpy(p,str);
-		p+=str.GetLength()+1;
-
-		TCHAR *pEnd=p;
-
-		TCHAR szVSName[][30]={
-			_T("VS2005"),
-			_T("VS2008"),
-			_T("VS2010"),
-			_T("VS2012")
-		};
-
-		TCHAR szVSZ[][30]=
+		for(int i=0;i<vslist.GetItemCount();i++)
 		{
-			_T("DuiEngineWizard2005.vsz"),
-			_T("DuiEngineWizard2008.vsz"),
-			_T("DuiEngineWizard2010.vsz"),
-			_T("DuiEngineWizard2012.vsz")
-		};
-		TCHAR szScript[][50]=
-		{
-			_T("scripts\\vs2008\\default.js"),
-			_T("scripts\\vs2008\\default.js"),
-			_T("scripts\\vs2012\\default.js"),
-			_T("scripts\\vs2012\\default.js"),
-		};
+			if(!vslist.GetCheckState(i)) continue;
 
-		for(int i=0;i<4;i++)
-		{
-			if(!toVS[i]) continue;
-			p=pEnd;
-			str=szVSZ[i];
-			_tcscpy(p,str);
-			p+=str.GetLength()+1;
-			*p=0;//double null
-
-			CString strDir=GetVSDir(VS2005+i);
-
-			if(strDir.IsEmpty()) continue;
-			int idx=strDir.Find(_T("Common7\\Tools"));
-			if(idx==-1) continue;
-			strDir=strDir.Left(idx)+_T("VC\\vcprojects\\");
-
-			_tcscpy(szTo,strDir);
-			szTo[strDir.GetLength()+1]=0;//double null
-			
-			SHFILEOPSTRUCT shfo;
-			shfo.pFrom=szBuf;
-			shfo.pTo=szTo;
-			shfo.wFunc=FO_COPY;
-			shfo.fFlags=FOF_NOCONFIRMMKDIR|FOF_NOCONFIRMATION;
-
-			BOOL bOK = 0==SHFileOperation(&shfo);
-
+			VSENVCFG *pCfg=(VSENVCFG*)vslist.GetItemData(i);
+			//复制向导数据
+			BOOL bOK = TRUE;
 			if(bOK)
 			{
-				//重命名
-				CString strFrom=strDir+szVSZ[i];
-				_tcscpy(szBuf,strFrom);
-				szBuf[strFrom.GetLength()+1]=0;//double null
-				CString strTo=strDir+_T("DuiEngineWizard.vsz");
-				_tcscpy(szTo,strTo);
-				szTo[strTo.GetLength()+1]=0;//double null
-				shfo.wFunc=FO_RENAME;
-				bOK= 0==SHFileOperation(&shfo);
-				if(bOK)
-				{
-					//复制脚本
-					_tcscpy(szBuf,szScript[i]);
-					szBuf[_tcslen(szBuf)+1]=0;//double null;
-					strTo=strDir+_T("DuiEngineWizard\\Scripts\\2052");
-					_tcscpy(szTo,strTo);
-					szTo[strTo.GetLength()+1]=0;//double null
-					shfo.wFunc=FO_COPY;
-					bOK= 0==SHFileOperation(&shfo);
-
-				}
+				shfo.wFunc=FO_COPY;
+				shfo.fFlags=FOF_NOCONFIRMMKDIR|FOF_NOCONFIRMATION;
+				memset(szFrom,0,sizeof(szFrom));
+				memset(szTo,0,sizeof(szTo));
+				_tcscpy(szFrom,_T("DuiEngineWizard"));
+				_tcscpy(szTo,pCfg->strVsDir);
+				_tcscat(szTo,pCfg->strDataTarget);
+				bOK = 0==SHFileOperation(&shfo);
 			}
-			_stprintf(szBuf,_T("为%s安装DuiEngine向导:%s"),szVSName[i],bOK?_T("成功"):_T("失败"));
-			::SendMessage(GetDlgItem(IDC_LOG),LB_ADDSTRING,0,(LPARAM)szBuf);
+			//复制入口数据
+			if(bOK)
+			{
+				shfo.wFunc=FO_COPY;
+				shfo.fFlags=FOF_NOCONFIRMMKDIR|FOF_NOCONFIRMATION;
+				memset(szFrom,0,sizeof(szFrom));
+				memset(szTo,0,sizeof(szTo));
+				_tcscpy(szFrom,pCfg->strEntrySrc);
+				_tcscat(szFrom,_T("\\*.*"));
+				_tcscpy(szTo,pCfg->strVsDir);
+				_tcscat(szTo,pCfg->strEntryTarget);
+				bOK = 0==SHFileOperation(&shfo);
+			}
+			//复制脚本
+			if(bOK)
+			{
+				shfo.wFunc=FO_COPY;
+				memset(szFrom,0,sizeof(szFrom));
+				memset(szTo,0,sizeof(szTo));
+				_tcscpy(szFrom,pCfg->strScriptSrc);
+				CString strTo=pCfg->strVsDir+pCfg->strDataTarget+_T("\\DuiEngineWizard\\Scripts\\2052");
+				_tcscpy(szTo,strTo);
+				bOK= 0==SHFileOperation(&shfo);
+			}
+			CString strMsg;
+			strMsg.Format(_T("为%s安装DuiEngine向导:%s"),pCfg->strName,bOK?_T("成功"):_T("失败"));
+			::SendMessage(GetDlgItem(IDC_LOG),LB_ADDSTRING,0,(LPARAM)(LPCTSTR)strMsg);
 		}
+
 		return 0;
 	}
 
 	LRESULT OnUninstall(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 	{
-		TCHAR szCurDir[MAX_PATH];
-		GetCurrentDirectory(MAX_PATH,szCurDir);
+		CListViewCtrl vslist;
+		vslist.Attach(GetDlgItem(IDC_VSLIST));
 
-		TCHAR szVSName[][30]={
-			_T("VS2005"),
-			_T("VS2008"),
-			_T("VS2010"),
-			_T("VS2012")
-		};
+		SHFILEOPSTRUCT shfo={0};
+		shfo.pTo=NULL;
+		shfo.wFunc=FO_DELETE;
+		shfo.fFlags=FOF_NOCONFIRMMKDIR|FOF_NOCONFIRMATION|FOF_SILENT;
 
-		for(int i=IDC_VS2005;i<=IDC_VS2012;i++)
+		for(int i=0;i<vslist.GetItemCount();i++)
 		{
-			if(!IsDlgButtonChecked(i)) continue;
-			CString strDir=GetVSDir(i-IDC_VS2005);
-			if(strDir.IsEmpty()) continue;
-			int idx=strDir.Find(_T("Common7\\Tools"));
-			if(idx==-1) continue;
-			strDir=strDir.Left(idx)+_T("VC\\vcprojects\\");
+			if(!vslist.GetCheckState(i)) continue;
+
+			VSENVCFG *pCfg=(VSENVCFG*)vslist.GetItemData(i);
+			BOOL bOK=TRUE;
+			//remove data files
+			if(bOK)
+			{
+				TCHAR szBuf[1000]={0};
+				CString strFrom=pCfg->strVsDir+pCfg->strDataTarget+_T("\\DuiEngineWizard");
+				_tcscpy(szBuf,strFrom);//注意需要以两个0结尾
+				shfo.pFrom=szBuf;
+				bOK= 0==SHFileOperation(&shfo);
+			}
+			//remove entry files
+			if(bOK)
+			{
+				CString strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\DuiEngineWizard.ico");
+				DeleteFile(strSource);
+				strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\DuiEngineWizard.vsdir");
+				bOK = DeleteFile(strSource);
+				strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\DuiEngineWizard.vsz");
+				bOK = DeleteFile(strSource);
+			}
 			
-			SetCurrentDirectory(strDir);
+			CString strMsg;
+			strMsg.Format(_T("从%s中卸载DuiEngine向导%s"),pCfg->strName,bOK?_T("成功"):_T("失败"));
+			::SendMessage(GetDlgItem(IDC_LOG),LB_ADDSTRING,0,(LPARAM)(LPCTSTR)strMsg);
 
-			TCHAR szBuf[1024]={0};
-			TCHAR *p=szBuf;
-			CString str;
-			str=CString(NAME_DUIWIZARD)+_T(".ico");
-			_tcscpy(p,str);
-			p+=str.GetLength()+1;
-			str=CString(NAME_DUIWIZARD)+_T(".vsdir");
-			_tcscpy(p,str);
-			p+=str.GetLength()+1;
-			str=CString(NAME_DUIWIZARD)+_T(".vsz");
-			_tcscpy(p,str);
-			p+=str.GetLength()+1;
-
-			str=CString(NAME_DUIWIZARD);
-			_tcscpy(p,str);
-			p+=str.GetLength()+1;
-
-			*p=0;
-
-			SHFILEOPSTRUCT shfo;
-			shfo.pFrom=szBuf;
-			shfo.pTo=NULL;
-			shfo.wFunc=FO_DELETE;
-			shfo.fFlags=FOF_NOCONFIRMMKDIR|FOF_NOCONFIRMATION;
-
-			BOOL bOK= 0==SHFileOperation(&shfo);
-			
-			_stprintf(szBuf,_T("从%s中卸载DuiEngine向导%s"),szVSName[i-IDC_VS2005],bOK?_T("成功"):_T("失败"));
-			::SendMessage(GetDlgItem(IDC_LOG),LB_ADDSTRING,0,(LPARAM)szBuf);
 		}
-		SetCurrentDirectory(szCurDir);
-
 		return 0;
 	}
 
