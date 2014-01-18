@@ -5,9 +5,9 @@
 
 //#define __DUIFILE_RC	//修改这个标志来切换资源加载模式
 #ifndef __DUIFILE_RC
-#pragma message("!!!pay attention! dui resource will be loaded from files. you can change resouce load mode by enable flag [__DUIFILE_RC] in resouce.h")
-#else
 #pragma message("!!!pay attention! dui resource is embodied into executable file. you can change resouce load mode by disable flag [__DUIFILE_RC] in resouce.h")
+#else
+#pragma message("!!!pay attention! dui resource will be loaded from files. you can change resouce load mode by enable flag [__DUIFILE_RC] in resouce.h")
 #endif
 
 #define IDI_MAINWND                     113
