@@ -13,7 +13,7 @@
 	<imglst name="btnRadio"            src="IDP_BTN_WND_RADIO" subwidth="15"  />
   <imglst name="focuscheckbox" src="IDP_FOCUS_CHECK"/>
   <imglst name="focusRadio" src="IDP_FOCUS_RADIO"/>
-  <scrollbar name="sb_common" src="IDP_SCROLL" thumbleft="3"/>
+  <scrollbar name="sb_common" src="IDP_SCROLL" margin="3"/>
 
   <imglst name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" subwidth="38" />
   <imgframe name="skin_edit_border" src="IDP_BORDER_EDIT" states="2" left="2" top="2"/>
