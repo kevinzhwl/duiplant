@@ -158,6 +158,7 @@ function AddConfig(proj, strProjectName)
 		else
 			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;NDEBUG;';
 		CLTool.RuntimeLibrary = 0; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
+		CLTool.WholeProgramOptimization = true;	//全程序优化：启动链接时代码生成
 
 		var LinkTool = config.Tools('VCLinkerTool');
 		// TODO: 添加链接器设置
@@ -165,6 +166,7 @@ function AddConfig(proj, strProjectName)
 		LinkTool.LinkIncremental = linkIncrementalYes;
 		LinkTool.SuppressStartupBanner = true;  // nologo
 		LinkTool.AdditionalLibraryDirectories = '$(DUIENGINEPATH)\\lib;$(DUIENGINEPATH)\\duiengine\\dependencies\\lib';
+		LinkTool.LinkIncremental=1;
 		
 		var ResTool = config.Tools('VCResourceCompilerTool');
 		//resource
