@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "DuiWebBrowser.h"
 
+#define WM_FORWARDMSG       0x037F
+
 namespace DuiEngine
 {
 
@@ -113,5 +115,30 @@ void CDuiWebBrowser::OnAxActivate( IUnknown *pUnknwn )
 		RegisterEventHandler(TRUE);
 		m_pIE->Navigate(bstr_t(m_strUrl),NULL,NULL,NULL,NULL);
 	}
+}
+
+int CDuiWebBrowser::OnCreate( LPVOID )
+{
+	int nRet=__super::OnCreate(NULL);
+	MsgFilterRegister(GetContainer()->GetHostHwnd());
+	return nRet;
+}
+
+void CDuiWebBrowser::OnDestroy()
+{
+	MsgFilterUnregister(GetContainer()->GetHostHwnd());
+}
+
+BOOL CDuiWebBrowser::PreTranslateMessage( MSG* pMsg )
+{
+	BOOL bRet = FALSE;
+	if(!m_pIE) return FALSE;
+	// give HTML page a chance to translate this message
+	CDuiComQIPtr<IOleInPlaceActiveObject> spInPlaceActiveObject(m_pIE);
+	if(spInPlaceActiveObject)
+	{
+		bRet=(spInPlaceActiveObject->TranslateAccelerator(pMsg) == S_OK);
+	}
+	return bRet;
 }
 }

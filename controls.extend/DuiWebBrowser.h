@@ -78,7 +78,7 @@ namespace DuiEngine
 		ULONG m_cRef;
 	};
 
-	class CDuiWebBrowser :	public CDuiActiveX, public IWebEvent
+	class CDuiWebBrowser :	public CDuiActiveX, public IWebEvent, public CDuiMessageFilter
 	{
 		DUIOBJ_DECLARE_CLASS_NAME(CDuiWebBrowser, "browser")
 	public:
@@ -87,9 +87,16 @@ namespace DuiEngine
 
 		IWebBrowser2 * GetIEObject(){return m_pIE;}
 	protected:
-
-	protected:
 		virtual void OnAxActivate(IUnknown *pUnknwn);
+		virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+		int OnCreate(LPVOID);
+		void OnDestroy();
+
+		DUIWIN_BEGIN_MSG_MAP()
+			MSG_WM_CREATE(OnCreate)
+			MSG_WM_DESTROY(OnDestroy)
+		DUIWIN_END_MSG_MAP()
 	protected:
 		// DWebBrowserEvents2
 		void BeforeNavigate2( IDispatch *pDisp,VARIANT *&url,VARIANT *&Flags,VARIANT *&TargetFrameName,VARIANT *&PostData,VARIANT *&Headers,VARIANT_BOOL *&Cancel );
@@ -106,6 +113,7 @@ namespace DuiEngine
 		DUIWIN_DECLARE_ATTRIBUTES_END()
 
 		CDuiStringW m_strUrl;
+
 		DWORD	m_dwCookie;
 		
 		CWebEventDispatch	m_eventDispatch;
