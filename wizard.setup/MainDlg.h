@@ -97,8 +97,8 @@ public:
 			GetPrivateProfileString(entry,_T("scriptsrc"),NULL,szBuf,1000,szVsList);
 			pEnvCfg->strScriptSrc=szBuf;
 
-			vslist.InsertItem(i-1,pEnvCfg->strName);
-			vslist.SetItemData(i-1,(DWORD_PTR)pEnvCfg);
+			int iItem=vslist.InsertItem(vslist.GetItemCount(),pEnvCfg->strName);
+			vslist.SetItemData(iItem,(DWORD_PTR)pEnvCfg);
 		}
 
 		TCHAR szPath[MAX_PATH];
