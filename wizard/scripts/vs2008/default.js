@@ -119,7 +119,7 @@ function AddConfig(proj, strProjectName)
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
 		CLTool.SuppressStartupBanner = true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
-		CLTool.AdditionalIncludeDirectories = '$(DUIENGINEPATH)\\duiengine\\include;';//%(AdditionalIncludeDirectories)';
+		CLTool.AdditionalIncludeDirectories = '"$(DUIENGINEPATH)\\duiengine\\include"';
 		if(isDllDuiEngine)
 			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;_DEBUG;DLL_DUI';
 		else
@@ -135,11 +135,11 @@ function AddConfig(proj, strProjectName)
 		LinkTool.LinkIncremental = linkIncrementalYes;
 		LinkTool.SuppressStartupBanner = true;  // nologo
 		LinkTool.GenerateDebugInformation = true;
-		LinkTool.AdditionalLibraryDirectories = '$(DUIENGINEPATH)\\lib;$(DUIENGINEPATH)\\duiengine\\dependencies\\lib';
+		LinkTool.AdditionalLibraryDirectories = '"$(DUIENGINEPATH)\\lib"';
 		
 		var ResTool = config.Tools('VCResourceCompilerTool');
 		//resource
-		ResTool.AdditionalIncludeDirectories='$(DUIENGINEPATH)\\duiengine\\include;';
+		ResTool.AdditionalIncludeDirectories='"$(DUIENGINEPATH)\\duiengine\\include"';
 		
 		// Release设置
 		var config = proj.Object.Configurations('Release');
@@ -152,11 +152,11 @@ function AddConfig(proj, strProjectName)
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
 		CLTool.SuppressStartupBanner = true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
-		CLTool.AdditionalIncludeDirectories = '$(DUIENGINEPATH)\\duiengine\\include;';//%(AdditionalIncludeDirectories)';
+		CLTool.AdditionalIncludeDirectories = '"$(DUIENGINEPATH)\\duiengine\\include"';
 		if(isDllDuiEngine)
-			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;NDEBUG;DLL_DUI';
+			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;NDEBUG;DLL_DUI';
 		else
-			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;NDEBUG;';
+			CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;NDEBUG;';
 		CLTool.RuntimeLibrary = 0; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
 		CLTool.WholeProgramOptimization = true;	//全程序优化：启动链接时代码生成
 		
@@ -165,12 +165,12 @@ function AddConfig(proj, strProjectName)
 		LinkTool.GenerateDebugInformation = true;
 		LinkTool.LinkIncremental = linkIncrementalYes;
 		LinkTool.SuppressStartupBanner = true;  // nologo
-		LinkTool.AdditionalLibraryDirectories = '$(DUIENGINEPATH)\\lib;$(DUIENGINEPATH)\\duiengine\\dependencies\\lib';
+		LinkTool.AdditionalLibraryDirectories = '"$(DUIENGINEPATH)\\lib"';
 		LinkTool.LinkIncremental=1;
 		
 		var ResTool = config.Tools('VCResourceCompilerTool');
 		//resource
-		ResTool.AdditionalIncludeDirectories='$(DUIENGINEPATH)\\duiengine\\include;';
+		ResTool.AdditionalIncludeDirectories='"$(DUIENGINEPATH)\\duiengine\\include"';
 	}
 	catch(e)
 	{
@@ -388,11 +388,11 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		var outfiles;
 		if(isSupportNamedID)
 		{//支持namedid
-			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i "$(InputPath)" -y -p skin -r .\\duires\\winres.rc2 -n .\\duires\\name2id.xml -h .\\duires\\winres.h';
+			cmdline= '"$(DUIENGINEPATH)\\tool\\residbuilder2.exe" -i "$(InputPath)" -y -p skin -r .\\duires\\winres.rc2 -n .\\duires\\name2id.xml -h .\\duires\\winres.h';
 			outfiles=".\\duires\\winres.rc2;.\\duires\\winres.h;.\\duires\\name2id.xml";
 		}else
 		{
-			cmdline= '$(DUIENGINEPATH)\\tool\\residbuilder2 -i "$(InputPath)" -y -p skin -r .\\duires\\winres.rc2';
+			cmdline= '"$(DUIENGINEPATH)\\tool\\residbuilder2.exe" -i "$(InputPath)" -y -p skin -r .\\duires\\winres.rc2';
 			outfiles=".\\duires\\winres.rc2;";
 		}
 		
