@@ -755,6 +755,7 @@ void CDuiWindow::NotifyInvalidateRect(LPRECT lprect)
 
 void CDuiWindow::NotifyInvalidateRect(const CRect& rect)
 {
+	if(!IsVisible(TRUE)) return ;
 	BOOL bUpdateLocked=FALSE;
 	CDuiWindow *pWnd=this;
 	while(pWnd && !bUpdateLocked)
