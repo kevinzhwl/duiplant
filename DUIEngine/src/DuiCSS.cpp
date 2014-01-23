@@ -45,7 +45,7 @@ BOOL DuiCSS::Init( pugi::xml_node xmlNode )
 
 void DuiCSS::BuildClassAttribute( pugi::xml_node & xmlNode, LPCSTR pszClassName)
 {
-	LPCSTR pszBaseClassName=GetBaseClassName(pszClassName);
+	LPCSTR pszBaseClassName=DuiWindowFactoryManager::getSingleton().BaseClassNameFromClassName(pszClassName);
 	if(!pszBaseClassName) return;
 
 	if(HasKey(pszBaseClassName))
@@ -74,28 +74,13 @@ pugi::xml_node DuiCSS::_GetDefAttribute(LPCSTR pszClassName )
 {
 	if(!HasKey(pszClassName))
 	{
-		LPCSTR pszBaseClassName=GetBaseClassName(pszClassName);
+		LPCSTR pszBaseClassName=DuiWindowFactoryManager::getSingleton().BaseClassNameFromClassName(pszClassName);
 		if(!pszBaseClassName) return pugi::xml_node();
 		return _GetDefAttribute(pszBaseClassName);
 	}else
 	{
 		return GetKeyObject(pszClassName);
 	}
-}
-
-LPCSTR DuiCSS::GetBaseClassName( LPCSTR pszClassName )
-{
-	DUIASSERT(pszClassName);
-	CDuiWindow *pDuiWnd = DuiWindowFactoryManager::getSingleton().CreateWindowByName(pszClassName);
-	if(pDuiWnd)
-	{
-		LPCSTR pszBaseClassName=pDuiWnd->BaseObjectClassName();
-		pDuiWnd->Release();
-		if(!pszBaseClassName) return NULL;
-		if(strcmp(pszClassName,pszBaseClassName)==0) return NULL;	//基类类名和派生类类名相同时
-		return pszBaseClassName;
-	}
-	return NULL;
 }
 
 

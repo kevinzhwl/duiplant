@@ -17,19 +17,24 @@ public:                                                 \
     static BOOL CheckAndNew(LPCSTR lpszName,void **ppRet)       \
     {                                                   \
         if (strcmp(GetClassName(), lpszName)  == 0)     \
-		{\
-			* (theclass**)ppRet=new theclass;							\
-			return TRUE;                        \
-		}\
+		{												\
+			* (theclass**)ppRet=new theclass;			\
+			return TRUE;								\
+		}												\
         else                                            \
-            return FALSE;                                \
+            return FALSE;                               \
     }                                                   \
                                                         \
     static LPCSTR GetClassName()                        \
     {                                                   \
         return classname;                               \
     }                                                   \
-                                                        \
+														\
+	static LPCSTR BaseClassName()						\
+	{													\
+		return __super::GetClassName();					\
+	}													\
+														\
     virtual LPCSTR GetObjectClass()                     \
     {                                                   \
         return classname;                               \
@@ -40,11 +45,6 @@ public:                                                 \
         if(strcmp(GetClassName(), lpszName)  == 0) return TRUE;  \
 		return __super::IsClass(lpszName);				\
     }                                                   \
-														\
-	virtual LPCSTR BaseObjectClassName()				\
-	{													\
-		return __super::GetObjectClass();				\
-	}													\
 
 
 namespace DuiEngine
@@ -61,6 +61,16 @@ public:
     {
     }
 
+	static LPCSTR GetClassName()
+	{
+		return NULL;
+	}
+
+	static LPCSTR BaseClassName()
+	{
+		return NULL;
+	}
+
     virtual BOOL IsClass(LPCSTR lpszName)
     {
         return FALSE;
@@ -71,10 +81,6 @@ public:
 		return NULL;
 	}
 
-	virtual LPCSTR BaseObjectClassName()
-	{
-		return NULL;
-	}
 
     virtual BOOL Load(pugi::xml_node xmlNode)
     {

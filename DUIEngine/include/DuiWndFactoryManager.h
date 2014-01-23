@@ -10,6 +10,7 @@ class CDuiWindowFactory
 public:
     virtual ~CDuiWindowFactory() {}
     virtual CDuiWindow* NewWindow() = 0;
+	virtual LPCSTR DuiWindowBaseName()=0;
 
     virtual const CDuiStringA & getWindowType()=0;
 
@@ -24,6 +25,10 @@ public:
 	TplDuiWindowFactory():m_strTypeName(T::GetClassName())
     {
     }
+
+	LPCSTR DuiWindowName(){return T::GetClassName();}
+
+	LPCSTR DuiWindowBaseName(){return T::BaseClassName();}
 
     // Implement WindowFactory interface
     CDuiWindow* NewWindow()
@@ -87,6 +92,8 @@ public:
     }
 
 	CDuiWindow *CreateWindowByName(LPCSTR pszClassName);
+
+	LPCSTR BaseClassNameFromClassName(LPCSTR pszClassName);
 protected:
     static void OnWndFactoryRemoved(const CDuiWindowFactoryPtr & obj);
 

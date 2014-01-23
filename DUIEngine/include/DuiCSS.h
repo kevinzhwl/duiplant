@@ -21,7 +21,6 @@ public:
 protected:
 	pugi::xml_node _GetDefAttribute(LPCSTR pszClassName);
 	void BuildClassAttribute(pugi::xml_node & xmlNode, LPCSTR pszClassName);
-	LPCSTR GetBaseClassName(LPCSTR pszClassName);
 
 	pugi::xml_document m_xmlRoot;
 };

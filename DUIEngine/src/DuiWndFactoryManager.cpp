@@ -74,10 +74,23 @@ CDuiWindow * DuiWindowFactoryManager::CreateWindowByName( LPCSTR pszClassName )
 {
 	if(!HasKey(pszClassName))
 	{
-		DuiTraceA("Warning: no window type:%s in DuiSystem!!",pszClassName);
+		DuiTraceA("CreateWindowByName,Warning: no window type:%s in DuiSystem!!",pszClassName);
 		return NULL;
 	}
 	return GetKeyObject(pszClassName)->NewWindow();
 }
 
+LPCSTR DuiWindowFactoryManager::BaseClassNameFromClassName( LPCSTR pszClassName )
+{
+	if(!HasKey(pszClassName))
+	{
+		DuiTraceA("BaseClassNameFromClassName, Warning: no window type:%s in DuiSystem!!",pszClassName);
+		return NULL;
+	}
+	LPCSTR pszBaseClassName=GetKeyObject(pszClassName)->DuiWindowBaseName();
+	if(!pszBaseClassName) return NULL;
+	//注意，baseClassName可能与ClassName相同，为了避免死循环，这里需要判断一下。
+	if(strcmp(pszBaseClassName,pszClassName)==0) return NULL;
+	return pszBaseClassName;
+}
 }//namesspace DuiEngine
