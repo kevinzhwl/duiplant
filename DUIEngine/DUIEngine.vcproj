@@ -69,9 +69,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
-				AdditionalLibraryDirectories="dependencies\lib"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
+				OptimizeReferences="1"
 				ImportLibrary="$(TargetDir)$(TargetName).lib"
 			/>
 			<Tool

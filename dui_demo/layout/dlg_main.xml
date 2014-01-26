@@ -47,7 +47,7 @@
                 <img id="2" pos="150,2" skin="icons" msgtransparent="0"/>
              </template>
             </liststyle>
-            <editstyle crtext="000000" align="left" crbg="000088"/>
+            <editstyle crtext="000000" align="left" x-margin="0" y-margin="0"/>
             <items>
               <item text="combobox.item1" icon="1" data="100"/>
               <item text="combobox.item2" icon="2" data="100"/>
@@ -74,6 +74,7 @@
 <!--           <realwnd name="realwnd_edit1" id="1309" wndclass="edit" pos="-200,50,-110,80" rem="半透明窗口时不能使用realwnd，除了窗口不能显示外，还会干扰宿主窗口的timer消息"/> -->
         </tab>
         <tab id="114" title="richedit">
+          <animateimg name="ani_test2" pos="20,100" skin="icons"/>
           <richedit id="1140" show="1" number="0" enabledragdrop="1" class="cls_edit" font="0004:隶书" inset="30,0,0,0" wordwrap="1"  pos="10,10,-10,|0" multilines="1" wantreturn="1" vscrollbar="1" autovscroll="1" crtext="ff0000" align="left" hscrollbar="1" autohscroll="1" transparent="1">richedit test 2012 中文字体</richedit>
           <check id="1142" pos="10,|10">check 1</check>
           <check id="1143" pos="100,|10">check 2</check>
@@ -212,8 +213,8 @@
         </tab>        
         <tab id="120" title="splitwnd">
           <splitrow id="1180" pos="10,0,-10,-10" skinsep="skin_split_horz" sepsize="6">
-            <pane idealsize="250" minsize="30" priority="0" crbg="FF0000">
-              <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://www.flash1890.com/swf3/mtv/20131031/asnw.swf" delayinit="1"/>
+            <pane idealsize="250" minsize="30" priority="0">
+              <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files/DownLoad/flash2/201401/flash2524.swf" delayinit="1"/>
               <text pos="|-50,|-20">pane1 priority=2</text>
             </pane>
             <pane idealsize="400" minsize="30" priority="1">

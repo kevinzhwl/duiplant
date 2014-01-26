@@ -245,6 +245,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				ExceptionHandling="1"
@@ -619,6 +620,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies;&quot;..\scriptModule\luaScriptModule\lua-5.1&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;DLL_DUI"
 				ExceptionHandling="1"
