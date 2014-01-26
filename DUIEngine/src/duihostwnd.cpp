@@ -99,7 +99,10 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
 	sscanf(strMin,"%d,%d",&m_szMin.cx, &m_szMin.cy);
 
 	m_bTranslucent=xmlNode.attribute("translucent").as_bool(false);
-	m_strWindowCaption = xmlNode.attribute("title").value();
+	m_strName = xmlNode.attribute("name").value();
+
+	CDuiStringT strTitle=DUI_CA2T(xmlNode.attribute("title").value(),CP_UTF8);
+	DuiStringPool::getSingleton().BuildString(strTitle);
 
 	if(m_bTranslucent)
 	{
@@ -135,7 +138,8 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
 		m_dummyWnd.ShowWindow(SW_SHOWNOACTIVATE);
 	}
 
-	SetWindowText(DUI_CA2T(m_strWindowCaption,CP_UTF8));
+
+	SetWindowText(strTitle);
 
 	CRect rcClient;
 	GetClientRect(&rcClient);
@@ -145,9 +149,9 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
 		GetClientRect(&rcClient);
 	}
 
-	if(!m_strWindowCaption.IsEmpty())
+	if(!m_strName.IsEmpty())
 	{
-		DuiSkinPool::getSingleton().LoadSkins(m_strWindowCaption);	//load skin only used in the host window
+		DuiSkinPool::getSingleton().LoadSkins(m_strName);	//load skin only used in the host window
 	}
 
 	CDuiPanel::Load(xmlNode.child("body"));
@@ -420,9 +424,9 @@ void CDuiHostWnd::OnDestroy()
     }
     m_memDC.DeleteDC();
 
-    if(!m_strWindowCaption.IsEmpty())
+    if(!m_strName.IsEmpty())
     {
-        DuiSkinPool::getSingleton().FreeSkins(m_strWindowCaption);
+        DuiSkinPool::getSingleton().FreeSkins(m_strName);
     }
 }
 

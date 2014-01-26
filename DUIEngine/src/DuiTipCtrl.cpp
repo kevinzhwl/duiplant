@@ -96,7 +96,15 @@ void CDuiTipCtrl::ShowTip(BOOL bShow)
         DrawText(hdc,m_strTip,-1,&rcText,DT_CALCRECT|DT_LEFT|DT_WORDBREAK);
         SelectObject(hdc,oldFont);
         ::ReleaseDC(NULL,hdc);
-        SetWindowPos(HWND_TOPMOST,0,0,rcText.right+2*MARGIN_TIP,rcText.bottom+2*MARGIN_TIP,SWP_NOMOVE|SWP_NOSENDCHANGING|SWP_SHOWWINDOW|SWP_NOACTIVATE);
+		CRect rcWnd;
+		GetWindowRect(&rcWnd);
+		rcWnd.right=rcWnd.left+rcText.right+2*MARGIN_TIP;
+		rcWnd.bottom=rcWnd.top+rcText.bottom+2*MARGIN_TIP;
+		int cx = GetSystemMetrics(SM_CXSCREEN); 
+		int cy = GetSystemMetrics(SM_CYSCREEN);
+		if(rcWnd.right>cx) rcWnd.OffsetRect(cx-rcWnd.right,0);
+		if(rcWnd.bottom>cy) rcWnd.OffsetRect(0,cy-rcWnd.bottom);
+        SetWindowPos(HWND_TOPMOST,rcWnd.left,rcWnd.top,rcWnd.Width(),rcWnd.Height(),SWP_NOSENDCHANGING|SWP_SHOWWINDOW|SWP_NOACTIVATE);
     }
 }
 

@@ -85,7 +85,7 @@ protected:
     // Tracking flag
     BOOL m_bTrackFlag;
 
-    CDuiStringA m_strWindowCaption;
+    CDuiStringA m_strName;	//窗口的name属性，与skin的owner对应
     CRect m_rcNC;
 
     DWORD m_dwDlgStyle;

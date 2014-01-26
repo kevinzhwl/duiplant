@@ -1,4 +1,4 @@
-﻿<layer title="DUI-DEMO" width="600" height="400" appwin="1" ncRect="5,5,5,5"  resize="1" translucent="0"  nomaxsize="0">
+﻿<layer name="DUI-DEMO" title="DUI-DEMO ver:%str1%" width="600" height="400" appwin="1" ncRect="5,5,5,5"  resize="1" translucent="0"  nomaxsize="0">
 	<body>
     <dlg id="100" pos="0,0,-0,-0" class="cls_dlg_frame">
       <caption id="101" pos="0,0,-0,29">
@@ -75,7 +75,7 @@
         </tab>
         <tab id="114" title="richedit">
           <animateimg name="ani_test2" pos="20,100" skin="icons"/>
-          <richedit id="1140" show="1" number="0" enabledragdrop="1" class="cls_edit" font="0004:隶书" inset="30,0,0,0" wordwrap="1"  pos="10,10,-10,|0" multilines="1" wantreturn="1" vscrollbar="1" autovscroll="1" crtext="ff0000" align="left" hscrollbar="1" autohscroll="1" transparent="1">richedit test 2012 中文字体</richedit>
+          <richedit id="1140" show="1" number="0" enabledragdrop="1" autowordsel="1" class="cls_edit" font="0004:隶书" inset="30,0,0,0" wordwrap="1"  pos="10,10,-10,|0" multilines="1" wantreturn="1" vscrollbar="1" autovscroll="1" crtext="ff0000" align="left" hscrollbar="1" autohscroll="1" transparent="1">richedit test 2012 中文字体</richedit>
           <check id="1142" pos="10,|10">check 1</check>
           <check id="1143" pos="100,|10">check 2</check>
           <button name="IDC_REPSEL"  pos="200,|10,300,|35" class="normalbtn">repsel</button>
