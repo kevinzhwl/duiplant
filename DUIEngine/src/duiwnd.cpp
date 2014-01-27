@@ -824,7 +824,7 @@ void CDuiWindow::OnWindowPosChanged(LPRECT lpRcContainer)
 	{
 		CPoint pt;
 		CSize sz=CalcSize(lpRcContainer);
-		if(m_uPositionType & (SizeX_FitParent|SizeY_FitParent))
+		if((m_uPositionType & SizeX_FitParent) &&  (m_uPositionType &SizeY_FitParent))
 		{//³äÂú¸¸´°¿Ú
 			pt.x=lpRcContainer->left;
 			pt.y=lpRcContainer->top;
