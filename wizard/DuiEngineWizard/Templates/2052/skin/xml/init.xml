@@ -2,7 +2,7 @@
   <font face="宋体" size="12"/>
   
   <string>
-    <s id="1">duiengine-ie</s>
+    <s id="1">[!output APP_TITLE]</s>
     <s id="2">1.0</s>
   </string>
   
