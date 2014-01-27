@@ -45,7 +45,7 @@ struct tagThunk
     BYTE  m_jmp;
     DWORD m_relproc;
     //关键代码   //////////////////////////////////////
-    BOOL Init(DWORD_PTR proc, void* pThis)
+    void Init(DWORD_PTR proc, void* pThis)
     {
         m_mov = 0x042444C7;
         m_this = (DWORD)(ULONG_PTR)pThis;  // mov [esp+4], pThis;而esp+4本来是放hWnd,现在被偷着放对象指针了.
@@ -54,7 +54,6 @@ struct tagThunk
         m_relproc = (DWORD)((INT_PTR)proc - ((INT_PTR)this + sizeof(tagThunk)));
         // 告诉CPU把以上四条语句不当数据，当指令,接下来用GetCodeAddress获得的指针就会运行此指令
         FlushInstructionCache(GetCurrentProcess(), this, sizeof(tagThunk));
-        return TRUE;
     }
     void* GetCodeAddress()
     {
@@ -71,7 +70,7 @@ struct tagThunk
     USHORT  RaxMov;         // mov rax, target
     ULONG64 RaxImm;         //
     USHORT  RaxJmp;         // jmp target
-    BOOL Init(DWORD_PTR proc, void *pThis)
+    void Init(DWORD_PTR proc, void *pThis)
     {
         RcxMov = 0xb948;          // mov rcx, pThis
         RcxImm = (ULONG64)pThis;  //
@@ -79,7 +78,6 @@ struct tagThunk
         RaxImm = (ULONG64)proc;   //
         RaxJmp = 0xe0ff;          // jmp rax
         FlushInstructionCache(GetCurrentProcess(), this, sizeof(tagThunk));
-        return TRUE;
     }
     //some thunks will dynamically allocate the memory for the code
     void* GetCodeAddress()
@@ -96,7 +94,7 @@ struct tagThunk
 		DWORD	m_mov_pc;		// mov	pc, pFunc
 		DWORD	m_pThis;
 		DWORD	m_pFunc;
-		BOOL Init(DWORD_PTR proc, void* pThis)
+		void Init(DWORD_PTR proc, void* pThis)
 		{
 			m_mov_r0 = 0xE59F0000;
 			m_mov_pc = 0xE59FF000;
@@ -105,7 +103,6 @@ struct tagThunk
 			// write block from data cache and
 			//  flush from instruction cache
 			FlushInstructionCache(GetCurrentProcess(), this, sizeof(tagThunk));
-			return TRUE;
 		}
 		void* GetCodeAddress()
 		{

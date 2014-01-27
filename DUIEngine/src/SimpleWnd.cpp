@@ -56,6 +56,7 @@ CSimpleWnd::CSimpleWnd(HWND hWnd)
     ,m_pCurrentMsg(NULL)
     ,m_hWnd(hWnd)
     ,m_pfnSuperWindowProc(::DefWindowProc)
+	,m_pThunk(NULL)
 {
 }
 
@@ -166,20 +167,18 @@ LRESULT CALLBACK CSimpleWnd::StartWindowProc( HWND hWnd, UINT uMsg, WPARAM wPara
 
 BOOL CSimpleWnd::SubclassWindow( HWND hWnd )
 {
-    BOOL result;
     DUIASSERT(::IsWindow(hWnd));
-
     // Allocate the thunk structure here, where we can fail gracefully.
-
-    result = m_pThunk->Init((DWORD)WindowProc, this);
-    if (result == FALSE)
-    {
-        return FALSE;
-    }
+	m_pThunk=(tagThunk*)HeapAlloc(CSimpleWndHelper::GetInstance()->GetHeap(),HEAP_ZERO_MEMORY,sizeof(tagThunk));
+    m_pThunk->Init((DWORD)WindowProc, this);
     WNDPROC pProc = (WNDPROC)m_pThunk->GetCodeAddress();
     WNDPROC pfnWndProc = (WNDPROC)::SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)pProc);
     if(pfnWndProc == NULL)
-        return FALSE;
+	{
+		HeapFree(CSimpleWndHelper::GetInstance()->GetHeap(),0,m_pThunk);
+		m_pThunk=NULL;
+		return FALSE;
+	}
     m_pfnSuperWindowProc = pfnWndProc;
     m_hWnd = hWnd;
     return TRUE;
