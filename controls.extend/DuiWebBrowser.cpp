@@ -6,7 +6,7 @@
 namespace DuiEngine
 {
 
-	CDuiWebBrowser::CDuiWebBrowser(void):m_dwCookie(0),m_eventDispatch(this)
+	CDuiWebBrowser::CDuiWebBrowser(void):m_dwCookie(0),m_eventDispatch(NULL)
 {
 	m_clsid=CLSID_WebBrowser;
 }
@@ -70,6 +70,11 @@ STDMETHODIMP CWebEventDispatch::Invoke( /* [in] */ DISPID dispIdMember, /* [in] 
 			pDispParams->rgvarg[1].pvarVal,
 			pDispParams->rgvarg[0].pboolVal);
 		break;
+	case DISPID_DOCUMENTCOMPLETE:
+		m_pEventHandler->DocumentComplete(
+			pDispParams->rgvarg[1].pdispVal,
+			pDispParams->rgvarg[0].pvarVal);
+		break;
 	case DISPID_STATUSTEXTCHANGE:
 		break;
 	case DISPID_NEWWINDOW2:
@@ -80,31 +85,6 @@ STDMETHODIMP CWebEventDispatch::Invoke( /* [in] */ DISPID dispIdMember, /* [in] 
 		return DISP_E_MEMBERNOTFOUND;
 	}
 	return S_OK;
-}
-
-void CDuiWebBrowser::BeforeNavigate2( IDispatch *pDisp,VARIANT *&url,VARIANT *&Flags,VARIANT *&TargetFrameName,VARIANT *&PostData,VARIANT *&Headers,VARIANT_BOOL *&Cancel )
-{
-	DUITRACE(_T("BeforeNavigate2"));
-}
-
-void CDuiWebBrowser::NavigateError( IDispatch *pDisp,VARIANT * &url,VARIANT *&TargetFrameName,VARIANT *&StatusCode,VARIANT_BOOL *&Cancel )
-{
-	DUITRACE(_T("NavigateError"));
-}
-
-void CDuiWebBrowser::NavigateComplete2( IDispatch *pDisp,VARIANT *&url )
-{
-	DUITRACE(_T("NavigateComplete2"));
-}
-
-void CDuiWebBrowser::ProgressChange( LONG nProgress, LONG nProgressMax )
-{
-	DUITRACE(_T("ProgressChange"));
-}
-
-void CDuiWebBrowser::CommandStateChange( long Command,VARIANT_BOOL Enable )
-{
-	DUITRACE(_T("CommandStateChange"));
 }
 
 void CDuiWebBrowser::OnAxActivate( IUnknown *pUnknwn )

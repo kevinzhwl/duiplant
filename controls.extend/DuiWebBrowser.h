@@ -8,11 +8,12 @@ namespace DuiEngine
 {
 	struct IWebEvent
 	{
-		virtual void BeforeNavigate2( IDispatch *pDisp,VARIANT *&url,VARIANT *&Flags,VARIANT *&TargetFrameName,VARIANT *&PostData,VARIANT *&Headers,VARIANT_BOOL *&Cancel )=0;
-		virtual void NavigateError(IDispatch *pDisp,VARIANT * &url,VARIANT *&TargetFrameName,VARIANT *&StatusCode,VARIANT_BOOL *&Cancel)=0;
-		virtual void NavigateComplete2(IDispatch *pDisp,VARIANT *&url)=0;
-		virtual void ProgressChange(LONG nProgress, LONG nProgressMax)=0;
-		virtual void CommandStateChange(long Command,VARIANT_BOOL Enable)=0;
+		virtual void BeforeNavigate2( IDispatch *pDisp,VARIANT *&url,VARIANT *&Flags,VARIANT *&TargetFrameName,VARIANT *&PostData,VARIANT *&Headers,VARIANT_BOOL *&Cancel ){}
+		virtual void NavigateError(IDispatch *pDisp,VARIANT * &url,VARIANT *&TargetFrameName,VARIANT *&StatusCode,VARIANT_BOOL *&Cancel){}
+		virtual void NavigateComplete2(IDispatch *pDisp,VARIANT *&url){}
+		virtual void ProgressChange(LONG nProgress, LONG nProgressMax){}
+		virtual void CommandStateChange(long Command,VARIANT_BOOL Enable){}
+		virtual void DocumentComplete(IDispatch *pDisp, VARIANT* &url){}
 	};
 
 	class CWebEventDispatch : public IDispatch
@@ -21,6 +22,11 @@ namespace DuiEngine
 		CWebEventDispatch(IWebEvent *pEventHandler):m_pEventHandler(pEventHandler),m_cRef(1)
 		{
 
+		}
+
+		void SetEventHandler(IWebEvent *pEventHandler)
+		{
+			m_pEventHandler=pEventHandler;
 		}
 		
 		// IUnknown
@@ -78,7 +84,8 @@ namespace DuiEngine
 		ULONG m_cRef;
 	};
 
-	class CDuiWebBrowser :	public CDuiActiveX, public IWebEvent, public CDuiMessageFilter
+
+	class CDuiWebBrowser :	public CDuiActiveX, public CDuiMessageFilter
 	{
 		DUIOBJ_DECLARE_CLASS_NAME(CDuiWebBrowser, "browser")
 	public:
@@ -86,6 +93,9 @@ namespace DuiEngine
 		~CDuiWebBrowser(void);
 
 		IWebBrowser2 * GetIEObject(){return m_pIE;}
+
+		CWebEventDispatch * GetEventDispatch(){return &m_eventDispatch;}
+
 	protected:
 		virtual void OnAxActivate(IUnknown *pUnknwn);
 		virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -98,13 +108,6 @@ namespace DuiEngine
 			MSG_WM_DESTROY(OnDestroy)
 		DUIWIN_END_MSG_MAP()
 	protected:
-		// DWebBrowserEvents2
-		void BeforeNavigate2( IDispatch *pDisp,VARIANT *&url,VARIANT *&Flags,VARIANT *&TargetFrameName,VARIANT *&PostData,VARIANT *&Headers,VARIANT_BOOL *&Cancel );
-		void NavigateError(IDispatch *pDisp,VARIANT * &url,VARIANT *&TargetFrameName,VARIANT *&StatusCode,VARIANT_BOOL *&Cancel);
-		void NavigateComplete2(IDispatch *pDisp,VARIANT *&url);
-		void ProgressChange(LONG nProgress, LONG nProgressMax);
-		void CommandStateChange(long Command,VARIANT_BOOL Enable);
-
 		HRESULT RegisterEventHandler(BOOL inAdvise );
 
 
