@@ -665,15 +665,16 @@ CDuiWindow * CDuiWindow::LoadXmlChildren(LPCSTR utf8Xml)
     BOOL bLoaded=LoadChildren(xmlDoc.first_child());
     if(!bLoaded) return NULL;
 
-	CRect rcContainer=GetChildrenLayoutRect();
-
-	CDuiWindow *pNewChild=pLastChild->GetDuiWindow(GDUI_NEXTSIBLING);
-	while(pNewChild)
-	{
-		pNewChild->DuiSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
-		pNewChild->DuiSendMessage(WM_SHOWWINDOW,IsVisible(TRUE),ParentShow);
-		pNewChild=pNewChild->GetDuiWindow(GDUI_NEXTSIBLING);
-	}
+  	CRect rcContainer=GetChildrenLayoutRect();
+  
+  	CDuiWindow *pNewChild=pLastChild->GetDuiWindow(GDUI_NEXTSIBLING);
+  	while(pNewChild)
+  	{
+  		pNewChild->DuiSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
+  		pNewChild->DuiSendMessage(WM_SHOWWINDOW,IsVisible(TRUE),ParentShow);
+		pNewChild->NotifyInvalidate();
+  		pNewChild=pNewChild->GetDuiWindow(GDUI_NEXTSIBLING);
+  	}
     return m_pLastChild;
 }
 
