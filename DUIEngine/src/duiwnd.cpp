@@ -342,6 +342,7 @@ void CDuiWindow::SetParent(CDuiWindow *pParent)
 BOOL CDuiWindow::DestroyChild(CDuiWindow *pChild)
 {
     if(this != pChild->GetParent()) return FALSE;
+	pChild->NotifyInvalidate();
     pChild->DuiSendMessage(WM_DESTROY);
     RemoveChild(pChild);
     pChild->Release();
@@ -910,7 +911,6 @@ void CDuiWindow::OnDestroy()
     }
     m_pFirstChild=m_pLastChild=NULL;
     m_nChildrenCount=0;
-	NotifyInvalidate();
 }
 
 // Draw background default
