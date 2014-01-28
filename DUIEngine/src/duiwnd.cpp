@@ -908,6 +908,7 @@ void CDuiWindow::OnDestroy()
     }
     m_pFirstChild=m_pLastChild=NULL;
     m_nChildrenCount=0;
+	NotifyInvalidate();
 }
 
 // Draw background default
