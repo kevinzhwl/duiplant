@@ -438,8 +438,10 @@ BOOL CDuiWindow::IsVisible(BOOL bCheckParent /*= FALSE*/)
     else return m_bVisible;
 }
 
+//因为NotifyInvalidateRect只有窗口可见时再通知刷新，这里在窗口可见状态改变前后都执行一次通知。
 void CDuiWindow::SetVisible(BOOL bVisible,BOOL bUpdate/*=FALSE*/)
 {
+	if(bUpdate) NotifyInvalidateRect(m_rcWindow);
     DuiSendMessage(WM_SHOWWINDOW,bVisible);
     if(bUpdate) NotifyInvalidateRect(m_rcWindow);
 }
