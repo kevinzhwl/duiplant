@@ -667,7 +667,10 @@ CDuiWindow * CDuiWindow::LoadXmlChildren(LPCSTR utf8Xml)
 
   	CRect rcContainer=GetChildrenLayoutRect();
   
-  	CDuiWindow *pNewChild=pLastChild->GetDuiWindow(GDUI_NEXTSIBLING);
+	CDuiWindow *pNewChild=NULL;
+	if(pLastChild) pNewChild=pLastChild->GetDuiWindow(GDUI_NEXTSIBLING);
+	else pNewChild=m_pFirstChild;
+
   	while(pNewChild)
   	{
   		pNewChild->DuiSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
