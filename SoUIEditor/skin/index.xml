@@ -21,3 +21,4 @@
 <resid type="IMGX" name="IDP_SPLIT_VERT"  file="image\split_vert.png" />
 <resid type="IMGX" name="IDP_SPLIT_HORZ"  file="image\split_horz.png" />
 <resid type="IMGX" name="IDP_BTN_YELLOW"  file="image\btn_normal_yellow.png" />
+<resid type="IMGX" name="IDP_TAB_COMMON"  file="image\tab_common.png" />

@@ -96,7 +96,7 @@ void CDuiBitmap::Clear()
     m_hBitmap=NULL;
 }
 
-BOOL CDuiBitmap::IsEmpty()
+BOOL CDuiBitmap::IsEmpty() const
 {
     return m_hBitmap==NULL;
 }
@@ -268,7 +268,7 @@ void CDuiImgX::Clear()
     if(m_pImg) delete m_pImg;
     m_pImg=NULL;
 }
-BOOL CDuiImgX::IsEmpty()
+BOOL CDuiImgX::IsEmpty() const
 {
     return m_pImg==NULL;
 }

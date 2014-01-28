@@ -137,7 +137,7 @@ BOOL CDuiListCtrl::GetSubItem(int nItem, int nSubItem, DXLVSUBITEM* plv)
 	const DXLVSUBITEM & lvsi_src=m_arrItems[nItem].arSubItems->GetAt(nSubItem);
 	if(plv->mask & DUI_LVIF_TEXT)
 	{
-		_tcscpy_s(plv->strText,plv->cchTextMax*sizeof(TCHAR),lvsi_src.strText);
+		_tcscpy_s(plv->strText,plv->cchTextMax,lvsi_src.strText);
 	}
 	if(plv->mask&DUI_LVIF_IMAGE)
 		plv->nImage=lvsi_src.nImage;

@@ -9,8 +9,8 @@
   <skins>
     <imgframe name="dlg_frame" src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
 
-    <imglst name="btncheckbox"         src="IDP_BTN_WND_CHECKBOX" subwidth="15"  />
-    <imglst name="btnRadio"            src="IDP_BTN_WND_RADIO" subwidth="15"  />
+    <imglst name="btncheckbox"         src="IDP_BTN_WND_CHECKBOX" states="8"  />
+    <imglst name="btnRadio"            src="IDP_BTN_WND_RADIO" states="8"  />
     <imglst name="focuscheckbox" src="IDP_FOCUS_CHECK"/>
     <imglst name="focusRadio" src="IDP_FOCUS_RADIO"/>
     <scrollbar name="sb_common" src="IDP_SCROLL" margin="3"/>
@@ -28,6 +28,7 @@
     <imgframe name="skin_split_vert" src="IDP_SPLIT_VERT" top="20" bottom="10"/>
     <imgframe name="skin_split_horz" src="IDP_SPLIT_HORZ" left="20" right="10"/>
     <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" left="3" states="4"/>
+    <imglst name="tabskin_default" src="IDP_TAB_COMMON" states="3"/>
 
   </skins>
   

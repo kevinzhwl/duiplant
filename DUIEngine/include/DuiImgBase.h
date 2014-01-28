@@ -15,7 +15,7 @@ public:
     virtual BOOL GetImageSize(SIZE & sz)=NULL;
     virtual int GetWidth()=NULL;
     virtual int GetHeight()=NULL;
-    virtual BOOL IsEmpty()
+    virtual BOOL IsEmpty() const
     {
         return TRUE;
     }
@@ -23,6 +23,11 @@ public:
     virtual BOOL StretchBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha=0xFF)=NULL;
     virtual BOOL TileBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha=0xFF)=NULL;
     virtual void SetAttributes(pugi::xml_node xmlNode) {}
+
+	BOOL operator!() const
+	{
+		return IsEmpty();
+	}
 };
 
 

@@ -36,7 +36,7 @@ namespace DuiEngine
 
 		virtual void Clear();
 
-		virtual BOOL IsEmpty();
+		virtual BOOL IsEmpty() const;
 		virtual BOOL GetImageSize(SIZE & sz);
 
 		virtual int GetWidth();
@@ -94,7 +94,7 @@ public:
     virtual BOOL LoadFromMemory(LPVOID pBuf,DWORD dwSize);
 
     virtual void Clear();
-    virtual BOOL IsEmpty();
+    virtual BOOL IsEmpty() const;
     virtual BOOL GetImageSize(SIZE &sz);
 
     virtual int GetWidth();

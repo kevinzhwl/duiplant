@@ -1,5 +1,5 @@
 ﻿<layer name="dlg_main" title="%str1% ver:%str2%" width="600" height="400" appwin="1" ncRect="5,5,5,5"  resize="1" translucent="0"  nomaxsize="0">
-	<body>
+  <body>
     <dlg name="maindlg" pos="0,0,-0,-0" class="cls_dlg_frame">
       <caption id="101" pos="0,0,-0,29">
         <text pos="11,9" class="cls_txt_red">%str1% ver:%str2%</text>
@@ -16,23 +16,53 @@
               <button name="prg_btn_open" width="100" height="full">打开项目</button>
               <button name="prg_btn_save" width="100" height="full">保存项目</button>
             </dlg>
-            <!--项目文件列表-->
-            <listctrl name="prj_list_file" pos="0,35,-0,-0" itemHeight="20" headerHeight="30">
-              <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
-                <items>
-                  <item width="60">类型</item>
-                  <item width="50">name</item>
-                  <item width="70">文件</item>
-                  <item width="30">布局文件</item>
-                </items>
-              </header>
-            </listctrl>
+            <tabctrl name="tab_prj" pos="0,30,-0,-0" tabskin="tabskin_default" crtext="000000" align="top" tabwidth="70" tabheight="30" tabspacing="0" tabpos="10">
+              <tab title="files view">
+                <!--项目文件列表-->
+                <listctrl name="prj_list_file" pos="0,0,-0,-0" itemHeight="20" headerHeight="30">
+                  <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+                    <items>
+                      <item width="60">type</item>
+                      <item width="50">name</item>
+                      <item width="70">file</item>
+                      <item width="30">layer</item>
+                    </items>
+                  </header>
+                </listctrl>
+              </tab>
+              <tab title="skins view">
+                <!--项目皮肤列表-->
+                <listctrl name="prj_list_skin" pos="0,0,-0,-0" itemHeight="20" headerHeight="30">
+                  <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+                    <items>
+                      <item width="60">type</item>
+                      <item width="50">name</item>
+                      <item width="70">src</item>
+                    </items>
+                  </header>
+                </listctrl>
+              </tab>
+            </tabctrl>
           </pane>
           <pane name="pane_view" idealsize="250" minsize="30" priority="1">
             <!--文件预览窗口-->
             <tabctrl pos="0,0,-0,-0" name="tab_view">
               <tab title="image_view">
-                <text>image view</text>
+                <splitcol pos="0,0,-0,-0" skinsep="skin_split_vert" sepsize="6">
+                  <!--采用split分割出一个类9宫表格-->
+                  <pane ideasize="0" minsize="0" priority="5"/>
+                  <pane ideasize="100" minsize="0" priority="0">
+                    <splitrow pos="0,0,-0,-0" skinsep="skin_split_horz" sepsize="6">
+                      <pane ideasize="0" minsize="0" priority="5"/>
+                      <pane ideasize="100" minsize="0" priority="0">
+                        <!--容纳一个自定义的图片预览控件-->
+                        <imgview pos="0,0,-0,-0" name="img_view" clipclient="1"></imgview>
+                      </pane>
+                      <pane ideasize="0" minsize="0" priority="5"/>
+                    </splitrow>
+                  </pane>
+                  <pane ideasize="0" minsize="0" priority="5"/>
+                </splitcol>
               </tab>
               <tab title="xml_view">
                 <realwnd pos="0,0,-0,-0" wndclass="scintilla" name="xmleditor"/>
@@ -42,9 +72,5 @@
         </splitcol>
       </dlg>
     </dlg>
-	</body>
+  </body>
 </layer>
-
-
-
-

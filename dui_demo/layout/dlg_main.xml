@@ -8,7 +8,6 @@
         <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="0" />
         <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="0" />
       </caption>
-
       <tabctrl pos="5,29,-5,-5" id="2000" cursel="0" animatesteps="10" tabstop="0" inset="10,0,3,0">
         <tab id="110" title="listctrl">
           <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" sbskin="sb_vertical" sbwid="8">
