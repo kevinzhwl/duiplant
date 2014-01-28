@@ -661,13 +661,19 @@ CDuiWindow * CDuiWindow::LoadXmlChildren(LPCSTR utf8Xml)
 {
 	pugi::xml_document xmlDoc;
 	if(!xmlDoc.load_buffer(utf8Xml,strlen(utf8Xml),pugi::parse_default,pugi::encoding_utf8)) return NULL;
+	CDuiWindow * pLastChild=m_pLastChild;//保存当前的最后一个子窗口
     BOOL bLoaded=LoadChildren(xmlDoc.first_child());
     if(!bLoaded) return NULL;
-    if(!m_rcWindow.IsRectEmpty())
-    {
-		UpdateChildrenPosition();
-		NotifyInvalidateRect(m_rcWindow);
-    }
+
+	CRect rcContainer=GetChildrenLayoutRect();
+
+	CDuiWindow *pNewChild=pLastChild->GetDuiWindow(GDUI_NEXTSIBLING);
+	while(pNewChild)
+	{
+		pNewChild->DuiSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
+		pNewChild->DuiSendMessage(WM_SHOWWINDOW,IsVisible(TRUE),ParentShow);
+		pNewChild=pNewChild->GetDuiWindow(GDUI_NEXTSIBLING);
+	}
     return m_pLastChild;
 }
 
