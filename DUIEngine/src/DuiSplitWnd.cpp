@@ -34,7 +34,7 @@ BOOL CDuiSplitWnd::SetPaneInfo( int iPane,int nIdealSize,int nMinSize,int nPrior
     if(nIdealSize!=-1) m_arrPane[iPane]->m_nSizeIdeal=nIdealSize;
     if(nMinSize!=-1) m_arrPane[iPane]->m_nSizeMin=nMinSize;
     if(nPriority!=-1) m_arrPane[iPane]->m_nPriority=nPriority;
-    Relayout();
+	Relayout(m_bColMode?layout_vert:layout_horz);
     return TRUE;
 }
 
@@ -52,7 +52,7 @@ BOOL CDuiSplitWnd::ShowPanel(int iPane)
     if (iPane < 0 || iPane >= m_arrPane.GetCount()) return FALSE;
 
     m_arrPane[iPane]->SetVisible(TRUE);
-    Relayout();
+    Relayout(m_bColMode?layout_vert:layout_horz);
     NotifyInvalidate();
     return TRUE;
 }
@@ -62,7 +62,7 @@ BOOL CDuiSplitWnd::HidePanel(int iPane)
     if (iPane < 0 || iPane >= m_arrPane.GetCount()) return FALSE;
 
     m_arrPane[iPane]->SetVisible(FALSE);
-    Relayout();
+    Relayout(m_bColMode?layout_vert:layout_horz);
     NotifyInvalidate();
     return TRUE;
 }
@@ -167,9 +167,13 @@ int CDuiSplitWnd::FunComp( const void * p1,const void * p2 )
 
 void CDuiSplitWnd::OnWindowPosChanged( LPRECT lpWndPos )
 {
+	CRect rcWnd=m_rcWindow;
     __super::OnWindowPosChanged(lpWndPos);
-
-    Relayout();
+	UINT uMode=0;
+	if(rcWnd.Width()!=m_rcWindow.Width()) uMode |= layout_horz;
+	if(rcWnd.Height()!=m_rcWindow.Height()) uMode |= layout_vert;
+	if(rcWnd.TopLeft()!=m_rcWindow.TopLeft() || rcWnd.BottomRight()!=m_rcWindow.BottomRight()) uMode |= layout_pos;
+    Relayout(uMode);
 }
 
 void CDuiSplitWnd::OnLButtonDown( UINT nFlags,CPoint pt )
@@ -291,8 +295,59 @@ void CDuiSplitWnd::OnMouseMove( UINT nFlags,CPoint pt )
     m_ptClick=pt;
 }
 
-void CDuiSplitWnd::Relayout()
+void CDuiSplitWnd::Relayout(UINT uMode)
 {
+	CRect rcClient;
+	GetClient(&rcClient);
+
+	BOOL bRowSplit=!m_bColMode;
+	BOOL bColSplit=m_bColMode;
+
+	if((uMode & layout_vert) && bColSplit)
+	{//列模式，垂直方向发生变化
+		for(int i=0;i<m_arrPane.GetCount(); i++)
+		{
+			CRect rcPane;
+			m_arrPane[i]->GetRect(&rcPane);
+			rcPane.top=rcClient.top;
+			rcPane.bottom=rcClient.bottom;
+			m_arrPane[i]->Move(rcPane);
+		}
+	}else if(uMode & layout_horz && bRowSplit)
+	{//行模式，水平方向发生变化
+		for(int i=0;i<m_arrPane.GetCount(); i++)
+		{
+			CRect rcPane;
+			m_arrPane[i]->GetRect(&rcPane);
+			rcPane.left=rcClient.left;
+			rcPane.right=rcClient.right;
+			m_arrPane[i]->Move(rcPane);
+		}
+	}else if(uMode & layout_pos)
+	{//只是窗口位置发生变化
+		//获得第一个窗格的原坐标
+		CRect rcPane1;
+		if(m_arrPane.GetCount())
+		{
+			m_arrPane[0]->GetRect(&rcPane1);
+		}
+		//与客户区坐标比较计算出偏移量
+		CPoint ptOffset=rcClient.TopLeft()-rcPane1.TopLeft();
+
+		for(int i=0;i<m_arrPane.GetCount(); i++)
+		{
+			CRect rcPane;
+			m_arrPane[i]->GetRect(&rcPane);
+			rcPane.OffsetRect(ptOffset);
+			m_arrPane[i]->Move(rcPane);
+		}
+	}
+	
+	//检查列模式下水平方向有没有变化 或者 行模式下垂直方向上有没有变化
+	if((bRowSplit && !(uMode & layout_vert)) || ( bColSplit && !(uMode & layout_horz)))
+		return;
+
+	//计算出理想的及最小的宽度或者高度
     int nTotalIdeal=0,nTotalMin=0;
     for(int i=0; i<m_arrPane.GetCount(); i++)
     {
@@ -301,8 +356,6 @@ void CDuiSplitWnd::Relayout()
         nTotalMin+=m_arrPane[i]->m_nSizeMin;
     }
 
-    CRect rcClient;
-    GetClient(&rcClient);
     int nInter=(GetVisiblePanelCount()-1)*m_nSepSize;
     int nSize=m_bColMode?rcClient.Width():rcClient.Height();
 

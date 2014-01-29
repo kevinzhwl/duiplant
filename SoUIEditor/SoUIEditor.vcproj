@@ -136,6 +136,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(DUIENGINEPATH)\lib&quot;"
 				GenerateDebugInformation="true"
+				LinkTimeCodeGeneration="1"
 			/>
 			<Tool
 				Name="VCALinkTool"

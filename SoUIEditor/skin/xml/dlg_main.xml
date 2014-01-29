@@ -50,18 +50,18 @@
               <tab title="image_view">
                 <splitcol pos="0,0,-0,-0" skinsep="skin_split_vert" sepsize="6">
                   <!--采用split分割出一个类9宫表格-->
-                  <pane ideasize="0" minsize="0" priority="5"/>
-                  <pane ideasize="100" minsize="0" priority="0">
+                  <pane ideasize="0" minsize="0" priority="0"/>
+                  <pane ideasize="100" minsize="0" priority="3">
                     <splitrow pos="0,0,-0,-0" skinsep="skin_split_horz" sepsize="6">
-                      <pane ideasize="0" minsize="0" priority="5"/>
-                      <pane ideasize="100" minsize="0" priority="0">
+                      <pane ideasize="0" minsize="0" priority="0"/>
+                      <pane ideasize="100" minsize="0" priority="3">
                         <!--容纳一个自定义的图片预览控件-->
                         <imgview pos="0,0,-0,-0" name="img_view" clipclient="1"></imgview>
                       </pane>
-                      <pane ideasize="0" minsize="0" priority="5"/>
+                      <pane ideasize="0" minsize="0" priority="0"/>
                     </splitrow>
                   </pane>
-                  <pane ideasize="0" minsize="0" priority="5"/>
+                  <pane ideasize="0" minsize="0" priority="0"/>
                 </splitcol>
               </tab>
               <tab title="xml_view">

@@ -32,6 +32,11 @@ class DUI_EXP CDuiSplitWnd :
 {
     DUIOBJ_DECLARE_CLASS_NAME(CDuiSplitWnd, "splitwnd")
 
+	enum {
+		layout_vert=1,		//纵向布局改变
+		layout_horz=2,		//横向布局改变
+		layout_pos=4,		//窗口位置发生改变
+	};
     struct PANEORDER
     {
         int idx;
@@ -74,7 +79,7 @@ protected:
 
     static int FunComp(const void * p1,const void * p2);
 
-    void Relayout();
+    void Relayout(UINT uMode);
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("sepsize", m_nSepSize, TRUE)

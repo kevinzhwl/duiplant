@@ -25,7 +25,7 @@
         bgdown="C6E2FD" bguphover="FEFEFE" bgdownhover="DBEDFE"
         bguppush="C6E2FD" bgdownpush="FEFEFE"/>
 
-    <scrollbar name="sb_common" src="IDP_SCROLL" margin="3"/>
+    <scrollbar name="sb_common" src="IDP_SCROLL" margin="3" hasgripper="0"/>
     <vscrollbar name="sb_vertical" src="IDP_VSCROLLBAR" margin="3"/>
 
     <imgframe name="skin_editnc" src="IDP_EDIT_BORDER" subwidth="26" left="2" top="2"/>
