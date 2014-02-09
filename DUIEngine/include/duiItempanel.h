@@ -22,7 +22,7 @@ public:
 	virtual BOOL IsItemRedrawDelay()=NULL;									//指示表项的更新方式
 };
 
-class DUI_EXP CDuiItemPanel : public CDuiFrame
+class DUI_EXP CDuiItemPanel : public CDuiPanel, public CDuiFrame
 {
 public:
     CDuiItemPanel(CDuiWindow *pFrameHost,pugi::xml_node xmlNode,CDuiItemContainer *pItemContainer=NULL);
@@ -30,6 +30,7 @@ public:
 
     virtual void OnFinalRelease();
 
+	//////////////////////////////////////////////////////////////////////////
     virtual LRESULT DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
     virtual LRESULT CDuiItemPanel::OnDuiNotify(LPDUINMHDR pHdr);
@@ -57,6 +58,11 @@ public:
 
 	virtual BOOL DuiUpdateWindow();
 
+	virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
+
+	virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
+
+	//////////////////////////////////////////////////////////////////////////
     virtual void ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove);
 
     virtual HDUIWND DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText);
@@ -74,6 +80,8 @@ public:
     LPARAM GetItemData();
 
     BOOL OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
+	
+	void OnSetCaretValidateRect(LPCRECT lpRect);
 
 	LPARAM GetItemIndex(){return m_lpItemIndex;}
 	void SetItemIndex(LPARAM lp){m_lpItemIndex=lp;}

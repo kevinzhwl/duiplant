@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//   File Name: bkwndtabctrl.h
+//   File Name: duiwndtabctrl.h
 // Description: Tab Control
 //     Creator: Huang Jianxiong
 //     Version: 2011.12.2 - 1.1 - Create

@@ -151,15 +151,15 @@ void CDuiScrollBar::OnPaint(CDCHandle dc)
     int nState=IsDisabled(TRUE)?3:0;
     CRect rcDest;
     rcDest=GetPartRect(SB_LINEUP);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_LINEUP,nState,m_bVertical));
+    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_LINEUP,nState,m_bVertical),m_byAlpha);
     rcDest=GetPartRect(SB_PAGEUP);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_PAGEUP,nState,m_bVertical));
+    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_PAGEUP,nState,m_bVertical),m_byAlpha);
     rcDest=GetPartRect(SB_THUMBTRACK);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,m_bVertical));
+    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,m_bVertical),m_byAlpha);
     rcDest=GetPartRect(SB_PAGEDOWN);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_PAGEDOWN,nState,m_bVertical));
+    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_PAGEDOWN,nState,m_bVertical),m_byAlpha);
     rcDest=GetPartRect(SB_LINEDOWN);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,m_bVertical));
+    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,m_bVertical),m_byAlpha);
 }
 
 void CDuiScrollBar::OnLButtonUp(UINT nFlags, CPoint point)
@@ -188,7 +188,7 @@ void CDuiScrollBar::OnLButtonUp(UINT nFlags, CPoint point)
         {
             CRect rc=GetPartRect(m_uClicked);
             HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-            m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uClicked,DuiWndState_Normal,m_bVertical));
+            m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uClicked,DuiWndState_Normal,m_bVertical),m_byAlpha);
             ReleaseDuiDC(hdc);
         }
         m_uClicked=-1;
@@ -214,7 +214,7 @@ void CDuiScrollBar::OnLButtonDown(UINT nFlags, CPoint point)
         {
             CRect rc=GetPartRect(uHit);
             HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-            m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,DuiWndState_PushDown,m_bVertical));
+            m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,DuiWndState_PushDown,m_bVertical),m_byAlpha);
             ReleaseDuiDC(hdc);
             NotifySbCode(uHit,m_si.nPos);
         }
@@ -255,8 +255,8 @@ void CDuiScrollBar::OnMouseMove(UINT nFlags, CPoint point)
             rcUnion.UnionRect(rcOldThumb,rcThumb);
             HDC hdc=GetDuiDC(&rcUnion,OLEDC_PAINTBKGND);
 
-            m_pSkin->Draw(hdc,rcUnion,MAKESBSTATE(SB_PAGEUP,DuiWndState_Normal,m_bVertical));
-            m_pSkin->Draw(hdc,rcThumb,MAKESBSTATE(SB_THUMBTRACK,DuiWndState_Hover,m_bVertical));
+            m_pSkin->Draw(hdc,rcUnion,MAKESBSTATE(SB_PAGEUP,DuiWndState_Normal,m_bVertical),m_byAlpha);
+            m_pSkin->Draw(hdc,rcThumb,MAKESBSTATE(SB_THUMBTRACK,DuiWndState_Hover,m_bVertical),m_byAlpha);
 
             ReleaseDuiDC(hdc);
             NotifySbCode(SB_THUMBTRACK,m_si.nTrackPos);
@@ -271,14 +271,14 @@ void CDuiScrollBar::OnMouseMove(UINT nFlags, CPoint point)
             {
                 CRect rc=GetPartRect(m_uHtPrev);
                 HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-                m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uHtPrev,DuiWndState_Normal,m_bVertical));
+                m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uHtPrev,DuiWndState_Normal,m_bVertical),m_byAlpha);
                 ReleaseDuiDC(hdc);
             }
             if(uHit!=-1)
             {
                 CRect rc=GetPartRect(uHit);
                 HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-                m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,DuiWndState_Hover,m_bVertical));
+                m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,DuiWndState_Hover,m_bVertical),m_byAlpha);
                 ReleaseDuiDC(hdc);
             }
             m_uHtPrev=uHit;

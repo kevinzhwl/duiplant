@@ -129,7 +129,7 @@ public: \
 			return TRUE; \
 	}
 
-// BOOL OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
+// BOOL OnInitDialog(HWND wnd, LPARAM lInitParam)
 #define MSG_WM_INITDIALOG(func) \
 	if (uMsg == WM_INITDIALOG) \
 	{ \

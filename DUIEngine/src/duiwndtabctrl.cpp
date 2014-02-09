@@ -552,7 +552,7 @@ CDuiTab* CDuiTabCtrl::GetItem( int nIndex )
 void CDuiTabCtrl::DrawItem( CDCHandle dc,const CRect &rcItem,int iItem,DWORD dwState )
 {
     if(m_pSkinTab)
-        m_pSkinTab->Draw(dc,rcItem,IIF_STATE3(dwState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown));
+        m_pSkinTab->Draw(dc,rcItem,IIF_STATE3(dwState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown),m_byAlpha);
 
     CRect rcIcon(m_ptIcon+rcItem.TopLeft(),CSize(0,0));
     if(m_pSkinIcon)

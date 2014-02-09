@@ -7,7 +7,7 @@
   </string>
   
   <skins>
-  <imgframe name="dlg_frame" owner="DUI-DEMO"   src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
+  <imgframe name="dlg_frame" src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
   
 	<imglst name="btncheckbox"         src="IDP_BTN_WND_CHECKBOX" subwidth="15"  />
 	<imglst name="btnRadio"            src="IDP_BTN_WND_RADIO" subwidth="15"  />

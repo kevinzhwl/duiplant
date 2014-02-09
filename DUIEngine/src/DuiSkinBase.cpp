@@ -11,11 +11,12 @@ BOOL CDuiSkinBase::ExtentBlt(CDuiImgBase *pImgDraw,BOOL bTile,HDC hdc,int x,int 
     else return pImgDraw->StretchBlt(hdc,x,y,nWid,nHei,xSrc,ySrc,nWidSrc,nHeiSrc,byAlpha);
 }
 
-void CDuiSkinBase::FrameDraw(CDCHandle &dc, CDuiImgBase *pImgDraw, const CRect &rcSour,const  CRect &rcDraw, CRect rcMargin, COLORREF crBg, UINT uDrawPart ,BOOL bTile,BYTE byAlpha/*=0xFF*/)
+void CDuiSkinBase::FrameDraw(HDC dc, CDuiImgBase *pImgDraw, const CRect &rcSour,const  CRect &rcDraw, CRect rcMargin, COLORREF crBg, UINT uDrawPart ,BOOL bTile,BYTE byAlpha/*=0xFF*/)
 {
-    CRect rcClient = rcDraw;
+    CRect rcCenter = rcDraw;
 
 	if(rcDraw.IsRectEmpty() || rcSour.IsRectEmpty()) return;
+	//检查边缘范围是否大于填充区域，如果超出则自动缩小连续范围
 	int xOverflow=rcMargin.left+rcMargin.right-rcDraw.Width();
 	if(xOverflow>0)
 	{
@@ -33,16 +34,12 @@ void CDuiSkinBase::FrameDraw(CDCHandle &dc, CDuiImgBase *pImgDraw, const CRect &
 		else if(rcMargin.bottom<0) {rcMargin.top+=-rcMargin.bottom;rcMargin.bottom=0;}
 	}
 
-    DUIASSERT(dc.m_hDC);
+    DUIASSERT(dc);
     DUIASSERT(!pImgDraw->IsEmpty());
-    rcClient.DeflateRect(
-        (uDrawPart & Frame_Part_Left)   ? rcMargin.left  : 0,
-        (uDrawPart & Frame_Part_Top)    ? rcMargin.top   : 0,
-        (uDrawPart & Frame_Part_Right)  ? rcMargin.right : 0,
-        (uDrawPart & Frame_Part_Bottom) ? rcMargin.bottom: 0
-    );
 
-    if ((Frame_Part_Left | Frame_Part_Top) == (uDrawPart & (Frame_Part_Left | Frame_Part_Top)))
+    rcCenter.DeflateRect(rcMargin.left, rcMargin.top , rcMargin.right ,rcMargin.bottom);
+
+    if (Frame_Part_TopLeft & uDrawPart)
     {
         pImgDraw->BitBlt(
             dc,
@@ -52,96 +49,100 @@ void CDuiSkinBase::FrameDraw(CDCHandle &dc, CDuiImgBase *pImgDraw, const CRect &
             byAlpha
         );
     }
-    if ((Frame_Part_Right | Frame_Part_Top) == (uDrawPart & (Frame_Part_Right | Frame_Part_Top)))
+    if (Frame_Part_TopRight & uDrawPart)
     {
         pImgDraw->BitBlt(
             dc,
-            rcClient.right, rcDraw.top,
+            rcCenter.right, rcDraw.top,
             rcMargin.right, rcMargin.top,
             rcSour.right - rcMargin.right, rcSour.top,
             byAlpha
         );
     }
-    if ((Frame_Part_Left | Frame_Part_Bottom) == (uDrawPart & (Frame_Part_Left | Frame_Part_Bottom)))
+    if (Frame_Part_BottomLeft & uDrawPart)
     {
         pImgDraw->BitBlt(
             dc,
-            rcDraw.left, rcClient.bottom,
+            rcDraw.left, rcCenter.bottom,
             rcMargin.left, rcMargin.bottom,
             rcSour.left , rcSour.bottom-rcMargin.bottom,
             byAlpha
         );
     }
-    if ((Frame_Part_Right | Frame_Part_Bottom) == (uDrawPart & (Frame_Part_Right | Frame_Part_Bottom)))
+    if (Frame_Part_BottomRight & uDrawPart)
     {
         pImgDraw->BitBlt(
             dc,
-            rcClient.right, rcClient.bottom,
+            rcCenter.right, rcCenter.bottom,
             rcMargin.right , rcMargin.bottom,
             rcSour.right - rcMargin.right, rcSour.bottom - rcMargin.bottom,
             byAlpha
         );
     }
-    if (Frame_Part_Top == (uDrawPart & Frame_Part_Top))
+    if (Frame_Part_TopCenter & uDrawPart)
     {
         ExtentBlt(pImgDraw,bTile,
                   dc,
-                  rcClient.left, rcDraw.top,
-                  rcClient.Width(), rcMargin.top,
+                  rcCenter.left, rcDraw.top,
+                  rcCenter.Width(), rcMargin.top,
                   rcSour.left + rcMargin.left, rcSour.top,
                   rcSour.Width() - rcMargin.left-rcMargin.right, rcMargin.top,
                   byAlpha
                  );
     }
-    if (Frame_Part_Left == (uDrawPart & Frame_Part_Left))
+    if (Frame_Part_MidLeft & uDrawPart)
     {
         ExtentBlt(pImgDraw,bTile,
                   dc,
-                  rcDraw.left, rcClient.top,
-                  rcMargin.left, rcClient.Height(),
+                  rcDraw.left, rcCenter.top,
+                  rcMargin.left, rcCenter.Height(),
                   rcSour.left, rcSour.top + rcMargin.top,
                   rcMargin.left, rcSour.Height() - rcMargin.top-rcMargin.bottom,
                   byAlpha
                  );
     }
-    if (Frame_Part_Bottom == (uDrawPart & Frame_Part_Bottom))
+    if (Frame_Part_BottomCenter & uDrawPart)
     {
         ExtentBlt(pImgDraw,bTile,
                   dc,
-                  rcClient.left, rcClient.bottom,
-                  rcClient.Width(), rcMargin.bottom,
+                  rcCenter.left, rcCenter.bottom,
+                  rcCenter.Width(), rcMargin.bottom,
                   rcSour.left+rcMargin.left, rcSour.bottom-rcMargin.bottom,
                   rcSour.Width() - rcMargin.left -rcMargin.right, rcMargin.bottom,
                   byAlpha
                  );
     }
-    if (Frame_Part_Right == (uDrawPart & Frame_Part_Right))
+    if (Frame_Part_MidRight & uDrawPart)
     {
         ExtentBlt(pImgDraw,bTile,
                   dc,
-                  rcClient.right, rcClient.top,
-                  rcMargin.right, rcClient.Height(),
+                  rcCenter.right, rcCenter.top,
+                  rcMargin.right, rcCenter.Height(),
                   rcSour.right - rcMargin.right, rcSour.top + rcMargin.top,
                   rcMargin.right, rcSour.Height()-rcMargin.top-rcMargin.bottom,
                   byAlpha
                  );
     }
 
-    //从图片中获得alpha通道
-    CRect rcSourMD=rcSour;
-    rcSourMD.DeflateRect(rcMargin.left,rcMargin.top,rcMargin.right,rcMargin.bottom);
-    ExtentBlt(pImgDraw,bTile,
-              dc,
-              rcClient.left, rcClient.top,
-              rcClient.Width(), rcClient.Height(),
-              rcSourMD.left, rcSourMD.top,
-              rcSourMD.Width(), rcSourMD.Height(),
-              byAlpha
-             );
-    if (CLR_INVALID != crBg)
-    {
-        CGdiAlpha::FillSolidRect(dc,rcClient, crBg);
-    }
+	if(Frame_Part_MidCenter & uDrawPart && !rcCenter.IsRectEmpty()) 
+	{
+		CRect rcSourMD=rcSour;
+		rcSourMD.DeflateRect(rcMargin.left,rcMargin.top,rcMargin.right,rcMargin.bottom);
+		if (CLR_INVALID != crBg)
+		{//采用纯色填充中间部分
+			CGdiAlpha::FillSolidRect(dc,rcCenter, crBg);
+		}else
+		{
+			ExtentBlt(pImgDraw,bTile,
+				dc,
+				rcCenter.left, rcCenter.top,
+				rcCenter.Width(), rcCenter.Height(),
+				rcSourMD.left, rcSourMD.top,
+				rcSourMD.Width(), rcSourMD.Height(),
+				byAlpha
+				);
+		}
+	}
 }
 
 

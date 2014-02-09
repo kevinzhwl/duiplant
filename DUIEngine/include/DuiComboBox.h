@@ -65,6 +65,8 @@ public:
 
 	BOOL DeleteAllItem();
 
+	int GetWindowTextLength();
+
 	int GetWindowText(LPTSTR lpString, int nMaxCount );
 	
 	BOOL SetWindowText(LPCTSTR strText);

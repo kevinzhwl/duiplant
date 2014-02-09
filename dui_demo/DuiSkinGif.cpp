@@ -73,7 +73,7 @@ void CDuiSkinGif::OnAttributeChanged(const CDuiStringA & strAttrName,BOOL bLoadi
 		OnSetImage();
 }
 
-void CDuiSkinGif::Draw( CDCHandle dc, CRect rcDraw, DWORD dwState,BYTE byAlpha/*=0xFF*/ )
+void CDuiSkinGif::Draw( HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha/*=0xFF*/ )
 {
 	if(dwState!=-1) SelectActiveFrame(dwState);
 	CDuiImgX *pImgX=static_cast<CDuiImgX *>(m_pDuiImg);

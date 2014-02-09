@@ -11,13 +11,14 @@ namespace DuiEngine
 {
 
 #define TIMER_CARET	1
-
+#define TIMER_NEXTFRAME 2
 
 //////////////////////////////////////////////////////////////////////////
 // CDuiHostWnd
 //////////////////////////////////////////////////////////////////////////
 CDuiHostWnd::CDuiHostWnd( LPCTSTR pszResName /*= NULL*/ )
-:m_strXmlLayout(pszResName)
+: CDuiFrame(this)
+, m_strXmlLayout(pszResName)
 , m_uRetCode(0)
 , m_nIdleCount(0)
 , m_bExitModalLoop(FALSE)
@@ -154,7 +155,7 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
 		DuiSkinPool::getSingleton().LoadSkins(m_strName);	//load skin only used in the host window
 	}
 
-	CDuiPanel::Load(xmlNode.child("body"));
+	CDuiWindow::Load(xmlNode.child("body"));
 
 	SetAttribute("pos", "0,0,-0,-0", TRUE);
 
@@ -366,9 +367,9 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
         {
             rgnUpdate.Attach(m_rgnInvalidate.Detach());
         }
-		if(m_bCaretActive) DrawCaret(m_ptCaret,FALSE);//clear old caret 
+		if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
         RedrawRegion(CDCHandle(m_memDC), rgnUpdate);
-		if(m_bCaretActive) DrawCaret(m_ptCaret,FALSE);//redraw caret 
+		if(m_bCaretActive) DrawCaret(m_ptCaret);//redraw caret 
         m_memDC.SelectClipRgn(NULL);
 
         m_memDC.SelectFont(hftOld);
@@ -531,40 +532,39 @@ void CDuiHostWnd::OnDuiTimer( char cTimerID )
     if(cTimerID==TIMER_CARET)
     {
 		DUIASSERT(m_bCaretShowing);
-        DrawCaret(m_ptCaret,TRUE);
+        DrawCaret(m_ptCaret);
 		m_bCaretActive=!m_bCaretActive;
-    }
+    }else if(cTimerID==TIMER_NEXTFRAME)
+	{
+		OnNextFrame();
+	}
 }
 
-void CDuiHostWnd::DrawCaret(CPoint pt,BOOL bUpdate/*=FALSE*/)
+void CDuiHostWnd::DrawCaret(CPoint pt)
 {
     BITMAP bm;
     GetObject(m_hBmpCaret,sizeof(bm),&bm);
 
     CMemDC dcCaret(m_memDC,m_hBmpCaret);
+	
+	CRect rcCaret(pt,CSize(bm.bmWidth,bm.bmHeight));
+	CRect rcShowCaret;
+	rcShowCaret.IntersectRect(m_rcValidateCaret,rcCaret);
+	
 
     ALPHAINFO ai;
-    CGdiAlpha::AlphaBackup(m_memDC,CRect(pt,CSize(bm.bmWidth,bm.bmHeight)),ai);
-    m_memDC.BitBlt(pt.x,pt.y,bm.bmWidth,bm.bmHeight,dcCaret,0,0,DSTINVERT);
+    CGdiAlpha::AlphaBackup(m_memDC,rcCaret,ai);
+	m_memDC.BitBlt(rcShowCaret.left,rcShowCaret.top,rcShowCaret.Width(),rcShowCaret.Height(),dcCaret,rcShowCaret.left-pt.x,rcShowCaret.top-pt.y,DSTINVERT);
     CGdiAlpha::AlphaRestore(m_memDC,ai);
 
-	if(bUpdate)
-    {
-		if(m_bTranslucent)
-		{
-			CRect rc;
-			GetWindowRect(&rc);
-			BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
-			CDCHandle dc=GetDC();
-			UpdateLayeredWindow(dc,&rc.TopLeft(),&rc.Size(),m_memDC,&CPoint(0,0),0,&bf,ULW_ALPHA);
-			ReleaseDC(dc);
-		}else
-		{
-			CDCHandle dc=GetDC();
-			dc.BitBlt(pt.x,pt.y,bm.bmWidth,bm.bmHeight,m_memDC,pt.x,pt.y,SRCCOPY);
-			ReleaseDC(dc);
-		}
-    }
+	if(!m_bTranslucent)
+	{
+		InvalidateRect(rcCaret, FALSE);
+	}else
+	{
+		if(m_dummyWnd.IsWindow()) 
+			m_dummyWnd.Invalidate(FALSE);
+	}
 }
 
 LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -602,11 +602,13 @@ LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
         CDuiWindow *pFocus=DuiWindowManager::GetWindow(m_focusMgr.GetFocusedHwnd());
         if(!pFocus  || !(pFocus->OnGetDuiCode()&DUIC_WANTSYSKEY))
         {
-            SetMsgHandled(FALSE);
+			SetMsgHandled(FALSE);
             return 0;
         }
     }
-    return DoFrameEvent(uMsg,wParam,lParam);
+    LRESULT lRet = DoFrameEvent(uMsg,wParam,lParam);
+	SetMsgHandled(CDuiWindow::IsMsgHandled());
+	return lRet;
 }
 
 BOOL CDuiHostWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
@@ -618,7 +620,10 @@ BOOL CDuiHostWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
 {
-	DoFrameEvent(WM_ACTIVATE,MAKEWPARAM(nState,bMinimized),(LPARAM)wndOther);
+	if(nState==WA_ACTIVE)
+		::SetFocus(m_hWnd);
+	else
+		::SetFocus(NULL);
 }
 
 LRESULT CDuiHostWnd::OnDuiNotify(LPDUINMHDR pHdr)
@@ -659,7 +664,7 @@ HDC CDuiHostWnd::OnGetDuiDC(const CRect & rc,DWORD gdcFlags)
     {
 		if(m_bCaretActive)
 		{
-			DrawCaret(m_ptCaret,FALSE);//clear old caret
+			DrawCaret(m_ptCaret);//clear old caret
 		}
         CRgn rgnRc;
         rgnRc.CreateRectRgnIndirect(&rc);
@@ -674,7 +679,7 @@ void CDuiHostWnd::OnReleaseDuiDC(HDC hdcSour,const CRect &rc,DWORD gdcFlags)
     if(gdcFlags & OLEDC_NODRAW) return;
 	if(m_bCaretActive)
 	{
-		DrawCaret(m_ptCaret,FALSE);//clear old caret
+		DrawCaret(m_ptCaret);//clear old caret
 	}
     CDCHandle dc=GetDC();
     UpdateHost(dc,rc);
@@ -746,7 +751,7 @@ HDUIWND CDuiHostWnd::OnSetDuiCapture(HDUIWND hDuiWnd)
 HDUIWND CDuiHostWnd::GetDuiCapture()
 {
     if(GetCapture()!=m_hWnd) return NULL;
-    return __super::GetDuiCapture();
+    return __super::OnGetDuiCapture();
 }
 
 BOOL CDuiHostWnd::IsTranslucent()
@@ -798,7 +803,7 @@ BOOL CDuiHostWnd::DuiShowCaret( BOOL bShow )
 		SetDuiTimer(TIMER_CARET,GetCaretBlinkTime());
 		if(!m_bCaretActive)
 		{
-			DrawCaret(m_ptCaret,TRUE);
+			DrawCaret(m_ptCaret);
 			m_bCaretActive=TRUE;
 		}
 	}
@@ -807,7 +812,7 @@ BOOL CDuiHostWnd::DuiShowCaret( BOOL bShow )
 		KillDuiTimer(TIMER_CARET);
 		if(m_bCaretActive)
 		{
-			DrawCaret(m_ptCaret,TRUE);
+			DrawCaret(m_ptCaret);
 		}
 		m_bCaretActive=FALSE;
 	}
@@ -821,13 +826,13 @@ BOOL CDuiHostWnd::DuiSetCaretPos( int x,int y )
 	if(m_bCaretShowing && m_bCaretActive)
 	{
 		//clear old caret
-		DrawCaret(m_ptCaret,FALSE);
+		DrawCaret(m_ptCaret);
 	}
 	m_ptCaret=CPoint(x,y);
 	if(m_bCaretShowing && m_bCaretActive)
 	{
 		//draw new caret
-		DrawCaret(m_ptCaret,TRUE);
+		DrawCaret(m_ptCaret);
 	}
     return TRUE;
 }
@@ -1010,12 +1015,12 @@ void CDuiHostWnd::OnRealWndSize( CDuiRealWnd *pRealWnd )
 
 void CDuiHostWnd::OnSetFocus( HWND wndOld )
 {
-	DoFrameEvent(WM_ACTIVATE,WA_ACTIVE,0);
+	DoFrameEvent(WM_SETFOCUS,0,0);
 }
 
 void CDuiHostWnd::OnKillFocus( HWND wndFocus )
 {
-	DoFrameEvent(WM_ACTIVATE,WA_INACTIVE,0);
+	DoFrameEvent(WM_KILLFOCUS,0,0);
 }
 
 void CDuiHostWnd::UpdateLayerFromDC(HDC hdc,BYTE byAlpha)
@@ -1209,6 +1214,25 @@ BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
 		}
 		return FALSE;
 	}
+}
+
+void CDuiHostWnd::OnSetCaretValidateRect( LPCRECT lpRect )
+{
+	m_rcValidateCaret=lpRect;
+}
+
+BOOL CDuiHostWnd::RegisterTimelineHandler( ITimelineHandler *pHandler )
+{
+	BOOL bRet = CDuiFrame::RegisterTimelineHandler(pHandler);
+	if(bRet && m_lstTimelineHandler.GetCount()==1) SetDuiTimer(TIMER_NEXTFRAME,10);
+	return bRet;
+}
+
+BOOL CDuiHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
+{
+	BOOL bRet=CDuiFrame::UnregisterTimelineHandler(pHandler);
+	if(bRet && m_lstTimelineHandler.IsEmpty()) KillDuiTimer(TIMER_NEXTFRAME);
+	return bRet;
 }
 
 //////////////////////////////////////////////////////////////////////////

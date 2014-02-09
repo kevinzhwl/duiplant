@@ -18,7 +18,8 @@ namespace DuiEngine
 
 
 CDuiItemPanel::CDuiItemPanel(CDuiWindow *pFrameHost,pugi::xml_node xmlNode,CDuiItemContainer *pItemContainer)
-    :m_pFrmHost(pFrameHost)
+    :CDuiFrame(this)
+	,m_pFrmHost(pFrameHost)
     ,m_pItemContainer(pItemContainer)
     ,m_dwData(0)
     ,m_crBk(CLR_INVALID)
@@ -29,7 +30,7 @@ CDuiItemPanel::CDuiItemPanel(CDuiWindow *pFrameHost,pugi::xml_node xmlNode,CDuiI
     if(!m_pItemContainer) m_pItemContainer=dynamic_cast<CDuiItemContainer*>(m_pFrmHost);
     DUIASSERT(m_pItemContainer);
     SetContainer(this);
-    Load(xmlNode);
+    if(xmlNode) Load(xmlNode);
 }
 
 void CDuiItemPanel::OnFinalRelease()
@@ -56,6 +57,7 @@ LRESULT CDuiItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 		}
 	}
 
+	SetMsgHandled(FALSE);
     LRESULT lRet=__super::DoFrameEvent(uMsg,wParam,lParam);
     if(IsMsgHandled())
     {
@@ -89,7 +91,9 @@ LRESULT CDuiItemPanel::OnDuiNotify(LPDUINMHDR pHdr)
 
 CRect CDuiItemPanel::GetContainerRect()
 {
-    return m_rcWindow;
+	CRect rcItem;
+	m_pItemContainer->OnItemGetRect(this,rcItem);
+	return rcItem;
 }
 
 HDC CDuiItemPanel::OnGetDuiDC(const CRect & rc,DWORD gdcFlags)
@@ -172,6 +176,8 @@ BOOL CDuiItemPanel::DuiShowCaret( BOOL bShow )
 
 BOOL CDuiItemPanel::DuiSetCaretPos( int x,int y )
 {
+	CRect rcItem=GetItemRect();
+	x+=rcItem.left,y+=rcItem.top;
     return m_pFrmHost->GetContainer()->DuiSetCaretPos(x,y);
 }
 
@@ -243,6 +249,7 @@ LPARAM CDuiItemPanel::GetItemData()
 BOOL CDuiItemPanel::OnUpdateToolTip( HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip )
 {
     if(hCurTipHost==m_hHover) return FALSE;
+	if(m_hHover==m_hDuiWnd) return FALSE;
 
     CDuiWindow *pHover=DuiWindowManager::GetWindow(m_hHover);
     if(!pHover || pHover->IsDisabled(TRUE))
@@ -259,4 +266,28 @@ BOOL CDuiItemPanel::OnUpdateToolTip( HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CR
     return bRet;
 }
 
+void CDuiItemPanel::OnSetCaretValidateRect( LPCRECT lpRect )
+{
+	CRect rcClient;
+	GetClient(&rcClient);
+	CRect rcIntersect;
+	rcIntersect.IntersectRect(&rcClient,lpRect);
+	CRect rcItem=GetItemRect();
+	rcIntersect.OffsetRect(rcItem.TopLeft());
+	m_pFrmHost->OnSetCaretValidateRect(&rcIntersect);
+}
+
+BOOL CDuiItemPanel::RegisterTimelineHandler( ITimelineHandler *pHandler )
+{
+	BOOL bRet=CDuiFrame::RegisterTimelineHandler(pHandler);
+	if(bRet && m_lstTimelineHandler.GetCount()==1) m_pFrmHost->GetContainer()->RegisterTimelineHandler(this);
+	return bRet;
+}
+
+BOOL CDuiItemPanel::UnregisterTimelineHandler( ITimelineHandler *pHandler )
+{
+	BOOL bRet=CDuiFrame::UnregisterTimelineHandler(pHandler);
+	if(bRet && m_lstTimelineHandler.IsEmpty()) m_pFrmHost->GetContainer()->UnregisterTimelineHandler(this);
+	return bRet;
+}
 }//namespace DuiEngine

@@ -19,7 +19,7 @@
             <tabctrl name="tab_prj" pos="0,30,-0,-0" tabskin="tabskin_default" crtext="000000" align="top" tabwidth="70" tabheight="30" tabspacing="0" tabpos="10">
               <tab title="files view">
                 <!--项目文件列表-->
-                <listctrl name="prj_list_file" pos="0,0,-0,-0" itemHeight="20" headerHeight="30">
+                <listctrl name="prj_list_file" pos="0,0,-0,-30" itemHeight="20" headerHeight="30" tabstop="1">
                   <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
                     <items>
                       <item width="60">type</item>
@@ -29,10 +29,11 @@
                     </items>
                   </header>
                 </listctrl>
+                <button name="prg_btn_add_file" pos="0,-25,100,-0">增加文件</button>
               </tab>
               <tab title="skins view">
                 <!--项目皮肤列表-->
-                <listctrl name="prj_list_skin" pos="0,0,-0,-0" itemHeight="20" headerHeight="30">
+                <listctrl name="prj_list_skin" pos="0,0,-0,-30" itemHeight="20" headerHeight="30" tabstop="1">
                   <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
                     <items>
                       <item width="60">type</item>
@@ -41,20 +42,21 @@
                     </items>
                   </header>
                 </listctrl>
+                <button name="prg_btn_add_skin" pos="0,-25,100,-0">增加皮肤</button>
               </tab>
             </tabctrl>
           </pane>
           <pane name="pane_view" idealsize="250" minsize="30" priority="1">
             <!--文件预览窗口-->
-            <tabctrl pos="0,0,-0,-0" name="tab_view">
+            <tabctrl pos="0,0,-0,-0" name="tab_view" tabheight="0">
               <tab title="image_view">
                 <splitcol pos="0,0,-0,-0" skinsep="skin_split_vert" sepsize="6">
                   <!--采用split分割出一个类9宫表格-->
                   <pane ideasize="0" minsize="0" priority="0"/>
-                  <pane ideasize="100" minsize="0" priority="3">
+                  <pane ideasize="100" minsize="20" priority="3">
                     <splitrow pos="0,0,-0,-0" skinsep="skin_split_horz" sepsize="6">
                       <pane ideasize="0" minsize="0" priority="0"/>
-                      <pane ideasize="100" minsize="0" priority="3">
+                      <pane ideasize="100" minsize="20" priority="3">
                         <!--容纳一个自定义的图片预览控件-->
                         <imgview pos="0,0,-0,-0" name="img_view" clipclient="1"></imgview>
                       </pane>

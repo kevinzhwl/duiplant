@@ -169,45 +169,57 @@ protected:
 
 class DUI_EXP CDuiScrollView : public CDuiPanelEx
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiScrollView, "scrollview")
+	DUIOBJ_DECLARE_CLASS_NAME(CDuiScrollView, "scrollview")
 public:
-    CDuiScrollView();
-    virtual ~CDuiScrollView() {}
+	CDuiScrollView();
+	virtual ~CDuiScrollView() {}
 
-    CSize GetViewSize();
+	CSize GetViewSize();
 
-    void SetViewSize(CSize szView);
+	void SetViewSize(CSize szView);
 
-    CPoint GetViewOrigin();
+	CPoint GetViewOrigin();
 
-    void SetViewOrigin(CPoint pt);
-
-protected:
-    int OnCreate(LPVOID);
-
-    void OnSize(UINT nType,CSize size);
-protected:
-    virtual void OnViewOriginChanged(CPoint ptOld,CPoint ptNew) {}
-
-    virtual CRect GetChildrenLayoutRect();
-
-    virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
+	void SetViewOrigin(CPoint pt);
 
 protected:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("viewwid", m_szView.cx, FALSE)
-    DUIWIN_INT_ATTRIBUTE("viewhei", m_szView.cy, FALSE)
-    DUIWIN_INT_ATTRIBUTE("origin-x", m_ptOrigin.x, FALSE)
-    DUIWIN_INT_ATTRIBUTE("origin-y", m_ptOrigin.y, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+	int OnCreate(LPVOID);
 
-    DUIWIN_BEGIN_MSG_MAP()
-    MSG_WM_CREATE(OnCreate)
-    MSG_WM_SIZE(OnSize)
-    DUIWIN_END_MSG_MAP()
+	void OnSize(UINT nType,CSize size);
 protected:
-    CSize m_szView;
-    CPoint m_ptOrigin;
+	virtual void OnViewSizeChanged(CSize szOld,CSize szNew){}
+	virtual void OnViewOriginChanged(CPoint ptOld,CPoint ptNew) {
+		UpdateChildrenPosition();
+	}
+
+protected:
+	virtual CRect GetChildrenLayoutRect()
+	{
+		CRect rcRet=__super::GetChildrenLayoutRect();
+		rcRet.OffsetRect(-m_ptOrigin);
+		rcRet.right=rcRet.left+m_szView.cx;
+		rcRet.bottom=rcRet.top+m_szView.cy;
+		return rcRet;
+	}
+
+	virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
+
+	void UpdateScrollBar();
+protected:
+	DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+		DUIWIN_INT_ATTRIBUTE("viewwid", m_szView.cx, FALSE)
+		DUIWIN_INT_ATTRIBUTE("viewhei", m_szView.cy, FALSE)
+		DUIWIN_INT_ATTRIBUTE("origin-x", m_ptOrigin.x, FALSE)
+		DUIWIN_INT_ATTRIBUTE("origin-y", m_ptOrigin.y, FALSE)
+	DUIWIN_DECLARE_ATTRIBUTES_END()
+
+	DUIWIN_BEGIN_MSG_MAP()
+		MSG_WM_CREATE(OnCreate)
+		MSG_WM_SIZE(OnSize)
+	DUIWIN_END_MSG_MAP()
+protected:
+	CSize m_szView;
+	CPoint m_ptOrigin;
 };
 
 }//namespace DuiEngine

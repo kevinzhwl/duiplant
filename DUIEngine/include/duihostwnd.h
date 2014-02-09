@@ -52,6 +52,7 @@ class CDuiTipCtrl;
 
 class DUI_EXP CDuiHostWnd
     : public CSimpleWnd
+	, public CDuiWindow
     , public CDuiFrame
     , protected IDuiRealWndHandler
 {
@@ -72,10 +73,9 @@ public:
 
     UINT_PTR DoModal(HWND hWndParent = NULL, LPRECT rect = NULL);
 
-    void EndDialog(UINT uRetCode);
-
 	BOOL AnimateHostWindow(DWORD dwTime,DWORD dwFlags);
 
+	virtual void EndDialog(UINT uRetCode);
 protected:
     UINT m_uRetCode;
     BOOL m_bExitModalLoop;
@@ -98,6 +98,8 @@ protected:
     HBITMAP m_hBmpCaret;	//半透明窗口中的模拟插入符
     BOOL m_bCaretActive;	//模拟插入符正在显示标志
     CPoint m_ptCaret;		//插入符位置
+	CRect	m_rcValidateCaret;//可以显示插入符的位置
+
     BOOL m_bNeedRepaint;
     BOOL m_bNeedAllRepaint;
 
@@ -149,7 +151,7 @@ protected:
 
     void OnDuiTimer(char cTimerID);
 
-    void DrawCaret(CPoint pt,BOOL bUpdate=FALSE);
+    void DrawCaret(CPoint pt);
 
     LRESULT OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -204,7 +206,12 @@ protected:
 	/*virtual */
 	BOOL DuiUpdateWindow();
 
-    //////////////////////////////////////////////////////////////////////////
+	/*virtual */
+	BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
+
+	/*virtual */
+	BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
+//////////////////////////////////////////////////////////////////////////
     // IDuiRealWndHandler
     virtual HWND OnRealWndCreate(CDuiRealWnd *pRealWnd);
     virtual BOOL OnRealWndInit(CDuiRealWnd *pRealWnd);
@@ -226,6 +233,8 @@ protected:
 	void OnOK();
 
     LRESULT OnMsgFilter(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+	void OnSetCaretValidateRect( LPCRECT lpRect );
 
     void UpdateHost(CDCHandle dc,const CRect &rc);
 	void UpdateLayerFromDC(HDC hdc,BYTE byAlpha);

@@ -83,6 +83,13 @@ BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 {
 	pugi::xml_document xmlDoc;
 	if(!LoadXmlDocment(xmlDoc,pszName,pszType)) return FALSE;
+	//init edit menu
+	pugi::xml_node xmlMenu=xmlDoc.first_child().child("editmenu");
+	if(xmlMenu)
+	{
+		m_xmlEditMenu.append_copy(xmlMenu);
+	}
+
 	//set default font
 	pugi::xml_node xmlFont;
 	xmlFont=xmlDoc.first_child().child("font");

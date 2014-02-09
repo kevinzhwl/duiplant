@@ -146,13 +146,13 @@ void CDuiSliderBar::OnPaint(CDCHandle dc)
 	if(m_nValue!=m_nMinValue)
 	{
 		CRect rcSel=GetPartRect(SC_SELECT);
-		m_pSkinPos->Draw(dc,rcSel,0);
+		m_pSkinPos->Draw(dc,rcSel,0,m_byAlpha);
 	}
     CRect rcThumb = GetPartRect(SC_THUMB);
 	int nState=0;//normal
 	if(m_bDrag) nState=1;//pushback
 	else if(m_uHtPrev==SC_THUMB) nState=2;//hover
-	m_pSkinThumb->Draw(dc, rcThumb, nState);
+	m_pSkinThumb->Draw(dc, rcThumb, nState,m_byAlpha);
 
     AfterPaint(dc, dxDC);
 }
@@ -166,7 +166,7 @@ void CDuiSliderBar::OnLButtonUp(UINT nFlags, CPoint point)
         m_bDrag   = FALSE;
 		CRect rcThumb = GetPartRect(SC_THUMB);
 		HDC   hdc     = GetDuiDC(&rcThumb, OLEDC_PAINTBKGND);
-		m_pSkinThumb->Draw(hdc, rcThumb, IIF_STATE4(DuiWndState_Hover, 0, 1, 2, 3), 0xFF);
+		m_pSkinThumb->Draw(hdc, rcThumb, IIF_STATE4(DuiWndState_Hover, 0, 1, 2, 3), m_byAlpha);
 		ReleaseDuiDC(hdc);
     }
 	OnMouseMove(nFlags,point);
@@ -235,7 +235,7 @@ void CDuiSliderBar::OnMouseMove(UINT nFlags, CPoint point)
         {
 			CRect rcThumb = GetPartRect(SC_THUMB);
 			HDC   hdc     = GetDuiDC(&rcThumb, OLEDC_PAINTBKGND);
-			m_pSkinThumb->Draw(hdc, rcThumb, IIF_STATE4(uHit==SC_THUMB?DuiWndState_Hover:DuiWndState_Normal, 0, 1, 2, 3), 0xFF);
+			m_pSkinThumb->Draw(hdc, rcThumb, IIF_STATE4(uHit==SC_THUMB?DuiWndState_Hover:DuiWndState_Normal, 0, 1, 2, 3), m_byAlpha);
 			ReleaseDuiDC(hdc);
             m_uHtPrev = uHit;
         }
@@ -248,7 +248,7 @@ void CDuiSliderBar::OnMouseLeave()
     {
 		CRect rcThumb = GetPartRect(SC_THUMB);
 		HDC   hdc     = GetDuiDC(&rcThumb, OLEDC_PAINTBKGND);
-		m_pSkinThumb->Draw(hdc, rcThumb, IIF_STATE4(DuiWndState_Normal, 0, 1, 2, 3), 0xFF);
+		m_pSkinThumb->Draw(hdc, rcThumb, IIF_STATE4(DuiWndState_Normal, 0, 1, 2, 3), m_byAlpha);
 		ReleaseDuiDC(hdc);
 		m_uHtPrev=-1;
     }

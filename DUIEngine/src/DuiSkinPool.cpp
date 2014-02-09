@@ -11,7 +11,7 @@ template<> DuiSkinFactoryManager * Singleton<DuiSkinFactoryManager>::ms_Singleto
 
 void DuiSkinFactoryManager::AddStandardSkin()
 {
-    AddKeyObject(CDuiImageList::GetClassName(),new TplSkinFactory<CDuiImageList>);
+    AddKeyObject(CDuiSkinImgList::GetClassName(),new TplSkinFactory<CDuiSkinImgList>);
     AddKeyObject(CDuiSkinImgFrame::GetClassName(),new TplSkinFactory<CDuiSkinImgFrame>);
     AddKeyObject(CDuiSkinButton::GetClassName(),new TplSkinFactory<CDuiSkinButton>);
     AddKeyObject(CDuiSkinGradation::GetClassName(),new TplSkinFactory<CDuiSkinGradation>);

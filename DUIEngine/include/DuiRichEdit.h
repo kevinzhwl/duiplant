@@ -22,6 +22,8 @@ public:
     {
         return pserv;
     }
+
+	POINT GetCaretPos(){return m_ptCaret;}
 protected:
 
     // -----------------------------
@@ -168,6 +170,7 @@ protected:
     ULONG	cRefs;					// Reference Count
     ITextServices	*pserv;		    // pointer to Text Services object
     CDuiRichEdit	*m_pDuiRichEdit;// duiwindow for text host
+	POINT				m_ptCaret;
 };
 
 #ifndef LY_PER_INCH
@@ -257,6 +260,8 @@ protected:
 
     void OnLButtonUp(UINT nFlags, CPoint point);
 
+	void OnRButtonDown(UINT nFlags, CPoint point);
+
     void OnMouseMove(UINT nFlags, CPoint point);
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
@@ -293,6 +298,7 @@ protected:
     MSG_UM_TIMEREX(OnDuiTimerEx)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_LBUTTONUP(OnLButtonUp)
+	MSG_WM_RBUTTONDOWN(OnRButtonDown)
     MSG_WM_MOUSEMOVE(OnMouseMove)
     MSG_WM_KEYDOWN(OnKeyDown)
     MSG_WM_CHAR(OnChar)

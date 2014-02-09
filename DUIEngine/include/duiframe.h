@@ -14,11 +14,10 @@
 namespace DuiEngine
 {
 
-class DUI_EXP CDuiFrame : public CDuiPanel
-    , public CDuiContainer
+class DUI_EXP CDuiFrame : public CDuiContainer
 {
 public:
-    CDuiFrame();
+    CDuiFrame(CDuiWindow *pHost);
 
 	virtual BOOL RegisterDragDrop(HDUIWND hDuiWnd,IDropTarget *pDropTarget);
 
@@ -36,13 +35,19 @@ public:
     virtual HDUIWND OnSetDuiCapture(HDUIWND hDuiWnd);
     virtual void OnSetDuiFocus(HDUIWND hDuiWnd);
 
-    virtual HDUIWND GetDuiCapture();
+    virtual HDUIWND OnGetDuiCapture();
 
     virtual HDUIWND GetDuiFocus();
 
     virtual HDUIWND GetDuiHover();
 
 	virtual IAcceleratorMgr* GetAcceleratorMgr(){return &m_focusMgr;}
+
+	virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
+
+	virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
+
+	virtual void OnNextFrame();
 protected:
     virtual void OnFrameMouseMove(UINT uFlag,CPoint pt);
 
@@ -67,6 +72,10 @@ protected:
 	CFocusManager m_focusMgr;
 
 	CDuiFrameDropTarget m_dropTarget;
+
+	CDuiWindow	*m_pHost;
+
+	CDuiList<ITimelineHandler*>	m_lstTimelineHandler;
 };
 
 }//namespace DuiEngine

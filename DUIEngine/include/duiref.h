@@ -3,37 +3,46 @@
 namespace DuiEngine
 {
 
-class DUI_EXP CDuiRef
-{
-public:
-    CDuiRef():m_nRef(1)
-    {
-    }
+	struct IDuiRef
+	{
+		virtual int AddRef()=NULL;
 
-    ~CDuiRef()
-    {
+		virtual int Release()=NULL;
 
-    }
+		virtual void OnFinalRelease()=NULL;
+	};
 
-    int AddRef()
-    {
-        return ++m_nRef;
-    }
+	class DUI_EXP CDuiRef : public IDuiRef
+	{
+	public:
+		CDuiRef():m_nRef(1)
+		{
+		}
 
-    int Release()
-    {
-        int nRet=--m_nRef;
-        if(nRet==0)
-        {
-            OnFinalRelease();
-        }
-		return nRet;
-    }
+		~CDuiRef()
+		{
 
-protected:
-    virtual void OnFinalRelease()=NULL;
+		}
 
-    int m_nRef;
-};
+		int AddRef()
+		{
+			return ++m_nRef;
+		}
+
+		int Release()
+		{
+			int nRet=--m_nRef;
+			if(nRet==0)
+			{
+				OnFinalRelease();
+			}
+			return nRet;
+		}
+
+	protected:
+		virtual void OnFinalRelease()=NULL;
+
+		int m_nRef;
+	};
 
 }//namespace DuiEngine

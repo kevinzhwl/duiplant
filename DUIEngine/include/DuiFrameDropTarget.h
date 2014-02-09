@@ -4,11 +4,10 @@
 
 namespace DuiEngine{
 
-	class CDuiFrame;
 	class CDuiFrameDropTarget : public IDropTarget
 	{
 	public:
-		CDuiFrameDropTarget(CDuiFrame * pFrame);
+		CDuiFrameDropTarget(CDuiWindow * pFrame);
 		~CDuiFrameDropTarget(void);
 
 		BOOL RegisterDragDrop(HDUIWND hDuiWnd,IDropTarget *pDropTarget);
@@ -50,7 +49,7 @@ namespace DuiEngine{
 	protected:
 		POINT PointL2FrameClient(const POINTL & pt);
 
-		CDuiFrame *m_pDuiFrame;
+		CDuiWindow *m_pDuiFrame;
 
 		typedef CDuiMap<HDUIWND,IDropTarget *> DTMAP;
 		DTMAP m_mapDropTarget;

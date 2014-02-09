@@ -3,7 +3,7 @@
 #include "duiframe.h"
 
 namespace DuiEngine{
-	CDuiFrameDropTarget::CDuiFrameDropTarget(CDuiFrame * pFrame)
+	CDuiFrameDropTarget::CDuiFrameDropTarget(CDuiWindow * pFrame)
 		:m_pDuiFrame(pFrame)
 		,m_pDataObj(NULL)
 		,m_hDuiHover(0)
@@ -104,7 +104,7 @@ namespace DuiEngine{
 	POINT CDuiFrameDropTarget::PointL2FrameClient( const POINTL & pt )
 	{
 		CPoint pt2(pt.x,pt.y);
-		ScreenToClient(m_pDuiFrame->GetHostHwnd(),&pt2);
+		ScreenToClient(m_pDuiFrame->GetContainer()->GetHostHwnd(),&pt2);
 		return pt2;
 	}
 

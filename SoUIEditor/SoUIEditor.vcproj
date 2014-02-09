@@ -177,11 +177,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NewFileDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NewSkinDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ScintillaWnd.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\SoUIEditor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SoUIHelper.cpp"
 				>
 			</File>
 			<File
@@ -204,21 +216,29 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\UIHander.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
 			<File
+				RelativePath=".\FileHelper.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ImgView.h"
 				>
 			</File>
 			<File
 				RelativePath=".\MainDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NewFileDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NewSkinDlg.h"
 				>
 			</File>
 			<File
@@ -230,11 +250,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath=".\SoUIHelper.h"
 				>
 			</File>
 			<File
-				RelativePath=".\UIHander.h"
+				RelativePath=".\stdafx.h"
 				>
 			</File>
 		</Filter>
@@ -324,6 +344,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\skin\image\dropbtn.png"
+					>
+				</File>
+				<File
 					RelativePath=".\skin\image\focus_checkbox.png"
 					>
 				</File>
@@ -361,6 +385,14 @@
 				</File>
 				<File
 					RelativePath=".\skin\xml\dlg_msgbox.xml"
+					>
+				</File>
+				<File
+					RelativePath=".\skin\xml\dlg_newfile.xml"
+					>
+				</File>
+				<File
+					RelativePath=".\skin\xml\dlg_newskin.xml"
 					>
 				</File>
 				<File

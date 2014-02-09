@@ -46,13 +46,13 @@ void CDuiRealWnd::ShowRealWindow()
     }
 }
 
-void CDuiRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
+LRESULT CDuiRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
 {
     CRect rcOldWnd = m_rcWindow;
 
-    __super::OnWindowPosChanged(lpWndPos);
+    LRESULT lRet=__super::OnWindowPosChanged(lpWndPos);
 
-    if (rcOldWnd != m_rcWindow)
+    if (lRet==0 && rcOldWnd != m_rcWindow)
     {
         DUINMREALWNDCMN nms;
         nms.hdr.code = DUINM_REALWND_SIZE;
@@ -62,6 +62,7 @@ void CDuiRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
         nms.pRealWnd=this;
         DuiNotify((LPDUINMHDR)&nms);
     }
+	return lRet;
 }
 
 void CDuiRealWnd::OnShowWindow(BOOL bShow, UINT nStatus)

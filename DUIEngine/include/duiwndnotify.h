@@ -92,6 +92,24 @@ class CDuiWindow;
     }                                                                               \
  
 
+
+// LRESULT OnDuiContextMenu(CPoint pt)
+#define DUI_NOTIFY_ID_CONTEXTMENU(id,func)                                      \
+	if (DUINM_CONTEXTMENU == uCode && pnmh->idFrom==id)                          \
+{                                                                               \
+	func(((LPDUINMCONTEXTMENU)pnmh)->pt);										\
+	return TRUE;                                                                \
+}                                                                               \
+
+
+// LRESULT OnDuiContextMenu(CPoint pt)
+#define DUI_NOTIFY_NAME_CONTEXTMENU(name,func)                                      \
+	if (DUINM_CONTEXTMENU == uCode && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0) \
+{                                                                               \
+	return func(((LPDUINMCONTEXTMENU)pnmh)->pt);										\
+}                                                                               \
+
+
 // Command Notify
 #define DUINM_COMMAND  1
 typedef struct _DUINMCOMMAND
@@ -99,6 +117,15 @@ typedef struct _DUINMCOMMAND
     DUINMHDR       hdr;
     ULONG_PTR   uItemData;
 } DUINMCOMMAND, *LPDUINMCOMMAND;
+
+// Command Notify
+#define DUINM_CONTEXTMENU  2
+typedef struct _DUINMCONTEXTMENU
+{
+	DUINMHDR       hdr;
+	POINT		   pt;
+	ULONG_PTR   uItemData;
+} DUINMCONTEXTMENU, *LPDUINMCONTEXTMENU;
 
 
 // Tab Sel Change Notify

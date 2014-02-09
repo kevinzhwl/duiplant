@@ -32,22 +32,26 @@ enum
 #define IIF_STATE4(the_state, normal_value, hover_value, pushdown_value, disable_value) \
     (((the_state) & DuiWndState_Disable) ? (disable_value) : IIF_STATE3(the_state, normal_value, hover_value, pushdown_value))
 
-class DUI_EXP CDuiImageList: public CDuiSkinBase
+class DUI_EXP CDuiSkinImgList: public CDuiSkinBase
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiImageList, "imglst")
+    DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinImgList, "imglst")
 
 public:
-    CDuiImageList();
+    CDuiSkinImgList();
 
-    virtual void Draw(CDCHandle dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
 
     virtual SIZE GetSkinSize();
 
     virtual BOOL IgnoreState();
-    virtual int GetStates();
+    
+	int GetStates();
+
 	void    SetStates(int nStates){m_nStates=nStates;}
+
 	virtual void SetWidth(LONG width) {
 		m_lSubImageWidth=width;
+		m_bVertical=FALSE;
 		if(m_nStates==0)
 		{
 			if(m_pDuiImg)
@@ -57,29 +61,46 @@ public:
 		}
 	}
 
+	void SetTile(BOOL bTile){m_bTile=bTile;}
+	BOOL IsTile(){return m_bTile;}
+
+	void SetVertical(BOOL bVertical){m_bVertical=bVertical;}
+	BOOL IsVertical(){return m_bVertical;}
 protected:
 	virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
     LONG m_lSubImageWidth;
 	int  m_nStates;
     BOOL m_bTile;
+	BOOL m_bVertical;
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("subwidth", m_lSubImageWidth, TRUE)
     DUIWIN_INT_ATTRIBUTE("tile", m_bTile, TRUE)
+	DUIWIN_INT_ATTRIBUTE("vertical", m_bVertical, TRUE)
 	DUIWIN_INT_ATTRIBUTE("states",m_nStates,TRUE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 };
 
-class DUI_EXP CDuiSkinImgFrame : public CDuiImageList
+class DUI_EXP CDuiSkinImgFrame : public CDuiSkinImgList
 {
     DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinImgFrame, "imgframe")
 
 public:
     CDuiSkinImgFrame();
 
-    virtual void Draw(CDCHandle dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
 
-	void SetMargin(int nLeft,int nTop,int nRight,int nBottom);
+	void SetMargin(const CRect rcMargin){m_rcMargin=rcMargin;}
+
+	CRect GetMargin(){return m_rcMargin;}
+
+	UINT  GetDrawPart() {return m_uDrawPart;}
+
+	void SetDrawPart(UINT uDrawPart){m_uDrawPart=uDrawPart;}
+
+	COLORREF GetBgColor(){return m_crBg;}
+
+	void SetBgColor(COLORREF cr){m_crBg=cr;}
 protected:
 	virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
@@ -93,14 +114,24 @@ public:
     DUIWIN_INT_ATTRIBUTE("top", m_rcMargin.top, TRUE)
     DUIWIN_INT_ATTRIBUTE("right", m_rcMargin.right, TRUE)
     DUIWIN_INT_ATTRIBUTE("bottom", m_rcMargin.bottom, TRUE)
+	DUIWIN_HEX_ATTRIBUTE("part2", m_uDrawPart, TRUE)
     DUIWIN_ENUM_ATTRIBUTE("part", UINT, TRUE)
-    DUIWIN_ENUM_VALUE("all", Frame_Part_All)
-    DUIWIN_ENUM_VALUE("top", (Frame_Part_All & ~Frame_Part_Bottom))
-    DUIWIN_ENUM_VALUE("middle", (Frame_Part_All & ~(Frame_Part_Bottom | Frame_Part_Top)))
-    DUIWIN_ENUM_VALUE("bottom", (Frame_Part_All & ~Frame_Part_Top))
-    DUIWIN_ENUM_VALUE("left", (Frame_Part_All & ~Frame_Part_Right))
-    DUIWIN_ENUM_VALUE("center", (Frame_Part_All & ~(Frame_Part_Right | Frame_Part_Left)))
-    DUIWIN_ENUM_VALUE("right", (Frame_Part_All & ~Frame_Part_Left))
+		DUIWIN_ENUM_VALUE("all", Frame_Part_All)
+		DUIWIN_ENUM_VALUE("top", Frame_Part_Top)
+		DUIWIN_ENUM_VALUE("middle", Frame_Part_Mid)
+		DUIWIN_ENUM_VALUE("bottom", Frame_Part_Bottom)
+		DUIWIN_ENUM_VALUE("left", Frame_Part_Left)
+		DUIWIN_ENUM_VALUE("center", Frame_Part_Center)
+		DUIWIN_ENUM_VALUE("right", Frame_Part_Right)
+		DUIWIN_ENUM_VALUE("topleft", Frame_Part_TopLeft)
+		DUIWIN_ENUM_VALUE("topcenter", Frame_Part_TopCenter)
+		DUIWIN_ENUM_VALUE("topright", Frame_Part_TopRight)
+		DUIWIN_ENUM_VALUE("midleft", Frame_Part_MidLeft)
+		DUIWIN_ENUM_VALUE("midcenter", Frame_Part_MidCenter)
+		DUIWIN_ENUM_VALUE("midright", Frame_Part_MidRight)
+		DUIWIN_ENUM_VALUE("bottomleft", Frame_Part_BottomLeft)
+		DUIWIN_ENUM_VALUE("bottomcenter", Frame_Part_BottomCenter)
+		DUIWIN_ENUM_VALUE("bottomright", Frame_Part_BottomRight)
     DUIWIN_ENUM_END(m_uDrawPart)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 };
@@ -112,13 +143,12 @@ class DUI_EXP CDuiSkinButton : public CDuiSkinBase
 public:
     CDuiSkinButton();
 
-    virtual void Draw(CDCHandle dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
 
     virtual BOOL IgnoreState();
 
     virtual int GetStates();
 protected:
-    COLORREF m_crBg;
     COLORREF m_crBorder;
     COLORREF m_crBgUpNormal;
     COLORREF m_crBgUpHover;
@@ -127,40 +157,48 @@ protected:
     COLORREF m_crBgDownHover;
     COLORREF m_crBgDownPush;
 
+	COLORREF m_crBgUpDisable;
+	COLORREF m_crBgDownDisable;
+
 public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
-    DUIWIN_COLOR_ATTRIBUTE("bg", m_crBg, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("border", m_crBorder, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("bgup", m_crBgUpNormal, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("bguphover", m_crBgUpHover, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("bguppush", m_crBgUpPush, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("bgdown", m_crBgDownNormal, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("bgdownhover", m_crBgDownHover, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("bgdownpush", m_crBgDownPush, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("border", m_crBorder, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgup", m_crBgUpNormal, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgdown", m_crBgDownNormal, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bguphover", m_crBgUpHover, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgdownhover", m_crBgDownHover, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bguppush", m_crBgUpPush, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgdownpush", m_crBgDownPush, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgupdisable", m_crBgUpDisable, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgdowndisable", m_crBgDownDisable, TRUE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 };
 
 class DUI_EXP CDuiSkinGradation  : public CDuiSkinBase
 {
+	enum GRA_DIR
+	{
+		DIR_VERT=0,
+		DIR_HORZ,
+	};
+
     DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinGradation, "gradation")
 public:
     CDuiSkinGradation();
 
-    virtual void Draw(CDCHandle dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
 
 protected:
     COLORREF m_crFrom;
     COLORREF m_crTo;
-    UINT     m_uDirection;
-    int      m_nSize;
+    GRA_DIR     m_uDirection;
 public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
     DUIWIN_COLOR_ATTRIBUTE("from", m_crFrom, TRUE)
     DUIWIN_COLOR_ATTRIBUTE("to", m_crTo, TRUE)
-    DUIWIN_INT_ATTRIBUTE("size", m_nSize, TRUE)
-    DUIWIN_ENUM_ATTRIBUTE("direction", UINT, TRUE)
-    DUIWIN_ENUM_VALUE("horz", 0)
-    DUIWIN_ENUM_VALUE("vert", 1)
+    DUIWIN_ENUM_ATTRIBUTE("direction", GRA_DIR, TRUE)
+		DUIWIN_ENUM_VALUE("horz", DIR_HORZ)
+		DUIWIN_ENUM_VALUE("vert", DIR_VERT)
     DUIWIN_ENUM_END(m_uDirection)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 };
@@ -179,7 +217,7 @@ public:
 
     CDuiScrollbarSkin();
 
-    virtual void Draw(CDCHandle dc, CRect rcDraw, DWORD dwState,BYTE byAlpha=0xff);
+    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha=0xff);
 
 	//指示滚动条皮肤是否支持显示上下箭头
 	virtual BOOL HasArrow(){return TRUE;}

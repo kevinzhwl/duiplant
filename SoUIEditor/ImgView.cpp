@@ -3,8 +3,11 @@
 namespace DuiEngine
 {
 
-	CImgView::CImgView(void):m_nStates(1),m_bVertical(FALSE),m_bTile(FALSE)
+	CImgView::CImgView(void):m_viewType(VT_IMGLST),m_crSep(255),m_crFrame(128)
 	{
+		m_skinImgFrame.SetImage(&m_img);
+		m_skinImgList.SetImage(&m_img);
+		m_skinScroll.SetImage(&m_img);
 	}
 
 	CImgView::~CImgView(void)
@@ -15,72 +18,112 @@ namespace DuiEngine
 	{
 		CRect rcWnd;
 		GetClient(&rcWnd);
-		if(!m_img.IsEmpty())
+		CRect rcState=rcWnd;
+		int nStates=GetSkin()->GetStates();
+		rcState.right=rcState.left+rcState.Width()/nStates;
+		for(int i=0;i<nStates;i++)
 		{
-			CRect rcState=rcWnd;
-			rcState.right=rcState.left+rcWnd.Width()/m_nStates;
-			SIZE szImg;
-			m_img.GetImageSize(szImg);
-			if(m_bVertical) szImg.cy/=m_nStates;
-			else szImg.cx/=m_nStates;
+			GetSkin()->Draw(dc,rcState,i);
+			rcState.OffsetRect(rcState.Width(),0);
+		}
 
-			CRect rcSour(0,0,szImg.cx,szImg.cy);
+		//draw seperate line
+		rcState=rcWnd;
+		rcState.right=rcState.left+rcState.Width()/nStates;
+		for(int i=0;i<nStates-1;i++)
+		{
+			CGdiAlpha::DrawLine(dc,rcState.right,rcState.top,rcState.right,rcState.bottom,m_crSep,PS_DASHDOTDOT);
+			rcState.OffsetRect(rcState.Width(),0);
+		}
+
+		//draw frame
+		if(m_viewType==VT_IMGFRAME)
+		{
+			CRect rcMargin=m_skinImgFrame.GetMargin();
+			rcState=rcWnd;
+			rcState.right=rcState.left+rcState.Width()/nStates;
 			
-			CPen pen;
-			pen.CreatePen(PS_DASHDOT,1,RGB(255,0,0));
-			HPEN hOldPen=dc.SelectPen(pen);
-			for(int i=0;i<m_nStates;i++)
+			for(int i=0;i<nStates;i++)
 			{
-				CDuiSkinBase::FrameDraw(dc,&m_img,rcSour,rcState,m_rcMargin,-1,-1,m_bTile,255);
-				if(i<m_nStates-1)
+				if(rcMargin.left!=0)
 				{
-					dc.MoveTo(rcState.right,rcState.top);
-					dc.LineTo(rcState.right,rcState.bottom);
+					CGdiAlpha::DrawLine(dc,
+						rcState.left+rcMargin.left,rcState.top,
+						rcState.left+rcMargin.left,rcState.bottom,
+						m_crFrame,PS_DASHDOT);
+				}
+				if(rcMargin.right!=0)
+				{
+					CGdiAlpha::DrawLine(dc,
+						rcState.right-rcMargin.right,rcState.top,
+						rcState.right-rcMargin.right,rcState.bottom,
+						m_crFrame,PS_DASHDOT);
+				}
+				if(rcMargin.top!=0)
+				{
+					CGdiAlpha::DrawLine(dc,
+						rcState.left,rcState.top+rcMargin.top,
+						rcState.right,rcState.top+rcMargin.top,
+						m_crFrame,PS_DASHDOT);
+				}
+				if(rcMargin.bottom!=0)
+				{
+					CGdiAlpha::DrawLine(dc,
+						rcState.left,rcState.bottom-rcMargin.bottom,
+						rcState.right,rcState.bottom-rcMargin.bottom,
+						m_crFrame,PS_DASHDOT);
 				}
 
-				if(m_rcMargin.left!=0)
-				{
-					dc.MoveTo(rcState.left+m_rcMargin.left,rcState.top);
-					dc.LineTo(rcState.left+m_rcMargin.left,rcState.bottom);
-				}
-				if(m_rcMargin.right!=0)
-				{
-					dc.MoveTo(rcState.right-m_rcMargin.right,rcState.top);
-					dc.LineTo(rcState.right-m_rcMargin.right,rcState.bottom);
-				}
-				if(m_rcMargin.top!=0)
-				{
-					dc.MoveTo(rcState.left,rcState.top+m_rcMargin.top);
-					dc.LineTo(rcState.right,rcState.top+m_rcMargin.top);
-				}
-				if(m_rcMargin.bottom!=0)
-				{
-					dc.MoveTo(rcState.left,rcState.bottom-m_rcMargin.bottom);
-					dc.LineTo(rcState.right,rcState.bottom-m_rcMargin.bottom);
-				}
-				
 				rcState.OffsetRect(rcState.Width(),0);
-				if(m_bVertical) rcSour.OffsetRect(0,rcSour.Height());
-				else rcSour.OffsetRect(rcSour.Width(),0);
 			}
-			dc.SelectPen(hOldPen);
-		}else
-		{
-			CGdiAlpha::DrawText(dc,_T("没有指定图片"),-1,rcWnd,DT_CENTER|DT_VCENTER|DT_SINGLELINE);
 		}
 	}
 
 	BOOL CImgView::SetImageFile( LPCTSTR pszFileName )
 	{
-		m_nStates=1;
-		m_bTile=FALSE;
-		m_rcMargin=CRect();
-		m_bVertical=FALSE;
 		m_img.Clear();
-		m_strFileName.Empty();
 		BOOL bOK=m_img.LoadFromFile(pszFileName);
-		if(bOK) m_strFileName=pszFileName;
 		NotifyInvalidate();
 		return bOK;
+	}
+
+	void CImgView::SetViewType( VIEWTYPE vt )
+	{
+		m_viewType=vt;
+	}
+
+	CDuiSkinBase * CImgView::GetSkin()
+	{
+		switch(m_viewType)
+		{
+		case VT_SCROLL:return &m_skinScroll;
+		case VT_IMGLST:return &m_skinImgList;
+		case VT_IMGFRAME:return &m_skinImgFrame;
+		case VT_BUTTON:return &m_skinButton;
+		}
+		return NULL;
+	}
+
+	void CImgView::SetStates( int nStates )
+	{
+		m_skinImgList.SetStates(nStates);
+		m_skinImgFrame.SetStates(nStates);
+	}
+
+	void CImgView::SetMargin( CRect rcMargin )
+	{
+		m_skinImgFrame.SetMargin(rcMargin);
+	}
+
+	void CImgView::SetTile( BOOL bTile )
+	{
+		m_skinImgFrame.SetTile(bTile);
+		m_skinImgList.SetTile(bTile);
+	}
+
+	void CImgView::SetVertical( BOOL bVertical )
+	{
+		m_skinImgFrame.SetVertical(bVertical);
+		m_skinImgList.SetVertical(bVertical);
 	}
 }

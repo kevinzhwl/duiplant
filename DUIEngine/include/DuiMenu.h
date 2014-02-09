@@ -191,6 +191,8 @@ public:
 
     BOOL LoadMenu(LPCTSTR pszResName);
 
+	BOOL LoadMenu(pugi::xml_node xmlMenu);
+
     BOOL InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR strText, int iIcon);
 
     UINT TrackPopupMenu( UINT uFlags, int x, int y, HWND hWnd, LPCRECT prcRect=NULL);

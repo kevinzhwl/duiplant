@@ -4,25 +4,7 @@
 #include <simplewnd.h>
 #include <DuiRichEdit.h>
 
-class CTimerHostWnd:public DuiEngine::CSimpleWnd
-{
-public:
-	CTimerHostWnd();
-	void AddRef();
-	void Release();
-
-	void OnTimer(UINT_PTR idEvent);
-
-	BEGIN_MSG_MAP_EX(CTimerHostWnd)
-		MSG_WM_TIMER(OnTimer)
-	END_MSG_MAP()
-
-protected:
-	BOOL Create();
-	int	 m_nRef;
-};
-
-class CImageOle : public IOleObject, public IViewObject2
+class CImageOle : public IOleObject, public IViewObject2, public ITimelineHandler
 {
 public:
 	CImageOle(CDuiRichEdit *pRichedit);
@@ -71,11 +53,9 @@ public:
 	// IViewObject2接口
 	virtual HRESULT WINAPI GetExtent(DWORD dwDrawAspect, LONG lindex, DVTARGETDEVICE *ptd, LPSIZEL lpsizel);
 
+	void OnNextFrame();
+
 	void SetDuiSkinObj(CDuiSkinBase *pSkin);
-
-	void OnTimer(UINT_PTR idEvent);
-
-	static VOID CALLBACK TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
 
 protected:
 	BOOL GetOleRect(LPRECT prc);
@@ -88,8 +68,9 @@ protected:
 
 	DuiEngine::CDuiSkinBase *m_pSkin;
 	int		m_iFrame;
-
-	static CTimerHostWnd ms_TimerHostWnd;
+	int		m_nTimePass;	//过去的时间
+	int		m_nTimeDelay;	//一个动画帧需要的时间
 };
+
 BOOL RichEdit_InsertSkin(CDuiRichEdit *pRicheditCtrl, CDuiSkinBase *pSkin);
 BOOL RichEdit_InsertImage(CDuiRichEdit *pRicheditCtrl, LPCTSTR lpszFileName);

@@ -1,8 +1,9 @@
 //////////////////////////////////////////////////////////////////////////
-//   File Name: bkwndcmnctrl.h
-// Description: DuiWindow Definition
+//   File Name: duiwndcmnctrl.h
+// Description: DuiWindow Common Controls
 //     Creator: Zhang Xiaoxuan
 //     Version: 2009.04.28 - 1.0 - Create
+//				2014.02.05 - 2.0 huang jianxiong
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -107,7 +108,9 @@ protected:
 //
 // Usage: <button id=xx>inner text example</button>
 //
-class DUI_EXP CDuiButton : public CDuiWindow, public IAcceleratorTarget
+class DUI_EXP CDuiButton : public CDuiWindow
+	, public IAcceleratorTarget
+	, public ITimelineHandler
 {
     DUIOBJ_DECLARE_CLASS_NAME(CDuiButton, "button")
 public:
@@ -126,31 +129,60 @@ protected:
 
 	virtual bool OnAcceleratorPressed(const CAccelerator& accelerator);
 protected:
-    void OnPaint(CDCHandle dc);
+	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+
+	virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState);
+	
+	void OnPaint(CDCHandle dc);
 
     void OnLButtonDown(UINT uFlag,CPoint pt);
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
+	void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+
 	void OnDestroy();
+
+	void OnSize(UINT nType, CSize size);
+
+	BOOL OnEraseBkgnd(CDCHandle dc){return TRUE;}
 
 	HRESULT OnAttrAccel(CDuiStringA strAccel,BOOL bLoading);
 
-	CDuiSkinBase *m_pSkin;
+protected:
+	virtual void OnNextFrame();
+
+	void StopCurAnimate();
 
 	DWORD		  m_accel;
+
+	BOOL		  m_bAnimate;//动画标志
+	BYTE		  m_byAlphaAni;	//动画状态
 public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
-	DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
-	DUIWIN_CUSTOM_ATTRIBUTE("accel",OnAttrAccel)
+		DUIWIN_CUSTOM_ATTRIBUTE("accel",OnAttrAccel)
+		DUIWIN_INT_ATTRIBUTE("animate", m_bAnimate, FALSE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 
     DUIWIN_BEGIN_MSG_MAP()
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_KEYDOWN(OnKeyDown)
-	MSG_WM_DESTROY(OnDestroy)
+		MSG_WM_PAINT(OnPaint)
+		MSG_WM_ERASEBKGND(OnEraseBkgnd)
+		MSG_WM_LBUTTONDOWN(OnLButtonDown)
+		MSG_WM_KEYDOWN(OnKeyDown)
+		MSG_WM_KEYUP(OnKeyUp)
+		MSG_WM_DESTROY(OnDestroy)
+		MSG_WM_SIZE(OnSize)
     DUIWIN_END_MSG_MAP()
+};
+
+class DUI_EXP CDuiImageBtnWnd : public CDuiButton
+{
+	DUIOBJ_DECLARE_CLASS_NAME(CDuiImageBtnWnd, "imgbtn")
+public:
+	CDuiImageBtnWnd()
+	{
+		m_bTabStop=FALSE;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -193,7 +225,7 @@ protected:
 };
 
 
-class DUI_EXP CDuiAnimateImgWnd : public CDuiWindow
+class DUI_EXP CDuiAnimateImgWnd : public CDuiWindow, public ITimelineHandler
 {
     DUIOBJ_DECLARE_CLASS_NAME(CDuiAnimateImgWnd, "animateimg")
 public:
@@ -207,17 +239,17 @@ public:
 	BOOL IsPlaying(){return m_bPlaying;}
 protected:
 	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+	virtual void OnNextFrame();
+
 	void OnPaint(CDCHandle dc);
 
-	void OnDuiTimer(char cID);
 	void OnShowWindow(BOOL bShow, UINT nStatus);
 	void OnDestroy();
 
     DUIWIN_BEGIN_MSG_MAP()
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_DUITIMER(OnDuiTimer)
-    MSG_WM_DESTROY(OnDestroy)
-	MSG_WM_SHOWWINDOW(OnShowWindow)
+		MSG_WM_PAINT(OnPaint)
+		MSG_WM_DESTROY(OnDestroy)
+		MSG_WM_SHOWWINDOW(OnShowWindow)
     DUIWIN_END_MSG_MAP()
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
@@ -286,37 +318,6 @@ protected:
     DUIWIN_DECLARE_ATTRIBUTES_END()
 };
 
-//////////////////////////////////////////////////////////////////////////
-// Image Button Control
-//
-// Usage: <imgbtn src=xx />
-//
-class DUI_EXP CDuiImageBtnWnd : public CDuiImageWnd
-{
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiImageBtnWnd, "imgbtn")
-public:
-    CDuiImageBtnWnd();
-    virtual ~CDuiImageBtnWnd() {}
-
-    virtual BOOL NeedRedrawWhenStateChange();
-
-    void OnPaint(CDCHandle dc);
-
-    virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState);
-    void OnDuiTimer(char cTimerID);
-protected:
-    BOOL m_bAnimate;
-    BYTE m_byAlpha;
-
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("animate", m_bAnimate, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
-
-    DUIWIN_BEGIN_MSG_MAP()
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_DUITIMER(OnDuiTimer)
-    DUIWIN_END_MSG_MAP()
-};
 
 //////////////////////////////////////////////////////////////////////////
 // Line Control
@@ -339,11 +340,21 @@ protected:
     int m_nLineSize;
     BOOL m_bLineShadow;
     COLORREF m_crShadow;
+	enum HRMODE{
+		HR_HORZ=0,
+		HR_VERT,
+		HR_TILT,
+	}m_mode;
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("size", m_nLineSize, FALSE)
     DUIWIN_UINT_ATTRIBUTE("shadow", m_bLineShadow, FALSE)
     DUIWIN_COLOR_ATTRIBUTE("crshadow", m_crShadow, FALSE)
+	DUIWIN_ENUM_ATTRIBUTE("mode", HRMODE, FALSE)
+		DUIWIN_ENUM_VALUE("vertical", HR_VERT)
+		DUIWIN_ENUM_VALUE("horizon", HR_VERT)
+		DUIWIN_ENUM_VALUE("tilt", HR_VERT)
+	DUIWIN_ENUM_END(m_mode)
     DUIWIN_ENUM_ATTRIBUTE("style", int, FALSE)
     DUIWIN_ENUM_VALUE("solid", PS_SOLID)             // default
     DUIWIN_ENUM_VALUE("dash", PS_DASH)               /* -------  */

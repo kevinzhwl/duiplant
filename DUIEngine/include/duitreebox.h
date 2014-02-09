@@ -17,7 +17,7 @@ namespace DuiEngine
 class DUI_EXP CDuiTreeItem : public CDuiItemPanel
 {
 public:
-    CDuiTreeItem(CDuiWindow *pFrameHost,pugi::xml_node xmlNode);
+    CDuiTreeItem(CDuiWindow *pFrameHost);
 
     BOOL m_bCollapsed;
     BOOL m_bVisible;
@@ -87,14 +87,25 @@ protected:
     void OnPaint(CDCHandle dc);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
-    void OnLButtonUp(UINT nFlags,CPoint pt);
     void OnLButtonDbClick(UINT nFlags,CPoint pt);
+	LRESULT OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
     void OnMouseMove(UINT nFlags,CPoint pt);
     void OnMouseLeave();
 
+	void OnSetDuiFocus();
+	void OnKillDuiFocus();
+
+	LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
+
     virtual LRESULT DuiNotify(LPDUINMHDR pnms);
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
+	virtual void OnViewOriginChanged( CPoint ptOld,CPoint ptNew );
+
+	virtual UINT OnGetDuiCode()
+	{
+		return DUIC_WANTALLKEYS;
+	}
 
     BOOL IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2);
 protected:
@@ -125,14 +136,17 @@ protected:
     DUIWIN_DECLARE_ATTRIBUTES_END()
 
     DUIWIN_BEGIN_MSG_MAP()
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_NCCALCSIZE(OnNcCalcSize)
-    MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
-    MSG_WM_LBUTTONUP(OnLButtonUp)
-    MSG_WM_MOUSEMOVE(OnMouseMove)
-    MSG_WM_MOUSELEAVE(OnMouseLeave)
+		MSG_WM_PAINT(OnPaint)
+		MSG_WM_NCCALCSIZE(OnNcCalcSize)
+		MSG_WM_DESTROY(OnDestroy)
+		MSG_WM_LBUTTONDOWN(OnLButtonDown)
+		MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
+		MSG_WM_MOUSEMOVE(OnMouseMove)
+		MSG_WM_MOUSELEAVE(OnMouseLeave)
+		MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+		MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+		MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
+		MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
     DUIWIN_END_MSG_MAP()
 };
 

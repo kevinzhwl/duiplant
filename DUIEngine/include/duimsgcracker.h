@@ -25,8 +25,7 @@ protected:                                                          \
 	if (uMsg == WM_WINDOWPOSCHANGED) \
 { \
 	SetMsgHandled(TRUE); \
-	func((LPRECT)lParam); \
-	lResult = 0; \
+	lResult=func((LPRECT)lParam); \
 	if(IsMsgHandled()) \
 	return TRUE; \
 }

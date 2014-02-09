@@ -32,6 +32,7 @@ CDuiListBoxEx::CDuiListBoxEx()
 	, m_bVirtual(FALSE)
 	, m_bItemRedrawDelay(TRUE)
 {
+	m_bTabStop=TRUE;
 	addEvent(DUINM_LBITEMNOTIFY);
 	addEvent(DUINM_ITEMMOUSEEVENT);
 	addEvent(DUINM_GETLBDISPINFO);
@@ -640,6 +641,8 @@ LRESULT CDuiListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 	}
 	else
 	{
+		if(m_bTabStop && (uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_LBUTTONDBLCLK))
+			SetDuiFocus();
 		int iHover=HitTest(pt);
 		if(iHover!=m_iHoverItem)
 		{
@@ -687,6 +690,32 @@ LRESULT CDuiListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 	}
 }
 
+LRESULT CDuiListBoxEx::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
+{
+	LRESULT lRet=0;
+	if(m_pCapturedFrame)
+	{
+		lRet=m_pCapturedFrame->DoFrameEvent(uMsg,wParam,lParam);
+		SetMsgHandled(m_pCapturedFrame->IsMsgHandled());
+	}
+	else if(m_iSelItem!=-1)
+	{
+		if(!IsVirtual())
+		{
+			lRet=m_arrItems[m_iSelItem]->DoFrameEvent(uMsg,wParam,lParam);
+			SetMsgHandled(m_arrItems[m_iSelItem]->IsMsgHandled());
+		}else
+		{
+			m_pTemplPanel->DoFrameEvent(uMsg,wParam,lParam);
+			SetMsgHandled(m_pTemplPanel->IsMsgHandled());
+		}
+	}else
+	{
+		SetMsgHandled(FALSE);
+	}
+	return lRet;
+}
+
 //同步在CDuiItemPanel中的index属性，在执行了插入，删除等操作后使用
 void CDuiListBoxEx::UpdatePanelsIndex(UINT nFirst,UINT nLast)
 {
@@ -700,7 +729,13 @@ void CDuiListBoxEx::UpdatePanelsIndex(UINT nFirst,UINT nLast)
 void CDuiListBoxEx::OnSetDuiFocus()
 {
 	__super::OnSetDuiFocus();
-//	if(m_iSelItem!=-1) RedrawItem(m_iSelItem);
+	if(IsVirtual())
+	{
+		m_pTemplPanel->DoFrameEvent(WM_SETFOCUS,0,0);
+	}else
+	{
+		if(m_iSelItem!=-1) m_arrItems[m_iSelItem]->DoFrameEvent(WM_SETFOCUS,0,0);
+	}
 }
 
 void CDuiListBoxEx::OnKillDuiFocus()
@@ -708,10 +743,10 @@ void CDuiListBoxEx::OnKillDuiFocus()
 	__super::OnKillDuiFocus();
 	if(IsVirtual())
 	{
-		m_pTemplPanel->GetFocusManager()->SetFocusedHwnd(0);
+		m_pTemplPanel->DoFrameEvent(WM_KILLFOCUS,0,0);
 	}else
 	{
-		if(m_iSelItem!=-1) m_arrItems[m_iSelItem]->GetFocusManager()->SetFocusedHwnd(0);
+		if(m_iSelItem!=-1) m_arrItems[m_iSelItem]->DoFrameEvent(WM_KILLFOCUS,0,0);
 	}
 	if(m_iSelItem!=-1) RedrawItem(m_iSelItem);
 }
@@ -736,5 +771,19 @@ void CDuiListBoxEx::Relayout()
 			m_arrItems[i]->Move(CRect(0,0,m_rcClient.Width(),m_nItemHei));
 	}
 
+}
+
+void CDuiListBoxEx::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
+{
+	if(m_iSelItem!=-1 && GetContainer()->GetDuiFocus()==m_hDuiWnd)
+	{//这里需要重新设置一下选中行的焦点状态来更新光标位置
+		m_arrItems[m_iSelItem]->DoFrameEvent(WM_KILLFOCUS,0,0);
+		m_arrItems[m_iSelItem]->DoFrameEvent(WM_SETFOCUS,0,0);
+	}
+}
+
+BOOL CDuiListBoxEx::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
+{
+	return __super::OnMouseWheel(nFlags,zDelta,pt);
 }
 }//namespace DuiEngine

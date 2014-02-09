@@ -97,7 +97,11 @@ protected:
 
 	LRESULT OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
+	LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
+
     void OnMouseLeave();
+
+	BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 
     void OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags );
 
@@ -106,6 +110,8 @@ protected:
     UINT OnGetDuiCode();
 
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
+
+	virtual void OnViewOriginChanged(CPoint ptOld,CPoint ptNew);
 
     void OnDestroy();
 
@@ -144,16 +150,18 @@ public:
     DUIWIN_DECLARE_ATTRIBUTES_END()
 
     DUIWIN_BEGIN_MSG_MAP()
-    MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_MOUSELEAVE(OnMouseLeave)
-    MSG_WM_KEYDOWN(OnKeyDown)
-    MSG_WM_CHAR(OnChar)
-	MSG_WM_SIZE(OnSize)
-	MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-	MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
-	MSG_WM_NCCALCSIZE(OnNcCalcSize)
-	MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MBUTTONDBLCLK,OnMouseEvent)
+		MSG_WM_MOUSEWHEEL(OnMouseWheel)
+		MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
+		MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
+		MSG_WM_DESTROY(OnDestroy)
+		MSG_WM_PAINT(OnPaint)
+		MSG_WM_MOUSELEAVE(OnMouseLeave)
+		MSG_WM_KEYDOWN(OnKeyDown)
+		MSG_WM_CHAR(OnChar)
+		MSG_WM_SIZE(OnSize)
+		MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+		MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+		MSG_WM_NCCALCSIZE(OnNcCalcSize)
     DUIWIN_END_MSG_MAP()
 };
 

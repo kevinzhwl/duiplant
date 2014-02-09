@@ -1,81 +1,60 @@
 #include "duistd.h"
 #include "GradientFillHelper.h"
+#include "memdc.h"
 #include <Wingdi.h>
 #pragma comment(lib,"msimg32.lib")
 
 namespace DuiEngine
 {
 
-
-void GradientFillRectV(HDC hdc, CRect &rcFill, FRG_PARAM params[], int nCount)
+void GradientFillRect(HDC hdc, const CRect &rcFill, COLORREF cr1, COLORREF cr2,BOOL bVert,BYTE byAlpha)
 {
-    GRADIENT_RECT gRect = {0, 1};
-    TRIVERTEX vert[2] =
-    {
-        {rcFill.left, rcFill.top, 0, 0, 0, 0},
-        {rcFill.right, rcFill.top, 0, 0, 0, 0}
-    };
-    int i = 0;
+	CRect rcTmp=rcFill;
+	HDC hdc1=hdc;
+	CMemDC *pMemDC=NULL;
+	if(byAlpha!=0xFF)
+	{
+		rcTmp.MoveToXY(0,0);
+		pMemDC= new CMemDC(hdc,rcTmp);
+		hdc1=pMemDC->m_hDC;
+	}
 
-    for (i = 1; i < nCount && vert[0].y <= rcFill.bottom; i ++)
-    {
-        vert[0].y = vert[1].y;
-        vert[1].y += params[i].lOffset;
-        vert[0].Red     = GetRValue(params[i - 1].crColor) << 8;
-        vert[0].Green   = GetGValue(params[i - 1].crColor) << 8;
-        vert[0].Blue    = GetBValue(params[i - 1].crColor) << 8;
-        vert[1].Red     = GetRValue(params[i].crColor) << 8;
-        vert[1].Green   = GetGValue(params[i].crColor) << 8;
-        vert[1].Blue    = GetBValue(params[i].crColor) << 8;
+	TRIVERTEX        vert[2] ;
+	vert [0] .x      = rcTmp.left;
+	vert [0] .y      = rcTmp.top;
+	vert [0] .Red    = GetRValue(cr1)<<8;
+	vert [0] .Green  = GetGValue(cr1)<<8;
+	vert [0] .Blue   = GetBValue(cr1)<<8;
+	vert [0] .Alpha  = 0xff00;
 
-        GradientFill(hdc, vert, 2, &gRect, 1, GRADIENT_FILL_RECT_V);
-    }
+	vert [1] .x      = rcTmp.right;
+	vert [1] .y      = rcTmp.bottom; 
+	vert [1] .Red    = GetRValue(cr2)<<8;
+	vert [1] .Green  = GetGValue(cr2)<<8;
+	vert [1] .Blue   = GetBValue(cr2)<<8;
+	vert [1] .Alpha  = 0xff00;
+
+	GRADIENT_RECT    gRect={0,1};
+	GradientFill(hdc1,vert,2,&gRect,1,bVert?GRADIENT_FILL_RECT_V:GRADIENT_FILL_RECT_H);
+
+	if(byAlpha!=0xFF)
+	{
+		BLENDFUNCTION bf={AC_SRC_OVER,0,byAlpha,0};
+		AlphaBlend(hdc,rcFill.left,rcFill.top,rcFill.Width(),rcFill.Height(),
+			hdc1,0,0,rcFill.Width(),rcFill.Height(),bf);
+		delete pMemDC;
+	}
+
 }
 
-void GradientFillRectH(HDC hdc, CRect &rcFill, FRG_PARAM params[], int nCount)
+void GradientFillRectH(HDC hdc, const CRect &rcFill, COLORREF crLeft, COLORREF crRight,BYTE byAlpha)
 {
-    GRADIENT_RECT gRect = {0, 1};
-    TRIVERTEX vert[2] =
-    {
-        {rcFill.left, rcFill.top, 0, 0, 0, 0},
-        {rcFill.left, rcFill.bottom, 0, 0, 0, 0}
-    };
-    int i = 0;
-
-    for (i = 1; i < nCount && vert[0].x <= rcFill.right; i ++)
-    {
-        vert[0].x = vert[1].x;
-        vert[1].x += params[i].lOffset;
-        vert[0].Red     = GetRValue(params[i - 1].crColor) << 8;
-        vert[0].Green   = GetGValue(params[i - 1].crColor) << 8;
-        vert[0].Blue    = GetBValue(params[i - 1].crColor) << 8;
-        vert[1].Red     = GetRValue(params[i].crColor) << 8;
-        vert[1].Green   = GetGValue(params[i].crColor) << 8;
-        vert[1].Blue    = GetBValue(params[i].crColor) << 8;
-        GradientFill(hdc, vert, 2, &gRect, 1, GRADIENT_FILL_RECT_H);
-    }
+    GradientFillRect(hdc, rcFill, crLeft,crRight,FALSE,byAlpha);
 }
 
-void GradientFillRectV(HDC hdc, CRect &rcFill, COLORREF crTop, COLORREF crBottom)
+void GradientFillRectV( HDC hdc,const CRect &rcFill, COLORREF crTop, COLORREF crBottom,BYTE byAlpha )
 {
-    FRG_PARAM frgDraw[2] =
-    {
-        {0, crTop},
-        {rcFill.Height(), crBottom},
-    };
-
-    GradientFillRectV(hdc, rcFill, frgDraw, 2);
-}
-
-void GradientFillRectH(HDC hdc, CRect &rcFill, COLORREF crLeft, COLORREF crRight)
-{
-    FRG_PARAM frgDraw[2] =
-    {
-        {0, crLeft},
-        {rcFill.Width(), crRight},
-    };
-
-    GradientFillRectH(hdc, rcFill, frgDraw, 2);
+	GradientFillRect(hdc, rcFill, crTop,crBottom,TRUE,byAlpha);
 }
 
 }//namespace DuiEngine

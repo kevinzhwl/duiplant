@@ -1,12 +1,12 @@
-﻿<layer name="DUI-DEMO" title="DUI-DEMO ver:%str1%" width="600" height="400" appwin="1" ncRect="5,5,5,5"  resize="1" translucent="0"  nomaxsize="0">
+﻿<layer name="DUI-DEMO" title="DUI-DEMO ver:%str1%" width="600" height="400" appwin="1" ncRect="5,5,5,5"  resize="1" translucent="1"  nomaxsize="0">
 	<body>
     <dlg id="100" pos="0,0,-0,-0" class="cls_dlg_frame">
       <caption id="101" pos="0,0,-0,29">
         <text pos="11,9" class="cls_txt_red">DUI-Demo ver:%str1%</text>
-        <imgbtn id="1" skin="btn_sys_close"    pos="-45,0" tip="close" animate="0"/>
-        <imgbtn id="2" skin="btn_sys_maximize"  pos="-83,0" animate="0" />
-        <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="0" />
-        <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="0" />
+        <imgbtn id="1" skin="btn_sys_close"    pos="-45,0" tip="close" animate="1" alpha="200"/>
+        <imgbtn id="2" skin="btn_sys_maximize"  pos="-83,0" animate="1" />
+        <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="1" />
+        <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="1" />
       </caption>
       <tabctrl pos="5,29,-5,-5" id="2000" cursel="0" animatesteps="10" tabstop="0" inset="10,0,3,0">
         <tab id="110" title="listctrl">
@@ -14,7 +14,7 @@
             <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
             </header>
           </listctrl>
-          <button name="btn_ani" pos="-100,0,-56,30" class="normalbtn">ani list</button>
+          <button name="btn_ani" pos="-100,0,-56,30" class="normalbtn" alpha="200" animate="1">ani list</button>
         </tab>
         <tab id="111" title="align">
           <include src="xml_page2"/>
@@ -32,11 +32,11 @@
           </dlg>
           <link id="1380" pos="10,250" maxwidth="100" class="cls_btn_weblink" dotted="1" href="www.yy.com">link</link>
           <img skin="icons" name="testimg" fun="test image remark"/>
-          <button id="1360" class="normalbtn" pos="10,200,150,230" accel="ctrl+alt+num 8">dui menu</button>
+          <button id="1360" class="normalbtn" pos="10,200,150,230" accel="ctrl+alt+num 8" animate="1">dui menu</button>
           <hotkey id="1340" pos="350,20,450,45" class="cls_edit"/>
           <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
           <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="prog_bg" posskin="prog_bar" value="20" min="0" max="100" showpercent="1"/>
-          <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" width="200" bgskin="prog_bg" posskin="prog_bar" thumbskin="slidethumb" value="20" min="0" max="100"/>
+          <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" alpha="200" width="200" bgskin="prog_bg" posskin="prog_bar" thumbskin="slidethumb" value="20" min="0" max="100"/>
           <combobox show="1" id="1310" pos="100,40,300,64" dropdown="0" dropheight="250" class="cls_edit" font="8300" dotted="0" cursel="0" itempanel="1">
             <liststyle  class="cls_edit" crbg="FF0000" itemheight="50" id_text="1" id_icon="2">
               <template skin="skin_webbtn_forward">
@@ -74,7 +74,7 @@
         </tab>
         <tab id="114" title="richedit">
           <animateimg name="ani_test2" pos="20,100" skin="icons"/>
-          <richedit id="1140" show="1" number="0" enabledragdrop="1" autowordsel="1" class="cls_edit" font="0004:隶书" inset="30,0,0,0" wordwrap="1"  pos="10,10,-10,|0" multilines="1" wantreturn="1" vscrollbar="1" autovscroll="1" crtext="ff0000" align="left" hscrollbar="1" autohscroll="1" transparent="1">richedit test 2012 中文字体</richedit>
+          <richedit id="1140" name="edit_1140" show="1" number="0" enabledragdrop="1" autowordsel="1" class="cls_edit" font="0004:隶书" inset="30,0,0,0" wordwrap="1"  pos="10,10,-10,|0" multilines="1" wantreturn="1" vscrollbar="1" autovscroll="1" crtext="ff0000" align="left" hscrollbar="1" autohscroll="1" transparent="1">richedit test 2012 中文字体</richedit>
           <check id="1142" pos="10,|10">check 1</check>
           <check id="1143" pos="100,|10">check 2</check>
           <button name="IDC_REPSEL"  pos="200,|10,300,|35" class="normalbtn">repsel</button>
@@ -91,6 +91,7 @@
         <tab id="115" title="scrollview">
           <scrollview id="1150" pos="10,0,-10,-10" viewwid="900" viewhei="5000">
             <button class="normalbtn" id="11501" tip="tip test" pos="20,50,200,80">test</button>
+            <edit pos="50,100,150,150">scroll edit</edit>
           </scrollview>
         </tab>
         <tab id="116" title="attribute">
@@ -102,8 +103,8 @@
             <items>
               <item>
                 <text pos="10,5" crtext="ff0000">red test</text>
-                <text>normal text</text>
-                <button class="normalbtn" id="20" pos="200,3,-10,-3" tip="list item tip">button</button>
+                <edit>normal text</edit>
+                <button class="normalbtn" id="20" pos="200,3,-10,-3" tip="list item tip" animate="1">button</button>
               </item>
               <item>
                 <text pos="10,5" crtext="ff0000">red test</text>
@@ -112,7 +113,7 @@
               </item>
               <item>
                 <text pos="10,5" crtext="ff0000">red test</text>
-                <text>normal text</text>
+                <edit>normal text</edit>
                 <scrollbar pos="200,3,-10,-3" vertical="0" skin="sb_common" min="0" max="100" page="10" value="5"/>
                 <button class="normalbtn" pos="200,3,-10,-3">button</button>
               </item>
@@ -144,14 +145,14 @@
             </items>
           </listboxex>
           <text pos="|10,0">虚拟列表</text>
-          <listboxex name="mylist2" pos="|5,30,-10,-10" itemheight="30" class="cls_edit" virtual="1">
+          <!--listboxex name="mylist2" pos="|5,30,-10,-10" itemheight="30" class="cls_edit" virtual="1">
             <template skin="skin_webbtn_forward">
               <text pos="10,5" crtext="ff0000">red test</text>
               <text name="idx"></text>
               <button class="normalbtn" pos="110,3,-10,-3">button</button>
               <link id="4" pos="0,0" maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
             </template>
-          </listboxex>
+          </listboxex-->
 
         </tab>
         <tab id="118" title="duitreebox">
@@ -159,6 +160,7 @@
             <item>
               <text pos="10,0,100,-0" valign="middle" align="center" crtext="ff0000">red test</text>
               <text>normal text</text>
+              <edit pos="[5,0,]-5,20">test edit</edit>
               <button class="normalbtn" pos="300,3,-10,-3">button</button>
               <item>
                 <text pos="10,5" crtext="ff0000">red test</text>

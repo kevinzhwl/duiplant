@@ -132,7 +132,14 @@ public:
 
     };
 
-	enum PIT{PIT_NORMAL=0,PIT_CENTER,PIT_PERCENT};
+	//坐标类型
+	enum PIT{
+		PIT_NORMAL=0,	//一般坐标
+		PIT_CENTER,		//参考父窗口中心点,以"|"开始
+		PIT_PERCENT,	//指定在父窗口坐标的中的百分比,以"%"开头
+		PIT_PREVSIBLING,	//指定坐标为相对前一个兄弟窗口的偏移，没有兄弟窗口时为父窗口,以"["开头
+		PIT_NEXTSIBLING,	//指定坐标为相对前一个兄弟窗口的偏移，没有兄弟窗口时为父窗口,以"]"开头
+	};
 
     struct DUIDLG_POSITION_ITEM
     {
@@ -189,6 +196,7 @@ protected:
     int	 m_nSepSpace;	//自动排版的水平空格
     BOOL m_bClipClient;
 	BOOL m_bTabStop;
+	BYTE m_byAlpha;		//窗口透明度,只进行配置，支持依赖于控件。
 
     CDuiSkinBase * m_pBgSkin;
     CDuiSkinBase * m_pNcSkin;
@@ -202,7 +210,6 @@ protected:
 		POS2_RIGHTBOTTOM,//
 	}POS2TYPE;
 	POS2TYPE m_pos2Type;		//指定2点坐标时，坐标类型
-
     int				m_nMaxWidth;	//自动计算大小时使用
     BOOL m_bUpdateLocked;//暂时锁定更新
 #ifdef _DEBUG
@@ -412,6 +419,15 @@ public:
 public:
     //////////////////////////////////////////////////////////////////////////
     // Virtual functions
+	virtual void OnSetCaretValidateRect(LPCRECT lpRect)
+	{
+		CRect rcClient;
+		GetClient(&rcClient);
+		CRect rcIntersect;
+		rcIntersect.IntersectRect(&rcClient,lpRect);
+		if(GetParent()) GetParent()->OnSetCaretValidateRect(&rcIntersect);
+	}
+
     virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState) {}
 
 	virtual BOOL LoadChildren(pugi::xml_node xmlNode);
@@ -435,6 +451,7 @@ public:
     }
 
     virtual void OnAttributeChanged(const CDuiStringA & strAttrName,BOOL bLoading,HRESULT hRet);
+
 public:
 	//************************************
 	// Method:    RedrawRegion
@@ -521,6 +538,7 @@ public:
 
     BOOL ReleaseDuiCapture();
     void SetDuiFocus();
+	void KillDuiFocus();
 
     CDuiWindow *GetCheckedRadioButton();
 
@@ -601,9 +619,13 @@ protected:
 			DUIWIN_ENUM_VALUE("leftbottom",POS2_LEFTBOTTOM)
 			DUIWIN_ENUM_VALUE("rightbottom",POS2_RIGHTBOTTOM)
 		DUIWIN_ENUM_END(m_pos2Type)
+		DUIWIN_INT_ATTRIBUTE("alpha",m_byAlpha,TRUE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 
 protected:
+	LRESULT NotifyCommand();
+	LRESULT NotifyContextMenu(CPoint pt);
+
 	//************************************
 	// Method:    GetChildrenLayoutRect :返回子窗口的排版空间
 	// FullName:  DuiEngine::CDuiWindow::GetChildrenLayoutRect
@@ -621,6 +643,9 @@ protected:
 	// Qualifier:
 	//************************************
 	virtual void UpdateChildrenPosition();
+	void _UpdateChildrenPosition(CDuiList<CDuiWindow*> *pListWnd);
+
+	void ClearLayoutState();
 
 	//************************************
 	// Method:    GetDesiredSize: 当没有指定窗口大小时，通过如皮肤计算窗口的期望大小
@@ -651,8 +676,9 @@ protected:
 	// Parameter: const DUIDLG_POSITION_ITEM & pos
 	// Parameter: int nMin 父窗口的范围
 	// Parameter: int nMax 父窗口的范围
+	// Parameter: BOOL bX 计算X坐标
 	//************************************
-	int PositionItem2Value(const DUIDLG_POSITION_ITEM &pos,int nMin, int nMax);
+	int PositionItem2Value(const DUIDLG_POSITION_ITEM &pos,int nMin, int nMax,BOOL bX);
 
 	//************************************
 	// Method:    ParsePosition :解析一个坐标定义到position_item,增加对百分比的支持
@@ -665,7 +691,16 @@ protected:
 	//************************************
 	LPCSTR ParsePosition(const char * pszPos,DUIDLG_POSITION_ITEM &pos);
 
-	
+	//************************************
+	// Method:    CalcPosition:计算窗口坐标
+	// FullName:  DuiEngine::CDuiWindow::CalcPosition
+	// Access:    protected 
+	// Returns:   int
+	// Qualifier:
+	// Parameter: LPRECT prcContainer
+	//************************************
+	int CalcPosition(LPRECT prcContainer);
+
 	//************************************
 	// Method:    GetNextVisibleWindow 获得指定窗口的下一个可见窗口
 	// FullName:  DuiEngine::CDuiWindow::GetNextVisibleWindow
@@ -704,7 +739,7 @@ protected:
         return FALSE;
     }
 
-    void OnWindowPosChanged(LPRECT lpRcContainer);
+    LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
 
     int OnCreate(LPVOID);
 
@@ -736,6 +771,8 @@ protected:
     void OnLButtonDown(UINT nFlags,CPoint pt);
 
     void OnLButtonUp(UINT nFlags,CPoint pt);
+	
+	void OnRButtonDown(UINT nFlags, CPoint point);
 
     void OnMouseMove(UINT nFlags,CPoint pt) {}
 
@@ -753,22 +790,23 @@ protected:
     HRESULT OnAttributeState(const CDuiStringA& strValue, BOOL bLoading);
 
     DUIWIN_BEGIN_MSG_MAP()
-    MSG_WM_ERASEBKGND(OnEraseBkgnd)
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_NCPAINT_EX(OnNcPaint)
-    MSG_WM_CREATE(OnCreate)
-    MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
-    MSG_WM_SHOWWINDOW(OnShowWindow)
-	MSG_WM_ENABLE_EX(OnEnable)
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_LBUTTONUP(OnLButtonUp)
-    MSG_WM_MOUSEMOVE(OnMouseMove)
-    MSG_WM_MOUSEHOVER(OnMouseHover)
-    MSG_WM_MOUSELEAVE(OnMouseLeave)
-    MSG_WM_MOUSEWHEEL(OnMouseWheel)
-    MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-    MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+		MSG_WM_ERASEBKGND(OnEraseBkgnd)
+		MSG_WM_PAINT(OnPaint)
+		MSG_WM_NCPAINT_EX(OnNcPaint)
+		MSG_WM_CREATE(OnCreate)
+		MSG_WM_DESTROY(OnDestroy)
+		MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
+		MSG_WM_SHOWWINDOW(OnShowWindow)
+		MSG_WM_ENABLE_EX(OnEnable)
+		MSG_WM_LBUTTONDOWN(OnLButtonDown)
+		MSG_WM_LBUTTONUP(OnLButtonUp)
+		MSG_WM_RBUTTONDOWN(OnRButtonDown)
+		MSG_WM_MOUSEMOVE(OnMouseMove)
+		MSG_WM_MOUSEHOVER(OnMouseHover)
+		MSG_WM_MOUSELEAVE(OnMouseLeave)
+		MSG_WM_MOUSEWHEEL(OnMouseWheel)
+		MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+		MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
     DUIWIN_END_MSG_MAP_BASE()
 };
 }//namespace DuiEngine

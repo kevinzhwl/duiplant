@@ -171,20 +171,43 @@ void CDuiLink::OnMouseHover( WPARAM wParam, CPoint pt )
 // Button Control
 // Use id attribute to process click event
 //
-// Usage: <button id=xx>inner text example</button>
+// Usage: <button name=xx skin=xx>inner text example</button>
 //
 
-CDuiButton::CDuiButton() :m_pSkin(NULL),m_accel(0)
+CDuiButton::CDuiButton() :m_accel(0),m_bAnimate(FALSE),m_byAlphaAni(0xFF)
 {
 	m_bTabStop=TRUE;
 }
 
 void CDuiButton::OnPaint(CDCHandle dc)
 {
-    if (m_pSkin)
-    {
-        m_pSkin->Draw(dc, m_rcWindow, IIF_STATE4(GetState(), 0, 1, 2, 3));
-    }
+	if (!m_pBgSkin) return;
+	CRect rcClient;
+	GetClient(&rcClient);
+
+	if(m_byAlphaAni==0xFF)
+	{//不在动画过程中
+		m_pBgSkin->Draw(
+			dc, rcClient,
+			IIF_STATE4(GetState(), 0, 1, 2, 3),m_byAlpha
+			);
+	}
+	else
+	{//在动画过程中
+		BYTE byNewAlpha=(BYTE)(((UINT)m_byAlphaAni*m_byAlpha)>>8);
+		if(GetState()&DuiWndState_Hover)
+		{
+			//get hover
+			m_pBgSkin->Draw(dc, rcClient, 0, m_byAlpha);
+			m_pBgSkin->Draw(dc, rcClient, 1, byNewAlpha);
+		}
+		else
+		{
+			//lose hover
+			m_pBgSkin->Draw(dc, rcClient,0, m_byAlpha);
+			m_pBgSkin->Draw(dc, rcClient, 1, m_byAlpha-byNewAlpha);
+		}
+	}
 
     __super::OnPaint(dc);
 }
@@ -197,30 +220,31 @@ void CDuiButton::OnLButtonDown(UINT uFlag,CPoint pt)
 
 void CDuiButton::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    if(nChar==VK_SPACE || nChar==VK_RETURN && GetCmdID())
+    if(nChar==VK_SPACE || nChar==VK_RETURN)
     {
-        DUINMCOMMAND nms;
-		nms.hdr.hDuiWnd=m_hDuiWnd;
-        nms.hdr.code = DUINM_COMMAND;
-        nms.hdr.idFrom = GetCmdID();
-        nms.hdr.pszNameFrom = GetName();
-        nms.uItemData = GetUserData();
-        DuiNotify((LPDUINMHDR)&nms);
-    }
+		ModifyState(DuiWndState_PushDown,0,TRUE);
+    }else
+	{
+		SetMsgHandled(FALSE);
+	}
+}
+
+void CDuiButton::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
+{
+	if(nChar==VK_SPACE || nChar==VK_RETURN)
+	{
+		ModifyState(0,DuiWndState_PushDown,TRUE);
+		NotifyCommand();
+	}else
+	{
+		SetMsgHandled(FALSE);
+	}
 }
 
 bool CDuiButton::OnAcceleratorPressed( const CAccelerator& accelerator )
 {
 	if(IsDisabled(TRUE)) return false;
-
-	DUINMCOMMAND nms;
-	nms.hdr.code = DUINM_COMMAND;
-	nms.hdr.hDuiWnd=m_hDuiWnd;
-	nms.hdr.idFrom = GetCmdID();
-	nms.hdr.pszNameFrom= GetName();
-	nms.uItemData = GetUserData();
-	DuiNotify((LPDUINMHDR)&nms);
-
+	NotifyCommand();
 	return true;
 }
 
@@ -231,6 +255,7 @@ void CDuiButton::OnDestroy()
 		CAccelerator acc(m_accel);
 		GetContainer()->GetAcceleratorMgr()->UnregisterAccelerator(acc,this);
 	}
+	StopCurAnimate();
 	__super::OnDestroy();
 }
 
@@ -245,6 +270,50 @@ HRESULT CDuiButton::OnAttrAccel( CDuiStringA strAccel,BOOL bLoading )
 		return S_OK;
 	}
 	return S_FALSE;
+}
+
+CSize CDuiButton::GetDesiredSize( LPRECT pRcContainer )
+{
+	DUIASSERT(m_pBgSkin);
+	CSize szRet=m_pBgSkin->GetSkinSize();
+	if(szRet.cx==0 || szRet.cy==0)
+		szRet=__super::GetDesiredSize(pRcContainer);
+	return szRet;
+}
+
+void CDuiButton::OnStateChanged( DWORD dwOldState,DWORD dwNewState )
+{
+	StopCurAnimate();
+
+	if(GetDuiCapture()==m_hDuiWnd)	//点击中
+		return;
+
+	if(m_bAnimate &&
+		((dwOldState==DuiWndState_Normal && dwNewState==DuiWndState_Hover)
+		||(dwOldState==DuiWndState_Hover && dwNewState==DuiWndState_Normal)))
+	{//启动动画
+		m_byAlphaAni=5;
+		GetContainer()->RegisterTimelineHandler(this);
+	}
+}
+
+void CDuiButton::OnSize( UINT nType, CSize size )
+{
+	StopCurAnimate();
+}
+
+//中止原来的动画
+void CDuiButton::StopCurAnimate()
+{
+	GetContainer()->UnregisterTimelineHandler(this);
+	m_byAlphaAni=0xFF;
+}
+
+void CDuiButton::OnNextFrame()
+{
+	m_byAlphaAni+=25;
+	if(m_byAlphaAni==0xFF) StopCurAnimate();
+	NotifyInvalidate();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -273,7 +342,7 @@ CDuiImageWnd::~CDuiImageWnd()
 void CDuiImageWnd::OnPaint(CDCHandle dc)
 {
     if (m_pSkin)
-        m_pSkin->Draw(dc, m_rcWindow, m_nSubImageID);
+        m_pSkin->Draw(dc, m_rcWindow, m_nSubImageID,m_byAlpha);
 }
 
 BOOL CDuiImageWnd::SetSkin(CDuiSkinBase *pSkin,int nSubID/*=0*/)
@@ -329,39 +398,25 @@ CDuiAnimateImgWnd::CDuiAnimateImgWnd()
 void CDuiAnimateImgWnd::OnPaint(CDCHandle dc)
 {
     if (m_pSkin)
-        m_pSkin->Draw(dc, m_rcWindow, m_iCurFrame);
+        m_pSkin->Draw(dc, m_rcWindow, m_iCurFrame,m_byAlpha);
 }
 
-
-void CDuiAnimateImgWnd::OnDuiTimer(char cID)
-{
-    if(!IsVisible(TRUE)) return;
-    if(!m_pSkin) KillDuiTimer(cID);
-    else
-    {
-        int nStates=m_pSkin->GetStates();
-        m_iCurFrame++;
-        m_iCurFrame%=nStates;
-        NotifyInvalidate();
-    }
-}
 
 void CDuiAnimateImgWnd::Start()
 {
-	if(!IsVisible(TRUE)) return;
     if(!m_bPlaying)
 	{
-		SetDuiTimer(1,m_nSpeed);
+		if(IsVisible(TRUE)) GetContainer()->RegisterTimelineHandler(this);
 		m_bPlaying=TRUE;
 	}
-	
 }
+
 void CDuiAnimateImgWnd::Stop()
 {
 	if(m_bPlaying)
 	{
-	   KillDuiTimer(1);
-	   m_bPlaying=FALSE;
+		if(IsVisible(TRUE)) GetContainer()->UnregisterTimelineHandler(this);
+		m_bPlaying=FALSE;
 	}
 }
 
@@ -382,11 +437,29 @@ void CDuiAnimateImgWnd::OnShowWindow( BOOL bShow, UINT nStatus )
 	__super::OnShowWindow(bShow,nStatus);
 	if(!bShow)
 	{
-		if(IsPlaying()) KillDuiTimer(1);
+		if(IsPlaying()) GetContainer()->UnregisterTimelineHandler(this);
 	}else
 	{
-		if(IsPlaying()) SetDuiTimer(1,m_nSpeed);
+		if(IsPlaying()) GetContainer()->RegisterTimelineHandler(this);
 		else if(m_bAutoStart) Start();
+	}
+}
+
+void CDuiAnimateImgWnd::OnNextFrame()
+{
+	if(!m_pSkin) GetContainer()->UnregisterTimelineHandler(this);
+	else
+	{
+		static int nFrame=0;
+		if(nFrame > (m_nSpeed/10)) nFrame=0;
+		if(nFrame==0)
+		{
+			int nStates=m_pSkin->GetStates();
+			m_iCurFrame++;
+			m_iCurFrame%=nStates;
+			NotifyInvalidate();
+		}
+		nFrame++;
 	}
 }
 //////////////////////////////////////////////////////////////////////////
@@ -439,7 +512,7 @@ void CDuiProgress::OnPaint(CDCHandle dc)
 
 	DUIASSERT(m_pSkinBg && m_pSkinPos);
 	
-	m_pSkinBg->Draw(dc, DuiDC.rcClient, DuiWndState_Normal);
+	m_pSkinBg->Draw(dc, DuiDC.rcClient, DuiWndState_Normal,m_byAlpha);
 	CRect rcValue=DuiDC.rcClient;
 
 	if(IsVertical())
@@ -452,7 +525,7 @@ void CDuiProgress::OnPaint(CDCHandle dc)
 	}
 	if(m_nValue>m_nMinValue)
 	{
-		m_pSkinPos->Draw(dc, rcValue, DuiWndState_Normal);
+		m_pSkinPos->Draw(dc, rcValue, DuiWndState_Normal,m_byAlpha);
 	}
 
 
@@ -491,71 +564,6 @@ void CDuiProgress::GetRange( int *pMin,int *pMax )
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Image Button Control
-//
-// Usage: <imgbtn src=xx />
-//
-CDuiImageBtnWnd::CDuiImageBtnWnd():m_bAnimate(FALSE),m_byAlpha(0xFF)
-{
-    m_bMsgTransparent=FALSE;
-}
-
-BOOL CDuiImageBtnWnd::NeedRedrawWhenStateChange()
-{
-    return TRUE;
-}
-
-void CDuiImageBtnWnd::OnPaint(CDCHandle dc)
-{
-    if (!m_pSkin) return;
-    if(m_byAlpha==0xFF || !m_bAnimate)
-    {
-        m_pSkin->Draw(
-            dc, m_rcWindow,
-            IIF_STATE4(GetState(), 0, 1, 2, 3),0xFF
-        );
-    }
-    else
-    {
-        if(GetState()&DuiWndState_Hover)
-        {
-            //get hover
-            m_pSkin->Draw(dc, m_rcWindow, 0, 0xFF);
-            m_pSkin->Draw(dc, m_rcWindow, 1, m_byAlpha);
-        }
-        else
-        {
-            //lose hover
-			m_pSkin->Draw(dc, m_rcWindow,1, 0xFF);
-            m_pSkin->Draw(dc, m_rcWindow, 0, m_byAlpha);
-        }
-    }
-
-    if (!m_strInnerText.IsEmpty())
-        CDuiWindow::OnPaint(dc);
-}
-
-void CDuiImageBtnWnd::OnStateChanged(DWORD dwOldState,DWORD dwNewState)
-{
-    m_byAlpha=0xFF;
-    KillDuiTimer(1);
-    if(GetDuiCapture()==m_hDuiWnd) return;
-    if(m_bAnimate &&
-            ((dwOldState==DuiWndState_Normal && dwNewState==DuiWndState_Hover)
-             ||(dwOldState==DuiWndState_Hover && dwNewState==DuiWndState_Normal)))
-    {
-        m_byAlpha=5;
-        SetDuiTimer(1,10);
-    }
-}
-void CDuiImageBtnWnd::OnDuiTimer(char cTimerID)
-{
-    m_byAlpha+=25;
-    if(m_byAlpha==0xFF) KillDuiTimer(cTimerID);
-    NotifyInvalidate();
-}
-
-//////////////////////////////////////////////////////////////////////////
 // Line Control
 // Simple HTML "HR" tag
 //
@@ -567,25 +575,40 @@ CDuiLine::CDuiLine()
     , m_nLineSize(1)
     , m_bLineShadow(FALSE)
     , m_crShadow(RGB(0xFF, 0xFF, 0xFF))
+	, m_mode(HR_HORZ)
 {
 }
 
 // Do nothing
 void CDuiLine::OnPaint(CDCHandle dc)
 {
-    CGdiAlpha::DrawLine(dc,m_rcWindow.left,m_rcWindow.top,m_rcWindow.right,m_rcWindow.bottom,m_style.m_crBg,m_nPenStyle, m_nLineSize);
+	CPoint ptBegin,ptEnd;
+	ptBegin=m_rcWindow.TopLeft();
+	switch(m_mode)
+	{
+	case HR_HORZ:ptEnd.x=m_rcWindow.right,ptEnd.y=m_rcWindow.top;break;
+	case HR_VERT:ptEnd.x=m_rcWindow.left,ptEnd.y=m_rcWindow.bottom;break;
+	case HR_TILT:ptEnd=m_rcWindow.BottomRight();break;
+	}
+    CGdiAlpha::DrawLine(dc,ptBegin.x,ptBegin.y,ptEnd.x,ptEnd.y,m_style.m_crBg,m_nPenStyle, m_nLineSize);
 
     // 画阴影线
     if (m_bLineShadow)
     {
-        if ((m_rcWindow.left+m_nLineSize-1) == m_rcWindow.right)
-        {
-            CGdiAlpha::DrawLine(dc,m_rcWindow.right+1,m_rcWindow.top,m_rcWindow.right+1,m_rcWindow.bottom,m_crShadow,m_nPenStyle, m_nLineSize);
-        }
-        else
-        {
-            CGdiAlpha::DrawLine(dc,m_rcWindow.left,m_rcWindow.bottom+1,m_rcWindow.right,m_rcWindow.bottom+1,m_crShadow,m_nPenStyle, m_nLineSize);
-        }
+		switch(m_mode)
+		{
+		case HR_HORZ:
+			ptBegin.y+=m_nLineSize,ptEnd.y+=m_nLineSize;
+			break;
+		case HR_VERT:
+			ptBegin.x+=m_nLineSize,ptEnd.x+=m_nLineSize;
+			break;
+		case HR_TILT:
+			ptBegin.Offset(m_nLineSize,m_nLineSize);
+			ptEnd.Offset(m_nLineSize,m_nLineSize);
+			break;
+		}
+		CGdiAlpha::DrawLine(dc,ptBegin.x,ptBegin.y,ptEnd.x,ptEnd.y,m_crShadow,m_nPenStyle, m_nLineSize);
     }
 }
 

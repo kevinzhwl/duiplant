@@ -15,20 +15,21 @@ namespace DuiEngine
 #define WM_NCMOUSELAST  WM_NCMBUTTONDBLCLK
 
 
-CDuiFrame::CDuiFrame()
-	:m_hCapture(NULL)
+CDuiFrame::CDuiFrame(CDuiWindow *pHost)
+	:m_pHost(pHost)
+	,m_hCapture(NULL)
 	,m_hHover(NULL)
 	,m_bNcHover(FALSE)
-	,m_dropTarget(this)
-	,m_focusMgr(this)
+	,m_dropTarget(pHost)
+	,m_focusMgr(pHost)
 {
 }
 
 LRESULT CDuiFrame::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
     LRESULT lRet=0;
-    AddRef();
-    SetMsgHandled(TRUE);
+    m_pHost->AddRef();
+    m_pHost->SetMsgHandled(TRUE);
 
     switch(uMsg)
     {
@@ -42,17 +43,21 @@ LRESULT CDuiFrame::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         OnFrameMouseLeave();
         break;
     case WM_SETCURSOR:
-    {
         lRet=OnFrameSetCursor(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
         if(!lRet)
         {
             SetCursor(LoadCursor(NULL,IDC_ARROW));
         }
-    }
-    break;
+	    break;
     case WM_KEYDOWN:
         OnFrameKeyDown((UINT)wParam,(UINT)lParam & 0xFFFF, (UINT)((lParam & 0xFFFF0000) >> 16));
         break;
+	case WM_SETFOCUS:
+		OnActivate(WA_ACTIVE);
+		break;
+	case WM_KILLFOCUS:
+		OnActivate(WA_INACTIVE);
+		break;
 	case WM_ACTIVATE:
 		OnActivate(LOWORD(wParam));
 		break;
@@ -62,11 +67,11 @@ LRESULT CDuiFrame::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         else if(uMsg>=WM_MOUSEFIRST && uMsg <= WM_MOUSELAST)
             OnFrameMouseEvent(uMsg,wParam,lParam);
         else
-            SetMsgHandled(FALSE);
+            m_pHost->SetMsgHandled(FALSE);
         break;
     }
 
-    Release();
+    m_pHost->Release();
     return lRet;
 }
 
@@ -93,7 +98,7 @@ void CDuiFrame::OnSetDuiFocus(HDUIWND hDuiWnd)
 	m_focusMgr.SetFocusedHwnd(hDuiWnd);
 }
 
-HDUIWND CDuiFrame::GetDuiCapture()
+HDUIWND CDuiFrame::OnGetDuiCapture()
 {
     return m_hCapture;
 }
@@ -128,7 +133,7 @@ void CDuiFrame::OnFrameMouseMove(UINT uFlag,CPoint pt)
     }
     else
     {
-        HDUIWND hHover=DuiGetHWNDFromPoint(pt,FALSE);
+        HDUIWND hHover=m_pHost->DuiGetHWNDFromPoint(pt,FALSE);
         CDuiWindow * pHover=DuiWindowManager::GetWindow(hHover);
         if(m_hHover!=hHover)
         {
@@ -205,16 +210,21 @@ void CDuiFrame::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     {
         if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
         pCapture->DuiSendMessage(uMsg,wParam,lParam);
+		m_pHost->SetMsgHandled(pCapture->IsMsgHandled());
     }
     else
     {
-        m_hHover=DuiGetHWNDFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
+        m_hHover=m_pHost->DuiGetHWNDFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
         CDuiWindow *pHover=DuiWindowManager::GetWindow(m_hHover);
         if(pHover  && !pHover->IsDisabled(TRUE))
         {
             if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
             pHover->DuiSendMessage(uMsg,wParam,lParam);
-        }
+			m_pHost->SetMsgHandled(pHover->IsMsgHandled());
+        }else
+		{
+			m_pHost->SetMsgHandled(FALSE);
+		}
     }
 }
 
@@ -224,7 +234,11 @@ void CDuiFrame::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     if(pFocus)
     {
         pFocus->DuiSendMessage(uMsg,wParam,lParam);
-    }
+		m_pHost->SetMsgHandled(pFocus->IsMsgHandled());
+    }else
+	{
+		m_pHost->SetMsgHandled(FALSE);
+	}
 }
 
 void CDuiFrame::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -235,7 +249,11 @@ void CDuiFrame::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     if(pFocus)
     {
         pFocus->DuiSendMessage(WM_KEYDOWN,nChar,MAKELPARAM(nRepCnt,nFlags));
-    }
+		m_pHost->SetMsgHandled(pFocus->IsMsgHandled());
+    }else
+	{
+		m_pHost->SetMsgHandled(FALSE);
+	}
 }
 
 BOOL CDuiFrame::RegisterDragDrop( HDUIWND hDuiWnd,IDropTarget *pDropTarget )
@@ -259,4 +277,33 @@ void CDuiFrame::OnActivate( UINT nState )
 	}
 }
 
+BOOL CDuiFrame::RegisterTimelineHandler( ITimelineHandler *pHandler )
+{
+	POSITION pos=m_lstTimelineHandler.Find(pHandler);
+	if(pos) return FALSE;
+	m_lstTimelineHandler.AddTail(pHandler);
+	CDuiRef *pRef=dynamic_cast<CDuiRef*>(pHandler);
+	if(pRef) pRef->AddRef();
+	return TRUE;
+}
+
+BOOL CDuiFrame::UnregisterTimelineHandler( ITimelineHandler *pHandler )
+{
+	POSITION pos=m_lstTimelineHandler.Find(pHandler);
+	if(!pos) return FALSE;
+	m_lstTimelineHandler.RemoveAt(pos);
+	CDuiRef *pRef=dynamic_cast<CDuiRef*>(pHandler);
+	if(pRef) pRef->Release();
+	return TRUE;
+}
+
+void CDuiFrame::OnNextFrame()
+{
+	POSITION pos=m_lstTimelineHandler.GetHeadPosition();
+	while(pos)
+	{
+		ITimelineHandler * pHandler=m_lstTimelineHandler.GetNext(pos);
+		pHandler->OnNextFrame();
+	}
+}
 }//namespace DuiEngine

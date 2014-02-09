@@ -69,7 +69,7 @@ protected:
 
     void OnPaint(CDCHandle dc);
 
-    void OnWindowPosChanged(LPRECT lpWndPos);
+    LRESULT OnWindowPosChanged(LPRECT lpWndPos);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
 

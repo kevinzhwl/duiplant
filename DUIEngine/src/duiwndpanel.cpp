@@ -628,154 +628,151 @@ LRESULT CDuiPanelEx::OnAttrScrollbarSkin( CDuiStringA strValue,BOOL bLoading )
 	DUIASSERT(m_pSkinSb);
 	return bLoading?S_FALSE:S_OK;
 }
-//////////////////////////////////////////////////////////////////////////
-//	CDuiScrollView
 
+//////////////////////////////////////////////////////////////////////////
 CDuiScrollView::CDuiScrollView()
-    :m_szView(-1,-1)
-    ,m_ptOrigin(0,0)
+:m_szView(-1,-1)
+,m_ptOrigin(0,0)
 {
-    m_bClipClient=TRUE;
+	m_bClipClient=TRUE;
 }
 
 int CDuiScrollView::OnCreate( LPVOID )
 {
-    int nRet=__super::OnCreate(NULL);
-    if(nRet!=0) return nRet;
-    if(m_szView.cx==-1) m_szView.cx=m_rcClient.Width();
-    if(m_szView.cy==-1) m_szView.cy=m_rcClient.Height();
-    SetViewOrigin(m_ptOrigin);
-    return 0;
+	int nRet=__super::OnCreate(NULL);
+	if(nRet!=0) return nRet;
+	if(m_szView.cx==-1) m_szView.cx=m_rcClient.Width();
+	if(m_szView.cy==-1) m_szView.cy=m_rcClient.Height();
+	SetViewOrigin(m_ptOrigin);
+	return 0;
 }
 
 void CDuiScrollView::OnSize(UINT nType,CSize size)
 {
-    SetViewSize(m_szView);
-}
-
-CRect CDuiScrollView::GetChildrenLayoutRect()
-{
-	CRect rcRet=__super::GetChildrenLayoutRect();
-    rcRet.OffsetRect(-m_ptOrigin);
-    rcRet.right=rcRet.left+m_szView.cx;
-    rcRet.bottom=rcRet.top+m_szView.cy;
-    return rcRet;
+	UpdateScrollBar();
 }
 
 
 void CDuiScrollView::SetViewOrigin(CPoint pt)
 {
-    if(m_ptOrigin==pt) return;
-    OnViewOriginChanged(m_ptOrigin,pt);
-    m_ptOrigin=pt;
-	UpdateChildrenPosition();
-    CRect rcClient;
-    GetClient(&rcClient);
-    NotifyInvalidateRect(rcClient);
+	if(m_ptOrigin==pt) return;
+	CPoint ptOld=m_ptOrigin;
+	m_ptOrigin=pt;
+	OnViewOriginChanged(ptOld,pt);
+	NotifyInvalidate();
 }
 
 CPoint CDuiScrollView::GetViewOrigin()
 {
-    return m_ptOrigin;
+	return m_ptOrigin;
 }
 
 
 void CDuiScrollView::SetViewSize(CSize szView)
 {
-    m_szView=szView;
-    CRect rcClient;
-    CDuiPanel::GetClient(&rcClient);
+	if(szView==m_szView) return;
 
-    CSize size=rcClient.Size();
-    m_wBarVisible=DUISB_NULL;	//关闭滚动条
-
-    if(size.cy<m_szView.cy || (size.cy<m_szView.cy+m_nSbWid && size.cx<m_szView.cx))
-    {
-        //需要纵向滚动条
-        m_wBarVisible|=DUISB_VERT;
-        m_siVer.nMin=0;
-        m_siVer.nMax=m_szView.cy-1;
-        m_siVer.nPage=size.cy;
-
-        if(size.cx<m_szView.cx+m_nSbWid)
-        {
-            //需要横向滚动条
-            m_wBarVisible |= DUISB_HORZ;
-            m_siVer.nPage=size.cy-m_nSbWid > 0 ? size.cy-m_nSbWid : 0;
-
-            m_siHoz.nMin=0;
-            m_siHoz.nMax=m_szView.cx-1;
-            m_siHoz.nPage=size.cx-m_nSbWid > 0 ? size.cx-m_nSbWid : 0;
-        }
-        else
-        {
-            //不需要横向滚动条
-            m_siHoz.nPage=size.cx;
-            m_siHoz.nMin=0;
-            m_siHoz.nMax=m_siHoz.nPage-1;
-            m_siHoz.nPos=0;
-            m_ptOrigin.x=0;
-        }
-    }
-    else
-    {
-        //不需要纵向滚动条
-        m_siVer.nPage=size.cy;
-        m_siVer.nMin=0;
-        m_siVer.nMax=size.cy-1;
-        m_siVer.nPos=0;
-        m_ptOrigin.y=0;
-
-        if(size.cx<m_szView.cx)
-        {
-            //需要横向滚动条
-            m_wBarVisible|=DUISB_HORZ;
-            m_siHoz.nMin=0;
-            m_siHoz.nMax=m_szView.cx-1;
-            m_siHoz.nPage=size.cx;
-        }
-        //不需要横向滚动条
-        else
-        {
-            m_siHoz.nPage=size.cx;
-            m_siHoz.nMin=0;
-            m_siHoz.nMax=m_siHoz.nPage-1;
-            m_siHoz.nPos=0;
-            m_ptOrigin.x=0;
-        }
-    }
-
-    SetScrollPos(TRUE,m_siVer.nPos,TRUE);
-    SetScrollPos(FALSE,m_siHoz.nPos,TRUE);
-
-    DuiSendMessage(WM_NCCALCSIZE);
-
-    NotifyInvalidate();
+	CSize oldViewSize=m_szView;
+	m_szView=szView;
+	UpdateScrollBar();
+	OnViewSizeChanged(oldViewSize,szView);
 }
 
 CSize CDuiScrollView::GetViewSize()
 {
-    return m_szView;
+	return m_szView;
+}
+
+void CDuiScrollView::UpdateScrollBar()
+{
+	CRect rcClient;
+	CDuiWindow::GetClient(&rcClient);
+
+	CSize size=rcClient.Size();
+	m_wBarVisible=DUISB_NULL;	//关闭滚动条
+
+	if(size.cy<m_szView.cy || (size.cy<m_szView.cy+m_nSbWid && size.cx<m_szView.cx))
+	{
+		//需要纵向滚动条
+		m_wBarVisible|=DUISB_VERT;
+		m_siVer.nMin=0;
+		m_siVer.nMax=m_szView.cy-1;
+		m_siVer.nPage=size.cy;
+
+		if(size.cx<m_szView.cx+m_nSbWid)
+		{
+			//需要横向滚动条
+			m_wBarVisible |= DUISB_HORZ;
+			m_siVer.nPage=size.cy-m_nSbWid > 0 ? size.cy-m_nSbWid : 0;
+
+			m_siHoz.nMin=0;
+			m_siHoz.nMax=m_szView.cx-1;
+			m_siHoz.nPage=size.cx-m_nSbWid > 0 ? size.cx-m_nSbWid : 0;
+		}
+		else
+		{
+			//不需要横向滚动条
+			m_siHoz.nPage=size.cx;
+			m_siHoz.nMin=0;
+			m_siHoz.nMax=m_siHoz.nPage-1;
+			m_siHoz.nPos=0;
+			m_ptOrigin.x=0;
+		}
+	}
+	else
+	{
+		//不需要纵向滚动条
+		m_siVer.nPage=size.cy;
+		m_siVer.nMin=0;
+		m_siVer.nMax=size.cy-1;
+		m_siVer.nPos=0;
+		m_ptOrigin.y=0;
+
+		if(size.cx<m_szView.cx)
+		{
+			//需要横向滚动条
+			m_wBarVisible|=DUISB_HORZ;
+			m_siHoz.nMin=0;
+			m_siHoz.nMax=m_szView.cx-1;
+			m_siHoz.nPage=size.cx;
+		}
+		//不需要横向滚动条
+		else
+		{
+			m_siHoz.nPage=size.cx;
+			m_siHoz.nMin=0;
+			m_siHoz.nMax=m_siHoz.nPage-1;
+			m_siHoz.nPos=0;
+			m_ptOrigin.x=0;
+		}
+	}
+
+	SetScrollPos(TRUE,m_siVer.nPos,TRUE);
+	SetScrollPos(FALSE,m_siHoz.nPos,TRUE);
+
+	DuiSendMessage(WM_NCCALCSIZE);
+
+	NotifyInvalidate();
 }
 
 BOOL CDuiScrollView::OnScroll(BOOL bVertical,UINT uCode,int nPos)
 {
-    BOOL bRet=__super::OnScroll(bVertical,uCode,nPos);
-    if(bRet)
-    {
-        int nPos=GetScrollPos(bVertical);
-        CPoint ptOrigin=m_ptOrigin;
+	BOOL bRet=__super::OnScroll(bVertical,uCode,nPos);
+	if(bRet)
+	{
+		int nPos=GetScrollPos(bVertical);
+		CPoint ptOrigin=m_ptOrigin;
 
-        if(bVertical) ptOrigin.y=nPos;
-        else ptOrigin.x=nPos;
+		if(bVertical) ptOrigin.y=nPos;
+		else ptOrigin.x=nPos;
 
-        if(ptOrigin!=m_ptOrigin)
-            SetViewOrigin(ptOrigin);
+		if(ptOrigin!=m_ptOrigin)
+			SetViewOrigin(ptOrigin);
 
- 		if(uCode==SB_THUMBTRACK)
+		if(uCode==SB_THUMBTRACK)
 			ScrollUpdate();
-    }
-    return bRet;
+	}
+	return bRet;
 }
 
 }//namespace DuiEngine

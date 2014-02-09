@@ -12,6 +12,7 @@ public:
     ~CMemDC(void);
 
     HBITMAP SelectBitmap(HBITMAP hBmp);
+
     BOOL	HasBitmap()
     {
         return m_bHasBitmap;
@@ -22,6 +23,11 @@ public:
 		m_bBmpOwner=bOwner;
 	}
 	BOOL IsBitmapOwner(){return m_bBmpOwner;}
+
+	void DeleteDC();
+
+	BOOL InitDC(HDC hdc,const CRect &rc);
+
 protected:
     HBITMAP		m_hOldBmp;
     BOOL		m_bBmpOwner;

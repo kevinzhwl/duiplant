@@ -276,6 +276,7 @@
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				SubSystem="2"
+				LinkTimeCodeGeneration="1"
 				TargetMachine="1"
 			/>
 			<Tool

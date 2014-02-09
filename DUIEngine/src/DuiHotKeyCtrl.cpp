@@ -90,6 +90,10 @@ void CDuiHotKeyCtrl::OnSetDuiFocus()
     dc.SelectFont(hOldFond);
     ReleaseDC(GetContainer()->GetHostHwnd(),dc);
 
+	CRect rcClient;
+	GetClient(&rcClient);
+	OnSetCaretValidateRect(&rcClient);
+
     UpdateCaret();
     GetContainer()->DuiShowCaret(TRUE);
 }
@@ -194,4 +198,9 @@ void CDuiHotKeyCtrl::GetHotKey( WORD & vKey,WORD &wModifers )
     wModifers=m_wModifier;
 }
 
+LRESULT CDuiHotKeyCtrl::OnWindowPosChanged( LPRECT lpRcContainer )
+{
+	KillDuiFocus();
+	return __super::OnWindowPosChanged(lpRcContainer);
+}
 }//namespace DuiEngine

@@ -61,7 +61,7 @@ protected:
     virtual BOOL Load(pugi::xml_node xmlNode);
 
 
-    void OnWindowPosChanged(LPRECT lpWndPos);
+    LRESULT OnWindowPosChanged(LPRECT lpWndPos);
 
     void OnShowWindow(BOOL bShow, UINT nStatus);
     void OnDestroy();

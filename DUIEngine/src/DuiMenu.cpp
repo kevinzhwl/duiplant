@@ -200,15 +200,21 @@ BOOL CDuiMenu::LoadMenu( LPCTSTR pszResName )
 	pugi::xml_node xmlMenu=xmlDoc.child("menu");
     if(!xmlMenu)  return FALSE;
 
+	return LoadMenu(xmlMenu);
+}
+
+
+BOOL CDuiMenu::LoadMenu( pugi::xml_node xmlMenu )
+{
 	m_hMenu=CreatePopupMenu();
-    if(!m_hMenu) return FALSE;
+	if(!m_hMenu) return FALSE;
 
-    m_menuSkin.Load(xmlMenu);
-    DUIASSERT(m_menuSkin.m_pItemSkin);
+	m_menuSkin.Load(xmlMenu);
+	DUIASSERT(m_menuSkin.m_pItemSkin);
 
-    BuildMenu(m_hMenu,xmlMenu);
+	BuildMenu(m_hMenu,xmlMenu);
 
-    return TRUE;
+	return TRUE;
 }
 
 CDuiMenu CDuiMenu::GetSubMenu(int nPos)

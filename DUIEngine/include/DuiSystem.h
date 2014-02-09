@@ -21,7 +21,7 @@
 #include "duiimgpool.h"
 #include "Name2ID.h"
 
-#define DUI_VERSION	_T("2.0.0.1")
+#define DUI_VERSION	_T("2.1.0.1")
 
 namespace DuiEngine
 {
@@ -31,6 +31,7 @@ class DUI_EXP DuiSystem :
 {
 	friend class CSimpleWnd;
 	friend class CDuiMessageBox;
+	friend class CDuiRichEdit;
 
 public:
     DuiSystem(HINSTANCE hInst,LPCTSTR pszHostClassName=_T("DuiHostWnd"));
@@ -92,6 +93,7 @@ public:
 	HRESULT CreateTextServices(IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk);
 protected:
 	pugi::xml_node GetMsgBoxTemplate(){return m_xmlMsgBoxTempl;}
+	pugi::xml_node GetEditMenuTemplate(){return m_xmlEditMenu;}
 
     void createSingletons();
     void destroySingletons();
@@ -105,6 +107,7 @@ protected:
 	PCreateTextServices	m_funCreateTextServices;
 
 	pugi::xml_document	m_xmlMsgBoxTempl;
+	pugi::xml_document	m_xmlEditMenu;
 };
 
 }//namespace DuiEngine

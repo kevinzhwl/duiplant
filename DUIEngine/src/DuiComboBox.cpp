@@ -270,6 +270,7 @@ LRESULT CDuiComboBox::DuiNotify(LPDUINMHDR pnms)
 	if(pnms->idFrom == IDC_DROPDOWN_LIST)
 	{
 		pnms->idFrom=GetCmdID();
+		pnms->pszNameFrom=m_strName;
 		if(pnms->code==DUINM_LBSELCHANGED && m_pListBox)
 		{//select item changed
 			DUINMLBSELCHANGE *pnmclk = (DUINMLBSELCHANGE *)pnms;
@@ -396,6 +397,22 @@ BOOL CDuiComboBox::DeleteAllItem()
 		
 	NotifyInvalidate();
 	return TRUE;	
+}
+
+int CDuiComboBox::GetWindowTextLength()
+{
+	if(m_bDropdown)
+	{
+		if(m_iCurSel==-1)
+			return 0;
+		else
+			return m_arrCbItem[m_iCurSel].strText.GetLength();
+	}else
+	{
+		DUIASSERT(m_pEdit);
+		return m_pEdit->GetWindowTextLength();
+	}
+
 }
 
 int CDuiComboBox::GetWindowText( LPTSTR lpString, int nMaxCount )

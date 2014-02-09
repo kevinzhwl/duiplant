@@ -12,37 +12,6 @@ DEFINE_GUIDXXX(IID_ITextDocument,0x8CC497C0,0xA1DF,0x11CE,0x80,0x98,
 
 using namespace DuiEngine;
 
-CTimerHostWnd CImageOle::ms_TimerHostWnd;
-
-BOOL CTimerHostWnd::Create()
-{
-	return __super::Create(NULL,WS_POPUP,0,0,0,0,0,0,0)!=0;
-}
-
-void CTimerHostWnd::OnTimer( UINT_PTR idEvent )
-{
-	CImageOle *pOleObj=(CImageOle*)idEvent;
-	pOleObj->OnTimer(idEvent);
-}
-
-CTimerHostWnd::CTimerHostWnd()
-:m_nRef(0)
-{
-}
-
-void CTimerHostWnd::AddRef()
-{
-	if(m_nRef==0) Create();
-	m_nRef++;
-}
-
-void CTimerHostWnd::Release()
-{
-	m_nRef--;
-	if(m_nRef==0) DestroyWindow();
-}
-
-
 CImageOle::CImageOle(CDuiRichEdit *pRichedit)
 :m_ulRef(0)
 ,m_pOleClientSite(NULL)
@@ -50,13 +19,12 @@ CImageOle::CImageOle(CDuiRichEdit *pRichedit)
 ,m_pSkin(NULL)
 ,m_iFrame(0)
 ,m_pRichedit(pRichedit)
+,m_nTimePass(0)
 {
-	ms_TimerHostWnd.AddRef();
 }
 
 CImageOle::~CImageOle(void)
 {
-	ms_TimerHostWnd.Release();
 }
 
 HRESULT WINAPI CImageOle::QueryInterface(REFIID iid, void ** ppvObject)
@@ -130,7 +98,8 @@ HRESULT WINAPI CImageOle::Close(DWORD dwSaveOption)
 		m_pSkin=NULL;
 	}
 
-	ms_TimerHostWnd.KillTimer((UINT_PTR)this);
+	m_pRichedit->GetContainer()->UnregisterTimelineHandler(this);
+
 	return S_OK;
 }
 
@@ -277,9 +246,11 @@ HRESULT WINAPI CImageOle::SetAdvise(DWORD aspects, DWORD advf, IAdviseSink *pAdv
 
 	if (m_pSkin != NULL && m_pSkin->IsClass(CDuiSkinGif::GetClassName()))
 	{
-		CDuiSkinGif *pSkinGif=static_cast<CDuiSkinGif*>(m_pSkin);
-		ms_TimerHostWnd.SetTimer((UINT_PTR)this, 
-			pSkinGif->GetFrameDelay(), CImageOle::TimerProc);
+		CDuiSkinGif *pGif=static_cast<CDuiSkinGif*>(m_pSkin);
+		m_iFrame=0;
+		m_nTimeDelay=pGif->GetFrameDelay(0);
+		m_nTimePass=0;
+		m_pRichedit->GetContainer()->RegisterTimelineHandler(this);
 	}
 
 	return S_OK;
@@ -305,32 +276,6 @@ HRESULT WINAPI CImageOle::GetExtent(DWORD dwDrawAspect, LONG lindex, DVTARGETDEV
 	return S_OK;
 }
 
-
-void CImageOle::OnTimer(UINT_PTR idEvent)
-{
-	ms_TimerHostWnd.KillTimer(idEvent);
-
-	CRect rcOle;
-	if(GetOleRect(&rcOle))
-	{
-		m_pRichedit->NotifyInvalidateRect(rcOle);
-	}
-
-	CDuiSkinGif *pSkinGif=static_cast<CDuiSkinGif*>(m_pSkin);
-	DUIASSERT(pSkinGif);
-	m_iFrame++;
-	if(m_iFrame==pSkinGif->GetStates())
-		m_iFrame=0;
-	long nDelay=pSkinGif->GetFrameDelay();
-	ms_TimerHostWnd.SetTimer((UINT_PTR)this, nDelay, CImageOle::TimerProc);
-}
-
-VOID CALLBACK CImageOle::TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
-{
-	CImageOle *pImageOle = (CImageOle *)idEvent;
-	if (pImageOle != NULL)
-		pImageOle->OnTimer(idEvent);
-}
 
 void CImageOle::SetDuiSkinObj( CDuiSkinBase *pSkin )
 {
@@ -405,6 +350,28 @@ BOOL CImageOle::GetOleRect( LPRECT lpRect )
 
 	pRichEditOle->Release();
 	return bRet;
+}
+
+void CImageOle::OnNextFrame()
+{
+	m_nTimePass+=10;
+	if(m_nTimePass>=m_nTimeDelay)
+	{
+		CRect rcOle;
+		if(GetOleRect(&rcOle))
+		{
+			m_pRichedit->NotifyInvalidateRect(rcOle);
+		}
+
+		CDuiSkinGif *pSkinGif=static_cast<CDuiSkinGif*>(m_pSkin);
+		DUIASSERT(pSkinGif);
+		m_iFrame++;
+		if(m_iFrame==pSkinGif->GetStates())
+			m_iFrame=0;
+
+		m_nTimeDelay=pSkinGif->GetFrameDelay(m_iFrame);
+		m_nTimePass=0;
+	}
 }
 
 BOOL RichEdit_InsertSkin(CDuiRichEdit *pRicheditCtrl, CDuiSkinBase *pSkin)

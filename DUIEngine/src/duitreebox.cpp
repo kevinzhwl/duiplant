@@ -14,8 +14,8 @@ namespace DuiEngine
 
 #define IDC_SWITCH	65530
 
-	CDuiTreeItem::CDuiTreeItem(CDuiWindow *pFrameHost,pugi::xml_node xmlNode)
-    : CDuiItemPanel(pFrameHost,xmlNode)
+	CDuiTreeItem::CDuiTreeItem(CDuiWindow *pFrameHost)
+	: CDuiItemPanel(pFrameHost,pugi::xml_node())
     , m_bCollapsed(FALSE)
     , m_bVisible(TRUE)
     , m_nLevel(0)
@@ -35,6 +35,7 @@ CDuiTreeBox::CDuiTreeBox()
     , m_nVisibleItems(0)
 	, m_bItemRedrawDelay(TRUE)
 {
+	m_bTabStop=TRUE;
 	addEvent(DUINM_LBITEMNOTIFY);
 	addEvent(DUINM_ITEMMOUSEEVENT);
 	addEvent(DUINM_GETTBDISPINFO);
@@ -49,7 +50,8 @@ CDuiTreeBox::~CDuiTreeBox()
 
 HSTREEITEM CDuiTreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
 {
-    CDuiTreeItem *pItemObj=new CDuiTreeItem(this,xmlNode);
+    CDuiTreeItem *pItemObj=new CDuiTreeItem(this);
+	pItemObj->Load(xmlNode);
     pItemObj->m_nLevel=GetItemLevel(hParent)+1;
     pItemObj->m_bCollapsed=FALSE;
     if(hParent!=STVI_ROOT)
@@ -496,6 +498,7 @@ void CDuiTreeBox::OnPaint(CDCHandle dc)
 
 void CDuiTreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
 {
+	if(m_bTabStop) SetDuiFocus();
     if(m_pCapturedFrame)
     {
         CRect rcItem=m_pCapturedFrame->GetItemRect();
@@ -552,23 +555,21 @@ void CDuiTreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
     }
 }
 
-void CDuiTreeBox::OnLButtonUp(UINT nFlags,CPoint pt)
+LRESULT CDuiTreeBox::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
-    if(m_pCapturedFrame)
-    {
-        CRect rcItem=m_pCapturedFrame->GetItemRect();
-        if(!rcItem.IsRectEmpty())
-        {
-            pt.Offset(-rcItem.left,-rcItem.top);
-            m_pCapturedFrame->DoFrameEvent(WM_LBUTTONUP,nFlags,MAKELPARAM(pt.x,pt.y));
-            return;
-        }
-    }
-    m_hHoverItem=HitTest(pt);
-    if(m_hHoverItem)
-    {
-        CSTree<CDuiTreeItem*>::GetItem(m_hHoverItem)->DoFrameEvent(WM_LBUTTONUP,nFlags,MAKELPARAM(pt.x,pt.y));
-    }
+	CPoint pt(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam));
+	if(m_pCapturedFrame)
+	{
+		CRect rcItem=m_pCapturedFrame->GetItemRect();
+		pt.Offset(-rcItem.left,-rcItem.top);
+		return m_pCapturedFrame->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
+	}
+	m_hHoverItem=HitTest(pt);
+	if(m_hHoverItem)
+	{
+		return CSTree<CDuiTreeItem*>::GetItem(m_hHoverItem)->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
+	}
+	return 0;
 }
 
 void CDuiTreeBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
@@ -741,4 +742,48 @@ BOOL CDuiTreeBox::OnItemGetRect( CDuiItemPanel *pItem,CRect &rcItem )
     }
     return FALSE;
 }
+
+
+void CDuiTreeBox::OnSetDuiFocus()
+{
+	__super::OnSetDuiFocus();
+	if(m_hSelItem) CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->DoFrameEvent(WM_SETFOCUS,0,0);
+}
+
+void CDuiTreeBox::OnKillDuiFocus()
+{
+	__super::OnKillDuiFocus();
+	if(m_hSelItem) CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->DoFrameEvent(WM_KILLFOCUS,0,0);
+}
+
+void CDuiTreeBox::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
+{
+	if(m_hSelItem)
+	{
+		CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->DoFrameEvent(WM_KILLFOCUS,0,0);
+		CSTree<CDuiTreeItem*>::GetItem(m_hSelItem)->DoFrameEvent(WM_SETFOCUS,0,0);
+	}
+}
+
+
+LRESULT CDuiTreeBox::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
+{
+	LRESULT lRet=0;
+	if(m_pCapturedFrame)
+	{
+		lRet=m_pCapturedFrame->DoFrameEvent(uMsg,wParam,lParam);
+		SetMsgHandled(m_pCapturedFrame->IsMsgHandled());
+	}
+	else if(m_hSelItem)
+	{
+		CDuiTreeItem* pItem=CSTree<CDuiTreeItem*>::GetItem(m_hSelItem);
+		lRet=pItem->DoFrameEvent(uMsg,wParam,lParam);
+		SetMsgHandled(pItem->IsMsgHandled());
+	}else
+	{
+		SetMsgHandled(FALSE);
+	}
+	return lRet;
+}
+
 }//namespace DuiEngine

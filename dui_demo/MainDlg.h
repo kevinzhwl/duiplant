@@ -58,11 +58,18 @@ public:
 
 protected:
 
+	LRESULT OnEditMenu(CPoint pt)
+	{
+		//ÑÝÊ¾ÆÁ±Îedit_1140µÄÓÒ¼ü²Ëµ¥
+		return 1;
+	}
+
 	DUI_NOTIFY_MAP_BEGIN()
 		DUI_NOTIFY_ID_COMMAND(1, OnClose)
 		DUI_NOTIFY_ID_COMMAND(2, OnMaximize)
 		DUI_NOTIFY_ID_COMMAND(3, OnRestore)
 		DUI_NOTIFY_ID_COMMAND(5, OnMinimize)
+		DUI_NOTIFY_NAME_CONTEXTMENU("edit_1140",OnEditMenu)
 	DUI_NOTIFY_MAP_END()	
 
 	BEGIN_MSG_MAP_EX(CMainDlg)

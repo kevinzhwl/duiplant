@@ -29,6 +29,7 @@
     <imgframe name="skin_split_horz" src="IDP_SPLIT_HORZ" left="20" right="10"/>
     <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" left="3" states="4"/>
     <imglst name="tabskin_default" src="IDP_TAB_COMMON" states="3"/>
+    <imgframe name="comboboxbtn" src="IDP_DROPBTN" states="3"/>
 
   </skins>
   
@@ -58,7 +59,7 @@
     <class name="Arial_txt_gray"   font="0000:Arial" textmode="25" crtext="565656" />
 
     <class name="linkimage" cursor="hand"/>
-    <class name="cls_border" cursor="hand" ncskin="skin_edit_border" x-margin="2" y-margin="2"/>
+    <class name="cls_border" ncskin="skin_edit_border" x-margin="2" y-margin="2"/>
   </style>
 
   <objattr>
@@ -67,7 +68,9 @@
     <radio skin="btnRadio"/>
     <imgbtn class="linkimage"/>
     <divex sbskin="sb_common" sbwid="16"/>
-    <duiedit transparent="1"/>
+    <edit transparent="1" class="cls_border"/>
+    <combobox class="cls_border"/>
+    <tabctrl tabskin="tabskin_default" crtext="000000" align="top" tabwidth="70" tabheight="38" tabspacing="0" tabpos="5" dotted="1"/>
   </objattr>
 
 </DuiEngine>

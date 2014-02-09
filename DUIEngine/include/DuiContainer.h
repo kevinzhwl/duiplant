@@ -1,11 +1,17 @@
 #pragma once
 
-
 namespace DuiEngine
 {
+
 struct IAcceleratorMgr;
 
-class DUI_EXP CDuiContainer
+
+struct ITimelineHandler
+{
+	virtual void OnNextFrame()=NULL;
+};
+
+class DUI_EXP CDuiContainer : public ITimelineHandler
 {
     friend class CDuiWindow;
 public:
@@ -27,7 +33,7 @@ public:
 
     virtual void OnRedraw(const CRect &rc)=NULL;
 
-    virtual HDUIWND GetDuiCapture()=NULL;
+    virtual HDUIWND OnGetDuiCapture()=NULL;
 
     virtual BOOL OnReleaseDuiCapture()=NULL;
 
@@ -48,6 +54,10 @@ public:
 	virtual BOOL DuiUpdateWindow()=NULL;
 
 	virtual IAcceleratorMgr* GetAcceleratorMgr()=NULL;
+
+	virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler)=NULL;
+
+	virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler)=NULL;
 };
 
 

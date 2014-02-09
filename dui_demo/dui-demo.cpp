@@ -39,7 +39,7 @@ public:
 
 	}
 
-	virtual void Draw(CDCHandle dc, CRect rcDraw, DWORD dwState,BYTE byAlpha=0xff)
+	virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha=0xff)
 	{
 		if(!m_pDuiImg) return;
 		int nSbCode=LOWORD(dwState);

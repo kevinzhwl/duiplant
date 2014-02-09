@@ -55,6 +55,8 @@ protected:
 
     void UpdateCaret();
 
+	LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
+
     DUIWIN_BEGIN_MSG_MAP()
     MSG_WM_CREATE(OnCreate)
     MSG_WM_PAINT(OnPaint)
@@ -65,6 +67,7 @@ protected:
     MSG_WM_KEYUP(OnKeyUp)
     MSG_WM_SYSKEYDOWN(OnSysKeyDown)
     MSG_WM_SYSKEYUP(OnSysKeyUp)
+	MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
     DUIWIN_END_MSG_MAP()
     WORD 	m_wInvalidComb;		//无效的组合键
     WORD 	m_wInvalidModifier; //对无效组合键的替换方案,默认方案

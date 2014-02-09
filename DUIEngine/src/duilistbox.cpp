@@ -238,8 +238,7 @@ int CDuiListBox::HitTest(CPoint &pt)
 
 BOOL CDuiListBox::Load(pugi::xml_node xmlNode)
 {
-    if (!__super::Load(xmlNode))
-        return FALSE;
+    __super::Load(xmlNode);
 
     CDuiStringT strChildSrc = DUI_CA2T(xmlNode.attribute("itemsrc").value(),CP_UTF8);
 
