@@ -2,12 +2,12 @@
   <font face="宋体" size="12"/>
 
   <editmenu itemskin="skin_menuitem" iconskin="skin_menuicon" itemheight="26" sepskin="skin_menusplit" iconmargin="4" textmargin="8" bgskin="skin_menubg">
-    <item id="0" icon="0">剪切</item>
-    <item id="1" icon="1">复制</item>
-    <item id="2" icon="2">粘贴</item>
-    <item id="3" icon="3">删除</item>
+    <item id="1" icon="0">剪切</item>
+    <item id="2" icon="1">复制</item>
+    <item id="3" icon="2">粘贴</item>
+    <item id="4" icon="3">删除</item>
     <sep/>
-    <item id="4">全选</item>
+    <item id="5">全选</item>
   </editmenu>
   
   <string>
