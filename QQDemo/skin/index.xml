@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--XML 资源，name and id:将写入到resource.h中的define,type and file :将写入到rc2的资源定义,layer:窗口定义XML，resbuilder使用它来自动为对应的XML生成控件ID-->
+<resid type="XML" name="IDR_DUI_INIT"  file="xml\init.xml"  />
+<resid type="XML" name="IDR_DUI_MSGBOX"   file="xml\dlg_msgbox.xml"  />
+<resid type="XML" name="IDR_DUI_MAIN_DIALOG"   layer="1" file="xml\dlg_main.xml"/>
+<resid type="XML" name="IDR_MENU_STATUS1" file="xml\menu_status1.xml"  />
+
+<resid type="IMGX" name="IDP_MAIN_DLG_FRAME"    file="image\dlg_bg_frame.png"  />
+<resid type="IMGX" name="IDP_BTN_WND_CHECKBOX"     file="image\checkbox_icon.png"/>
+<resid type="IMGX" name="IDP_BTN_WND_RADIO"  file="image\btn_wnd_radio.png"   />
+<resid type="IMGX" name="IDP_FOCUS_CHECK"    file="image\focus_checkbox.png"/>
+<resid type="IMGX" name="IDP_FOCUS_RADIO"    file="image\focus_radio.png"   />
+<resid type="IMGX" name="IDP_BORDER_EDIT"    file="image\img_edit_border.png"   />
+<resid type="IMGX" name="IDP_BORDER_EDIT2"    file="image\img_edit_border2.png"   />
+<resid type="IMGX" name="IDP_BORDER_EDIT_SET" file="image\img_edit_border_set.png"   />
+
+
+<resid type="IMGX" name="IDP_BORDER"    file="image\gray_border.png"   />
+<resid type="IMGX" name="IDP_LOGIN_FOOTER"    file="image\login_foot_bk.png"   />
+<resid type="IMGX" name="IDP_LOGIN_BODY1"    file="image\login_body1.png"   />
+
+<resid type="IMGX" name="IDP_BTN_SYS_CLOSE"   file="image\btn_sys_close.png"    />
+<resid type="IMGX" name="IDP_BTN_SYS_MIN"   file="image\btn_sys_min.png"    />
+<resid type="IMGX" name="IDP_BTN_LOGIN_SET"   file="image\btn_login_set.png"    />
+
+<resid type="IMGX" name="IDP_BTN_LOGIN_NORMAL"   file="image\login_btn_normal.png"    />
+<resid type="IMGX" name="IDP_BTN_LOGIN_HOVER"   file="image\login_btn_hover.png"    />
+<resid type="IMGX" name="IDP_BTN_LOGIN_DOWN"   file="image\login_btn_down.png"    />
+
+<resid type="IMGX" name="IDP_BTN_SET_NORMAL"   file="image\set_btn_normal.png"    />
+<resid type="IMGX" name="IDP_BTN_SET_HOVER"   file="image\set_btn_hover.png"    />
+<resid type="IMGX" name="IDP_BTN_SET_DOWN"   file="image\set_btn_down.png"    />
+
+
+<resid type="IMGX" name="IDP_LOGIN_BUTTON"   file="image\login_button.png"    />
+<resid type="IMGX" name="IDP_LOGIN_BUTTON2"   file="image\login_button2.png"    />
+<resid type="IMGX" name="IDP_LOGIN_2CODE_BUTTON"   file="image\login_2code_button.png"    />
+
+<resid type="IMGX" name="IDP_BTN_REGISTER"   file="image\btn_register.png"    />
+<resid type="IMGX" name="IDP_BTN_GET_PSWD"   file="image\btn_get_pswd.png"    />
+
+<resid type="IMGX" name="IDP_DROPBTN"   file="image\btn_dropdown.png"    />
+<resid type="IMGX" name="IDP_DROPBTN_SET"   file="image\btn_dropdown_set.png"    />
+<resid type="IMGX" name="IDP_IMG_HEADER"   file="image\header.png"    />
+
+<resid type="IMGX" name="IDP_LOGIN_SET_BK1"   file="image\login_set_bk1.png"    />
+<resid type="IMGX" name="IDP_LOGIN_SET_BK2"   file="image\login_set_bk2.png"    />
+<resid type="IMGX" name="IDP_IMG_LOGIN_SET_TITLE"   file="image\login_set_title.png"    />
+<resid type="IMGX" name="IDP_SCROLL"   file="image\scrollbar.bmp" />
+<resid type="IMGX" name="IDP_IMG_HEAD_BKG"   file="image\head_bkg.png"    />
+<resid type="IMGX" name="IDP_ALLBTN_NOR"   file="image\allbtn_nor.png"    />
+<resid type="IMGX" name="IDP_ALLBTN_OVER"   file="image\allbtn_over.png"    />
+<resid type="IMGX" name="IDP_ALLBTN_DOWN"   file="image\allbtn_down.png"    />
+<resid type="IMGX" name="IDP_IMG_STATUS_INVISIBLE"   file="image\status_invisible.png"    />
+<resid type="IMGX" name="IDP_MENUSKIN"  file="image\menuskin.png" />
+<resid type="IMGX" name="IDP_MENUBG"  file="image\MENU.png" />
+<resid type="IMGX" name="IDP_ICONS_SMALL"  file="image\icons.png" />
+<resid type="IMGX" name="IDP_MENUCHECK"  file="image\check.png" />
+<resid type="IMGX" name="IDP_MENUSPLIT"  file="image\menu_split_horz.png" />
+<resid type="IMGX" name="IDP_MENUBORDER"  file="image\menuborder.png" />
+<resid type="IMGX" name="IDP_KEYBOARD1"  file="image\keyboard1.png" />
+<resid type="IMGX" name="IDP_KEYBOARD2"  file="image\keyboard2.png" />
+<resid type="IMGX" name="IDP_SMALL_HEAD"  file="image\small_head.jpg" />
+<resid type="IMGX" name="IDP_LOGIN_LIST_CLOSE"  file="image\login_list_close.png" />

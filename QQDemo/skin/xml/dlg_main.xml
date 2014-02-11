@@ -1,0 +1,128 @@
+﻿<layer title="QQ2013" width="390" height="304" appwin="0" resize="0" nomaxsize="1" translucent="t">
+	<body>
+    <dlg name="maindlg" pos="0,0,-0,-0">
+      <dlg pos="0,0,-0,-0" name="login_form" show="1">
+        <dlg pos="0,0,-0,-0">
+          <flash pos="6,6,-6,-6" name="ctrl_flash" url="" delayinit="0"/>
+          <dlg pos="5,-185,-5,-50" class="login_body1"/>
+          <dlg pos="5,-55,-5,-5" class="login_footer"/>
+          <dlg pos="0,0,-0,-0" class="login_border" />
+          
+          <dlg pos="5,-55,-5,-5">
+            <imgbtn pos="15,|-12,39,|12" skin="login_button2" />
+            <imgbtn pos="|-80,|-18,|80,|18" skin="login_button">登      录</imgbtn>
+            <imgbtn pos="-45,|-19,-7,|19" skin="login_2code_button" />
+          </dlg>
+          
+          <dlg pos="5,-185,-5,-50">
+            <img pos="23,37,101,115" skin="img_header" />
+            <img pos="22,36,102,116" skin="photo_frame" />
+            <img pos="87,101,98,112" skin="img_status_invisible" />
+            
+            <buttonex pos="84,98,101,115" id="110" name="btn_status" normal-skin="allbtn_nor" hover-skin="allbtn_over" down-skin="allbtn_down"/>
+            
+            <combobox show="1" id="1310" pos="114,36,300,64" dropdown="0" dropheight="200" class="cls_edit" font="0000" dotted="0" cursel="0" itempanel="1">
+              <liststyle class="cls_edit2"   itemheight="44" crtext="000000" crseltext="FFFFFF" critembg="FFFFFF" critemselbg="3991D1" crbg="70BCDC">
+                <template>
+                  <img id="1" pos="1,|-20,41,|20" skin="small_head" />
+                  <text id="2" pos="49,9">想象元素</text>
+                  <text id="3" pos="48,26" crtext="FFFFFF">276883782</text>
+                  <imgbtn id="4" pos="-24,|-8,-10,|7" skin="login_list_close" tip="删除账号信息"/>
+                </template>                
+              </liststyle>
+              <editstyle font="8200:宋体"  vcenter="1" crtext="000000" align="left" crbg="FFFFFF" />
+              <items>
+                <item text="276883782" data="100"/>
+              </items>
+            </combobox>
+
+
+            <dlg pos="114,70,300,98" class="cls_edit_set">
+              <embededit pos="2,0,-25,-0" password="1"/>
+              <embedbutton pos="-19,6,-1,21" normal-skin="keyboard1" hover-skin="keyboard1" down-skin="keyboard2" class="btn_pswd_keyboard"/>
+            </dlg>
+            
+            
+            <check pos="113,103" class="vcentertext">记住密码</check>
+            <check pos="200,103" class="vcentertext">自动登录</check>
+            
+            <imgbtn pos="-65,43,-14,59" skin="btn_register" />
+            <imgbtn pos="-65,77,-14,93" skin="btn_get_pswd" />
+          </dlg>        
+        </dlg>
+        <caption pos="5,5,-5,34">
+          <imgbtn id="1" name="btn_close" skin="btn_sys_close" pos="-40,1" tip="close" animate="0"/>
+          <imgbtn id="2" name="btn_min" skin="btn_sys_min" pos="-68,1" tip="min" animate="0"/>
+          <imgbtn id="3" name="btn_login_set" skin="btn_login_set" pos="-96,1" tip="set" animate="0"/>
+        </caption>
+      </dlg>
+      <dlg name="set_form" pos="0,0,-0,-0" show="0">
+        <dlg pos="5,5,-5,-41" class="login_set_bk1"/>
+        <dlg pos="5,-41,-5,-5" class="login_set_bk2"/>
+        <dlg pos="0,0,-0,-0" class="login_border" />
+        <caption pos="5,5,-5,34">
+          <img skin="login_set_title" pos="10,7" />
+          <imgbtn id="1" name="btn_close" skin="btn_sys_close" pos="-40,1" tip="关闭" animate="0"/>
+          <imgbtn id="2" name="btn_min" skin="btn_sys_min" pos="-68,1" tip="最小化" animate="0"/>
+        </caption>
+        <dlg pos="5,35,-5,-42">
+          <text pos="15,15">网络设置</text>
+          
+          <text pos="20,42">类型：</text>
+          <combobox show="1" id="133" name="net_cfg_type_cmb" pos="53,38,160,62" btnskin="set_combobox_btn" dropdown="1" dropheight="200" class="cls_set_combobox"  font="0000" dotted="0" cursel="0" >
+            <liststyle class="cls_edit2"   itemheight="20" crtext="000000" crseltext="FFFFFF" critembg="FFFFFF" critemselbg="3991D1" crbg="70BCDC"/>
+            <editstyle inset="5,0,5,0" vcenter="1" crtext="000000" align="left" crbg="FFFFFF" />
+            <items>
+              <item text=" 不使用代理"  data="100"/>
+              <item text=" HTTP代理"  data="101"/>
+              <item text=" SOCKETS5代理"  data="102"/>
+              <item text=" 使用浏览器设置"  data="103"/>
+            </items>  
+          </combobox>
+          <text pos="8,69">用户名：</text>
+          <edit pos="53,65,160,89" name="net_cfg_user_edt" class="cls_edit_set" />
+          <text pos="165,42">地址：</text>
+          <edit pos="200,38,280,62" id="137" name="net_cfg_addr_edt" class="cls_edit_set" />
+          <text pos="165,69">密码：</text>
+          <edit pos="200,65,280,89" name="net_cfg_pswd_edt" class="cls_edit_set" />
+          <text pos="285,42">端口：</text>
+          <edit pos="319,38,-8,62" name="net_cfg_port_edt" class="cls_edit_set" />
+          <text pos="298,69">域：</text>
+          <edit pos="319,65,-8,89" name="net_cfg_field_edt" class="cls_edit_set" />
+
+          <buttonex id="136" name="btn_test_net_set" normal-skin="btn_set_normal" hover-skin="btn_set_hover" down-skin="btn_set_down" pos="-78,100,-8,126">测试</buttonex>
+
+          <text pos="15,138">登录服务器</text>
+        
+          <text pos="20,170">类型：</text>
+          <combobox show="1" id="134" pos="53,166,160,190" btnskin="set_combobox_btn" dropdown="1" dropheight="200" class="cls_set_combobox" font="0000" dotted="0" cursel="0">
+            <liststyle class="cls_edit2"   itemheight="20" crtext="000000" crseltext="FFFFFF" critembg="FFFFFF" critemselbg="3991D1" crbg="70BCDC"/>
+            <editstyle inset="5,0,5,0" vcenter="1" crtext="000000" align="left" crbg="FFFFFF" />
+            <items>
+              <item text=" 不使用高级选项"  data="100"/>
+              <item text=" UDP类型"  data="100"/>
+              <item text=" TCP类型"  data="103"/>
+            </items>
+            
+          </combobox>
+          <text pos="165,170">地址：</text>
+          <edit pos="200,166,280,190" name="serv_cfg_addr_edt" class="cls_edit_set" />
+          <text pos="285,170">端口：</text>
+          <edit pos="319,166,-8,190" name="serv_cfg_port_edt" class="cls_edit_set" />
+          
+        </dlg>
+        <dlg pos="5,-41,-5,-5">
+          <buttonex id="131" name="btn_cancel_set" normal-skin="btn_set_normal" hover-skin="btn_set_hover" down-skin="btn_set_down" pos="-78,|-13,-8,|13">取消</buttonex>
+          <buttonex id="132" name="btn_confirm_set" normal-skin="btn_set_normal" hover-skin="btn_set_hover" down-skin="btn_set_down" pos="-156,|-13,-86,|13">确定</buttonex>
+        </dlg>
+      </dlg>
+      <dlg name="cartoon" pos="0,0,-0,-0" show="0">
+        <image3dview pos="0,0,-0,-0" name="image3dview"  rotate-y="30" offset-z="0"/>
+      </dlg>
+    </dlg>
+	</body>
+</layer>
+
+
+
+
