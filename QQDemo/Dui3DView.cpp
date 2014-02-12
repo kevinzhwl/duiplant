@@ -8,11 +8,6 @@
 #include "StdAfx.h"
 #include "Dui3DView.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"debug/image3d.lib")
-#else
-#pragma comment(lib,"release/image3d.lib")
-#endif
 
 namespace DuiEngine
 {

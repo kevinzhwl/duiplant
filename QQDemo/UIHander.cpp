@@ -63,6 +63,8 @@ void CUIHander::OnMsgBtnClick()
 
 LRESULT CUIHander::OnComboNetListSelChanged( LPDUINMHDR pNHdr )
 {
+	HDUIWND hFocus=m_pMainDlg->GetDuiFocus();
+	DUITRACE(_T("duifocus=%d\n"),hFocus);
 	LPDUINMLBSELCHANGE pLbSelChange=(LPDUINMLBSELCHANGE)pNHdr;
 	CDuiComboBox *pCombobox=(CDuiComboBox*)m_pMainDlg->FindChildByCmdID(133);
   int nCurSel = pCombobox->GetCurSel();
@@ -90,10 +92,7 @@ LRESULT CUIHander::OnComboNetListSelChanged( LPDUINMHDR pNHdr )
     pDuiWindow = m_pMainDlg->FindChildByName(strDisable[i]);
     if( NULL != pDuiWindow )
     {
-      if(bEnable)
-        pDuiWindow->ModifyState(0, DuiWndState_Disable, TRUE);
-      else
-        pDuiWindow->ModifyState(DuiWndState_Disable, 0, TRUE);
+		pDuiWindow->EnableWindow(bEnable,TRUE);
     }
   }
 
@@ -152,10 +151,7 @@ LRESULT CUIHander::OnComboServListSelChanged( LPDUINMHDR pNHdr )
     pDuiWindow = m_pMainDlg->FindChildByName(strDisable[i]);
     if( NULL != pDuiWindow )
     {
-      if(bEnable)
-        pDuiWindow->ModifyState(0, DuiWndState_Disable, TRUE);
-      else
-        pDuiWindow->ModifyState(DuiWndState_Disable, 0, TRUE);
+		pDuiWindow->EnableWindow(bEnable,TRUE);
     }
   }
 
