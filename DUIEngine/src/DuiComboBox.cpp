@@ -490,7 +490,7 @@ void CDuiComboBox::OnDropDownListClose()
 	{
 		ModifyState(0,DuiWndState_Hover);
 	}
-	NotifyInvalidate();
+	NotifyInvalidateRect(m_rcWindow);
 }
 
 }//namespace DuiEngine
