@@ -302,7 +302,7 @@ namespace DuiEngine
 		{
 			pOldFocus->DuiSendMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
 		}
-		if(pNewFocus)
+		if(pNewFocus && !pNewFocus->IsDisabled(TRUE))
 		{
 			pNewFocus->DuiSendMessage(WM_SETFOCUS,(WPARAM)pOldFocus);
 			focused_view_ = hDuiWnd;
