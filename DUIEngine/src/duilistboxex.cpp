@@ -474,10 +474,6 @@ void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
 
     if(S_OK!=DuiNotify((LPDUINMHDR)&nms)) return ;
 
-	if(!IsVirtual() && nOldSel!=-1)
-	{
-		m_arrItems[nOldSel]->GetFocusManager()->SetFocusedHwnd(0);
-	}
 	m_iSelItem=nNewSel;
     if(nOldSel!=-1)
     {
@@ -672,6 +668,10 @@ LRESULT CDuiListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 					m_pTemplPanel->DoFrameEvent(WM_MOUSEHOVER,wParam,MAKELPARAM(pt.x,pt.y));
 				}
 			}
+		}
+		if(uMsg==WM_LBUTTONDOWN && m_iSelItem!=-1 && m_iSelItem != m_iHoverItem && !IsVirtual())
+		{//选择一个新行的时候原有行失去焦点
+			m_arrItems[m_iSelItem]->GetFocusManager()->SetFocusedHwnd(0);
 		}
 		if(m_iHoverItem!=-1)
 		{

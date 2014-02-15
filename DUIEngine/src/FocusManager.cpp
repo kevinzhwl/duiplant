@@ -291,7 +291,7 @@ namespace DuiEngine
 		{
 			return;
 		}
-		DUITRACE(_T("SetFocusedHwndWithReason: focus=%d,reason=%d\n"),hDuiWnd,reason);
+		
 		AutoReset<bool> auto_changing_focus(&is_changing_focus_, true);
 		// Update the reason for the focus change (since this is checked by
 		// some listeners), then notify all listeners.
