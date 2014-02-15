@@ -795,7 +795,6 @@ BOOL CDuiHostWnd::DuiCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
 
 BOOL CDuiHostWnd::DuiShowCaret( BOOL bShow )
 {
-	DUITRACE(_T("\nDuiShowCaret:bShow=%d"),bShow);
     m_bCaretShowing=bShow;
 
 	if(bShow)
@@ -822,7 +821,6 @@ BOOL CDuiHostWnd::DuiShowCaret( BOOL bShow )
 BOOL CDuiHostWnd::DuiSetCaretPos( int x,int y )
 {
     if(!SetCaretPos(x,y)) return FALSE;
-	DUITRACE(_T("\nDuiSetCaretPos:(%d,%d)"),x,y);
 	if(m_bCaretShowing && m_bCaretActive)
 	{
 		//clear old caret

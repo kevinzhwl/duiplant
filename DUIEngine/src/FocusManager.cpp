@@ -291,7 +291,7 @@ namespace DuiEngine
 		{
 			return;
 		}
-
+		DUITRACE(_T("SetFocusedHwndWithReason: focus=%d,reason=%d\n"),hDuiWnd,reason);
 		AutoReset<bool> auto_changing_focus(&is_changing_focus_, true);
 		// Update the reason for the focus change (since this is checked by
 		// some listeners), then notify all listeners.
@@ -352,12 +352,12 @@ namespace DuiEngine
 	void CFocusManager::RestoreFocusedView()
 	{
 		CDuiWindow *pWnd=DuiWindowManager::GetWindow(focused_backup_);
-		focused_backup_=0;
 		if(pWnd && !pWnd->IsDisabled(TRUE))
 		{
 			focused_view_=focused_backup_;
 			pWnd->DuiSendMessage(WM_SETFOCUS);
 		}
+		focused_backup_=0;
 	}
 
 	void CFocusManager::RegisterAccelerator( const CAccelerator& accelerator, IAcceleratorTarget* target )
