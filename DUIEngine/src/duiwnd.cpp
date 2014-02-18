@@ -1830,7 +1830,7 @@ BOOL CDuiWindow::_PaintRegion( CDCHandle& dc, CRgn& rgn,CDuiWindow *pWndCur,CDui
 	PRSTATE prsBack=prState;	//保存当前的绘制状态,在递归结束后根据这个状态来判断是否需要绘制非客户区
 
 	CRect rcClient;
-	pWndCur->GetRect(&rcClient);
+	pWndCur->GetClient(&rcClient);
 	if(rgn.IsNull() || rgn.RectInRegion(rcClient))
 	{//重绘客户区
 		CRgn rgnOldClip;

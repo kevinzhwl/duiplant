@@ -65,8 +65,8 @@ int CDuiScrollBar::SetPos(int nPos)
             CRect rcUnion;
             rcUnion.UnionRect(&rcOldThumb,&rcNewThumb);
             HDC hdc=GetDuiDC(&rcUnion,OLEDC_PAINTBKGND);
-            m_pSkin->Draw(hdc,rcUnion,MAKESBSTATE(SB_PAGEDOWN,0,IsVertical()));
-            m_pSkin->Draw(hdc,rcNewThumb,MAKESBSTATE(SB_THUMBTRACK,0,IsVertical()));
+            m_pSkin->Draw(hdc,rcUnion,MAKESBSTATE(SB_PAGEDOWN,SBST_NORMAL,IsVertical()));
+            m_pSkin->Draw(hdc,rcNewThumb,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,IsVertical()));
             ReleaseDuiDC(hdc);
             m_si.nTrackPos=-1;
         }
@@ -188,7 +188,7 @@ void CDuiScrollBar::OnLButtonUp(UINT nFlags, CPoint point)
         {
             CRect rc=GetPartRect(m_uClicked);
             HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-            m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uClicked,DuiWndState_Normal,m_bVertical),m_byAlpha);
+            m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uClicked,SBST_NORMAL,m_bVertical),m_byAlpha);
             ReleaseDuiDC(hdc);
         }
         m_uClicked=-1;
@@ -214,7 +214,7 @@ void CDuiScrollBar::OnLButtonDown(UINT nFlags, CPoint point)
         {
             CRect rc=GetPartRect(uHit);
             HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-            m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,DuiWndState_PushDown,m_bVertical),m_byAlpha);
+            m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,SBST_PUSHDOWN,m_bVertical),m_byAlpha);
             ReleaseDuiDC(hdc);
             NotifySbCode(uHit,m_si.nPos);
         }
@@ -255,8 +255,8 @@ void CDuiScrollBar::OnMouseMove(UINT nFlags, CPoint point)
             rcUnion.UnionRect(rcOldThumb,rcThumb);
             HDC hdc=GetDuiDC(&rcUnion,OLEDC_PAINTBKGND);
 
-            m_pSkin->Draw(hdc,rcUnion,MAKESBSTATE(SB_PAGEUP,DuiWndState_Normal,m_bVertical),m_byAlpha);
-            m_pSkin->Draw(hdc,rcThumb,MAKESBSTATE(SB_THUMBTRACK,DuiWndState_Hover,m_bVertical),m_byAlpha);
+            m_pSkin->Draw(hdc,rcUnion,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,m_bVertical),m_byAlpha);
+            m_pSkin->Draw(hdc,rcThumb,MAKESBSTATE(SB_THUMBTRACK,SBST_HOVER,m_bVertical),m_byAlpha);
 
             ReleaseDuiDC(hdc);
             NotifySbCode(SB_THUMBTRACK,m_si.nTrackPos);
@@ -271,14 +271,14 @@ void CDuiScrollBar::OnMouseMove(UINT nFlags, CPoint point)
             {
                 CRect rc=GetPartRect(m_uHtPrev);
                 HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-                m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uHtPrev,DuiWndState_Normal,m_bVertical),m_byAlpha);
+                m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uHtPrev,SBST_NORMAL,m_bVertical),m_byAlpha);
                 ReleaseDuiDC(hdc);
             }
             if(uHit!=-1)
             {
                 CRect rc=GetPartRect(uHit);
                 HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-                m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,DuiWndState_Hover,m_bVertical),m_byAlpha);
+                m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,SBST_HOVER,m_bVertical),m_byAlpha);
                 ReleaseDuiDC(hdc);
             }
             m_uHtPrev=uHit;

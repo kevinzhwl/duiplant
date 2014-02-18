@@ -203,7 +203,15 @@ public:
     DUIWIN_DECLARE_ATTRIBUTES_END()
 };
 
-#define MAKESBSTATE(sbCode,nState,bVertical) MAKELONG((sbCode),MAKEWORD((nState),(bVertical)))
+enum SBSTATE{
+	SBST_NORMAL=0,	//正常状态
+	SBST_HOVER,		//hover状态
+	SBST_PUSHDOWN,	//按下状态
+	SBST_DISABLE,	//禁用状态
+	SBST_INACTIVE,	//失活状态,主要针对两端的箭头
+};
+
+#define MAKESBSTATE(sbCode,nState1,bVertical) MAKELONG((sbCode),MAKEWORD((nState1),(bVertical)))
 #define SB_CORNOR		10
 #define SB_THUMBGRIPPER	11	//滚动条上的可拖动部分
 
@@ -229,12 +237,14 @@ public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
 		DUIWIN_INT_ATTRIBUTE("margin",m_nMargin,FALSE)
 		DUIWIN_INT_ATTRIBUTE("hasgripper",m_bHasGripper,FALSE)
+		DUIWIN_INT_ATTRIBUTE("hasinactivearrow",m_bHasInactiveArrow,FALSE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 protected:
 	//返回源指定部分在原位图上的位置。
 	CRect GetPartRect(int nSbCode, int nState,BOOL bVertical);
     int			m_nMargin;
 	BOOL		m_bHasGripper;
+	BOOL		m_bHasInactiveArrow;//有失活状态的箭头时，滚动条皮肤有必须有5行，否则可以是3行或者4行
 };
 
 class DUI_EXP CDuiSkinMenuBorder : public CDuiSkinImgFrame

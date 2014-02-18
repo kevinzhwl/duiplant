@@ -49,16 +49,21 @@ class DUI_EXP CDuiDialog : public CDuiPanel
 
 #define DEF_UPDATEINTERVAL	20
 
+typedef struct tagSBHITINFO
+{
+	DWORD uSbCode:16;
+	DWORD nState:8;
+	DWORD bVertical:8;
+} SBHITINFO,*PSBHITINFO;
+
+inline bool operator !=(const SBHITINFO &a, const SBHITINFO &b)
+{
+	return memcmp(&a,&b,sizeof(SBHITINFO))!=0;
+}
+
 class DUI_EXP CDuiPanelEx: public CDuiPanel
 {
     DUIOBJ_DECLARE_CLASS_NAME(CDuiPanelEx, "divex")
-
-    typedef struct tagSBHITINFO
-    {
-        DWORD uSbCode:16;
-        DWORD nState:8;
-        DWORD bVertical:8;
-    } SBHITINFO,*PSBHITINFO;
 
 public:
     CDuiPanelEx();
@@ -89,7 +94,7 @@ public:
 
 protected:
     CRect GetSbPartRect(BOOL bVertical,UINT uSBCode);
-
+	CRect GetSbRailwayRect(BOOL bVertical);
     CRect GetScrollBarRect(BOOL bVertical);
 
     int OnCreate(LPVOID);
@@ -103,6 +108,7 @@ protected:
     void OnNcLButtonUp(UINT nFlags,CPoint pt);
 
     void OnNcMouseMove(UINT nFlags, CPoint point) ;
+
 
     void OnNcMouseLeave();
 

@@ -3,7 +3,7 @@
     <dlg id="100" pos="0,0,-0,-0" class="cls_dlg_frame">
       <caption id="101" pos="0,0,-0,29">
         <text pos="11,9" class="cls_txt_red">DUI-Demo ver:%str1%</text>
-        <imgbtn id="1" skin="btn_sys_close"    pos="-45,0" tip="close" animate="1" alpha="200"/>
+        <imgbtn id="1" skin="btn_sys_close"    pos="-45,0" tip="close" animate="1"/>
         <imgbtn id="2" skin="btn_sys_maximize"  pos="-83,0" animate="1" />
         <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="1" />
         <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="1" />
@@ -11,7 +11,7 @@
       <tabctrl pos="5,29,-5,-5" id="2000" cursel="0" animatesteps="10" tabstop="0" inset="10,0,3,0">
         <tab id="110" title="listctrl">
           <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" sbskin="sb_vertical" sbwid="8">
-            <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+            <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">                                                                                                                                                      
             </header>
           </listctrl>
           <button name="btn_ani" pos="-100,0,-56,30" class="normalbtn" alpha="200" animate="1">ani list</button>
@@ -89,14 +89,32 @@
           </header>
         </tab>
         <tab id="115" title="scrollview">
-          <scrollview id="1150" pos="10,0,-10,-10" viewwid="900" viewhei="5000">
+          <scrollview id="1150" pos="10,0,-10,-10" viewwid="900" viewhei="5000" sbskin="sb_test">
             <button class="normalbtn" id="11501" tip="tip test" pos="20,50,200,80">test</button>
             <edit pos="50,100,150,150">scroll edit</edit>
           </scrollview>
         </tab>
         <tab id="116" title="attribute">
           <button class="normalbtn" tabstop="1"  name="测试" font2="bold:1;italic:1;underline:1;adding:15;facename:隶书" pos="20,50,200,80">reposition测试</button>
-        </tab>
+          <combobox show="1" pos="100,140,300,164" dropdown="0" dropheight="250" class="cls_edit" font="8300" dotted="0" cursel="0" itempanel="1">
+            <liststyle  class="cls_edit" crbg="FF0000" itemheight="50" id_text="1" id_icon="2">
+              <template skin="skin_webbtn_forward">
+                <text id="1" pos="5,2" crtext="ff0000"/>
+                <button id="3" pos="0,20,100,40" class="normalbtn" tip="delete cur item">delete</button>
+                <link id="4" pos="100,5" maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+                <img id="2" pos="150,2" skin="icons" msgtransparent="0"/>
+              </template>
+            </liststyle>
+            <editstyle crtext="000000" align="left" x-margin="0" y-margin="0"/>
+            <items>
+              <item text="combobox.item1" icon="1" data="100"/>
+              <item text="combobox.item2" icon="2" data="100"/>
+              <item text="combobox.item3" icon="3" data="103"/>
+              <item text="combobox.item4" icon="4" data="100"/>
+              <item text="combobox.item5" icon="5" data="105"/>
+              <item text="combobox.item6" icon="6" data="100"/>
+            </items>
+          </combobox>        </tab>
         <tab id="117" title="duilistbox">
           <text pos="10,0">一般列表</text>
           <listboxex name="mylist" pos="10,30,|-5,-10" itemheight="30" crbg="ff0000" itemskin="skin_webbtn_forward">

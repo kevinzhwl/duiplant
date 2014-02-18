@@ -22,6 +22,7 @@
 
 <resid type="IMGX" name="IDP_TAB_COMMON"  file="skins\tab_common.png" />
 <resid type="IMGX" name="IDP_SCROLL"  file="skins\scrollbar.png" />
+<resid type="IMGX" name="IDP_SCROLL2"  file="skins\scrollbar2.png" />
 <resid type="IMGX" name="IDP_EDIT_BORDER"  file="skins\img_edit_border.png" />
 <resid type="IMGX" name="IDP_SPLIT_VERT"  file="skins\split_vert.png" />
 <resid type="IMGX" name="IDP_SPLIT_HORZ"  file="skins\split_horz.png" />

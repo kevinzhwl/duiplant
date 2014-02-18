@@ -189,7 +189,7 @@ void CDuiSkinGradation::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
 }
 
 
-CDuiScrollbarSkin::CDuiScrollbarSkin():m_nMargin(0),m_bHasGripper(FALSE)
+CDuiScrollbarSkin::CDuiScrollbarSkin():m_nMargin(0),m_bHasGripper(FALSE),m_bHasInactiveArrow(FALSE)
 {
 	
 }
@@ -206,6 +206,13 @@ CRect CDuiScrollbarSkin::GetPartRect(int nSbCode, int nState,BOOL bVertical)
 		return CRect(CPoint(szFrame.cx*8,(1+(bVertical?0:1))*szFrame.cy),szFrame);
 	}else
 	{
+		if(nState==SBST_INACTIVE)
+		{
+			if(nSbCode==SB_THUMBTRACK || !m_bHasInactiveArrow)
+			{
+				nState=SBST_NORMAL;
+			}
+		}
 		CRect rcRet;
 		int iPart=-1;
 		switch(nSbCode)
