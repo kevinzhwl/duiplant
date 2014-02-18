@@ -135,8 +135,6 @@ protected:
 	
 	void OnPaint(CDCHandle dc);
 
-    void OnLButtonDown(UINT uFlag,CPoint pt);
-
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
 	void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);

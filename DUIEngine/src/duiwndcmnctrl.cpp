@@ -212,12 +212,6 @@ void CDuiButton::OnPaint(CDCHandle dc)
     __super::OnPaint(dc);
 }
 
-void CDuiButton::OnLButtonDown(UINT uFlag,CPoint pt)
-{
-    __super::OnLButtonDown(uFlag,pt);
-    SetDuiFocus();
-}
-
 void CDuiButton::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if(nChar==VK_SPACE || nChar==VK_RETURN)

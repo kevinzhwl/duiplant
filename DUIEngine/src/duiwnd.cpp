@@ -1297,6 +1297,7 @@ void CDuiWindow::OnEnable( BOOL bEnable,UINT nStatus )
 
 void CDuiWindow::OnLButtonDown(UINT nFlags,CPoint pt)
 {
+	if(m_bTabStop) SetDuiFocus();
     SetDuiCapture();
     ModifyState(DuiWndState_PushDown, 0,TRUE);
 }
