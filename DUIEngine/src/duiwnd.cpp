@@ -1466,6 +1466,10 @@ HRESULT CDuiWindow::OnAttributePosition(const CDuiStringA& strValue, BOOL bLoadi
 {
     if (strValue.IsEmpty()) return E_FAIL;
 
+	m_uPositionType &= ~Pos_Float;
+
+	ClearLayoutState();
+
 	m_dlgpos.nCount=0;
 	LPCSTR pszValue=strValue;
 	while(m_dlgpos.nCount<4 && pszValue)
