@@ -169,10 +169,6 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
-				RelativePath=".\ImgView.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MainDlg.cpp"
 				>
 			</File>
@@ -186,6 +182,10 @@
 			</File>
 			<File
 				RelativePath=".\ScintillaWnd.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SkinView.cpp"
 				>
 			</File>
 			<File
@@ -226,10 +226,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ImgView.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MainDlg.h"
 				>
 			</File>
@@ -247,6 +243,10 @@
 			</File>
 			<File
 				RelativePath=".\ScintillaWnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SkinView.h"
 				>
 			</File>
 			<File
@@ -400,6 +400,30 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="colorpicker"
+			>
+			<File
+				RelativePath=".\colorpicker\ColourPopup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\colorpicker\ColourPopup.h"
+				>
+			</File>
+			<File
+				RelativePath=".\colorpicker\DuiColorPicker.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\colorpicker\DuiColorPicker.h"
+				>
+			</File>
+			<File
+				RelativePath=".\colorpicker\Tooltipctrl.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

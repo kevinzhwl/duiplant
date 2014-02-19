@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "MainDlg.h"
 #include "ScintillaWnd.h"
-#include "ImgView.h"
 
 #include "NewFileDlg.h"
 #include "NewSkinDlg.h"
@@ -91,7 +90,7 @@ LRESULT CMainDlg::OnListCtrl_File_SelChanged( LPDUINMHDR pnmh )
 			pListFile->GetSubItem(pLCNmhdr->nNewSel,2,&item);
 			CDuiStringT strImgPath=m_strPrjPath+szBuf;
 			pTabView->SetCurSel(0);
-			CImgView *pImgView=FindChildByName2<CImgView*>("img_view");
+			CSkinView_Base *pImgView=FindChildByName2<CSkinView_Base*>("img_view");
 			if(pImgView) pImgView->SetImageFile(strImgPath);
 		}
 	}
@@ -110,7 +109,7 @@ LRESULT CMainDlg::OnListCtrl_Skin_SelChanged( LPDUINMHDR pnmh )
 			CDuiStringT strImgPath=GetImageSrcFile(pSkinInfo->strSrc);
 			if(!strImgPath.IsEmpty())
 			{
-				CImgView *pImgView=FindChildByName2<CImgView*>("img_view");
+				CSkinView_ImgFrame *pImgView=FindChildByName2<CSkinView_ImgFrame*>("img_view");
 				if(pImgView)
 				{
 					pImgView->SetImageFile(strImgPath);

@@ -30,6 +30,7 @@
                   </header>
                 </listctrl>
                 <button name="prg_btn_add_file" pos="0,-25,100,-0">增加文件</button>
+                <colorpicker name="crpk_test" pos="110,-25,125,-10" color="ff0000"/>
               </tab>
               <tab title="skins view">
                 <!--项目皮肤列表-->
@@ -58,7 +59,7 @@
                       <pane ideasize="0" minsize="0" priority="0"/>
                       <pane ideasize="100" minsize="20" priority="3">
                         <!--容纳一个自定义的图片预览控件-->
-                        <imgview pos="0,0,-0,-0" name="img_view" clipclient="1"></imgview>
+                        <skinview_imgframe pos="0,0,-0,-0" name="img_view" clipclient="1"/>
                       </pane>
                       <pane ideasize="0" minsize="0" priority="0"/>
                     </splitrow>

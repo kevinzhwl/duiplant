@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "NewSkinDlg.h"
 #include "maindlg.h"
-#include "ImgView.h"
 
 CNewSkinDlg::CNewSkinDlg(CMainDlg *pMainDlg)
 :CDuiHostWnd(_T("IDR_DUI_ADDSKIN_DIALOG"))
@@ -42,7 +41,7 @@ void CNewSkinDlg::UpdateImglstPreview()
 	CDuiStringT strSrcFile=m_pMainDlg->GetImageSrcFile(strSrcName);
 	if(!strSrcFile.IsEmpty())
 	{
-		CImgView *pImgView=FindChildByName2<CImgView*>("imgview_imglst");
+		CSkinView_ImgLst *pImgView=FindChildByName2<CSkinView_ImgLst*>("imgview_imglst");
 		pImgView->SetImageFile(strSrcFile);
 		CDuiStringT strStates=CSoUIHelper::GetEditText(FindChildByName2<CDuiRichEdit*>("edit_imglst_states"));
 		int nStates=_ttoi(strStates);
@@ -73,7 +72,7 @@ void CNewSkinDlg::UpdateImgframePreview()
 	CDuiStringT strSrcFile=m_pMainDlg->GetImageSrcFile(strSrcName);
 	if(!strSrcFile.IsEmpty())
 	{
-		CImgView *pImgView=FindChildByName2<CImgView*>("imgview_imgframe");
+		CSkinView_ImgFrame *pImgView=FindChildByName2<CSkinView_ImgFrame*>("imgview_imgframe");
 		pImgView->SetImageFile(strSrcFile);
 		CDuiStringT strStates=CSoUIHelper::GetEditText(FindChildByName2<CDuiRichEdit*>("edit_imgframe_states"));
 		int nStates=_ttoi(strStates);
@@ -193,4 +192,84 @@ void CNewSkinDlg::OnOK()
 
 	}
 	EndDialog(IDOK);
+}
+
+LRESULT CNewSkinDlg::OnCrChange_Button_Border( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	SetButtonSkinColor("border",pNmColor->crSel);
+	return S_OK;
+}
+
+LRESULT CNewSkinDlg::OnCrChange_Button_Normal_Up( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	SetButtonSkinColor("bgup",pNmColor->crSel);
+	return S_OK;
+}
+
+
+LRESULT CNewSkinDlg::OnCrChange_Button_Normal_Down( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	SetButtonSkinColor("bgdown",pNmColor->crSel);
+	return S_OK;
+}
+
+
+LRESULT CNewSkinDlg::OnCrChange_Button_Hover_Up( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	SetButtonSkinColor("bguphover",pNmColor->crSel);
+	return S_OK;
+}
+
+
+LRESULT CNewSkinDlg::OnCrChange_Button_Hover_Down( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	SetButtonSkinColor("bgdownhover",pNmColor->crSel);
+	return S_OK;
+}
+
+
+LRESULT CNewSkinDlg::OnCrChange_Button_Pushdown_Up( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	SetButtonSkinColor("bguppush",pNmColor->crSel);
+	return S_OK;
+}
+
+
+LRESULT CNewSkinDlg::OnCrChange_Button_Pushdown_Down( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	SetButtonSkinColor("bgdownpush",pNmColor->crSel);
+	return S_OK;
+}
+
+
+LRESULT CNewSkinDlg::OnCrChange_Button_Disable_Up( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	SetButtonSkinColor("bgupdisable",pNmColor->crSel);
+	return S_OK;
+}
+
+
+LRESULT CNewSkinDlg::OnCrChange_Button_Disable_Down( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	SetButtonSkinColor("bgdowndisable",pNmColor->crSel);
+	return S_OK;
+}
+
+void CNewSkinDlg::SetButtonSkinColor( const CDuiStringA &strAttr,COLORREF cr )
+{
+	CSkinView_Button *pImgView=FindChildByName2<CSkinView_Button*>("imgview_button");
+	DUIASSERT(pImgView);
+	CDuiStringA strColor;
+	strColor.Format("%02x%02x%02x",GetRValue(cr),GetGValue(cr),GetBValue(cr));
+	pImgView->GetButtonSkin()->SetAttribute(strAttr,strColor);
+	pImgView->NotifyInvalidate();
 }

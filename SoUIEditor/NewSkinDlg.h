@@ -17,6 +17,17 @@ protected:
 	LRESULT OnEditNotify_imglst(LPDUINMHDR pNHdr);
 	LRESULT OnEditNotify_imgframe(LPDUINMHDR pNHdr);
 
+	LRESULT OnCrChange_Button_Border(LPDUINMHDR pNHdr);
+	LRESULT OnCrChange_Button_Normal_Up(LPDUINMHDR pNHdr);
+	LRESULT OnCrChange_Button_Normal_Down(LPDUINMHDR pNHdr);
+	LRESULT OnCrChange_Button_Hover_Up(LPDUINMHDR pNHdr);
+	LRESULT OnCrChange_Button_Hover_Down(LPDUINMHDR pNHdr);
+	LRESULT OnCrChange_Button_Pushdown_Up(LPDUINMHDR pNHdr);
+	LRESULT OnCrChange_Button_Pushdown_Down(LPDUINMHDR pNHdr);
+	LRESULT OnCrChange_Button_Disable_Up(LPDUINMHDR pNHdr);
+	LRESULT OnCrChange_Button_Disable_Down(LPDUINMHDR pNHdr);
+	void SetButtonSkinColor(const CDuiStringA &strAttr,COLORREF cr);
+
 	void OnOK();
 
 	DUI_NOTIFY_MAP_BEGIN()
@@ -30,6 +41,19 @@ protected:
 		DUI_NOTIFY_NAME_HANDLER("edit_imgframe_frame",DUINM_RICHEDIT_NOTIFY,OnEditNotify_imgframe)
 		DUI_NOTIFY_NAME_COMMAND("chk_imgframe_vert",UpdateImgframePreview)
 		DUI_NOTIFY_NAME_COMMAND("chk_imgframe_tile",UpdateImgframePreview)
+
+		DUI_NOTIFY_NAME_HANDLER("edit_imgframe_frame",DUINM_RICHEDIT_NOTIFY,OnEditNotify_imgframe)
+
+		DUI_NOTIFY_NAME_HANDLER("crpk_bt1_up",DUINM_COLORCHANGE,OnCrChange_Button_Normal_Up)
+		DUI_NOTIFY_NAME_HANDLER("crpk_bt1_down",DUINM_COLORCHANGE,OnCrChange_Button_Normal_Down)
+		DUI_NOTIFY_NAME_HANDLER("crpk_bt2_up",DUINM_COLORCHANGE,OnCrChange_Button_Hover_Up)
+		DUI_NOTIFY_NAME_HANDLER("crpk_bt2_down",DUINM_COLORCHANGE,OnCrChange_Button_Hover_Down)
+		DUI_NOTIFY_NAME_HANDLER("crpk_bt3_up",DUINM_COLORCHANGE,OnCrChange_Button_Pushdown_Up)
+		DUI_NOTIFY_NAME_HANDLER("crpk_bt3_down",DUINM_COLORCHANGE,OnCrChange_Button_Pushdown_Down)
+		DUI_NOTIFY_NAME_HANDLER("crpk_bt4_up",DUINM_COLORCHANGE,OnCrChange_Button_Disable_Up)
+		DUI_NOTIFY_NAME_HANDLER("crpk_bt4_down",DUINM_COLORCHANGE,OnCrChange_Button_Disable_Down)
+		DUI_NOTIFY_NAME_HANDLER("crpk_bt_border",DUINM_COLORCHANGE,OnCrChange_Button_Border)
+
 
 		DUI_NOTIFY_ID_COMMAND(IDOK,OnOK)
 	DUI_NOTIFY_MAP_END()	
