@@ -131,10 +131,31 @@ namespace DuiEngine
 		CDuiSkinButton *m_skin;
 	};
 
+	class CSkinView_Gradation : public CSkinView_Base
+	{
+		DUIOBJ_DECLARE_CLASS_NAME(CSkinView_Gradation, "skinview_gradation")
+	public:
+		CSkinView_Gradation()
+		{
+			m_skin=new CDuiSkinGradation;
+		}
+		virtual ~CSkinView_Gradation(){
+			delete m_skin;
+		}
+
+		CDuiSkinGradation * GetGradationSkin(){return m_skin;}
+
+	protected:
+		virtual CDuiSkinBase * GetSkin(){return m_skin;}
+
+		CDuiSkinGradation *m_skin;
+	};
+
 	inline void RegSkinViewClass()
 	{
 		DuiWindowFactoryManager::getSingleton().RegisterFactory(TplDuiWindowFactory<CSkinView_ImgLst>());
 		DuiWindowFactoryManager::getSingleton().RegisterFactory(TplDuiWindowFactory<CSkinView_ImgFrame>());
 		DuiWindowFactoryManager::getSingleton().RegisterFactory(TplDuiWindowFactory<CSkinView_Button>());
+		DuiWindowFactoryManager::getSingleton().RegisterFactory(TplDuiWindowFactory<CSkinView_Gradation>());
 	}
 }

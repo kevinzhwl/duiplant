@@ -28,6 +28,10 @@ protected:
 	LRESULT OnCrChange_Button_Disable_Down(LPDUINMHDR pNHdr);
 	void SetButtonSkinColor(const CDuiStringA &strAttr,COLORREF cr);
 
+	LRESULT OnCrChange_Gradataion_From(LPDUINMHDR pNHdr);
+	LRESULT OnCrChange_Gradataion_To(LPDUINMHDR pNHdr);
+	void OnGradationDir();
+
 	void OnOK();
 
 	DUI_NOTIFY_MAP_BEGIN()
@@ -54,6 +58,9 @@ protected:
 		DUI_NOTIFY_NAME_HANDLER("crpk_bt4_down",DUINM_COLORCHANGE,OnCrChange_Button_Disable_Down)
 		DUI_NOTIFY_NAME_HANDLER("crpk_bt_border",DUINM_COLORCHANGE,OnCrChange_Button_Border)
 
+		DUI_NOTIFY_NAME_HANDLER("crpk_gradation_from",DUINM_COLORCHANGE,OnCrChange_Gradataion_From)
+		DUI_NOTIFY_NAME_HANDLER("crpk_gradation_to",DUINM_COLORCHANGE,OnCrChange_Gradataion_To)
+		DUI_NOTIFY_NAME_COMMAND("chk_gradation_dir",OnGradationDir)
 
 		DUI_NOTIFY_ID_COMMAND(IDOK,OnOK)
 	DUI_NOTIFY_MAP_END()	

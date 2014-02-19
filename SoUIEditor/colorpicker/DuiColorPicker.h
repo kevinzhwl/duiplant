@@ -21,6 +21,7 @@ public:
 	CDuiColorPicker(void);
 	~CDuiColorPicker(void);
 
+	COLORREF GetColor(){return m_crCur;}
 protected://IColorPicker
 	virtual void OnColorChanged(COLORREF cr);
 	virtual void OnColorEnd(BOOL bCancel,COLORREF cr);

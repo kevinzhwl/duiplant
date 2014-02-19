@@ -140,6 +140,14 @@ public:
 class DUI_EXP CDuiSkinButton : public CDuiSkinBase
 {
     DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinButton, "button")
+
+	enum{
+		ST_NORMAL=0,
+		ST_HOVER,
+		ST_PUSHDOWN,
+		ST_DISABLE,
+	};
+
 public:
     CDuiSkinButton();
 
@@ -148,29 +156,25 @@ public:
     virtual BOOL IgnoreState();
 
     virtual int GetStates();
+
+	void SetColors(COLORREF crUp[4],COLORREF crDown[4],COLORREF crBorder);
+
 protected:
     COLORREF m_crBorder;
-    COLORREF m_crBgUpNormal;
-    COLORREF m_crBgUpHover;
-    COLORREF m_crBgUpPush;
-    COLORREF m_crBgDownNormal;
-    COLORREF m_crBgDownHover;
-    COLORREF m_crBgDownPush;
 
-	COLORREF m_crBgUpDisable;
-	COLORREF m_crBgDownDisable;
-
+	COLORREF	m_crUp[4];
+	COLORREF	m_crDown[4];
 public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
 		DUIWIN_COLOR_ATTRIBUTE("border", m_crBorder, TRUE)
-		DUIWIN_COLOR_ATTRIBUTE("bgup", m_crBgUpNormal, TRUE)
-		DUIWIN_COLOR_ATTRIBUTE("bgdown", m_crBgDownNormal, TRUE)
-		DUIWIN_COLOR_ATTRIBUTE("bguphover", m_crBgUpHover, TRUE)
-		DUIWIN_COLOR_ATTRIBUTE("bgdownhover", m_crBgDownHover, TRUE)
-		DUIWIN_COLOR_ATTRIBUTE("bguppush", m_crBgUpPush, TRUE)
-		DUIWIN_COLOR_ATTRIBUTE("bgdownpush", m_crBgDownPush, TRUE)
-		DUIWIN_COLOR_ATTRIBUTE("bgupdisable", m_crBgUpDisable, TRUE)
-		DUIWIN_COLOR_ATTRIBUTE("bgdowndisable", m_crBgDownDisable, TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgup", m_crUp[ST_NORMAL], TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgdown", m_crDown[ST_NORMAL], TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bguphover", m_crUp[ST_HOVER], TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgdownhover", m_crDown[ST_HOVER], TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bguppush", m_crUp[ST_PUSHDOWN], TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgdownpush", m_crDown[ST_PUSHDOWN], TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgupdisable", m_crUp[ST_DISABLE], TRUE)
+		DUIWIN_COLOR_ATTRIBUTE("bgdowndisable", m_crDown[ST_DISABLE], TRUE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 };
 
@@ -187,6 +191,21 @@ public:
     CDuiSkinGradation();
 
     virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
+	
+	void SetColorFrom(COLORREF crFrom)
+	{
+		m_crFrom=crFrom;
+	}
+
+	void SetColorTo(COLORREF crTo)
+	{
+		m_crTo=crTo;
+	}
+
+	void SetVertical(BOOL bVertical)
+	{
+		m_uDirection=bVertical?DIR_VERT:DIR_HORZ;
+	}
 
 protected:
     COLORREF m_crFrom;
@@ -196,7 +215,7 @@ public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
     DUIWIN_COLOR_ATTRIBUTE("from", m_crFrom, TRUE)
     DUIWIN_COLOR_ATTRIBUTE("to", m_crTo, TRUE)
-    DUIWIN_ENUM_ATTRIBUTE("direction", GRA_DIR, TRUE)
+    DUIWIN_ENUM_ATTRIBUTE("dir", GRA_DIR, TRUE)
 		DUIWIN_ENUM_VALUE("horz", DIR_HORZ)
 		DUIWIN_ENUM_VALUE("vert", DIR_VERT)
     DUIWIN_ENUM_END(m_uDirection)
@@ -237,14 +256,14 @@ public:
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
 		DUIWIN_INT_ATTRIBUTE("margin",m_nMargin,FALSE)
 		DUIWIN_INT_ATTRIBUTE("hasgripper",m_bHasGripper,FALSE)
-		DUIWIN_INT_ATTRIBUTE("hasinactivearrow",m_bHasInactiveArrow,FALSE)
+		DUIWIN_INT_ATTRIBUTE("hasinactive",m_bHasInactive,FALSE)
     DUIWIN_DECLARE_ATTRIBUTES_END()
 protected:
 	//返回源指定部分在原位图上的位置。
 	CRect GetPartRect(int nSbCode, int nState,BOOL bVertical);
     int			m_nMargin;
 	BOOL		m_bHasGripper;
-	BOOL		m_bHasInactiveArrow;//有失活状态的箭头时，滚动条皮肤有必须有5行，否则可以是3行或者4行
+	BOOL		m_bHasInactive;//有失活状态的箭头时，滚动条皮肤有必须有5行，否则可以是3行或者4行
 };
 
 class DUI_EXP CDuiSkinMenuBorder : public CDuiSkinImgFrame

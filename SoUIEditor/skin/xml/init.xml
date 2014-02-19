@@ -1,4 +1,4 @@
-<DuiEngine>
+﻿<DuiEngine>
 	<font face="宋体" size="12" />
 	<string>
 		<s id="1">SoUIEditor</s>
@@ -22,7 +22,6 @@
 		<imgframe name="btn_yellow" src="IDP_BTN_YELLOW" left="3" states="4" />
 		<imglst name="tabskin_default" src="IDP_TAB_COMMON" states="3" />
 		<imgframe name="comboboxbtn" src="IDP_DROPBTN" states="3" />
-
 	</skins>
 	<style>
 		<class name="cls_dlg_frame" skin="dlg_frame" font="0000" crtext="FFFFFF" x-margin="0" />

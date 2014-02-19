@@ -33,6 +33,7 @@
             <text pos="0,40" height="25">边缘宽度:</text>
             <edit name="edit_scrollbar_margin" pos="[5,40" width="30" height="25"/>
             <check name="chk_scrollbar_gripper" pos="[10,40" height="25">有拉手</check>
+            <check name="chk_scrollbar_inactive" pos="[10,40" height="25">有失活状态</check>
             <skinview_imglst name="imgview_scrollbar" pos="0,80,-0,-0"/>
           </tab>
           <tab title="button">
@@ -65,6 +66,16 @@
             <colorpicker pos="[5,[-12" width="12" height="12" name="crpk_bt_border" color="707070"/>
 
             <skinview_button name="imgview_button" pos="0,100,-0,-0" viewtype="button"/>
+          </tab>
+          <tab title="gradation">
+            <text pos="5,5">颜色1</text>
+            <colorpicker pos="[5,[-12" width="12" height="12" name="crpk_gradation_from" color="8e8e8e"/>
+            <text pos="[5,5">颜色2</text>
+            <colorpicker pos="[5,[-12" width="12" height="12" name="crpk_gradation_to" color="808080"/>
+
+            <check name="chk_gradation_dir" pos="5,40" height="25">纵向渐变</check>
+
+            <skinview_gradation name="imgview_gradation" pos="0,100,-0,-0"/>
           </tab>
         </tabctrl>
         

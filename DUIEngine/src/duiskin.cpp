@@ -114,16 +114,15 @@ void CDuiSkinImgFrame::OnAttributeFinish(pugi::xml_node xmlNode)
 
 CDuiSkinButton::CDuiSkinButton()
     : m_crBorder(RGB(0x70, 0x70, 0x70))
-    , m_crBgUpNormal(RGB(0xEE, 0xEE, 0xEE))
-	, m_crBgDownNormal(RGB(0xD6, 0xD6, 0xD6))
-    , m_crBgUpHover(RGB(0xEE, 0xEE, 0xEE))
-	, m_crBgDownHover(RGB(0xE0, 0xE0, 0xE0))
-    , m_crBgUpPush(RGB(0xCE, 0xCE, 0xCE))
-    , m_crBgDownPush(RGB(0xC0, 0xC0, 0xC0))
-	, m_crBgUpDisable(RGB(0x8E, 0x8E, 0x8E))
-	, m_crBgDownDisable(RGB(0x80, 0x80, 0x80))
 {
-
+	m_crUp[0]=(RGB(0xEE, 0xEE, 0xEE));
+	m_crDown[0]=(RGB(0xD6, 0xD6, 0xD6));
+	m_crUp[1]=(RGB(0xEE, 0xEE, 0xEE));
+	m_crDown[1]=(RGB(0xE0, 0xE0, 0xE0));
+	m_crUp[2]=(RGB(0xCE, 0xCE, 0xCE));
+	m_crDown[2]=(RGB(0xC0, 0xC0, 0xC0));
+	m_crUp[3]=(RGB(0x8E, 0x8E, 0x8E));
+	m_crDown[3]=(RGB(0x80, 0x80, 0x80));
 }
 
 #define MAKECOLORALPHA(cr,alpha) ((cr&0x00ffffff)|(alpha<<24))
@@ -131,11 +130,8 @@ CDuiSkinButton::CDuiSkinButton()
 void CDuiSkinButton::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
 {
     rcDraw.DeflateRect(1, 1);
-
 	GradientFillRectV(
-		dc, rcDraw,
-		IIF_STATE4(dwState, m_crBgUpNormal, m_crBgUpHover, m_crBgUpPush,m_crBgUpDisable),
-		IIF_STATE4(dwState, m_crBgDownNormal, m_crBgDownHover, m_crBgDownPush,m_crBgDownDisable),
+		dc, rcDraw,m_crUp[dwState],m_crDown[dwState],
 		byAlpha
 		);
 
@@ -168,6 +164,13 @@ int CDuiSkinButton::GetStates()
     return 4;
 }
 
+void CDuiSkinButton::SetColors( COLORREF crUp[4],COLORREF crDown[4],COLORREF crBorder )
+{
+	memcpy(m_crUp,crUp,4*sizeof(COLORREF));
+	memcpy(m_crDown,crDown,4*sizeof(COLORREF));
+	m_crBorder=crBorder;
+}
+
 //////////////////////////////////////////////////////////////////////////
 CDuiSkinGradation::CDuiSkinGradation()
     : m_uDirection(DIR_HORZ)
@@ -189,7 +192,7 @@ void CDuiSkinGradation::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
 }
 
 
-CDuiScrollbarSkin::CDuiScrollbarSkin():m_nMargin(0),m_bHasGripper(FALSE),m_bHasInactiveArrow(FALSE)
+CDuiScrollbarSkin::CDuiScrollbarSkin():m_nMargin(0),m_bHasGripper(FALSE),m_bHasInactive(FALSE)
 {
 	
 }
@@ -208,7 +211,7 @@ CRect CDuiScrollbarSkin::GetPartRect(int nSbCode, int nState,BOOL bVertical)
 	{
 		if(nState==SBST_INACTIVE)
 		{
-			if(nSbCode==SB_THUMBTRACK || !m_bHasInactiveArrow)
+			if(nSbCode==SB_THUMBTRACK || !m_bHasInactive)
 			{
 				nState=SBST_NORMAL;
 			}

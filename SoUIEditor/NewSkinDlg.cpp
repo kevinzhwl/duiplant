@@ -95,6 +95,13 @@ void CNewSkinDlg::UpdateImgframePreview()
 
 }
 
+CDuiStringA Color2Hex(COLORREF cr)
+{
+	CDuiStringA str;
+	str.Format("%02x%02x%02x",GetRValue(cr),GetGValue(cr),GetBValue(cr));
+	return str;
+}
+
 void CNewSkinDlg::OnOK()
 {
 	xml_document xmlInit;
@@ -103,6 +110,11 @@ void CNewSkinDlg::OnOK()
 		xml_node xmlSkins=xmlInit.first_child().child("skins");
 		if(!xmlSkins) xmlSkins=xmlInit.first_child().append_child("skins");
 		CDuiStringT strSkinName=CSoUIHelper::GetEditText(FindChildByName2<CDuiRichEdit*>("edit_skin_name"));
+		if(strSkinName.IsEmpty())
+		{
+			DuiMessageBox(GetActiveWindow(),_T("没有指定的皮肤名"),_T("错误"),MB_OK|MB_ICONSTOP);
+			return;
+		}
 		CDuiStringA strSkinNameA=DUI_CT2A(strSkinName,CP_UTF8);
 		{
 			//检查名字重复
@@ -120,7 +132,7 @@ void CNewSkinDlg::OnOK()
 
 		CDuiTabCtrl *pTabSkinType=FindChildByName2<CDuiTabCtrl*>("tab_skin_type");
 		char szTypes[][20]={
-			"imglst","imgframe","scrollbar","button"
+			"imglst","imgframe","scrollbar","button","gradation"
 		};
 		int iType=pTabSkinType->GetCurSel();
 		xml_node xmlSkin=xmlSkins.append_child(szTypes[iType]);
@@ -174,9 +186,29 @@ void CNewSkinDlg::OnOK()
 				if(nMargin>0) xmlSkin.append_attribute("margin").set_value(nMargin);
 				if(FindChildByName("chk_scrollbar_hasgripper")->IsChecked())
 					xmlSkin.append_attribute("hasgripper").set_value("1");
+				if(FindChildByName("chk_scrollbar_inactive")->IsChecked())
+					xmlSkin.append_attribute("hasinactive").set_value("1");
 			}
 			break;
 		case 3://button
+			{
+				xmlSkin.append_attribute("bgup").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_bt1_up")->GetColor()));
+				xmlSkin.append_attribute("bgdown").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_bt1_down")->GetColor()));
+				xmlSkin.append_attribute("bguphover").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_bt2_up")->GetColor()));
+				xmlSkin.append_attribute("bgdownhover").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_bt2_down")->GetColor()));
+				xmlSkin.append_attribute("bguppush").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_bt3_up")->GetColor()));
+				xmlSkin.append_attribute("bgdownpush").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_bt3_down")->GetColor()));
+				xmlSkin.append_attribute("bgupdisable").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_bt4_up")->GetColor()));
+				xmlSkin.append_attribute("bgdowndisable").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_bt4_down")->GetColor()));
+				xmlSkin.append_attribute("border").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_bt_border")->GetColor()));
+			}
+			break;
+		case 4://gradation
+			{
+				xmlSkin.append_attribute("from").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_gradation_from")->GetColor()));
+				xmlSkin.append_attribute("to").set_value(Color2Hex(FindChildByName2<CDuiColorPicker*>("crpk_gradation_to")->GetColor()));
+				xmlSkin.append_attribute("dir").set_value(FindChildByName("chk_gradation_dir")->IsChecked()?"vert":"horz");
+			}
 			break;
 		}
 
@@ -271,5 +303,34 @@ void CNewSkinDlg::SetButtonSkinColor( const CDuiStringA &strAttr,COLORREF cr )
 	CDuiStringA strColor;
 	strColor.Format("%02x%02x%02x",GetRValue(cr),GetGValue(cr),GetBValue(cr));
 	pImgView->GetButtonSkin()->SetAttribute(strAttr,strColor);
+	pImgView->NotifyInvalidate();
+}
+
+LRESULT CNewSkinDlg::OnCrChange_Gradataion_From( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	CSkinView_Gradation *pImgView=FindChildByName2<CSkinView_Gradation*>("imgview_gradation");
+
+	pImgView->GetGradationSkin()->SetColorFrom(pNmColor->crSel);
+	pImgView->NotifyInvalidate();
+	return S_OK;
+}
+
+LRESULT CNewSkinDlg::OnCrChange_Gradataion_To( LPDUINMHDR pNHdr )
+{
+	LPDUINMCOLORCHANGE pNmColor=(LPDUINMCOLORCHANGE)pNHdr;
+	CSkinView_Gradation *pImgView=FindChildByName2<CSkinView_Gradation*>("imgview_gradation");
+
+	pImgView->GetGradationSkin()->SetColorTo(pNmColor->crSel);
+	pImgView->NotifyInvalidate();
+	return S_OK;
+}
+
+void CNewSkinDlg::OnGradationDir()
+{
+	BOOL bVertical=FindChildByName("chk_gradation_dir")->IsChecked();
+	CSkinView_Gradation *pImgView=FindChildByName2<CSkinView_Gradation*>("imgview_gradation");
+
+	pImgView->GetGradationSkin()->SetVertical(bVertical);
 	pImgView->NotifyInvalidate();
 }

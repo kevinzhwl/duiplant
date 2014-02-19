@@ -159,6 +159,7 @@ protected:
         }
     }
 
+public:
     static ULONG HexStringToULong(LPCSTR lpszValue, int nSize = -1)
     {
         LPCSTR pchValue = lpszValue;

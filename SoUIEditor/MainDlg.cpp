@@ -90,8 +90,15 @@ LRESULT CMainDlg::OnListCtrl_File_SelChanged( LPDUINMHDR pnmh )
 			pListFile->GetSubItem(pLCNmhdr->nNewSel,2,&item);
 			CDuiStringT strImgPath=m_strPrjPath+szBuf;
 			pTabView->SetCurSel(0);
-			CSkinView_Base *pImgView=FindChildByName2<CSkinView_Base*>("img_view");
-			if(pImgView) pImgView->SetImageFile(strImgPath);
+			FindChildByName2<CDuiTabCtrl*>("skinview_tab")->SetCurSel(_T("imglst"));
+			CSkinView_ImgLst *pImgView=FindChildByName2<CSkinView_ImgLst*>("skinview_imglst");
+			if(pImgView)
+			{
+				pImgView->SetImageFile(strImgPath);
+				pImgView->SetTile(0);
+				pImgView->SetStates(1);
+				pImgView->SetVertical(0);
+			}
 		}
 	}
 	return 0;
@@ -104,19 +111,54 @@ LRESULT CMainDlg::OnListCtrl_Skin_SelChanged( LPDUINMHDR pnmh )
 	if(pLCNmhdr->nNewSel!=-1 && pListSkin)
 	{
 		SkinInfo *pSkinInfo=(SkinInfo *)pListSkin->GetItemData(pLCNmhdr->nNewSel);
-		if(!pSkinInfo->strSrc.IsEmpty())
+		CDuiStringT strImgPath=GetImageSrcFile(pSkinInfo->strSrc);
+		if(pSkinInfo->strType == _T("imgframe"))
 		{
-			CDuiStringT strImgPath=GetImageSrcFile(pSkinInfo->strSrc);
-			if(!strImgPath.IsEmpty())
+			FindChildByName2<CDuiTabCtrl*>("skinview_tab")->SetCurSel(_T("imgframe"));
+			CSkinView_ImgFrame *pImgView=FindChildByName2<CSkinView_ImgFrame*>("skinview_imgframe");
+			if(pImgView)
 			{
-				CSkinView_ImgFrame *pImgView=FindChildByName2<CSkinView_ImgFrame*>("img_view");
-				if(pImgView)
-				{
-					pImgView->SetImageFile(strImgPath);
-					pImgView->SetStates(pSkinInfo->nState);
-					pImgView->SetTile(pSkinInfo->bTile);
-					pImgView->SetMargin(pSkinInfo->rcMargin);
-				}
+				pImgView->SetImageFile(strImgPath);
+				pImgView->SetStates(pSkinInfo->nState);
+				pImgView->SetTile(pSkinInfo->bTile);
+				pImgView->SetMargin(pSkinInfo->rcMargin);
+			}
+		}else if(pSkinInfo->strType==_T("imglst"))
+		{
+			FindChildByName2<CDuiTabCtrl*>("skinview_tab")->SetCurSel(_T("imglst"));
+			CSkinView_ImgLst *pImgView=FindChildByName2<CSkinView_ImgLst*>("skinview_imglst");
+			if(pImgView)
+			{
+				pImgView->SetImageFile(strImgPath);
+				pImgView->SetStates(pSkinInfo->nState);
+				pImgView->SetTile(pSkinInfo->bTile);
+			}
+		}else if(pSkinInfo->strType==_T("button"))
+		{
+			FindChildByName2<CDuiTabCtrl*>("skinview_tab")->SetCurSel(_T("button"));
+			CSkinView_Button *pImgView=FindChildByName2<CSkinView_Button*>("skinview_button");
+			if(pImgView)
+			{
+				pImgView->GetButtonSkin()->SetColors(pSkinInfo->crUp,pSkinInfo->crDown,pSkinInfo->crBorder);
+			}
+		}else if(pSkinInfo->strType==_T("scrollbar"))
+		{
+			FindChildByName2<CDuiTabCtrl*>("skinview_tab")->SetCurSel(_T("imglst"));
+			CSkinView_ImgLst *pImgView=FindChildByName2<CSkinView_ImgLst*>("skinview_imglst");
+			if(pImgView)
+			{
+				pImgView->SetImageFile(strImgPath);
+				pImgView->SetStates(1);
+			}
+		}else if(pSkinInfo->strType==_T("gradation"))
+		{
+			FindChildByName2<CDuiTabCtrl*>("skinview_tab")->SetCurSel(_T("gradation"));
+			CSkinView_Gradation *pImgView=FindChildByName2<CSkinView_Gradation*>("skinview_gradation");
+			if(pImgView)
+			{
+				pImgView->GetGradationSkin()->SetColorFrom(pSkinInfo->cr1);
+				pImgView->GetGradationSkin()->SetColorTo(pSkinInfo->cr2);
+				pImgView->GetGradationSkin()->SetVertical(pSkinInfo->dir);
 			}
 		}
 	}
@@ -241,6 +283,12 @@ BOOL CMainDlg::InitIndexList(LPCTSTR pszIndexFile)
 	return TRUE;
 }
 
+COLORREF Hex2Color(const CDuiStringA & strColor,COLORREF crDef)
+{
+	if(strColor.IsEmpty()) return crDef;
+	return CDuiObject::HexStringToColor(strColor);
+}
+
 void CMainDlg::InitSkinList()
 {
 	CDuiListCtrl * pListSkin=FindChildByName2<CDuiListCtrl *>("prj_list_skin");
@@ -262,16 +310,46 @@ void CMainDlg::InitSkinList()
 				pSkinInfo->strType=DUI_CA2T(xmlNode.name(),CP_UTF8);
 				pSkinInfo->strName=DUI_CA2T(xmlNode.attribute("name").value(),CP_UTF8);
 				pSkinInfo->strSrc=DUI_CA2T(xmlNode.attribute("src").value(),CP_UTF8);
-				pSkinInfo->bTile=xmlNode.attribute("tile").as_bool(false);
-				pSkinInfo->nState=xmlNode.attribute("states").as_int(1);
+
+				if(pSkinInfo->strType==_T("imglst"))
+				{
+					pSkinInfo->bTile=xmlNode.attribute("tile").as_bool(false);
+					pSkinInfo->bVertical=xmlNode.attribute("vertical").as_bool(false);
+					pSkinInfo->nState=xmlNode.attribute("states").as_int(1);
+				}
+
 				if(pSkinInfo->strType==_T("imgframe"))
 				{
+					pSkinInfo->bTile=xmlNode.attribute("tile").as_bool(false);
+					pSkinInfo->bVertical=xmlNode.attribute("vertical").as_bool(false);
+					pSkinInfo->nState=xmlNode.attribute("states").as_int(1);
+
 					pSkinInfo->rcMargin.left=xmlNode.attribute("left").as_int(0);
 					pSkinInfo->rcMargin.right=xmlNode.attribute("right").as_int(-1);
 					pSkinInfo->rcMargin.top=xmlNode.attribute("top").as_int(0);
 					pSkinInfo->rcMargin.bottom=xmlNode.attribute("bottom").as_int(-1);
 					if(pSkinInfo->rcMargin.right == -1) pSkinInfo->rcMargin.right=pSkinInfo->rcMargin.left;
 					if(pSkinInfo->rcMargin.bottom == -1) pSkinInfo->rcMargin.bottom=pSkinInfo->rcMargin.top;
+				}
+
+				if(pSkinInfo->strType==_T("button"))
+				{
+					pSkinInfo->crBorder=Hex2Color(xmlNode.attribute("border").value(),0);
+					pSkinInfo->crUp[0]=Hex2Color(xmlNode.attribute("bgup").value(),0);
+					pSkinInfo->crUp[1]=Hex2Color(xmlNode.attribute("bguphover").value(),0);
+					pSkinInfo->crUp[2]=Hex2Color(xmlNode.attribute("bguppush").value(),0);
+					pSkinInfo->crUp[3]=Hex2Color(xmlNode.attribute("bgupdisable").value(),0);
+					pSkinInfo->crDown[0]=Hex2Color(xmlNode.attribute("bgdown").value(),0);
+					pSkinInfo->crDown[1]=Hex2Color(xmlNode.attribute("bgdownhover").value(),0);
+					pSkinInfo->crDown[2]=Hex2Color(xmlNode.attribute("bgdownpush").value(),0);
+					pSkinInfo->crDown[3]=Hex2Color(xmlNode.attribute("bgdowndisable").value(),0);
+				}
+				
+				if(pSkinInfo->strType==_T("gradation"))
+				{
+					pSkinInfo->cr1=Hex2Color(xmlNode.attribute("from").value(),0);
+					pSkinInfo->cr2=Hex2Color(xmlNode.attribute("to").value(),0);
+					pSkinInfo->dir=strcmp("vert",xmlNode.attribute("dir").value())==0;
 				}
 
 				pListSkin->InsertItem(iItem,pSkinInfo->strType);
