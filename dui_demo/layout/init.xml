@@ -35,7 +35,7 @@
         bguppush="C6E2FD" bgdownpush="FEFEFE"/>
 
     <scrollbar name="sb_common" src="IDP_SCROLL" margin="3" hasgripper="0"/>
-    <scrollbar name="sb_test" src="IDP_SCROLL2" margin="3" hasgripper="0" hasinactivearrow="1"/>
+    <scrollbar name="sb_test" src="IDP_SCROLL2" margin="3" hasgripper="0" hasinactive="1"/>
     <vscrollbar name="sb_vertical" src="IDP_VSCROLLBAR" margin="3"/>
 
     <imgframe name="skin_editnc" src="IDP_EDIT_BORDER" subwidth="26" left="2" top="2"/>
