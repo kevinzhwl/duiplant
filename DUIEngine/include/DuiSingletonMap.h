@@ -3,15 +3,15 @@
 namespace DuiEngine
 {
 
-template<class TClass,class TObj,class TKey=CDuiStringA>
-class DuiSingletonMap :public Singleton<TClass>
+template<class TObj,class TKey=CDuiStringA>
+class DuiCmnMap
 {
 public:
-    DuiSingletonMap(void (*funOnKeyRemoved)(const TObj &)=NULL):m_pFunOnKeyRemoved(funOnKeyRemoved)
+    DuiCmnMap(void (*funOnKeyRemoved)(const TObj &)=NULL):m_pFunOnKeyRemoved(funOnKeyRemoved)
     {
         m_mapNamedObj=new CDuiMap<TKey,TObj>;
     }
-    virtual ~DuiSingletonMap()
+    virtual ~DuiCmnMap()
     {
         RemoveAll();
         delete m_mapNamedObj;
@@ -74,6 +74,9 @@ protected:
     CDuiMap<TKey,TObj> *m_mapNamedObj;
 };
 
-
+template<class TClass,class TObj,class TKey=CDuiStringA>
+class DuiSingletonMap :public Singleton<TClass>, public DuiCmnMap<TObj,TKey>
+{
+};
 
 }//namespace DuiEngine

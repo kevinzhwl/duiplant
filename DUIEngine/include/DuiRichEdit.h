@@ -3,11 +3,48 @@
 #include <Richedit.h>
 #include <TextServ.h>
 #include "duiwndpanel.h"
+#include "DUISingleton.h"
 
 namespace DuiEngine
 {
 
 class CDuiRichEdit;
+
+class DUI_EXP CDuiTextServiceHelper: public Singleton<CDuiTextServiceHelper>
+{
+public:
+	CDuiTextServiceHelper()
+	{
+		m_rich20=LoadLibrary(_T("riched20.dll"));
+		if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
+	}
+	~CDuiTextServiceHelper()
+	{
+		if(m_rich20) FreeLibrary(m_rich20);
+		m_funCreateTextServices=NULL;
+	}
+	
+
+	HRESULT CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk )
+	{
+		if(!m_funCreateTextServices) return E_NOTIMPL;
+		return m_funCreateTextServices(punkOuter,pITextHost,ppUnk);
+	}
+
+	static BOOL Init(){
+		if(ms_Singleton) return FALSE;
+		new CDuiTextServiceHelper();
+		return TRUE;
+	}
+
+	static void Destroy()
+	{
+		if(ms_Singleton) delete ms_Singleton;
+	}
+protected:
+	HINSTANCE	m_rich20;	//richedit module
+	PCreateTextServices	m_funCreateTextServices;
+};
 
 class DUI_EXP CDuiTextHost : public ITextHost
 {

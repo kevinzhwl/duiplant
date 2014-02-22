@@ -2,17 +2,7 @@
 
 namespace DuiEngine
 {
-
-	struct IDuiRef
-	{
-		virtual int AddRef()=NULL;
-
-		virtual int Release()=NULL;
-
-		virtual void OnFinalRelease()=NULL;
-	};
-
-	class DUI_EXP CDuiRef : public IDuiRef
+	class DUI_EXP CDuiRef
 	{
 	public:
 		CDuiRef():m_nRef(1)

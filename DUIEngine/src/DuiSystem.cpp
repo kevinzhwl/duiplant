@@ -2,7 +2,7 @@
 #include "DuiSystem.h"
 #include "mybuffer.h"
 #include "SimpleWnd.h"
-
+#include "DuiRichEdit.h"
 
 namespace DuiEngine
 {
@@ -14,21 +14,17 @@ DuiSystem::DuiSystem(HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")
     ,m_pResProvider(NULL)
     ,m_pLogger(NULL)
 	,m_pScriptModule(NULL)
-	,m_funCreateTextServices(NULL)
 {
     createSingletons();
 	CSimpleWndHelper::Init(hInst,pszHostClassName);
-	m_rich20=LoadLibrary(_T("riched20.dll"));
-	if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
+	CDuiTextServiceHelper::Init();
 }
 
 DuiSystem::~DuiSystem(void)
 {
     destroySingletons();
 	CSimpleWndHelper::Destroy();
-
-	if(m_rich20) FreeLibrary(m_rich20);
-	m_funCreateTextServices=NULL;
+	CDuiTextServiceHelper::Destroy();
 }
 
 void DuiSystem::createSingletons()
@@ -153,12 +149,6 @@ BOOL DuiSystem::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType/*=DUIRES_X
 format_error:
 	m_xmlMsgBoxTempl.reset();
 	return FALSE;
-}
-
-HRESULT DuiSystem::CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk )
-{
-	if(!m_funCreateTextServices) return E_NOTIMPL;
-	return m_funCreateTextServices(punkOuter,pITextHost,ppUnk);
 }
 
 size_t DuiSystem::InitName2ID(LPCTSTR pszRes,LPCTSTR pszType )

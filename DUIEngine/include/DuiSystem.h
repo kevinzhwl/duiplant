@@ -90,7 +90,6 @@ public:
 
 	BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=DUIRES_XML_TYPE);
 
-	HRESULT CreateTextServices(IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk);
 protected:
 	pugi::xml_node GetMsgBoxTemplate(){return m_xmlMsgBoxTempl;}
 	pugi::xml_node GetEditMenuTemplate(){return m_xmlEditMenu;}
@@ -102,9 +101,6 @@ protected:
 	IScriptModule		* m_pScriptModule;
     DuiLogger * m_pLogger;
     HINSTANCE m_hInst;
-
-	HINSTANCE	m_rich20;	//richedit module
-	PCreateTextServices	m_funCreateTextServices;
 
 	pugi::xml_document	m_xmlMsgBoxTempl;
 	pugi::xml_document	m_xmlEditMenu;
