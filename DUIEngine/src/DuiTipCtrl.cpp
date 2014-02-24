@@ -68,6 +68,7 @@ void CDuiTipCtrl::UpdateTip(CRect rc, LPCTSTR pszTip,BOOL bText/*=TRUE*/ )
     m_rcTarget=rc;
     m_bTextTip=bText;
     m_strTip=pszTip;
+	m_strTip.Replace(_T("\\n"),_T("\r"));
     if(IsWindowVisible())
     {
         ShowTip(TRUE);
