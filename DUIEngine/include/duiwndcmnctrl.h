@@ -447,7 +447,7 @@ public:
 
     HICON AttachIcon(HICON hIcon);
 
-    void LoadIconFile( LPCWSTR lpFIleName );
+    void LoadIconFile( LPCTSTR lpFIleName );
 protected:
 	virtual CSize GetDesiredSize(LPRECT pRcContainer);
 

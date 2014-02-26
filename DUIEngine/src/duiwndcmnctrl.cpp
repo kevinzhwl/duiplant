@@ -797,7 +797,7 @@ HICON CDuiIconWnd::AttachIcon(HICON hIcon)
     return tmp;
 }
 
-void CDuiIconWnd::LoadIconFile( LPCWSTR lpFIleName )
+void CDuiIconWnd::LoadIconFile( LPCTSTR lpFIleName )
 {
     if( m_theIcon ) DestroyIcon(m_theIcon);
     HICON hIcon = (HICON)LoadImage(NULL, lpFIleName, IMAGE_ICON, m_nSize, m_nSize, LR_LOADFROMFILE );

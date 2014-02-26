@@ -23,10 +23,10 @@ BOOL CDuiTipCtrl::Create( HWND hOwner )
     HWND hWnd=__super::Create(NULL,WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_TOPMOST|WS_EX_NOACTIVATE,0,0,0,0,hOwner,NULL);
     if(!hWnd) return FALSE;
 
-    LOGFONTW lf;
-    GetObjectW(GetStockObject(DEFAULT_GUI_FONT),sizeof(lf),&lf);
+    LOGFONT lf;
+    GetObject(GetStockObject(DEFAULT_GUI_FONT),sizeof(lf),&lf);
     lf.lfHeight=-12;
-    wcscpy(lf.lfFaceName,L"ËÎÌו");
+    _tcscpy(lf.lfFaceName, _T("ËÎÌו"));
     m_font.CreateFontIndirect(&lf);
 
     return TRUE;

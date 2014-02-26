@@ -1312,7 +1312,7 @@ void CDuiWindow::OnLButtonUp(UINT nFlags,CPoint pt)
     LPCTSTR lpszUrl = GetLinkUrl();
     if (lpszUrl && lpszUrl[0])
     {
-        ::ShellExecute(NULL, L"open", lpszUrl, NULL, NULL, SW_SHOWNORMAL);
+        ::ShellExecute(NULL, _T("open"), lpszUrl, NULL, NULL, SW_SHOWNORMAL);
     }
     else if (GetCmdID() || GetName())
     {
