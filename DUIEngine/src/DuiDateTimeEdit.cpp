@@ -912,7 +912,7 @@ CDuiStringT CDuiMaskEdit::GetWindowText()
 	int nLen=__super::GetWindowTextLength();
 	wchar_t *pszBuf=new wchar_t[nLen+1];
 	__super::GetWindowText(pszBuf,nLen);
-	CDuiStringT strTxt=DUI_CW2A(pszBuf);
+	CDuiStringT strTxt=DUI_CW2T(pszBuf);
 	delete []pszBuf;
 	return strTxt;
 }
