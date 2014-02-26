@@ -21,9 +21,9 @@ BOOL DuiStringPool::BuildString(CDuiStringT &strContainer)
     BOOL bRet=FALSE;
     int nSubStringStart=-1;
     int nSubStringEnd=0;
-    while ((nSubStringStart = strContainer.Find(L"%str", nSubStringEnd))!=-1)
+    while ((nSubStringStart = strContainer.Find(_T("%str"), nSubStringEnd))!=-1)
     {
-        nSubStringEnd = strContainer.Find(L'%', nSubStringStart + 4);
+        nSubStringEnd = strContainer.Find(_T('%'), nSubStringStart + 4);
         if(nSubStringEnd==-1)
             break;
         nSubStringEnd++;

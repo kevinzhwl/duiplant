@@ -320,7 +320,7 @@ int CDuiComboBox::SetCurSel( int iSel )
 				if(m_pEdit)
 				{
 					m_pEdit->setMutedState(true);
-					m_pEdit->SetWindowText(m_arrCbItem[iSel].strText);
+					m_pEdit->SetWindowText(DUI_CT2W(m_arrCbItem[iSel].strText));
 					m_pEdit->setMutedState(false);
 				}
 				else
@@ -415,16 +415,18 @@ int CDuiComboBox::GetWindowTextLength()
 
 }
 
-int CDuiComboBox::GetWindowText( LPTSTR lpString, int nMaxCount )
+int CDuiComboBox::GetWindowText( LPWSTR lpString, int nMaxCount )
 {
 	if(m_bDropdown)
 	{
 		if(m_iCurSel==-1) return 0;
 		else
 		{
-			int nRet=m_arrCbItem[m_iCurSel].strText.GetLength();
+			CDuiStringW strText=DUI_CT2W(m_arrCbItem[m_iCurSel].strText);
+			int nRet=strText.GetLength();
 			if(nRet>nMaxCount-1) nRet=nMaxCount-1;
-			_tcsncpy(lpString,m_arrCbItem[m_iCurSel].strText,nRet);
+			
+			wcsncpy(lpString,strText,nRet);
 			lpString[nRet]=0;
 			return nRet;
 		}
@@ -435,7 +437,7 @@ int CDuiComboBox::GetWindowText( LPTSTR lpString, int nMaxCount )
 	}
 }
 
-BOOL CDuiComboBox::SetWindowText(LPCTSTR strText)
+BOOL CDuiComboBox::SetWindowText(LPCWSTR strText)
 {
 	if(m_bDropdown) return FALSE;
 	return m_pEdit->SetWindowText(strText);

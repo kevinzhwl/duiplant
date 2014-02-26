@@ -228,9 +228,9 @@ public:
     virtual ~CDuiRichEdit() {}
 
 public://richedit interface
-    int GetWindowText(LPTSTR lpString, int nMaxCount );
+    int GetWindowText(LPWSTR lpString, int nMaxCount );
     int GetWindowTextLength();
-    BOOL SetWindowText(LPCTSTR lpszText);
+    BOOL SetWindowText(LPCWSTR lpszText);
     void SetSel(DWORD dwSelection, BOOL bNoScroll = FALSE);
     void ReplaceSel(LPWSTR pszText,BOOL bCanUndo=TRUE);
 

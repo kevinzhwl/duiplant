@@ -278,7 +278,7 @@ BOOL CDuiMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lp
 
     // set the window text for the control.
     m_bModified = FALSE;
-    SetWindowText(m_strWindowText);
+    SetWindowText(DUI_CT2W(m_strWindowText));
 
     return TRUE;
 }
@@ -898,7 +898,7 @@ void CDuiMaskEdit::SetMaskState()
 
     if (strWindowText != m_strWindowText)
     {
-        SetWindowText(m_strWindowText);
+        SetWindowText(DUI_CT2W(m_strWindowText));
 
         m_bModified = TRUE;
     }
@@ -910,9 +910,9 @@ void CDuiMaskEdit::SetMaskState()
 CDuiStringT CDuiMaskEdit::GetWindowText()
 {
 	int nLen=__super::GetWindowTextLength();
-	TCHAR *pszBuf=new TCHAR[nLen+1];
+	wchar_t *pszBuf=new wchar_t[nLen+1];
 	__super::GetWindowText(pszBuf,nLen);
-	CDuiStringT strTxt(pszBuf,nLen);
+	CDuiStringT strTxt=DUI_CW2A(pszBuf);
 	delete []pszBuf;
 	return strTxt;
 }
@@ -944,7 +944,7 @@ int CDuiDateEdit::OnCreate(LPVOID)
 void CDuiDateEdit::SetDateTime(LPCTSTR strDate)
 {
     m_strWindowText = m_strDefault = strDate;
-    SetWindowText(strDate);
+    SetWindowText(DUI_CT2W(strDate));
 }
 
 void CDuiDateEdit::SetDateTime( CTime tm )
@@ -1070,8 +1070,8 @@ void CDuiTimeEdit::SetHours(int nHours)
 {
     m_nHours = nHours;
 
-    CDuiStringT strText;
-    strText.Format(_T("%02d:%02d"), m_nHours, m_nMins);
+    CDuiStringW strText;
+    strText.Format(L"%02d:%02d", m_nHours, m_nMins);
     SetWindowText(strText);
 }
 
@@ -1079,8 +1079,8 @@ void CDuiTimeEdit::SetMins(int nMins)
 {
     m_nMins = nMins;
 
-    CDuiStringT strText;
-    strText.Format(_T("%02d:%02d"), m_nHours, m_nMins);
+	CDuiStringW strText;
+    strText.Format(L"%02d:%02d", m_nHours, m_nMins);
     SetWindowText(strText);
 }
 
@@ -1089,8 +1089,8 @@ void CDuiTimeEdit::SetTime(int nHours, int nMins)
     m_nHours = nHours;
     m_nMins = nMins;
 
-    CDuiStringT strText;
-    strText.Format(_T("%02d:%02d"), m_nHours, m_nMins);
+    CDuiStringW strText;
+    strText.Format(L"%02d:%02d", m_nHours, m_nMins);
     SetWindowText(strText);
 }
 

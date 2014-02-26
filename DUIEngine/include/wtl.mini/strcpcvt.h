@@ -30,8 +30,9 @@ namespace DuiEngine
 			return "";
 		}
 
-		static CDuiStringW CvtA2W(const CDuiStringA & str,unsigned int cp=CP_ACP)
+		static CDuiStringW CvtA2W(const CDuiStringA & str,unsigned int cp=CP_ACP,unsigned int cp2=0)
 		{
+			UNREFERENCED_PARAMETER(cp2);
 			wchar_t szBuf[1024];
 			int nRet=MultiByteToWideChar(cp,0,str,str.GetLength(),szBuf,1024);
 			if(nRet>0)
@@ -53,12 +54,12 @@ namespace DuiEngine
 			return L"";
 		}
 
-		static CDuiStringA CvtA2A(const CDuiStringA & str,unsigned int cp=CP_ACP)
+		static CDuiStringA CvtA2A(const CDuiStringA & str,unsigned int cpFrom=CP_UTF8,unsigned int cpTo=CP_ACP)
 		{
-			if(cp==CP_ACP)
+			if(cpTo==cpFrom)
 				return str;
-			CDuiStringW strw=CvtA2W(str,cp);
-			return CvtW2A(strw);
+			CDuiStringW strw=CvtA2W(str,cpFrom);
+			return CvtW2A(strw,cpTo);
 		}
 
 		static CDuiStringW CvtW2W(const CDuiStringW &str,unsigned int cp=CP_ACP)

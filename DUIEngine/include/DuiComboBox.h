@@ -67,9 +67,9 @@ public:
 
 	int GetWindowTextLength();
 
-	int GetWindowText(LPTSTR lpString, int nMaxCount );
+	int GetWindowText(LPWSTR lpString, int nMaxCount );
 	
-	BOOL SetWindowText(LPCTSTR strText);
+	BOOL SetWindowText(LPCWSTR strText);
 
 	virtual LRESULT DuiNotify(LPDUINMHDR pnms);
 
