@@ -57,13 +57,9 @@
 	#define CDuiStringA	CAtlStringA
 	#define CDuiStringW CAtlStringW
 	#define CDuiStringT CAtlString
-	#define DUI_CA2A	CA2A
-	#define DUI_CA2W	CA2W
-	#define DUI_CW2A	CW2A
-	#define DUI_CA2T	CA2T
-	#define DUI_CW2T	CW2T
-	#define DUI_CT2A	CT2A
-	#define DUI_CT2W	CT2W
+
+	#include "wtl.mini/strcpcvt.h"
+
 #else//ATL_FREE
 	#define _WTYPES_NS DuiEngine
 	#define _COLL_NS	DuiEngine
