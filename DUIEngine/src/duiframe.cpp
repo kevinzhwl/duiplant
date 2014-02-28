@@ -61,6 +61,9 @@ LRESULT CDuiFrame::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 	case WM_ACTIVATE:
 		OnActivate(LOWORD(wParam));
 		break;
+	case WM_IME_CHAR:
+		OnFrameKeyEvent(uMsg,wParam,lParam);
+		break;
     default:
         if(uMsg>=WM_KEYFIRST && uMsg<=WM_KEYLAST)
             OnFrameKeyEvent(uMsg,wParam,lParam);
@@ -209,8 +212,9 @@ void CDuiFrame::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     if(pCapture)
     {
         if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
-        pCapture->DuiSendMessage(uMsg,wParam,lParam);
-		m_pHost->SetMsgHandled(pCapture->IsMsgHandled());
+		BOOL bMsgHandled = FALSE;
+        pCapture->DuiSendMessage(uMsg,wParam,lParam,&bMsgHandled);
+		m_pHost->SetMsgHandled(bMsgHandled);
     }
     else
     {
@@ -218,9 +222,10 @@ void CDuiFrame::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         CDuiWindow *pHover=DuiWindowManager::GetWindow(m_hHover);
         if(pHover  && !pHover->IsDisabled(TRUE))
         {
+			BOOL bMsgHandled = FALSE;
             if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
-            pHover->DuiSendMessage(uMsg,wParam,lParam);
-			m_pHost->SetMsgHandled(pHover->IsMsgHandled());
+            pHover->DuiSendMessage(uMsg,wParam,lParam,&bMsgHandled);
+			m_pHost->SetMsgHandled(bMsgHandled);
         }else
 		{
 			m_pHost->SetMsgHandled(FALSE);
@@ -233,8 +238,9 @@ void CDuiFrame::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     CDuiWindow *pFocus=DuiWindowManager::GetWindow(m_focusMgr.GetFocusedHwnd());
     if(pFocus)
     {
-        pFocus->DuiSendMessage(uMsg,wParam,lParam);
-		m_pHost->SetMsgHandled(pFocus->IsMsgHandled());
+		BOOL bMsgHandled = FALSE;
+        pFocus->DuiSendMessage(uMsg,wParam,lParam,&bMsgHandled);
+		m_pHost->SetMsgHandled(bMsgHandled);
     }else
 	{
 		m_pHost->SetMsgHandled(FALSE);
@@ -248,8 +254,9 @@ void CDuiFrame::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     CDuiWindow *pFocus=DuiWindowManager::GetWindow(m_focusMgr.GetFocusedHwnd());
     if(pFocus)
     {
-        pFocus->DuiSendMessage(WM_KEYDOWN,nChar,MAKELPARAM(nRepCnt,nFlags));
-		m_pHost->SetMsgHandled(pFocus->IsMsgHandled());
+		BOOL bMsgHandled=FALSE;
+        pFocus->DuiSendMessage(WM_KEYDOWN,nChar,MAKELPARAM(nRepCnt,nFlags),&bMsgHandled);
+		m_pHost->SetMsgHandled(bMsgHandled);
     }else
 	{
 		m_pHost->SetMsgHandled(FALSE);
