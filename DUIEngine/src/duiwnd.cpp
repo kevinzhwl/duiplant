@@ -837,11 +837,25 @@ int CDuiWindow::CalcPosition( LPRECT lpRcContainer )
 		if(m_rcWindow.top==POS_WAIT) nRet++;
 
 		if(m_rcWindow.right == POS_INIT || m_rcWindow.right == POS_WAIT)
-			m_rcWindow.right=PositionItem2Value(m_dlgpos.Right,lpRcContainer->left,lpRcContainer->right,TRUE);
+		{
+			if(m_dlgpos.Right.pit!=PIT_OFFSET)
+				m_rcWindow.right=PositionItem2Value(m_dlgpos.Right,lpRcContainer->left,lpRcContainer->right,TRUE);
+			else if(m_rcWindow.left!=POS_WAIT)
+				m_rcWindow.right=m_rcWindow.left+m_dlgpos.Right.nPos;
+			else
+				m_rcWindow.right=POS_WAIT;
+		}
 		if(m_rcWindow.right==POS_WAIT) nRet++;
 
 		if(m_rcWindow.bottom == POS_INIT || m_rcWindow.bottom == POS_WAIT)
-			m_rcWindow.bottom=PositionItem2Value(m_dlgpos.Bottom,lpRcContainer->top,lpRcContainer->bottom,FALSE);
+		{
+			if(m_dlgpos.Bottom.pit!=PIT_OFFSET)
+				m_rcWindow.bottom=PositionItem2Value(m_dlgpos.Bottom,lpRcContainer->top,lpRcContainer->bottom,FALSE);
+			else if(m_rcWindow.top!=POS_WAIT)
+				m_rcWindow.bottom=m_rcWindow.top+m_dlgpos.Bottom.nPos;
+			else
+				m_rcWindow.bottom=POS_WAIT;
+		}
 		if(m_rcWindow.bottom==POS_WAIT) nRet++;
 	}else 
 	{
@@ -1451,10 +1465,16 @@ LPCSTR CDuiWindow::ParsePosition(const char * pszPos,DUIDLG_POSITION_ITEM &pos)
 	else if(pszPos[0]=='%') pos.pit=PIT_PERCENT,pszPos++;
 	else if(pszPos[0]=='[') pos.pit=PIT_PREVSIBLING,pszPos++;
 	else if(pszPos[0]==']') pos.pit=PIT_NEXTSIBLING,pszPos++;
+	else if(pszPos[0]=='@') pos.pit=PIT_OFFSET,pszPos++;
 	else pos.pit=PIT_NORMAL;
 	
-	if(pszPos[0]=='-') pos.bMinus=TRUE,pszPos++;
-	else pos.bMinus=FALSE;
+	pos.bMinus=FALSE;
+	if(pszPos[0]=='-')
+	{
+		pszPos++;
+		if(pos.pit != PIT_PERCENT)//百分比值时，不允许使用负值，直接忽略
+			pos.bMinus=TRUE;
+	}
 
 	pos.nPos=(float)atof(pszPos);
 

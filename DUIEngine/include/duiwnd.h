@@ -139,6 +139,7 @@ public:
 		PIT_PERCENT,	//指定在父窗口坐标的中的百分比,以"%"开头
 		PIT_PREVSIBLING,	//指定坐标为相对前一个兄弟窗口的偏移，没有兄弟窗口时为父窗口,以"["开头
 		PIT_NEXTSIBLING,	//指定坐标为相对前一个兄弟窗口的偏移，没有兄弟窗口时为父窗口,以"]"开头
+		PIT_OFFSET,		//相对于前面x1,y1的偏移,只能在x2,y2中使用，以@开头
 	};
 
     struct DUIDLG_POSITION_ITEM
