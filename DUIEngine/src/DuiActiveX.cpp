@@ -1,6 +1,6 @@
 #include "duistd.h"
-#include "activex/DuiAxContainer.h"
 #include "activex/DuiBStr.h"
+#include "activex/DuiAxContainer.h"
 #include "DuiActiveX.h"
 
 namespace DuiEngine
@@ -172,6 +172,10 @@ namespace DuiEngine
 		return m_axContainer->GetActiveXControl();
 	}
 
+	void CDuiActiveX::SetExternalUIHandler( IDocHostUIHandler *pUiHandler )
+	{
+		if(m_axContainer) m_axContainer->SetExternalUIHandler(pUiHandler);
+	}
 	//////////////////////////////////////////////////////////////////////////
 	CDuiFlashCtrl::CDuiFlashCtrl()
 	{

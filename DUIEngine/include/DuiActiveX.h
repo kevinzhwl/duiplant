@@ -2,7 +2,7 @@
 #include "duiwnd.h"
 #include "activex/flash10t.tlh"
 #include "activex/wmp.tlh"
-
+#include <mshtmhst.h>
 
 namespace DuiEngine
 {
@@ -50,6 +50,7 @@ namespace DuiEngine
 
 		BOOL InitActiveX();
 		void SetActiveXVisible(BOOL bVisible);
+		void SetExternalUIHandler(IDocHostUIHandler *pUiHandler);
 	protected:
 		CDuiAxContainerImpl * m_axContainer;
 		CLSID	m_clsid;

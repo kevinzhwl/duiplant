@@ -24,6 +24,7 @@
 
 #include "DuiAxUtil.h"
 #include "atl.mini/duicomcli.h"
+#include <MsHtmHst.h>
 
 namespace DuiEngine
 {
@@ -72,6 +73,11 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
 	void SetAxHost(IAxHostDelegate *pAxHost)
 	{
 		m_pAxHostDelegate=pAxHost;
+	}
+
+	void SetExternalUIHandler(IDocHostUIHandler *pUiHandler)
+	{
+		m_spDocHostUIHandler=pUiHandler;
 	}
 
     IUnknown* GetActiveXControl()
@@ -253,6 +259,8 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
             *object = static_cast<IOleInPlaceSiteWindowless*>(this);
         } else if (iid == IID_IAdviseSink ) {
             *object = static_cast<IAdviseSink*>(this);
+		} else if( iid == IID_IDocHostUIHandler && m_spDocHostUIHandler){
+			*object = m_spDocHostUIHandler;
         } else {
             hr = E_NOINTERFACE;
         }
@@ -390,52 +398,11 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
     STDMETHOD(GetDC)(LPCRECT pRect, DWORD grfFlags, HDC *phDC)
     {
 		return m_pAxHostDelegate->OnAxGetDC(pRect,grfFlags,phDC);
-		return S_FALSE;
-		if(m_grfFlags!=0) return S_FALSE;
-		HWND hWnd=m_pAxHostDelegate->GetAxHostWindow();
-		HDC hDC=::GetDC(hWnd);
-		m_grfFlags=grfFlags;
-		if(grfFlags & OLEDC_OFFSCREEN)
-		{
-			HBITMAP hBmp=CreateCompatibleBitmap(hDC,m_rcPos.right-m_rcPos.left,m_rcPos.bottom-m_rcPos.top);
-			if(!hBmp)
-			{
-				ReleaseDC(hDC);
-				m_grfFlags=0;
-				return E_OUTOFMEMORY;
-			}
-			HDC hMemDC=CreateCompatibleDC(hDC);
-			SelectObject(hMemDC,hBmp);
-			SetViewportExtEx(hDC,m_rcPos.left,m_rcPos.top,NULL);
-			*phDC=hMemDC;
-			ReleaseDC(hDC);
-		}else
-		{
-			*phDC=hDC;
-		}
-        return S_OK;
     }
 
     STDMETHOD(ReleaseDC)(HDC hDC)
     {
 		return m_pAxHostDelegate->OnAxReleaseDC(hDC);
-		return S_FALSE;
-
-		HWND hWnd=m_pAxHostDelegate->GetAxHostWindow();
-		if(m_grfFlags & OLEDC_OFFSCREEN)
-		{
-			HGDIOBJ hBmp=GetCurrentObject(hDC,OBJ_BITMAP);
-			HDC hdctarget=::GetDC(hWnd);
-			BitBlt(hdctarget,m_rcPos.left,m_rcPos.top,m_rcPos.right-m_rcPos.left,m_rcPos.bottom-m_rcPos.top,hDC,m_rcPos.left,m_rcPos.top,SRCCOPY);
-			::ReleaseDC(hWnd,hdctarget);
-			DeleteDC(hDC);
-			DeleteObject(hBmp);
-		}else
-		{
-			::ReleaseDC(hWnd,hDC);
-		}
-		m_grfFlags=0;
-		return S_OK;
     }
 
     STDMETHOD(InvalidateRect)(LPCRECT pRect, BOOL fErase)
@@ -688,7 +655,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
     CDuiComQIPtr<IOleObject>           m_spOleObject;
     CDuiComQIPtr<IOleInPlaceObject>    m_spInPlaceObject;
     CDuiComQIPtr<IOleInPlaceObjectWindowless> m_spOleObjectWindowless;
-
+	CDuiComPtr<IDocHostUIHandler>		m_spDocHostUIHandler;
 	IAxHostDelegate				*	m_pAxHostDelegate;
 };
 
