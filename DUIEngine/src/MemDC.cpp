@@ -63,7 +63,7 @@ void CMemDC::DeleteDC()
 {
 	if(m_hDC && m_hOldBmp)
 	{
-		HBITMAP hBmp=SelectBitmap(m_hOldBmp);
+		HBITMAP hBmp=__super::SelectBitmap(m_hOldBmp);
 		if(m_bBmpOwner) DeleteObject(hBmp);
 	}
 	__super::DeleteDC();
