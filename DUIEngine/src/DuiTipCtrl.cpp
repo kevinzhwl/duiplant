@@ -56,7 +56,7 @@ void CDuiTipCtrl::RelayEvent( const MSG *pMsg )
             KillTimer(TIMERID_DELAY);
             SetTimer(TIMERID_DELAY,m_nDelay);           
             ::ClientToScreen(pMsg->hwnd,&pt);
-            SetWindowPos(0,pt.x,pt.y+24,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOSENDCHANGING|SWP_NOACTIVATE);
+            SetWindowPos(0,pt.x,pt.y+24,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOSENDCHANGING|SWP_NOACTIVATE|SWP_NOOWNERZORDER);
         }
     }
     break;
@@ -105,7 +105,7 @@ void CDuiTipCtrl::ShowTip(BOOL bShow)
 		int cy = GetSystemMetrics(SM_CYSCREEN);
 		if(rcWnd.right>cx) rcWnd.OffsetRect(cx-rcWnd.right,0);
 		if(rcWnd.bottom>cy) rcWnd.OffsetRect(0,cy-rcWnd.bottom);
-        SetWindowPos(HWND_TOPMOST,rcWnd.left,rcWnd.top,rcWnd.Width(),rcWnd.Height(),SWP_NOSENDCHANGING|SWP_SHOWWINDOW|SWP_NOACTIVATE);
+        SetWindowPos(HWND_TOPMOST,rcWnd.left,rcWnd.top,rcWnd.Width(),rcWnd.Height(),SWP_NOSENDCHANGING|SWP_SHOWWINDOW|SWP_NOACTIVATE|SWP_NOOWNERZORDER);
     }
 }
 
