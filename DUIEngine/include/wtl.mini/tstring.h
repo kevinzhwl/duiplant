@@ -459,7 +459,8 @@ namespace DuiEngine
 		}
 		const TStringT& operator=(const tchar* psz)
 		{
-			AssignCopy(SafeStrlen(psz), psz);
+			TStringT strCopy(psz);
+			AssignCopy(strCopy.GetData()->nDataLength, strCopy.m_pszData);
 			return *this;
 		}
 		const TStringT& operator=(tchar ch)
@@ -471,7 +472,8 @@ namespace DuiEngine
 		// string concatenation
 		const TStringT& operator+=(const tchar* psz)
 		{
-			ConcatInPlace(SafeStrlen(psz), psz);
+			TStringT strCopy(psz);
+			ConcatInPlace(strCopy.GetData()->nDataLength, strCopy.m_pszData);
 			return *this;
 		}
 		const TStringT& operator+=(tchar ch)
@@ -479,9 +481,10 @@ namespace DuiEngine
 			ConcatInPlace(1, &ch);
 			return *this;
 		}
-		const TStringT& operator+=(const TStringT& string)
+		const TStringT& operator+=(const TStringT& src)
 		{
-			ConcatInPlace(string.GetData()->nDataLength, string.m_pszData);
+			TStringT strCopy(src);
+			ConcatInPlace(strCopy.GetData()->nDataLength, strCopy.m_pszData);
 			return *this;
 		}
 
@@ -1110,7 +1113,7 @@ namespace DuiEngine
 		}
 		inline void Init()
 		{
-			m_pszData = ((TStringT*)&_tstr_initPszNil)->m_pszData;
+			m_pszData = (tchar*)_tstr_initPszNil;
 		}
 
 		// Assignment operators
