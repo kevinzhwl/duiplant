@@ -486,6 +486,7 @@ int CDuiComboBox::GetAnimateTime()
 
 void CDuiComboBox::OnDropDownListClose()
 {
+	m_pListBox=NULL;
 	m_dwBtnState=DuiWndState_Normal;
 	HDUIWND hHover=GetContainer()->GetDuiHover();
 	if(GetDuiHwnd()!=hHover && (!m_pEdit || hHover!=m_pEdit->GetDuiHwnd()))
