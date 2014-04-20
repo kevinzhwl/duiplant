@@ -37,8 +37,8 @@
           <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
           <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="prog_bg" posskin="prog_bar" value="20" min="0" max="100" showpercent="1"/>
           <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" alpha="200" width="200" bgskin="prog_bg" posskin="prog_bar" thumbskin="slidethumb" value="20" min="0" max="100"/>
-          <combobox show="1" id="1310" pos="100,40,300,64" dropdown="0" dropheight="250" class="cls_edit" font="8300" dotted="0" cursel="0" itempanel="1">
-            <liststyle  class="cls_edit" crbg="FF0000" itemheight="50" id_text="1" id_icon="2">
+          <comboboxex show="1" id="1310" pos="100,40,300,64" dropdown="0" dropheight="250" class="cls_edit" font="8300" dotted="0" cursel="0" itempanel="1"  id_text="1" id_icon="2">
+            <liststyle  class="cls_edit" crbg="FF0000" itemheight="50">
               <template skin="skin_webbtn_forward">
                 <text id="1" pos="5,2" crtext="ff0000"/>
                 <button id="3" pos="0,20,100,40" class="normalbtn" tip="delete cur item">delete</button>
@@ -55,7 +55,7 @@
               <item text="combobox.item5" icon="5" data="105"/>
               <item text="combobox.item6" icon="6" data="100"/>
             </items>
-          </combobox>
+          </comboboxex>
 	        <combobox name="IDC_CB_TEST" pos="100,70,300,94" dropdown="1" dropheight="250" class="cls_edit" dotted="0" animtime="200">
             <liststyle class="cls_edit"  iconskin="icon3" itemheight="30" crtext="000000" crseltext="FFFFFF" critembg="FFFFFF" critemselbg="000088"/>
             <editstyle inset="5,0,5,0" crtext="000000" align="left" crbg="FFFFFF"/>

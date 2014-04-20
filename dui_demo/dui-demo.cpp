@@ -192,7 +192,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	BOOL bOK=pDuiSystem->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
 	pDuiSystem->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
 
-#if defined(DLL_DUI) && !defined(_WIN64)
+#ifdef LUA_TEST
 	CLuaScriptModule scriptLua;
 	scriptLua.executeScriptFile("..\\dui_demo\\lua\\test.lua");
 	pDuiSystem->SetScriptModule(&scriptLua);

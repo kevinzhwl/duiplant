@@ -38,9 +38,9 @@ public:
 
     virtual BOOL Load(pugi::xml_node xmlNode);
 
-    inline int GetCount() const;
+    int GetCount() const;
 
-    inline int GetCurSel() const;
+    int GetCurSel() const;
 
     BOOL SetCurSel(int nIndex);
 

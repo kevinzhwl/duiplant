@@ -453,6 +453,15 @@ public:
 
     virtual void OnAttributeChanged(const CDuiStringA & strAttrName,BOOL bLoading,HRESULT hRet);
 
+	//************************************
+	// Method:    UpdateChildrenPosition :更新子窗口位置
+	// FullName:  DuiEngine::CDuiWindow::UpdateChildrenPosition
+	// Access:    virtual protected 
+	// Returns:   void
+	// Qualifier:
+	//************************************
+	virtual void UpdateChildrenPosition();
+
 public:
 	//************************************
 	// Method:    RedrawRegion
@@ -636,14 +645,6 @@ protected:
 	//************************************
 	virtual CRect GetChildrenLayoutRect();
 
-	//************************************
-	// Method:    UpdateChildrenPosition :更新子窗口位置
-	// FullName:  DuiEngine::CDuiWindow::UpdateChildrenPosition
-	// Access:    virtual protected 
-	// Returns:   void
-	// Qualifier:
-	//************************************
-	virtual void UpdateChildrenPosition();
 	void _UpdateChildrenPosition(CDuiList<CDuiWindow*> *pListWnd);
 
 	void ClearLayoutState();

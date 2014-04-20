@@ -44,6 +44,7 @@ public:
 
     LPARAM GetItemData(int iItem);
 
+	void SetItemData(int iItem,LPARAM lParam);
 
     //************************************
     // Method:    SetItemCount

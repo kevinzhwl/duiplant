@@ -808,7 +808,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiDropDownList.cpp"
+				RelativePath=".\src\DuiDropDown.cpp"
 				>
 			</File>
 			<File
@@ -1190,6 +1190,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\DuiDropDown.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\DuiEventSet.h"
 				>
 			</File>
@@ -1418,10 +1422,6 @@
 				</File>
 				<File
 					RelativePath=".\include\DuiDateTimeEdit.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\DuiDropDownList.h"
 					>
 				</File>
 				<File

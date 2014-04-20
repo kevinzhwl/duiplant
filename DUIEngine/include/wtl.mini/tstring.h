@@ -1330,6 +1330,17 @@ namespace DuiEngine
 		tchar* m_pszData;   // pointer to ref counted string data
 	};
 
+#ifdef DUI_EXPORTS
+#    define EXPIMP_TEMPLATE
+#else
+#    define EXPIMP_TEMPLATE extern
+#endif
+
+	 #pragma warning (disable : 4231)
+
+	EXPIMP_TEMPLATE template class DUI_EXP  TStringT<char, char_traits>;
+	EXPIMP_TEMPLATE template class DUI_EXP  TStringT<wchar_t, wchar_traits>;
+
 	typedef TStringT<char, char_traits>		CDuiStringA;
 	typedef TStringT<wchar_t, wchar_traits>	 CDuiStringW;
 

@@ -11,7 +11,11 @@
 #include <duiwndnotify.h>
 #include <DuiCSS.h>
 
-#ifdef DLL_DUI	//DLL version duiengine support lua
+#if defined(DLL_DUI)  && !defined(_WIN64)
+#define LUA_TEST 
+#endif
+
+#ifdef LUA_TEST	//DLL version duiengine support lua
 #include "..\scriptModule\luaScriptModule\luaScriptModule\luaScriptModule.h"
 
 #ifdef _DEBUG

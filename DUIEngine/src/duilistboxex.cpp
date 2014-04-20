@@ -217,6 +217,12 @@ LPARAM CDuiListBoxEx::GetItemData(int iItem)
     return m_arrItems[iItem]->GetItemData();
 }
 
+void CDuiListBoxEx::SetItemData( int iItem,LPARAM lParam )
+{
+	DUIASSERT(iItem>=0 || iItem< GetItemCount());
+	m_arrItems[iItem]->SetItemData(lParam);
+}
+
 
 BOOL CDuiListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
 {

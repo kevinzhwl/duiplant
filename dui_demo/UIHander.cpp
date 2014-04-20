@@ -143,7 +143,7 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 	}
 	CDuiButton *pBtn=(CDuiButton *)m_pMainDlg->FindChildByCmdID(IDC_REPSEL);
 	m_pMainDlg->GetFocusManager()->RegisterAccelerator(DuiEngine::CAccelerator(VK_RETURN,true),pBtn);//给repsel按钮注册一个热键Ctrl+ENTER。
-#if defined(DLL_DUI) && !defined(_WIN64)
+#ifdef LUA_TEST
 	CDuiWindow *pTst=m_pMainDlg->FindChildByCmdID(btn_tstevt);
 	DuiSystem::getSingleton().GetScriptModule()->subscribeEvent(pTst,DUINM_COMMAND,"onEvtTstClick");
 #endif
@@ -229,11 +229,10 @@ LRESULT CUIHander::OnComboListItemNotify( LPDUINMHDR pNHdr )
 	LPDUINMITEMNOTIFY pItemNHdr=(LPDUINMITEMNOTIFY)pNHdr;
 	if(pItemNHdr->pOriginHdr->idFrom==3) 
 	{//delete button 
-		CDuiComboBox *pCombobox=(CDuiComboBox*)m_pMainDlg->FindChildByCmdID(1310);
+		CDuiComboBoxEx *pCombobox=(CDuiComboBoxEx*)m_pMainDlg->FindChildByCmdID(1310);
 		CDuiListBoxEx *pListBox=(CDuiListBoxEx*)pItemNHdr->pHostDuiWin;
 		int iItem=pListBox->GetItemObjIndex(pItemNHdr->pItem);
-		pCombobox->DeleteItem(iItem);
-		pCombobox->GetDropDownList()->UpdateItems(); 
+		pCombobox->DeleteString(iItem);
 	}
 	return S_OK;
 }
