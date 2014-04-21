@@ -797,8 +797,9 @@ BOOL CDuiWindow::IsUpdateLocked()
 void CDuiWindow::BringWindowToTop()
 {
     if(!m_pParent) return;
-    m_pParent->RemoveChild(this);
-    m_pParent->InsertChild(this);
+	CDuiWindow *pParent=GetParent();
+    pParent->RemoveChild(this);
+    pParent->InsertChild(this);
 }
 
 LRESULT CDuiWindow::DuiNotify(LPDUINMHDR pnms)
