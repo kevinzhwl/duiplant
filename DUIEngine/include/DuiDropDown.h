@@ -30,6 +30,7 @@ namespace DuiEngine
 		void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 		void OnKillFocus(HWND wndFocus);
 		void OnDestroy();
+		void OnActivateApp(BOOL bActive, DWORD dwThreadID);
 
 		virtual void OnFinalMessage(HWND);
 
@@ -42,6 +43,7 @@ namespace DuiEngine
 			MSG_WM_KEYDOWN(OnKeyDown);
 			MSG_WM_KILLFOCUS(OnKillFocus)
 			MSG_WM_DESTROY(OnDestroy)
+			MSG_WM_ACTIVATEAPP(OnActivateApp)
 			CHAIN_MSG_MAP(CDuiHostWnd)
 		END_MSG_MAP()
 	};

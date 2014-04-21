@@ -70,6 +70,11 @@ namespace DuiEngine
 
 	BOOL CDuiDropDownWnd::PreTranslateMessage( MSG* pMsg )
 	{
+		if(pMsg->message==WM_ACTIVATEAPP)
+		{
+			SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
+			return FALSE;
+		}
 		if(!(pMsg->message>=WM_KEYFIRST && pMsg->message<=WM_KEYLAST)) return FALSE;
 		if(!_PreTranslateMessage(pMsg))
 		{
@@ -77,4 +82,13 @@ namespace DuiEngine
 		}
 		return TRUE;
 	}
+
+	void CDuiDropDownWnd::OnActivateApp( BOOL bActive, DWORD dwThreadID )
+	{
+		if(!bActive)
+		{
+			EndDropDown();
+		}
+	}
+
 }//end of namespace DuiEngine
