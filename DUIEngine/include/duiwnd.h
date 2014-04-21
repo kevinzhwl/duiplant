@@ -205,7 +205,7 @@ protected:
     DUIDLG_POSITION m_dlgpos;
 	typedef enum tagPOS2TYPE{
 		POS2_LEFTTOP=0,	//左上角
-		POS2_RIGHTTOP,	//右上争
+		POS2_RIGHTTOP,	//右上角
 		POS2_CENTER,	//中心
 		POS2_LEFTBOTTOM,//
 		POS2_RIGHTBOTTOM,//
