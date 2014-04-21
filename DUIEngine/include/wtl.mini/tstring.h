@@ -1330,7 +1330,7 @@ namespace DuiEngine
 		tchar* m_pszData;   // pointer to ref counted string data
 	};
 
-#ifdef DUI_EXPORTS
+#ifdef DUIENGINE_EXPORTS
 #    define EXPIMP_TEMPLATE
 #else
 #    define EXPIMP_TEMPLATE extern

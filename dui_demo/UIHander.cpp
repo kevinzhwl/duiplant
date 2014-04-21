@@ -370,6 +370,8 @@ bool CUIHander::OnListHeaderClick( CDuiWindow * pSender, LPDUINMHDR pNmhdr )
 
 void CUIHander::OnBtnAniList()
 {
+	DuiMessageBox(NULL,L"msgbox",L"test",MB_OK);
+
 	CDuiWindow *pList=m_pMainDlg->FindChildByName("lc_test");
 	if(pList)
 	{
