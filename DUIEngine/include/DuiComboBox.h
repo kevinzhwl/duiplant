@@ -200,6 +200,8 @@ public:
 		m_pListBox->GetText(iItem,strText);
 		return strText;
 	}
+
+	CDuiListBox * GetListBox(){return m_pListBox;}
 protected:
 	virtual BOOL CreateListBox(pugi::xml_node xmlNode);
 	virtual int  GetListBoxHeight();
@@ -299,6 +301,9 @@ public:
 		if(!pText) return _T("");
 		return pText->GetInnerText();
 	}
+
+	CDuiListBoxEx * GetListBox(){return m_pListBox;}
+
 protected:
 	virtual BOOL CreateListBox(pugi::xml_node xmlNode);
 	virtual int  GetListBoxHeight();
