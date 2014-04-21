@@ -634,12 +634,13 @@ BOOL CDuiListBoxEx::OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem )
 
 LRESULT CDuiListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
+	LRESULT lRet=0;
 	CPoint pt(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 	if(m_pCapturedFrame)
 	{
 		CRect rcItem=m_pCapturedFrame->GetItemRect();
 		pt.Offset(-rcItem.TopLeft());
-		return m_pCapturedFrame->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
+		lRet = m_pCapturedFrame->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
 	}
 	else
 	{
@@ -689,11 +690,11 @@ LRESULT CDuiListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 				DUIASSERT(m_pTemplPanel);
 				m_pTemplPanel->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
 			}
-			if(uMsg==WM_LBUTTONDOWN && m_iHoverItem!=m_iSelItem)
-				NotifySelChange(m_iSelItem,m_iHoverItem,WM_LBUTTONDOWN);
 		}
-		return 0;
 	}
+	if(uMsg==WM_LBUTTONUP && m_iHoverItem!=m_iSelItem)
+		NotifySelChange(m_iSelItem,m_iHoverItem,WM_LBUTTONUP);
+	return 0;
 }
 
 LRESULT CDuiListBoxEx::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )

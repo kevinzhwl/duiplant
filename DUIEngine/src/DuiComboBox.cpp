@@ -213,7 +213,7 @@ LRESULT CDuiComboBoxBase::DuiNotify(LPDUINMHDR pnms)
 		if(pnms->code==DUINM_LBSELCHANGED)
 		{//select item changed
 			DUINMLBSELCHANGE *pnmclk = (DUINMLBSELCHANGE *)pnms;
-			if(pnmclk->uMsg==WM_LBUTTONDOWN || pnmclk->uMsg==WM_LBUTTONUP || pnmclk->uMsg==WM_KEYDOWN)
+			if(pnmclk->uMsg==WM_LBUTTONUP)
 			{
 				SetCurSel(pnmclk->nNewSel);
 				CloseUp();

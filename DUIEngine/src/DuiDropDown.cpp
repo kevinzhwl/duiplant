@@ -75,7 +75,7 @@ namespace DuiEngine
 			SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
 			return FALSE;
 		}
-		if(!(pMsg->message>=WM_KEYFIRST && pMsg->message<=WM_KEYLAST)) return FALSE;
+		if(!(pMsg->message>=WM_KEYFIRST && pMsg->message<=WM_KEYLAST) && pMsg->message!=WM_MOUSEWHEEL) return FALSE;
 		if(!_PreTranslateMessage(pMsg))
 		{
 			SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
