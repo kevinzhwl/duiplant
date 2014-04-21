@@ -543,6 +543,7 @@ protected:
     void OnPaint(CDCHandle dc);
     void OnLButtonUp(UINT nFlags,CPoint pt);
 	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+	virtual BOOL NeedRedrawWhenStateChange(){return TRUE;}
 
     DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("toggled", m_bToggled, TRUE)

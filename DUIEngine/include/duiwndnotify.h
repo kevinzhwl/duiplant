@@ -43,6 +43,14 @@ class CDuiWindow;
             return TRUE;                         \
  
 
+// LRESULT OnDuiHandler(LPDUINMHDR pnmh)
+#define DUI_NOTIFY_HANDLER(cd, func) \
+	if(cd == pnmh->code) \
+{ \
+	return func(pnmh); \
+} 
+
+
 // LRESULT OnDuiIDHandler(LPDUINMHDR pnmh)
 #define DUI_NOTIFY_ID_HANDLER(id, cd, func) \
 	if(cd == pnmh->code && id == pnmh->idFrom) \
