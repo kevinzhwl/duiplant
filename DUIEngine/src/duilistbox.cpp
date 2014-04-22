@@ -465,6 +465,7 @@ void CDuiListBox::OnSize(UINT nType,CSize size)
     CSize szView(rcClient.Width(),GetCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
+	__super::OnSize(nType,size);
 }
 
 void CDuiListBox::OnLButtonDown(UINT nFlags,CPoint pt)
