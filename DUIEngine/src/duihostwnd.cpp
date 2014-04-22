@@ -620,10 +620,11 @@ BOOL CDuiHostWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
 {
-	if(nState==WA_ACTIVE)
-		::SetFocus(m_hWnd);
-	else
+	DUITRACE(_T("OnActivate: hwnd=%d,nState=%d"),m_hWnd,nState);
+	if(nState==WA_INACTIVE)
 		::SetFocus(NULL);
+	else
+		::SetFocus(m_hWnd);
 }
 
 LRESULT CDuiHostWnd::OnDuiNotify(LPDUINMHDR pHdr)
@@ -1013,11 +1014,13 @@ void CDuiHostWnd::OnRealWndSize( CDuiRealWnd *pRealWnd )
 
 void CDuiHostWnd::OnSetFocus( HWND wndOld )
 {
+	DUITRACE(_T("OnSetFocus %d"),m_hWnd);
 	DoFrameEvent(WM_SETFOCUS,0,0);
 }
 
 void CDuiHostWnd::OnKillFocus( HWND wndFocus )
 {
+	DUITRACE(_T("OnKillFocus %d"),m_hWnd);
 	DoFrameEvent(WM_KILLFOCUS,0,0);
 }
 

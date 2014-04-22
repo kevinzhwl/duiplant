@@ -59,7 +59,9 @@ namespace DuiEngine
 
 	void CDuiDropDownWnd::EndDropDown()
 	{
+		HWND hWnd=m_pOwner->GetDropDownOwner()->GetContainer()->GetHostHwnd();
 		DestroyWindow();
+		SetActiveWindow(hWnd);
 	}
 
 	void CDuiDropDownWnd::OnDestroy()
@@ -89,6 +91,11 @@ namespace DuiEngine
 		{
 			EndDropDown();
 		}
+	}
+
+	int CDuiDropDownWnd::OnMouseActivate( HWND wndTopLevel, UINT nHitTest, UINT message )
+	{
+		return MA_NOACTIVATEANDEAT;
 	}
 
 }//end of namespace DuiEngine

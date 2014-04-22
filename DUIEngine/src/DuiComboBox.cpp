@@ -132,7 +132,6 @@ void CDuiComboBoxBase::OnPaint( CDCHandle dc )
 	CRect rcBtn;
 	GetDropBtnRect(&rcBtn);
 	m_pSkinBtn->Draw(dc,rcBtn,IIF_STATE3(m_dwBtnState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown));
-	DUITRACE(L"combobox dropbtn state=%d",IIF_STATE3(m_dwBtnState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown));
 }
 
 void CDuiComboBoxBase::OnLButtonDown( UINT nFlags,CPoint pt )
@@ -397,6 +396,7 @@ void CDuiComboBox::OnDropDown( CDuiDropDownWnd *pDropDown)
 	pDropDown->InsertChild(m_pListBox);
 	pDropDown->UpdateChildrenPosition();
 
+	m_pListBox->SetVisible(TRUE);
 	m_pListBox->SetDuiFocus();
 	m_pListBox->EnsureVisible(GetCurSel());
 }
@@ -404,6 +404,7 @@ void CDuiComboBox::OnDropDown( CDuiDropDownWnd *pDropDown)
 void CDuiComboBox::OnCloseUp( CDuiDropDownWnd *pDropDown )
 {
 	pDropDown->RemoveChild(m_pListBox);
+	m_pListBox->SetVisible(FALSE);
 	m_pListBox->SetContainer(GetContainer());
 	__super::OnCloseUp(pDropDown);
 }
@@ -505,6 +506,7 @@ void CDuiComboBoxEx::OnDropDown( CDuiDropDownWnd *pDropDown )
 	pDropDown->InsertChild(m_pListBox);
 	pDropDown->UpdateChildrenPosition();
 
+	m_pListBox->SetVisible(TRUE);
 	m_pListBox->SetDuiFocus();
 	m_pListBox->EnsureVisible(GetCurSel());
 }
@@ -512,6 +514,7 @@ void CDuiComboBoxEx::OnDropDown( CDuiDropDownWnd *pDropDown )
 void CDuiComboBoxEx::OnCloseUp( CDuiDropDownWnd *pDropDown )
 {
 	pDropDown->RemoveChild(m_pListBox);
+	m_pListBox->SetVisible(FALSE);
 	m_pListBox->SetContainer(GetContainer());
 	__super::OnCloseUp(pDropDown);
 }
