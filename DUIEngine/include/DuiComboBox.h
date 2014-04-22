@@ -50,6 +50,9 @@ public:
 	virtual CDuiStringT GetWindowText() =0;
 
 	virtual LRESULT DuiNotify(LPDUINMHDR pnms);
+
+	void DropDown();
+	void CloseUp();
 protected:
 	//////////////////////////////////////////////////////////////////////////
 	//	CDuiDropDownOwner
@@ -60,8 +63,6 @@ protected:
 protected:
 	//计算弹出窗口位置
 	BOOL CalcPopupRect(int nHeight,CRect & rcPopup);
-	void DropDown();
-	void CloseUp();
 	virtual BOOL CreateListBox(pugi::xml_node xmlNode)=0;
 	virtual int  GetListBoxHeight()=0;
 
