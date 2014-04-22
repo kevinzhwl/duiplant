@@ -6,12 +6,14 @@ namespace DuiEngine
 CMemDC::CMemDC()
     :m_bBmpOwner(FALSE)
     ,m_bHasBitmap(FALSE)
+	,m_hOldBmp(NULL)
 {
 }
 
 CMemDC::CMemDC( HDC hdc, const CRect & rc )
     :m_bBmpOwner(FALSE)
     ,m_bHasBitmap(FALSE)
+	,m_hOldBmp(NULL)
 {
 	InitDC(hdc,rc);
 }
