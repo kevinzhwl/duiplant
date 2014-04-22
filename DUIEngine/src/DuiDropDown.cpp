@@ -31,7 +31,8 @@ namespace DuiEngine
 
 	BOOL CDuiDropDownWnd::Create(LPCRECT lpRect ,LPVOID lParam,DWORD dwStyle,DWORD dwExStyle)
 	{
-		HWND hWnd=CSimpleWnd::Create(NULL,dwStyle,dwExStyle,lpRect->left,lpRect->top,lpRect->right-lpRect->left,lpRect->bottom-lpRect->top,0,0);
+		HWND hParent = m_pOwner->GetDropDownOwner()->GetContainer()->GetHostHwnd();
+		HWND hWnd=CSimpleWnd::Create(NULL,dwStyle,dwExStyle,lpRect->left,lpRect->top,lpRect->right-lpRect->left,lpRect->bottom-lpRect->top,hParent,0);
 		if(!hWnd) return FALSE;
 		m_pOwner->OnDropDown(this);
 		return TRUE;
