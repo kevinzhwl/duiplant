@@ -354,7 +354,7 @@ void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
             crItemBg = m_crItemBg2;
     }
 
-    if (iItem == m_iSelItem)
+    if ( (!m_bHotTrack && iItem == m_iSelItem) || (iItem == m_iHoverItem && m_bHotTrack))
     {
         if (m_pItemSkin != NULL)
             nBgImg = 2;
@@ -470,16 +470,13 @@ void CDuiListBox::OnSize(UINT nType,CSize size)
 
 void CDuiListBox::OnLButtonDown(UINT nFlags,CPoint pt)
 {
-    m_iHoverItem = HitTest(pt);
-	if(m_iHoverItem!=m_iSelItem && !m_bHotTrack)
-		NotifySelChange(m_iSelItem,m_iHoverItem,WM_LBUTTONDOWN);
 }
 
 void CDuiListBox::OnLButtonUp(UINT nFlags,CPoint pt)
 {
     m_iHoverItem = HitTest(pt);
 
-    if(m_bHotTrack || m_iHoverItem!=m_iSelItem)
+    if(m_iHoverItem!=m_iSelItem)
         NotifySelChange(m_iSelItem,m_iHoverItem,WM_LBUTTONUP);
 }
 
@@ -489,10 +486,14 @@ void CDuiListBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
 
 void CDuiListBox::OnMouseMove(UINT nFlags,CPoint pt)
 {
+	int nOldHover=m_iHoverItem;
     m_iHoverItem = HitTest(pt);
-
-    if(m_bHotTrack && m_iHoverItem!=m_iSelItem)
-        NotifySelChange(m_iSelItem,m_iHoverItem,WM_MOUSEMOVE);
+	
+    if(m_bHotTrack && nOldHover!=m_iHoverItem)
+	{
+		if(nOldHover!=-1) RedrawItem(nOldHover);
+		if(m_iHoverItem!=-1) RedrawItem(m_iHoverItem);
+	}
 }
 
 void CDuiListBox::OnMouseLeave()
