@@ -58,16 +58,10 @@ namespace DuiEngine
 	{
 		if(m_bClick)
 		{
-			CRect rcWnd;
-			GetWindowRect(&rcWnd);
-			ClientToScreen(&point);
-			if(!rcWnd.PtInRect(point))
-			{
-				EndDropDown();
-			}else
-			{
-				SetMsgHandled(FALSE);
-			}
+			LRESULT lRes=0;
+			HWND hWnd=m_hWnd;
+			CDuiHostWnd::ProcessWindowMessage(m_hWnd,WM_LBUTTONUP,nFlags,MAKELPARAM(point.x,point.y),lRes);
+			if(::IsWindow(hWnd)) EndDropDown();//强制关闭弹出窗口
 		}
 	}
 
