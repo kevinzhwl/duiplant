@@ -6,6 +6,7 @@ namespace DuiEngine
 
 	CDuiDropDownWnd::CDuiDropDownWnd(IDuiDropDownOwner* pOwner)
 		:m_pOwner(pOwner)
+		,m_bClick(FALSE)
 	{
 		MsgFilterRegister(m_pOwner->GetDropDownOwner()->GetContainer()->GetHostHwnd());
 	}
@@ -48,7 +49,25 @@ namespace DuiEngine
 			EndDropDown();
 		}else
 		{
+			m_bClick=TRUE;
 			SetMsgHandled(FALSE);
+		}
+	}
+
+	void CDuiDropDownWnd::OnLButtonUp( UINT nFlags, CPoint point )
+	{
+		if(m_bClick)
+		{
+			CRect rcWnd;
+			GetWindowRect(&rcWnd);
+			ClientToScreen(&point);
+			if(!rcWnd.PtInRect(point))
+			{
+				EndDropDown();
+			}else
+			{
+				SetMsgHandled(FALSE);
+			}
 		}
 	}
 

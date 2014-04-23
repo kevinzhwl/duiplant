@@ -27,6 +27,7 @@ namespace DuiEngine
 		void EndDropDown();
 	protected:
 		void OnLButtonDown(UINT nFlags, CPoint point);
+		void OnLButtonUp(UINT nFlags, CPoint point);
 		void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 		void OnKillFocus(HWND wndFocus);
 		void OnDestroy();
@@ -38,9 +39,10 @@ namespace DuiEngine
 		virtual BOOL PreTranslateMessage(MSG* pMsg);
 	protected:
 		IDuiDropDownOwner* m_pOwner;
-
+		BOOL				m_bClick;
 		BEGIN_MSG_MAP_EX(CDuiDropDownWnd)
 			MSG_WM_LBUTTONDOWN(OnLButtonDown)
+			MSG_WM_LBUTTONUP(OnLButtonUp)
 			MSG_WM_KEYDOWN(OnKeyDown);
 			MSG_WM_KILLFOCUS(OnKillFocus)
 			MSG_WM_DESTROY(OnDestroy)
