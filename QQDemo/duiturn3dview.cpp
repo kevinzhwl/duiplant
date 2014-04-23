@@ -208,7 +208,7 @@ namespace DuiEngine
       m_hBitmapBefore = CGdiAlpha::CreateBitmap32(dc,rcWnd.Width(),rcWnd.Height(),NULL,255);
     }
     CMemDC dcBefore(dc, m_hBitmapBefore);
-    dcBefore.SetBitmapOwner(TRUE); 
+//    dcBefore.SetBitmapOwner(TRUE); 
 
     //渲染窗口变化前状态
     m_pDuiWindow->PaintBackground(dc,rcWnd);
@@ -238,7 +238,7 @@ namespace DuiEngine
     }
 
     CMemDC dcAfter(dc,m_hBitmapAfter);
-    dcAfter.SetBitmapOwner(TRUE); 
+//    dcAfter.SetBitmapOwner(TRUE); 
     
 
     m_pDuiWindow->PaintBackground(dc,rcWnd);

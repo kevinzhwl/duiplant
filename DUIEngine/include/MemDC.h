@@ -3,7 +3,7 @@
 namespace DuiEngine
 {
 
-class CMemDC :	public CDC
+class DUI_EXP CMemDC :	public CDC
 {
 public:
     CMemDC();

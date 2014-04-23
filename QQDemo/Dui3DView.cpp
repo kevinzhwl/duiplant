@@ -32,16 +32,7 @@ namespace DuiEngine
 
 	void CDui3DView::OnSize( UINT nType, CSize size )
 	{
-		//if(m_hBmpOrig) DeleteObject(m_hBmpOrig);
-		//if(m_hBmpTrans) DeleteObject(m_hBmpTrans);
-
 		HDC hdc=GetDC(NULL);
-		//m_hBmpOrig=CGdiAlpha::CreateBitmap32(hdc,size.cx,size.cy,NULL,0);
-		//if(m_pImage)
-		//{
-		//	CMemDC memdc(hdc,m_hBmpOrig);
-		//	m_pImage->Draw(memdc.m_hDC,CRect(0,0,size.cx,size.cy),0);
-		//}
 
 		m_hBmpTrans=CGdiAlpha::CreateBitmap32(hdc,size.cx,size.cy,NULL,0);
 		ReleaseDC(NULL,hdc);
