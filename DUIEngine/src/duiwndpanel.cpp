@@ -365,6 +365,8 @@ void CDuiPanelEx::OnNcLButtonDown(UINT nFlags, CPoint point)
 
             CRect rcSlide=GetSbPartRect(m_HitInfo.bVertical,SB_THUMBTRACK);
             HDC hdc=GetDuiDC(&rcSlide,OLEDC_PAINTBKGND,FALSE);
+			CRect rcRail = GetSbRailwayRect(m_HitInfo.bVertical);
+			m_pSkinSb->Draw(hdc,rcRail,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,m_HitInfo.bVertical));//ÏÈ»­¹ìµÀ£¬ÔÙ»­»¬¿é£¬·ÀÖ¹»¬¿éÎª°ëÍ¸Ã÷Ê±ÏÔÊ¾´íÎó
             m_pSkinSb->Draw(hdc,rcSlide,MAKESBSTATE(SB_THUMBTRACK,SBST_PUSHDOWN,m_HitInfo.bVertical));
             ReleaseDuiDC(hdc);
         }
