@@ -1,0 +1,11 @@
+﻿<layer title="DUI-CHILD">
+	<body>
+    <dlg pos="0,0,-0,-0" crbg="cccccc">
+      <text pos="10,10" id="12345">dui child test</text>
+    </dlg>
+	</body>
+</layer>
+
+
+
+

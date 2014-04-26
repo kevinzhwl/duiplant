@@ -1,0 +1,33 @@
+﻿<layer title="DUI-DEMO" width="600" height="400" appwin="1" ncRect="5,5,5,5"  resize="1" translucent="1"  nomaxsize="0">
+	<body>
+    <dlg name="maindlg" pos="0,0,-0,-0" class="cls_dlg_frame" crtext="000000">
+      <caption pos="0,0,-0,29">
+        <text pos="11,9" class="cls_txt_red">%str1% ver:%str2%</text>
+        <imgbtn id="1" name="btn_close" skin="btn_sys_close" pos="-45,0" tip="close" animate="0"/>
+      </caption>
+      <group pos="5,29,%40,80" name="grp_animode">动画类型
+        <radio pos="5,20" name="ani_slide">滑动</radio>
+        <radio name="ani_center">中心辐射</radio>
+        <radio name="ani_blend">混合</radio>
+      </group>
+      <group pos="%41,29,%70,80" name="grp_hor_mode" sep="5">水平滑动类型
+        <radio pos="5,20" name="slide_hor_nagetive">右->左</radio>
+        <radio name="slide_hor_positive">左->右</radio>
+      </group>
+      <group pos="%71,29,-5,80" name="grp_ver_mode" sep="5">垂直滑动类型
+        <radio pos="5,20" name="slide_ver_nagetive">下->上</radio>
+        <radio name="slide_ver_positive">上->下</radio>
+    </group>
+
+      <dlg pos="0,80,-0,-0">
+        <text pos="0,0,100,100" name="img_tst" skin="dlg_frame" crtext="ff0000">text</text>
+        <animateimg pos="0,0" skin="img_busy" autostart="1"/>
+      	<button pos="|-50,|-15,|50,|15" name="btn_ani" class="normalbtn">animator</button>
+      </dlg>
+    </dlg>
+	</body>
+</layer>
+
+
+
+
