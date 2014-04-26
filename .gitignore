@@ -1,0 +1,52 @@
+# #起始的行都是注释行
+# foo.txt 忽略指定文件名
+# *.html 忽略一类文件
+# !foo.html 指定例外 不会被忽略
+# *.[oa] 忽略所有.o 和.a的文件
+
+# Qt project
+*-build-*/
+build/
+*.pro.user
+
+# General temp 
+Thumbs.db
+*.tmp
+
+# VC project
+*.pdb
+Debug
+Release
+*.tlb
+*.tli
+*.tlh
+*.obj
+*.ilk
+*.tlog
+*.manifest
+*.res
+*.pch
+
+# VC6 project
+*.aps
+*.ncb
+*.clw
+*.plg
+*.opt
+*.bsc
+*.sbr
+
+# VC9(VC2008) VC10 project
+*.suo
+*.sdf
+*.opensdf
+*.old
+ipch/
+*.ipch
+*.cache
+UpgradeLog.XML
+_UpgradeReport_Files/
+
+#customize 
+test_*.*
+tmp*.*
