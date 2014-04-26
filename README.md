@@ -1,17 +1,45 @@
 duiplant
 ========
-该项目来源自启程软件（SetoutSoft）的 DuiEngine
-代码源自 http://code.taobao.org/p/duiengine/src/
+该项目来源自启程软件（SetoutSoft）的 DuiEngine。  
+代码源自 http://code.taobao.org/p/duiengine/src/  
+最近同步更细时间： 2014-4-25
+
+
+DuiEngine新手指南(原版)
+---------
+
+DuiEngine是启程软件深度改写金山卫士的bkwin界面库形成的一个开源界面库，目前由本人维护。
+
+本界面库为全免费开源库，采用MIT协议，无需授权，不提供任何担保，但是请在产品中保持一份DuiEngine的license。
+
+使用中碰到问题可以到QQ群提问，本人一般时间都在，尽量是在自己尝试后不能解决时再提问。QQ群： 229313785
+
+
+注意!!!!!
+
+使用前建议先安装wizard目录下的VS向导，安装后会在VS的新建工程中增加一个DuiEngineWizard的工程类型，使用这个向导可以一步生成一个最简单的使用DuiEngine的框架程序。向导安装后如果生成的工程编译失败，很可能是在向导中定义的环境变量DUIENGINEPATH没有生效，请注销或者重启一下系统。
+
+doc文件夹下有几个简单的文档，无聊时可以随便看看。
+
+dui-demo是一个介绍内置控件使用的工程，有问题请先比较与dui-demo的差异。
+
+编译碰到问题请尝试重新编译duiengine，再编译其它的使用duiengine的程序，如dui-demo。
+dui-demo的debug_dll配置还需要lua脚本及zip支持，请先编译zip及scriptModule下相关目录。
+
+启程软件 2014年1月9日
+
 
 这个库要做的
 ---------
 
  * 由 托管在svn库中，改为 托管在git中；
- * 由 msvc2008项目，改为 msvc2010；
+ * 由 msvc2008项目，改为 msvc2010项目；
  * 由 ansi字符集，改为 unicode字符集；
  * 由 扁平目录结构，改为 引擎，工具，范例三大块结构；
- * 由 内部构建，改为 分离式构建；
+ * 由 内部构建，改为 与源代码分离式构建；
  * 增加库的内聚，减少对外部设置的依赖；
+ * 增加类似cmake install的发布工具；
+ * 增加对cmake工具的支持；
  * 可能还有其他暂时没想到
 
 
