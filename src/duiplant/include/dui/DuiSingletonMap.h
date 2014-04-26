@@ -1,5 +1,5 @@
 #pragma once
-#include "DUISingleton.h"
+#include <dui/duisingleton.h>
 namespace DuiEngine
 {
 

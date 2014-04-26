@@ -3,7 +3,7 @@
 #include <Richedit.h>
 #include <TextServ.h>
 #include <dui/duiwndpanel.h>
-#include <dui\DUISingleton.h>
+#include <dui/DUISingleton.h>
 
 namespace DuiEngine
 {
