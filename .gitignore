@@ -14,9 +14,10 @@ Thumbs.db
 *.tmp
 
 # VC project
-*.pdb
+*-build/
 Debug
 Release
+*.pdb
 *.tlb
 *.tli
 *.tlh
