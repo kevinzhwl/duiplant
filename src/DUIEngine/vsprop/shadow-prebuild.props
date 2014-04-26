@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <PropertyGroup>
-    <TargetName>$(ProjectName)-$(ConfigurationType)-$(PlatformName)-$(Configuration)</TargetName>
+    <TargetName>$(ProjectName)-$(PlatformName)-$(Configuration)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />
