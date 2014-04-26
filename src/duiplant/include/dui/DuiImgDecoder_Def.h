@@ -1,7 +1,7 @@
 #pragma once
 
-#include "DuiImgBase.h"
-#include "duiimage.h"
+#include <dui/duiimgbase.h>
+#include <dui/duiimage.h>
 
 namespace DuiEngine
 {

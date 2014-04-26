@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DragWnd.h"
+#include <dui/duistd.h>
+#include <dui/DragWnd.h>
 
 namespace DuiEngine
 {

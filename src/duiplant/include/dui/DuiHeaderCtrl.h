@@ -1,7 +1,7 @@
 #pragma once
 
-#include "duiwnd.h"
-#include "wtl.mini/duicoll.h"
+#include <dui/duiwnd.h>
+#include <dui/wtl.mini/duicoll.h>
 namespace DuiEngine
 {
 #define DUIHDI_WIDTH               0x0001

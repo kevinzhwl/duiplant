@@ -5,9 +5,9 @@
 //     Version: 2011.10.14 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
 
-#include "duistd.h"
-#include "duitreebox.h"
-#include "duiwndcmnctrl.h"
+#include <dui/duistd.h>
+#include <dui/duitreebox.h>
+#include <dui/duiwndcmnctrl.h>
 
 namespace DuiEngine
 {

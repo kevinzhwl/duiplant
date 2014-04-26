@@ -1,7 +1,7 @@
 #pragma once
 
-#include "DuiWindowManager.h"
-#include "DuiSingletonMap.h"
+#include <dui/DuiWindowManager.h>
+#include <dui/DuiSingletonMap.h>
 
 namespace DuiEngine
 {

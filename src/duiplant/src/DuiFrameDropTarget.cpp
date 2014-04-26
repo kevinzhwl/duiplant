@@ -1,6 +1,6 @@
-#include "duistd.h"
-#include "DuiFrameDropTarget.h"
-#include "duiframe.h"
+#include <dui/duistd.h>
+#include <dui/DuiFrameDropTarget.h>
+#include <dui/duiframe.h>
 
 namespace DuiEngine{
 	CDuiFrameDropTarget::CDuiFrameDropTarget(CDuiWindow * pFrame)

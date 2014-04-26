@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "duiskinbase.h"
+#include <dui/DuiSkinBase.h>
 
 namespace DuiEngine
 {

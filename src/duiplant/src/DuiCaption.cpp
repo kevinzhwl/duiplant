@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DuiCaption.h"
+#include <dui/duistd.h>
+#include <dui/DuiCaption.h>
 
 namespace DuiEngine
 {

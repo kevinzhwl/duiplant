@@ -7,13 +7,13 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "duistd.h"
-#include "duiskin.h"
+#include <dui/duistd.h>
+#include <dui/duiskin.h>
 
-#include "duiimgpool.h"
-#include "gdialpha.h"
-#include "DuiSystem.h"
-#include "GradientFillHelper.h"
+#include <dui/duiimgpool.h>
+#include <dui/gdialpha.h>
+#include <dui/DuiSystem.h>
+#include <dui/GradientFillHelper.h>
 
 namespace DuiEngine
 {

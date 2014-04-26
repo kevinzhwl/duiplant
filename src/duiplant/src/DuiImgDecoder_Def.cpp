@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DuiImgDecoder_Def.h"
+#include <dui/duistd.h>
+#include <dui/DuiImgDecoder_Def.h>
 
 #pragma warning(disable:4996)
 

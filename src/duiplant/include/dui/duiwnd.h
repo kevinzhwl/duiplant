@@ -7,18 +7,18 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "DuiWindowManager.h"
-#include "DuiTimerEx.h"
-#include "DuiContainer.h"
-#include "duimsgcracker.h"
+#include <dui/DuiWindowManager.h>
+#include <dui/DuiTimerEx.h>
+#include <dui/DuiContainer.h>
+#include <dui/duimsgcracker.h>
 
-#include "duiwndstyle.h"
-#include "duistringpool.h"
-#include "DuiSkinPool.h"
-#include "duiwndnotify.h"
-#include "gdialpha.h"
-#include "duiref.h"
-#include "DuiEventSet.h"
+#include <dui/duiwndstyle.h>
+#include <dui/duistringpool.h>
+#include <dui/duiskinpool.h>
+#include <dui/duiwndnotify.h>
+#include <dui/gdialpha.h>
+#include <dui/duiref.h>
+#include <dui/DuiEventSet.h>
 #include <OCIdl.h>
 
 namespace DuiEngine

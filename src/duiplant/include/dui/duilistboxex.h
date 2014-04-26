@@ -7,7 +7,7 @@
 
 #pragma  once
 
-#include "duiitempanel.h"
+#include <dui/duiItempanel.h>
 
 namespace DuiEngine
 {

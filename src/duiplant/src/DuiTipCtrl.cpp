@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DuiTipCtrl.h"
+#include <dui/duistd.h>
+#include <dui/DuiTipCtrl.h>
 
 namespace DuiEngine
 {

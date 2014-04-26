@@ -6,8 +6,8 @@
 
 #pragma  once
 
-#include "duifontpool.h"
-#include "DuiCSS.h"
+#include <dui/duifontpool.h>
+#include <dui/DuiCSS.h>
 
 namespace DuiEngine
 {

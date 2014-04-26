@@ -7,9 +7,9 @@
 
 #pragma  once
 
-#include "duiwndpanel.h"
-#include "DuiFrameDropTarget.h"
-#include "FocusManager.h"
+#include <dui/duiwndpanel.h>
+#include <dui/DuiFrameDropTarget.h>
+#include <dui/FocusManager.h>
 
 namespace DuiEngine
 {

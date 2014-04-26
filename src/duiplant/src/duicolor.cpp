@@ -5,8 +5,8 @@
 //     Version: 2009.6.10 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
 
-#include "duistd.h"
-#include "duicolor.h"
+#include <dui/duistd.h>
+#include <dui/duicolor.h>
 
 
 namespace DuiEngine

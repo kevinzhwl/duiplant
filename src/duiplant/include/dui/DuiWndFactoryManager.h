@@ -1,6 +1,6 @@
 #pragma once
-#include "duisingletonmap.h"
-#include "duiwnd.h"
+#include <dui/DuiSingletonMap.h>
+#include <dui/duiwnd.h>
 
 namespace DuiEngine
 {

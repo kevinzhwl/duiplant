@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "duiwndnotify.h"
-#include "duiwndcmnctrl.h"
+#include <dui/duiwndnotify.h>
+#include <dui/duiwndcmnctrl.h>
 
 namespace DuiEngine
 {

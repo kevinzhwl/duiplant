@@ -8,16 +8,16 @@
 
 #pragma once
 
-#include "MemDC.h"
-#include "duimsgfilter.h"
-#include "DuiThreadActiveWndManager.h"
+#include <dui/MemDC.h>
+#include <dui/duimsgfilter.h>
+#include <dui/DuiThreadActiveWndManager.h>
 
-#include "duiwndpanel.h"
-#include "duiframe.h"
-#include "duirealwnd.h"
+#include <dui/duiwndpanel.h>
+#include <dui/duiframe.h>
+#include <dui/duirealwnd.h>
 
-#include "SimpleWnd.h"
-#include "DuiFrameDropTarget.h"
+#include <dui/SimpleWnd.h>
+#include <dui/DuiFrameDropTarget.h>
 
 #pragma warning(disable: 4996)
 ///////////////////////////////////////////////////////////////////////////////

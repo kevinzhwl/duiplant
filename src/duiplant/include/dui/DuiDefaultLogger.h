@@ -30,7 +30,7 @@
 #ifndef _DUIDefaultLogger_h_
 #define _DUIDefaultLogger_h_
 
-#include "DuiLogger.h"
+#include <dui/DuiLogger.h>
 
 
 // Start of DUI namespace section

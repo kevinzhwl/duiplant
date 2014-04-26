@@ -1,7 +1,7 @@
-#include "duistd.h"
-#include "DuiHeaderCtrl.h"
-#include "MemDC.h"
-#include "DragWnd.h"
+#include <dui/duistd.h>
+#include <dui/DuiHeaderCtrl.h>
+#include <dui/MemDC.h>
+#include <dui/DragWnd.h>
 
 #pragma comment(lib,"comctl32.lib")
 

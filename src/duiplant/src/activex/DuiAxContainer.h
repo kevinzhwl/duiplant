@@ -23,7 +23,7 @@
 #pragma once
 
 #include "DuiAxUtil.h"
-#include "atl.mini/duicomcli.h"
+#include <dui/atl.mini/duicomcli.h>
 #include <MsHtmHst.h>
 
 namespace DuiEngine

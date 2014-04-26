@@ -6,11 +6,11 @@
 //				2011.09.01 - 2.0 huang jianxiong
 //////////////////////////////////////////////////////////////////////////
 
-#include "duistd.h"
-#include "duiwnd.h"
-#include "duiwndfactorymanager.h"
-#include "DuiSystem.h"
-#include "Name2ID.h"
+#include <dui/duistd.h>
+#include <dui/duiwnd.h>
+#include <dui/duiwndfactorymanager.h>
+#include <dui/DuiSystem.h>
+#include <dui/Name2ID.h>
 
 
 namespace DuiEngine

@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "duistd.h"
-#include "DuiLogger.h"
+#include <dui/duistd.h>
+#include <dui/DuiLogger.h>
 
 // Start of DuiEngine namespace section
 namespace DuiEngine

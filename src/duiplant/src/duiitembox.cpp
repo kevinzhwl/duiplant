@@ -5,8 +5,8 @@
 //     Version: 2011.7.8 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
 
-#include "duistd.h"
-#include "duiitembox.h"
+#include <dui/duistd.h>
+#include <dui/duiitembox.h>
 
 namespace DuiEngine
 {

@@ -2,8 +2,8 @@
 
 #include <Richedit.h>
 #include <TextServ.h>
-#include "duiwndpanel.h"
-#include "DUISingleton.h"
+#include <dui/duiwndpanel.h>
+#include <dui\DUISingleton.h>
 
 namespace DuiEngine
 {

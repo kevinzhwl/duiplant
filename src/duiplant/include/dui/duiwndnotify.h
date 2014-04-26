@@ -8,7 +8,7 @@ typedef ULONG_PTR HSTREEITEM;
 // Notify Messages For DuiWin User
 //////////////////////////////////////////////////////////////////////////
 
-#include "DuiDef.h"
+#include <dui/DuiDef.h>
 
 #define IDC_RICHVIEW_WIN            2000
 #define UM_DUI_NOTIFY				(WM_USER+100)

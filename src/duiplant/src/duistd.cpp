@@ -1,2 +1,2 @@
-#include "duistd.h"
+#include <dui/duistd.h>
 

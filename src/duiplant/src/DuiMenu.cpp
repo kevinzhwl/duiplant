@@ -1,8 +1,8 @@
-#include "duistd.h"
-#include "DuiMenu.h"
-#include "DuiSystem.h"
-#include "gdialpha.h"
-#include "mybuffer.h"
+#include <dui/duistd.h>
+#include <dui/DuiMenu.h>
+#include <dui/DuiSystem.h>
+#include <dui/gdialpha.h>
+#include <dui/mybuffer.h>
 
 namespace DuiEngine
 {

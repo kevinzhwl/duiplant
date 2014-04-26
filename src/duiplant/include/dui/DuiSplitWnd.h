@@ -1,5 +1,5 @@
 #pragma once
-#include "duiwndpanel.h"
+#include <dui/duiwndpanel.h>
 
 namespace DuiEngine
 {

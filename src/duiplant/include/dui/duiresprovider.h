@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "duiresproviderbase.h"
+#include <dui/duiresproviderbase.h>
 
 namespace DuiEngine
 {

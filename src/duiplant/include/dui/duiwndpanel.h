@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "duiwnd.h"
+#include <dui/duiwnd.h>
 
 namespace DuiEngine
 {

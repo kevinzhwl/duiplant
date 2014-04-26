@@ -31,12 +31,12 @@
 #include <tchar.h>
 #include <stdio.h>
 
-#include "duidef.h"
+#include <dui/duidef.h>
 
 //export pugixml interface
 #include <pugixml/pugixml.hpp>
 
-#include "DuiUtilities.h"
+#include <dui/DuiUtilities.h>
 
 #ifdef USING_ATL
 	#define _COLL_NS	ATL
@@ -50,7 +50,7 @@
 	#define CDuiComPtr	CComPtr
 	#define CDuiComQIPtr	CComQIPtr
 
-	#include "wtl.mini/duicrack.h"
+	#include <dui/wtl.mini/duicrack.h>
 	#define CDuiArray	CAtlArray
 	#define CDuiList	CAtlList
 	#define CDuiMap		CAtlMap
@@ -58,25 +58,25 @@
 	#define CDuiStringW CAtlStringW
 	#define CDuiStringT CAtlString
 
-	#include "wtl.mini/strcpcvt.h"
+	#include <dui/wtl.mini/strcpcvt.h>
 
 #else//ATL_FREE
 	#define _WTYPES_NS DuiEngine
 	#define _COLL_NS	DuiEngine
-	#include "wtl.mini/duicrack.h"
-	#include "wtl.mini/duimisc.h"
-	#include "wtl.mini/duigdi.h"
-// 	#include "wtl.mini/duistr.h" 
-	#include "wtl.mini/tstring.h" 
-	#include "wtl.mini/strcpcvt.h"
-	#include "wtl.mini/duicoll.h"
-	#include "atl.mini/atldef.h"
-	#include "atl.mini/duicomcli.h"
+	#include <dui/wtl.mini/duicrack.h>
+	#include <dui/wtl.mini/duimisc.h>
+	#include <dui/wtl.mini/duigdi.h>
+// 	#include <dui/wtl.mini/duistr.h> 
+	#include <dui/wtl.mini/tstring.h> 
+	#include <dui/wtl.mini/strcpcvt.h>
+	#include <dui/wtl.mini/duicoll.h>
+	#include <dui/atl.mini/atldef.h>
+	#include <dui/atl.mini/duicomcli.h>
 
 #endif//USING_ATL
 
 
-#include "DuiAttrCrack.h"
+#include <dui/DuiAttrCrack.h>
 
 #pragma comment(lib,"Msimg32.lib")
 #pragma comment(lib,"shlwapi.lib")

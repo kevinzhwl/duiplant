@@ -16,7 +16,7 @@
 ** File:        AtlActiveXContainer.cpp
 ** Version:     1.1 - Support for windowless keyboard events
 */
-#include "duistd.h"
+#include <dui/duistd.h>
 #include "DuiAxContainer.h"
 
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "wtl.mini/duicoll.h"
-#include "DuiEventSubscriber.h"
+#include <dui/wtl.mini/duicoll.h>
+#include <dui/DuiEventSubscriber.h>
 
 namespace DuiEngine
 {

@@ -5,11 +5,11 @@
 //     Version: 2009.04.28 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
 
-#include "duistd.h"
-#include "duiwndcmnctrl.h"
+#include <dui/duistd.h>
+#include <dui/duiwndcmnctrl.h>
 
-#include "duiwndnotify.h"
-#include "duisystem.h"
+#include <dui/duiwndnotify.h>
+#include <dui/DuiSystem.h>
 #include <vsstyle.h>
 
 namespace DuiEngine

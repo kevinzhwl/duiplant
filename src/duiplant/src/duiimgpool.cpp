@@ -6,11 +6,11 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "duistd.h"
-#include "duiobject.h"
-#include "duiimgpool.h"
-#include "duiresprovider.h"
-#include "DuiSystem.h"
+#include <dui/duistd.h>
+#include <dui/duiobject.h>
+#include <dui/duiimgpool.h>
+#include <dui/duiresprovider.h>
+#include <dui/DuiSystem.h>
 
 namespace DuiEngine
 {

@@ -6,10 +6,10 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma  once
-#include "duistd.h"
-#include "duiItempanel.h"
+#include <dui/duistd.h>
+#include <dui/duiItempanel.h>
 
-#include "duiwndnotify.h"
+#include <dui/duiwndnotify.h>
 
 #pragma warning(disable:4018)
 

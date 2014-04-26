@@ -4,8 +4,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "duistd.h"
-#include "duifontpool.h"
+#include <dui/duistd.h>
+#include <dui/duifontpool.h>
 
 namespace DuiEngine
 {

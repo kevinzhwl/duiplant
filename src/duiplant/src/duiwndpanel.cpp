@@ -6,8 +6,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "duistd.h"
-#include "duiwndpanel.h"
+#include <dui/duistd.h>
+#include <dui/duiwndpanel.h>
 
 namespace DuiEngine
 {

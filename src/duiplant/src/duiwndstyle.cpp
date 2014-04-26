@@ -5,10 +5,10 @@
 //     Version: 2009.04.28 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
 
-#include "duistd.h"
-#include "duiwndstyle.h"
-#include "DuiSystem.h"
-#include "mybuffer.h"
+#include <dui/duistd.h>
+#include <dui/duiwndstyle.h>
+#include <dui/DuiSystem.h>
+#include <dui/mybuffer.h>
 
 namespace DuiEngine
 {

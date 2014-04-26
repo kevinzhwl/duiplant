@@ -1,8 +1,8 @@
-#include "duistd.h"
-#include "DuiSystem.h"
-#include "mybuffer.h"
-#include "SimpleWnd.h"
-#include "DuiRichEdit.h"
+#include <dui/duistd.h>
+#include <dui/DuiSystem.h>
+#include <dui/mybuffer.h>
+#include <dui/SimpleWnd.h>
+#include <dui/DuiRichEdit.h>
 
 namespace DuiEngine
 {

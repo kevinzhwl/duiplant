@@ -482,6 +482,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

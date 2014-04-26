@@ -1,5 +1,5 @@
 #pragma once
-#include "duiwnd.h"
+#include <dui/duiwnd.h>
 #include "activex/flash10t.tlh"
 #include "activex/wmp.tlh"
 #include <mshtmhst.h>

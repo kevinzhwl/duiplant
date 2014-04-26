@@ -20,7 +20,7 @@
 #define DUIASSERT(x)
 #endif
 
-#include "DuiDef.h"
+#include <dui/DuiDef.h>
 //typedef ULONG_PTR HSTREEITEM;
 
 #define STVI_ROOT	((HSTREEITEM)0xFFFF0000)//=TVI_ROOT

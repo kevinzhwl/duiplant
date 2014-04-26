@@ -7,10 +7,10 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "duiwnd.h"
-#include "duiwndpanel.h"
-#include "duiwndnotify.h"
-#include "Accelerator.h"
+#include <dui/duiwnd.h>
+#include <dui/duiwndpanel.h>
+#include <dui/duiwndnotify.h>
+#include <dui/Accelerator.h>
 
 namespace DuiEngine
 {

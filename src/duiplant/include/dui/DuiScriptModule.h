@@ -7,8 +7,8 @@
 *************************************************************************/
 #pragma once
 
-#include "DuiEventSubscriber.h"
-#include "duiwnd.h"
+#include <dui/DuiEventSubscriber.h>
+#include <dui/duiwnd.h>
 
 // Start of DuiEngine namespace section
 namespace DuiEngine

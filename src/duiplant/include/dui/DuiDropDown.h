@@ -1,7 +1,7 @@
 //一个通用的下拉窗口模块
 #pragma once
 
-#include "duihostwnd.h"
+#include <dui/duihostwnd.h>
 
 namespace DuiEngine
 {

@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DuiSliderBar.h"
+#include <dui/duistd.h>
+#include <dui/DuiSliderBar.h>
 
 namespace DuiEngine
 {

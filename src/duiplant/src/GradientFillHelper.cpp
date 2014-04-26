@@ -1,6 +1,6 @@
-#include "duistd.h"
-#include "GradientFillHelper.h"
-#include "memdc.h"
+#include <dui/duistd.h>
+#include <dui/GradientFillHelper.h>
+#include <dui/MemDC.h>
 #include <Wingdi.h>
 #pragma comment(lib,"msimg32.lib")
 

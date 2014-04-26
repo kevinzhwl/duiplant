@@ -1,8 +1,8 @@
-#include "duistd.h"
-#include "DuiSkinPool.h"
-#include "duiskin.h"
-#include "duisystem.h"
-#include "mybuffer.h"
+#include <dui/duistd.h>
+#include <dui/duiskinpool.h>
+#include <dui/duiskin.h>
+#include <dui/DuiSystem.h>
+#include <dui/mybuffer.h>
 
 namespace DuiEngine
 {

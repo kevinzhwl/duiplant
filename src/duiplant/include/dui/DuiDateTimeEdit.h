@@ -1,7 +1,7 @@
 #pragma once
 
-#include "DuiRichEdit.h"
-#include "DuiTime.h"
+#include <dui/DuiRichEdit.h>
+#include <dui/DuiTime.h>
 
 namespace DuiEngine{
 

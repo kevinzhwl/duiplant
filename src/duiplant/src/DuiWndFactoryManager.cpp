@@ -1,7 +1,7 @@
-#include "duistd.h"
-#include "DuiWndFactoryManager.h"
+#include <dui/duistd.h>
+#include <dui/duiwndfactorymanager.h>
 
-#include "duictrls.h"
+#include <dui/duictrls.h>
 
 namespace DuiEngine
 {

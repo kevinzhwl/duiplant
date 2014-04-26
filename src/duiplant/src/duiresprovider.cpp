@@ -2,9 +2,9 @@
 //   File Name: duiresprovider.cpp
 // Description: Resource Provider
 //////////////////////////////////////////////////////////////////////////
-#include "duistd.h"
-#include "duiresprovider.h"
-#include "mybuffer.h"
+#include <dui/duistd.h>
+#include <dui/duiresprovider.h>
+#include <dui/mybuffer.h>
 #include <io.h>
 
 namespace DuiEngine

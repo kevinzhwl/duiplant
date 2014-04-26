@@ -1,25 +1,25 @@
 #pragma once
-#include "duisingleton.h"
+#include <dui/duisingleton.h>
 
-#include "DuiThreadActiveWndManager.h"
+#include <dui/DuiThreadActiveWndManager.h>
 
-#include "duiresprovider.h"
-#include "DuiWindowManager.h"
-#include "DuiWndFactoryManager.h"
-#include "DuiLogger.h"
-#include "DuiMessageBox.h"
-#include "DuiScriptModule.h"
+#include <dui/duiresprovider.h>
+#include <dui/DuiWindowManager.h>
+#include <dui/duiwndfactorymanager.h>
+#include <dui/DuiLogger.h>
+#include <dui/DuiMessageBox.h>
+#include <dui/DuiScriptModule.h>
 
 #include <Richedit.h>
 #include <TextServ.h>
 
-#include "DuiCSS.h"
-#include "duistringpool.h"
-#include "duifontpool.h"
-#include "duiskin.h"
-#include "duiwndstyle.h"
-#include "duiimgpool.h"
-#include "Name2ID.h"
+#include <dui/DuiCSS.h>
+#include <dui/duistringpool.h>
+#include <dui/duifontpool.h>
+#include <dui/duiskin.h>
+#include <dui/duiwndstyle.h>
+#include <dui/duiimgpool.h>
+#include <dui/Name2ID.h>
 
 #define DUI_VERSION	_T("2.1.0.1")
 

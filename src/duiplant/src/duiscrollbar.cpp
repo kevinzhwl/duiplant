@@ -1,8 +1,8 @@
 // duiScrollBar.h : implementation file
 //	模块:DUI滚动条控件
 //////////////////////////////////////////////////////////////////////////
-#include "duistd.h"
-#include "duiscrollbar.h"
+#include <dui/duistd.h>
+#include <dui/duiscrollbar.h>
 
 #define TIMERID_NOTIFY1	1
 #define TIMERID_DELAY1	2

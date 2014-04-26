@@ -1,8 +1,8 @@
 // DuiCalendar.cpp : implementation file
 //
-#include "duistd.h"
-#include "DuiCalendar.h"
-#include "DuiTime.h"
+#include <dui/duistd.h>
+#include <dui/DuiCalendar.h>
+#include <dui/DuiTime.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

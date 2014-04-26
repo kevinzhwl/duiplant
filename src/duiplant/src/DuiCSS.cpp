@@ -1,7 +1,7 @@
-#include "duistd.h"
-#include "DuiCSS.h"
-#include "DuiSystem.h"
-#include "mybuffer.h"
+#include <dui/duistd.h>
+#include <dui/DuiCSS.h>
+#include <dui/DuiSystem.h>
+#include <dui/mybuffer.h>
 
 namespace DuiEngine
 {

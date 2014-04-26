@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "duiwndcmnctrl.h"
+#include <dui/duiwndcmnctrl.h>
 
 namespace DuiEngine
 {

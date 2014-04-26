@@ -1,5 +1,5 @@
 #pragma once
-#include "SimpleWnd.h"
+#include <dui/SimpleWnd.h>
 
 namespace DuiEngine
 {

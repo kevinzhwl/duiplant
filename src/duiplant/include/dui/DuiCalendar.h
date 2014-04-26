@@ -2,7 +2,7 @@
 // DuiCalendar.h : header file
 /////////////////////////////////////////////////////////////////////////////
 
-#include "duiwnd.h"
+#include <dui/duiwnd.h>
 
 namespace DuiEngine
 {

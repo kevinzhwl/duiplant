@@ -6,9 +6,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "duiimgbase.h"
-#include "duiresproviderbase.h"
-#include "DuiSingletonMap.h"
+#include <dui/duiimgbase.h>
+#include <dui/duiresproviderbase.h>
+#include <dui/DuiSingletonMap.h>
 
 namespace DuiEngine
 {

@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "duiwndtabctrl.h"
+#include <dui/duistd.h>
+#include <dui/duiwndtabctrl.h>
 
 namespace DuiEngine
 {

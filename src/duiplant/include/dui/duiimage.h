@@ -10,7 +10,7 @@
 *********************************************************************/
 #pragma once
 
-#include "DuiImgBase.h"
+#include <dui/duiimgbase.h>
 #include <GdiPlus.h>
 
 namespace DuiEngine

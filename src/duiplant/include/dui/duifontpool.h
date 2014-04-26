@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "duisingletonmap.h"
+#include <dui/DuiSingletonMap.h>
 
 
 

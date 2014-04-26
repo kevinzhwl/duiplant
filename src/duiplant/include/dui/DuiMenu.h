@@ -1,8 +1,8 @@
 #pragma once
 
-#include "duiobject.h"
-#include "duiskinpool.h"
-#include "SimpleWnd.h"
+#include <dui/duiobject.h>
+#include <dui/duiskinpool.h>
+#include <dui/SimpleWnd.h>
 
 namespace DuiEngine
 {

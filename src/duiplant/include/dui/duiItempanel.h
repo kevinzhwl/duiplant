@@ -7,7 +7,7 @@
 
 #pragma  once
 
-#include "duiframe.h"
+#include <dui/duiframe.h>
 
 namespace DuiEngine
 {

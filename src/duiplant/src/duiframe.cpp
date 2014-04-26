@@ -4,8 +4,8 @@
 //     Creator: Huang Jianxiong
 //     Version: 2011.9.1 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
-#include "duistd.h"
-#include "duiframe.h"
+#include <dui/duistd.h>
+#include <dui/duiframe.h>
 
 
 namespace DuiEngine

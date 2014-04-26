@@ -10,10 +10,10 @@
 				6/20/2012 黄建雄，修改为使用DUI皮肤绘制非客户区边框，支持边框大小配置
   ########################################################################*/
 
-#include "duistd.h"
-#include "MenuWndHook.h"
-#include "duiskinpool.h"
-#include "duiskin.h"
+#include <dui/duistd.h>
+#include <dui/MenuWndHook.h>
+#include <dui/duiskinpool.h>
+#include <dui/duiskin.h>
 
 #ifdef _WIN64
 #define GWL_WNDPROC	GWLP_WNDPROC

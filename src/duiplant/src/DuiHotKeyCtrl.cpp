@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DuiHotKeyCtrl.h"
+#include <dui/duistd.h>
+#include <dui/DuiHotKeyCtrl.h>
 #include <CommCtrl.h>
 
 namespace DuiEngine

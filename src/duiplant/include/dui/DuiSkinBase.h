@@ -1,9 +1,9 @@
 #pragma once
 
-#include "duiobject.h"
-#include "duiimgbase.h"
-#include "duiimgpool.h"
-#include "duiref.h"
+#include <dui/duiobject.h>
+#include <dui/duiimgbase.h>
+#include <dui/duiimgpool.h>
+#include <dui/duiref.h>
 
 namespace DuiEngine
 {

@@ -2,8 +2,8 @@
 //  Class Name: CDuiImage
 //////////////////////////////////////////////////////////////////////////
 
-#include "duistd.h"
-#include "duiimage.h"
+#include <dui/duistd.h>
+#include <dui/duiimage.h>
 
 #pragma comment(lib,"gdiplus.lib")
 

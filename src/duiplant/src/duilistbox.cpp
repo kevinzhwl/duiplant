@@ -6,10 +6,10 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma  once
-#include "duistd.h"
-#include "duilistbox.h"
-#include "DuiSystem.h"
-#include "mybuffer.h"
+#include <dui/duistd.h>
+#include <dui/duilistbox.h>
+#include <dui/DuiSystem.h>
+#include <dui/mybuffer.h>
 
 #pragma warning(disable:4018)
 #pragma warning(disable:4267)

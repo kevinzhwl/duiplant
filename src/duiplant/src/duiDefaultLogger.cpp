@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "duistd.h"
-#include "DuiDefaultLogger.h"
+#include <dui/duistd.h>
+#include <dui/DuiDefaultLogger.h>
 #include <ctime>
 #include <iomanip>
 #include <stdio.h>

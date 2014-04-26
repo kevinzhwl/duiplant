@@ -5,9 +5,9 @@
 //     Version: 2012.12.16 - 1.1 - Create
 //////////////////////////////////////////////////////////////////////////
 
-#include "duistd.h"
-#include "DuiTreeCtrl.h"
-#include "DuiMenu.h"
+#include <dui/duistd.h>
+#include <dui/DuiTreeCtrl.h>
+#include <dui/DuiMenu.h>
 
 namespace DuiEngine{
 

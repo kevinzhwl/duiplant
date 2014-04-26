@@ -1,10 +1,10 @@
 #pragma once
-#include "duiwnd.h"
-#include "DuiRichEdit.h"
-#include "DuiDropDown.h"
-#include "duilistbox.h"
-#include "duilistboxex.h"
-#include "duiwndcmnctrl.h"
+#include <dui/duiwnd.h>
+#include <dui/DuiRichEdit.h>
+#include <dui/DuiDropDown.h>
+#include <dui/duilistbox.h>
+#include <dui/duilistboxex.h>
+#include <dui/duiwndcmnctrl.h>
 
 namespace DuiEngine
 {

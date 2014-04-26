@@ -1,8 +1,8 @@
 #pragma once
-#include "DuiDef.h"
-#include "duiwnd.h"
-#include "Accelerator.h"
-#include "wtl.mini/duicoll.h"
+#include <dui/DuiDef.h>
+#include <dui/duiwnd.h>
+#include <dui/Accelerator.h>
+#include <dui/wtl.mini/duicoll.h>
 
 template<>
 class  _COLL_NS::CElementTraits< DuiEngine::CAccelerator > : public _COLL_NS::CElementTraitsBase< DuiEngine::CAccelerator >

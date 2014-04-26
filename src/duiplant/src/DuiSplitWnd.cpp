@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DuiSplitWnd.h"
+#include <dui/duistd.h>
+#include <dui/DuiSplitWnd.h>
 
 namespace DuiEngine
 {

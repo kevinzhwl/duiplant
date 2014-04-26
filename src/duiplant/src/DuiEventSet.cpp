@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DuiEventSet.h"
+#include <dui/duistd.h>
+#include <dui/DuiEventSet.h>
 
 namespace DuiEngine
 {

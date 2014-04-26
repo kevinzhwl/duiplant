@@ -1,5 +1,5 @@
 #pragma once
-#include "DUISingleton.h"
+#include <dui/duisingleton.h>
 
 #define DUI_MAX_NAME	30	//控件名字的最大长度
 

@@ -1,7 +1,7 @@
-#include "duistd.h"
+#include <dui/duistd.h>
 
-#include "DuiListCtrl.h"
-#include "DuiWndNotify.h"
+#include <dui/DuiListCtrl.h>
+#include <dui/duiwndnotify.h>
 
 #pragma warning(disable : 4267 4018)
 

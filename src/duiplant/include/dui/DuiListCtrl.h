@@ -1,8 +1,8 @@
 #pragma once
 
-#include "duiwnd.h"
-#include "duiwndpanel.h"
-#include "DuiHeaderCtrl.h"
+#include <dui/duiwnd.h>
+#include <dui/duiwndpanel.h>
+#include <dui/DuiHeaderCtrl.h>
 
 namespace DuiEngine
 {

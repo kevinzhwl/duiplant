@@ -1,7 +1,7 @@
-#include "duistd.h"
-#include "auto_reset.h"
-#include "FocusManager.h"
-#include "DuiWindowManager.h"
+#include <dui/duistd.h>
+#include <dui/auto_reset.h>
+#include <dui/FocusManager.h>
+#include <dui/DuiWindowManager.h>
 
 namespace DuiEngine
 {

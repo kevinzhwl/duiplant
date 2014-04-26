@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DuiComboBox.h"
+#include <dui/duistd.h>
+#include <dui/DuiComboBox.h>
 
 
 namespace DuiEngine

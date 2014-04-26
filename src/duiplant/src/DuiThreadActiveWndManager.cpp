@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "DuiThreadActiveWndManager.h"
+#include <dui/duistd.h>
+#include <dui/DuiThreadActiveWndManager.h>
 
 namespace DuiEngine
 {

@@ -8,7 +8,7 @@
 *********************************************************************/
 #pragma once
 
-#include "duihostwnd.h"
+#include <dui/duihostwnd.h>
 
 namespace DuiEngine
 {

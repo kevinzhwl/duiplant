@@ -1,7 +1,7 @@
-#include "duistd.h"
+#include <dui/duistd.h>
 
-#include "activex/DuiBStr.h"
-// #include "activex/DuiComPtr.h"
+#include <dui/activex/DuiBStr.h>
+// #include <dui/activex/DuiComPtr.h>
 
 namespace DuiEngine
 {

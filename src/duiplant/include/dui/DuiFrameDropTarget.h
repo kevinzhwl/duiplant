@@ -1,6 +1,6 @@
 #pragma once
-#include "wtl.mini\duicoll.h"
-#include "duiwnd.h"
+#include <dui/wtl.mini/duicoll.h>
+#include <dui/duiwnd.h>
 
 namespace DuiEngine{
 

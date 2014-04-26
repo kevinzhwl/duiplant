@@ -1,7 +1,7 @@
-#include "duistd.h"
-#include "DuiMessageBox.h"
-#include "DuiSystem.h"
-#include "duiwndcmnctrl.h"
+#include <dui/duistd.h>
+#include <dui/DuiMessageBox.h>
+#include <dui/DuiSystem.h>
+#include <dui/duiwndcmnctrl.h>
 
 namespace DuiEngine
 {

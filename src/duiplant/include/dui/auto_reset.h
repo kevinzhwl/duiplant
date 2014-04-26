@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "DuiDef.h"
+#include <dui/DuiDef.h>
 
 // AutoReset<> is useful for setting a variable to a new value only within a
 // particular scope. An AutoReset<> object resets a variable to its original

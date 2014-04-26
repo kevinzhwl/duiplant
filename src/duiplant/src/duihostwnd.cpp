@@ -1,10 +1,10 @@
-#include "duistd.h"
+#include <dui/duistd.h>
 
-#include "duihostwnd.h"
-#include "DuiTipCtrl.h"
-#include "duiwndcmnctrl.h"
-#include "DuiSystem.h"
-#include "mybuffer.h"
+#include <dui/duihostwnd.h>
+#include <dui/DuiTipCtrl.h>
+#include <dui/duiwndcmnctrl.h>
+#include <dui/DuiSystem.h>
+#include <dui/mybuffer.h>
 
 
 namespace DuiEngine

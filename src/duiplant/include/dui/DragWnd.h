@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SimpleWnd.h"
-#include "MemDC.h"
+#include <dui/SimpleWnd.h>
+#include <dui/MemDC.h>
 
 namespace DuiEngine
 {

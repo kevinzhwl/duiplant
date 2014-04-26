@@ -2,8 +2,8 @@
 #define _DUIRESPROVIDERBASE_
 #pragma once
 
-#include "DuiImgBase.h"
-#include "DuiImgDecoder_Def.h"
+#include <dui/duiimgbase.h>
+#include <dui/DuiImgDecoder_Def.h>
 
 #define DUIRES_XML_TYPE _T("XML")
 #define DUIRES_IMGX_TYPE _T("IMGX")

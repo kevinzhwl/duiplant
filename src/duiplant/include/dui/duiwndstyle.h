@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "duiskin.h"
+#include <dui/duiskin.h>
 
 namespace DuiEngine
 {
@@ -103,7 +103,7 @@ protected:
     DUIWIN_DECLARE_ATTRIBUTES_END()
 };
 
-#include "DuiSingletonMap.h"
+#include <dui/DuiSingletonMap.h>
 
 class DUI_EXP DuiStylePool :public DuiSingletonMap<DuiStylePool,DuiStyle,CDuiStringA>
 {

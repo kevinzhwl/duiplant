@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "DuiSingletonMap.h"
+#include <dui/DuiSingletonMap.h>
 
 namespace DuiEngine
 {

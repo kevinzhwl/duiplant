@@ -1,5 +1,5 @@
-#include "duistd.h"
-#include "MemDC.h"
+#include <dui/duistd.h>
+#include <dui/MemDC.h>
 namespace DuiEngine
 {
 

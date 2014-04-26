@@ -1,6 +1,6 @@
-#include "duistd.h"
-#include "DuiTimerEx.h"
-#include "duiwnd.h"
+#include <dui/duistd.h>
+#include <dui/DuiTimerEx.h>
+#include <dui/duiwnd.h>
 
 namespace DuiEngine
 {
