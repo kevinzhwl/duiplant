@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <DUIENGINE_DIR>D:\Farm\duiplant\duiengine.wc\src\DUIEngine\</DUIENGINE_DIR>
+    <DUIENGINE_DIR>.\</DUIENGINE_DIR>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />

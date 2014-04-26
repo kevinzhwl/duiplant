@@ -227,7 +227,7 @@
     <ClCompile Include="src\duistringpool.cpp">
       <Filter>Source Files\pools</Filter>
     </ClCompile>
-    <ClCompile Include="dependencies\pugixml\pugixml.cpp">
+    <ClCompile Include="include\pugixml\pugixml.cpp">
       <Filter>dependencies\pugixml</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
@@ -235,22 +235,22 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Accelerator.h">
+    <ClInclude Include="include\dui\Accelerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\atl.mini\atldef.h">
+    <ClInclude Include="include\dui\atl.mini\atldef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\auto_reset.h">
+    <ClInclude Include="include\dui\auto_reset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DragWnd.h">
+    <ClInclude Include="include\dui\DragWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiActiveX.h">
+    <ClInclude Include="include\dui\DuiActiveX.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiAttrCrack.h">
+    <ClInclude Include="include\dui\DuiAttrCrack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\activex\DuiAxContainer.h">
@@ -259,268 +259,268 @@
     <ClInclude Include="src\activex\DuiAxUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duicolor.h">
+    <ClInclude Include="include\dui\duicolor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\atl.mini\duicomcli.h">
+    <ClInclude Include="include\dui\atl.mini\duicomcli.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiContainer.h">
+    <ClInclude Include="include\dui\DuiContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiCSS.h">
+    <ClInclude Include="include\dui\DuiCSS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duictrls.h">
+    <ClInclude Include="include\dui\duictrls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiDef.h">
+    <ClInclude Include="include\dui\DuiDef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiDefaultLogger.h">
+    <ClInclude Include="include\dui\DuiDefaultLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiDropDown.h">
+    <ClInclude Include="include\dui\DuiDropDown.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiEventSet.h">
+    <ClInclude Include="include\dui\DuiEventSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiEventSubscriber.h">
+    <ClInclude Include="include\dui\DuiEventSubscriber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiframe.h">
+    <ClInclude Include="include\dui\duiframe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiFrameDropTarget.h">
+    <ClInclude Include="include\dui\DuiFrameDropTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duihostwnd.h">
+    <ClInclude Include="include\dui\duihostwnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiimage.h">
+    <ClInclude Include="include\dui\duiimage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiImgBase.h">
+    <ClInclude Include="include\dui\DuiImgBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiImgDecoder_Def.h">
+    <ClInclude Include="include\dui\DuiImgDecoder_Def.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiItempanel.h">
+    <ClInclude Include="include\dui\duiItempanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiLogger.h">
+    <ClInclude Include="include\dui\DuiLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duimsgcracker.h">
+    <ClInclude Include="include\dui\duimsgcracker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duimsgfilter.h">
+    <ClInclude Include="include\dui\duimsgfilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiobject.h">
+    <ClInclude Include="include\dui\duiobject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiref.h">
+    <ClInclude Include="include\dui\duiref.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duires.h">
+    <ClInclude Include="include\dui\duires.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiresprovider.h">
+    <ClInclude Include="include\dui\duiresprovider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiresproviderbase.h">
+    <ClInclude Include="include\dui\duiresproviderbase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiScriptModule.h">
+    <ClInclude Include="include\dui\DuiScriptModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiskin.h">
+    <ClInclude Include="include\dui\duiskin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiSkinBase.h">
+    <ClInclude Include="include\dui\DuiSkinBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duistd.h">
+    <ClInclude Include="include\dui\duistd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiSystem.h">
+    <ClInclude Include="include\dui\DuiSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiThreadActiveWndManager.h">
+    <ClInclude Include="include\dui\DuiThreadActiveWndManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiTime.h">
+    <ClInclude Include="include\dui\DuiTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiTimerEx.h">
+    <ClInclude Include="include\dui\DuiTimerEx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiTipCtrl.h">
+    <ClInclude Include="include\dui\DuiTipCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiUtilities.h">
+    <ClInclude Include="include\dui\DuiUtilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiWindowManager.h">
+    <ClInclude Include="include\dui\DuiWindowManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiwnd.h">
+    <ClInclude Include="include\dui\duiwnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiwnddlgfile.h">
+    <ClInclude Include="include\dui\duiwnddlgfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiWndFactoryManager.h">
+    <ClInclude Include="include\dui\DuiWndFactoryManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiwndnotify.h">
+    <ClInclude Include="include\dui\duiwndnotify.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiwndpanel.h">
+    <ClInclude Include="include\dui\duiwndpanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiwndstyle.h">
+    <ClInclude Include="include\dui\duiwndstyle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\FocusManager.h">
+    <ClInclude Include="include\dui\FocusManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\gdialpha.h">
+    <ClInclude Include="include\dui\gdialpha.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GradientFillHelper.h">
+    <ClInclude Include="include\dui\GradientFillHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\MemDC.h">
+    <ClInclude Include="include\dui\MemDC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\MenuWndHook.h">
+    <ClInclude Include="include\dui\MenuWndHook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\mybuffer.h">
+    <ClInclude Include="include\dui\mybuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Name2ID.h">
+    <ClInclude Include="include\dui\Name2ID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SimpleWnd.h">
+    <ClInclude Include="include\dui\SimpleWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\stree.hpp">
+    <ClInclude Include="include\dui\stree.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\wtl.mini\duicoll.h">
+    <ClInclude Include="include\dui\wtl.mini\duicoll.h">
       <Filter>Header Files\wtl.mini</Filter>
     </ClInclude>
-    <ClInclude Include="include\wtl.mini\duicrack.h">
+    <ClInclude Include="include\dui\wtl.mini\duicrack.h">
       <Filter>Header Files\wtl.mini</Filter>
     </ClInclude>
-    <ClInclude Include="include\wtl.mini\duigdi.h">
+    <ClInclude Include="include\dui\wtl.mini\duigdi.h">
       <Filter>Header Files\wtl.mini</Filter>
     </ClInclude>
-    <ClInclude Include="include\wtl.mini\duimisc.h">
+    <ClInclude Include="include\dui\wtl.mini\duimisc.h">
       <Filter>Header Files\wtl.mini</Filter>
     </ClInclude>
-    <ClInclude Include="include\wtl.mini\duistr.h">
+    <ClInclude Include="include\dui\wtl.mini\duistr.h">
       <Filter>Header Files\wtl.mini</Filter>
     </ClInclude>
-    <ClInclude Include="include\wtl.mini\strcpcvt.h">
+    <ClInclude Include="include\dui\wtl.mini\strcpcvt.h">
       <Filter>Header Files\wtl.mini</Filter>
     </ClInclude>
-    <ClInclude Include="include\wtl.mini\tstring.h">
+    <ClInclude Include="include\dui\wtl.mini\tstring.h">
       <Filter>Header Files\wtl.mini</Filter>
     </ClInclude>
-    <ClInclude Include="include\activex\DuiBStr.h">
+    <ClInclude Include="include\dui\activex\DuiBStr.h">
       <Filter>Header Files\activex</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiCalendar.h">
+    <ClInclude Include="include\dui\DuiCalendar.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiCaption.h">
+    <ClInclude Include="include\dui\DuiCaption.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiComboBox.h">
+    <ClInclude Include="include\dui\DuiComboBox.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiDateTimeEdit.h">
+    <ClInclude Include="include\dui\DuiDateTimeEdit.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiHeaderCtrl.h">
+    <ClInclude Include="include\dui\DuiHeaderCtrl.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiHotKeyCtrl.h">
+    <ClInclude Include="include\dui\DuiHotKeyCtrl.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiitembox.h">
+    <ClInclude Include="include\dui\duiitembox.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\duilistbox.h">
+    <ClInclude Include="include\dui\duilistbox.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\duilistboxex.h">
+    <ClInclude Include="include\dui\duilistboxex.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiListCtrl.h">
+    <ClInclude Include="include\dui\DuiListCtrl.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiMenu.h">
+    <ClInclude Include="include\dui\DuiMenu.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiMessageBox.h">
+    <ClInclude Include="include\dui\DuiMessageBox.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\duirealwnd.h">
+    <ClInclude Include="include\dui\duirealwnd.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiRichEdit.h">
+    <ClInclude Include="include\dui\DuiRichEdit.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiscrollbar.h">
+    <ClInclude Include="include\dui\duiscrollbar.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiSliderBar.h">
+    <ClInclude Include="include\dui\DuiSliderBar.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiSplitWnd.h">
+    <ClInclude Include="include\dui\DuiSplitWnd.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\duitreebox.h">
+    <ClInclude Include="include\dui\duitreebox.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiTreeCtrl.h">
+    <ClInclude Include="include\dui\DuiTreeCtrl.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiwndcmnctrl.h">
+    <ClInclude Include="include\dui\duiwndcmnctrl.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiwndtabctrl.h">
+    <ClInclude Include="include\dui\duiwndtabctrl.h">
       <Filter>Header Files\controls</Filter>
     </ClInclude>
-    <ClInclude Include="include\duifontpool.h">
+    <ClInclude Include="include\dui\duifontpool.h">
       <Filter>Header Files\singltons</Filter>
     </ClInclude>
-    <ClInclude Include="include\duiimgpool.h">
+    <ClInclude Include="include\dui\duiimgpool.h">
       <Filter>Header Files\singltons</Filter>
     </ClInclude>
-    <ClInclude Include="include\DUISingleton.h">
+    <ClInclude Include="include\dui\DUISingleton.h">
       <Filter>Header Files\singltons</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiSingletonMap.h">
+    <ClInclude Include="include\dui\DuiSingletonMap.h">
       <Filter>Header Files\singltons</Filter>
     </ClInclude>
-    <ClInclude Include="include\DuiSkinPool.h">
+    <ClInclude Include="include\dui\DuiSkinPool.h">
       <Filter>Header Files\singltons</Filter>
     </ClInclude>
-    <ClInclude Include="include\duistringpool.h">
+    <ClInclude Include="include\dui\duistringpool.h">
       <Filter>Header Files\singltons</Filter>
     </ClInclude>
-    <ClInclude Include="dependencies\pugixml\pugiconfig.hpp">
+    <ClInclude Include="include\pugixml\pugiconfig.hpp">
       <Filter>dependencies\pugixml</Filter>
     </ClInclude>
-    <ClInclude Include="dependencies\pugixml\pugixml.hpp">
+    <ClInclude Include="include\pugixml\pugixml.hpp">
       <Filter>dependencies\pugixml</Filter>
     </ClInclude>
   </ItemGroup>

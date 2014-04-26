@@ -34,7 +34,7 @@
 #include "duidef.h"
 
 //export pugixml interface
-#include "../dependencies/pugixml/pugixml.hpp"
+#include <pugixml/pugixml.hpp>
 
 #include "DuiUtilities.h"
 
