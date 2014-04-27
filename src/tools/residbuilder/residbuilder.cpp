@@ -117,7 +117,7 @@ void UpdateName2ID(map<string,int> *pmapName2ID,TiXmlDocument *pXmlDocName2ID,Ti
 class FILEHEAD
 {
 public:
-	char szBom[2];
+	unsigned char szBom[2];
 	WCHAR szHeadLine[ARRAYSIZE(STAMP_FORMAT)];
 
 	FILEHEAD(__int64 ts=0)
@@ -163,6 +163,25 @@ BOOL IsName2IDMapChanged(NAME2IDMAP & map1,NAME2IDMAP & map2)
 	return FALSE;
 }
 
+
+void printUsage()
+{
+    const TCHAR  cmd_usage[]=
+    TEXT("\n")\
+    TEXT("=================================================\n")\
+    TEXT("| \n")\
+    TEXT("| residbulider2 用于生成duiengine的是资源文件\n")\
+    TEXT("| 包括winres.rc2/ name2id winres.h\n")\
+    TEXT("| residbuilder2 在构建之前事件中调用\n")\
+    TEXT("| residbuilder2A 是对 residbuilder2的改版，主要是增加这个说明\n")\
+    TEXT("| 示例\n")\
+    TEXT("| residbuilder -y -p skin -i skin\\index.xml -r .\\duires\\winres.rc2 -n .\\duires\\name2id.xml -h .\\duires\\winres.h\n")\
+    TEXT("=================================================\n")\
+    TEXT("\n");
+
+    _tprintf(TEXT("%s"),cmd_usage);
+}
+
 //residbuilder -y -p skin -i skin\index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -191,6 +210,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if(strIndexFile.empty())
 	{
 		_tprintf(TEXT("not specify input file, using -i to define the input file"));
+        printUsage();
 		return 1;
 	}
 
@@ -199,6 +219,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if(!xmlIndexFile.LoadFile(strIndexFile.c_str()))
 	{
 		_tprintf(TEXT("parse input file failed"));
+        printUsage();
 		return 1;
 	}
 
@@ -360,7 +381,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			f=fopen(strHead.c_str(),"wb");
 			if(f)
 			{
-				char szBom[2]={0xFF,0xFE};
+				unsigned char szBom[2]={0xFF,0xFE};
 				fwrite(szBom,2,1,f);//写UTF16文件头。
 				fwrite(strOut.c_str(),sizeof(WCHAR),strOut.length(),f);
 				fclose(f);
