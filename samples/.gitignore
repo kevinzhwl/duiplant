@@ -1,0 +1,8 @@
+# #起始的行都是注释行
+# foo.txt 忽略指定文件名
+# *.html 忽略一类文件
+# !foo.html 指定例外 不会被忽略
+# *.[oa] 忽略所有.o 和.a的文件
+
+#deploy DUIEngine DIR
+duiengine/
