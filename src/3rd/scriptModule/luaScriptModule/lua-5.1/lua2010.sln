@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "lua.vcxproj", "{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug-shared|Win32 = Debug-shared|Win32
+		Debug-static|Win32 = Debug-static|Win32
+		Release-shared|Win32 = Release-shared|Win32
+		Release-static|Win32 = Release-static|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}.Debug-shared|Win32.ActiveCfg = Debug-shared|Win32
+		{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}.Debug-shared|Win32.Build.0 = Debug-shared|Win32
+		{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}.Debug-static|Win32.ActiveCfg = Debug-static|Win32
+		{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}.Debug-static|Win32.Build.0 = Debug-static|Win32
+		{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}.Release-shared|Win32.ActiveCfg = Release-shared|Win32
+		{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}.Release-shared|Win32.Build.0 = Release-shared|Win32
+		{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}.Release-static|Win32.ActiveCfg = Release-static|Win32
+		{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}.Release-static|Win32.Build.0 = Release-static|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

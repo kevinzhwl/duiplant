@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="lua_tinker">
+      <UniqueIdentifier>{d16ee0db-9cb8-4c9f-a060-d292f3966998}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="exports">
+      <UniqueIdentifier>{46f105cb-8ca3-441e-acd3-9ae31df117b2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="luaScriptModule.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lua_tinker.cpp">
+      <Filter>lua_tinker</Filter>
+    </ClCompile>
+    <ClCompile Include="exports\DuiEngine.cpp">
+      <Filter>exports</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="luaScriptModule.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lua_tinker.h">
+      <Filter>lua_tinker</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\DuiBasic.h">
+      <Filter>exports</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\DuiMessageBox.h">
+      <Filter>exports</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\DuiResProvider.h">
+      <Filter>exports</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\DuiScriptModule.h">
+      <Filter>exports</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\DuiSystem.h">
+      <Filter>exports</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\DuiThreadActiveWndMgr.h">
+      <Filter>exports</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\DuiWindow.h">
+      <Filter>exports</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>
