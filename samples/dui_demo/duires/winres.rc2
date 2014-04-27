@@ -1,5 +1,5 @@
 #pragma once
-#include "duires.h"
+#include <dui/duires.h>
 
 #pragma message("include winres.rc2")
 

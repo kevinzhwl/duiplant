@@ -5,23 +5,23 @@
 
 #pragma once
 
-#include <duistd.h>
-#include <duihostwnd.h>
-#include <duictrls.h>
-#include <duiwndnotify.h>
-#include <DuiCSS.h>
+#include <dui\duistd.h>
+#include <dui\duihostwnd.h>
+#include <dui\duictrls.h>
+#include <dui\duiwndnotify.h>
+#include <dui\DuiCSS.h>
 
 #if defined(DLL_DUI)  && !defined(_WIN64)
 #define LUA_TEST 
 #endif
 
 #ifdef LUA_TEST	//DLL version duiengine support lua
-#include "..\scriptModule\luaScriptModule\luaScriptModule\luaScriptModule.h"
+#include <modules\luaScriptModule\luaScriptModule.h>
 
 #ifdef _DEBUG
-#pragma comment(lib,"..\\scriptModule\\luaScriptModule\\lib\\luaScriptModule_d.lib")
+#pragma comment(lib,"luaScriptModule-win32-debug-shared.lib")
 #else
-#pragma comment(lib,"..\\scriptModule\\luaScriptModule\\lib\\luaScriptModule.lib")
+#pragma comment(lib,"luaScriptModule-win32-release-shared.lib")
 #endif
 
 #endif
@@ -30,35 +30,59 @@
 #include "resource.h"	//APP×ÊÔ´
 #include "duires/winres.h"	//¿Ø¼þID
 
-#include "../zlib/zconf.h"
-#include "../zlib/zlib.h"
+#include <zlib/zconf.h>
+#include <zlib/zlib.h>
 
 using namespace DuiEngine;
 
 #ifdef _DEBUG
 
-#if !defined(_WIN64)
-#pragma comment(lib,"zlib_d.lib")
-#endif
+#if defined(_WIN64)
 
-	#ifdef USING_ATL
-	# pragma comment(lib, "duiengine_static_atl_d.lib")
-	#elif DLL_DUI
-	# pragma comment(lib, "duiengine_d.lib")
+#pragma comment(lib,"zlib-x64-debug.lib")
+	#if defined(USING_ATL)
+	# pragma comment(lib, "duiengine-x64-debug_atl.lib")
+	#elif defined(DLL_DUI)
+	# pragma comment(lib, "duiengine-x64-debug_shared.lib")
 	#else
-	# pragma comment(lib, "duiengine_static_d.lib")
+	# pragma comment(lib, "duiengine-x64-debug_static.lib")
 	#endif
+
 #else
 
-#if !defined(_WIN64)
-#pragma comment(lib,"zlib.lib")
+#pragma comment(lib,"zlib-win32-debug.lib")
+	#if defined(USING_ATL)
+	# pragma comment(lib, "duiengine-win32-debug_atl.lib")
+	#elif defined(DLL_DUI)
+	# pragma comment(lib, "duiengine-win32-debug_shared.lib")
+	#else
+	# pragma comment(lib, "duiengine-win32-debug_static.lib")
+	#endif
+
 #endif
 
+#else
+
+#if defined(_WIN64)
+#pragma comment(lib,"zlib-x64-release.lib")
+
 	#ifdef DLL_DUI
-	# pragma comment(lib, "duiengine.lib")
+	# pragma comment(lib, "duiengine-x64-release_shared.lib")
 	#else
-	# pragma comment(lib, "duiengine_static.lib")
+	# pragma comment(lib, "duiengine-x64-release_static.lib")
 	#endif
+
+#else
+#pragma comment(lib,"zlib-win32-release.lib")
+
+	#ifdef DLL_DUI
+	# pragma comment(lib, "duiengine-win32-release_shared.lib")
+	#else
+	# pragma comment(lib, "duiengine-win32-release_static.lib")
+	#endif
+
+#endif
+
 
 #endif
 

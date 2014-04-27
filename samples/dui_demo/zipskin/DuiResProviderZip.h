@@ -4,8 +4,8 @@
 #define DUI_EXP
 #endif
 
-#include "../../DUIEngine/include/duiresproviderbase.h"
-#include "../../DUIEngine/include/DuiImgBase.h"
+#include <dui/duiresproviderbase.h>
+#include <dui/DuiImgBase.h>
 
 #include "ZipArchive.h"
 

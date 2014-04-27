@@ -1,8 +1,8 @@
 #pragma once
 
 #include <richole.h>
-#include <simplewnd.h>
-#include <DuiRichEdit.h>
+#include <dui/simplewnd.h>
+#include <dui/DuiRichEdit.h>
 
 class CImageOle : public IOleObject, public IViewObject2, public ITimelineHandler
 {

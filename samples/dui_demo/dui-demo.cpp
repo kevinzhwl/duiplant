@@ -2,9 +2,9 @@
 //
 
 #include "stdafx.h"
-#include "menuwndhook.h"
-#include "DuiSystem.h" 
-#include "DuiDefaultLogger.h"
+#include <dui/menuwndhook.h>
+#include <dui/DuiSystem.h> 
+#include <dui/DuiDefaultLogger.h>
 
 #include "DuiSkinGif.h"	//应用层定义的皮肤对象
 

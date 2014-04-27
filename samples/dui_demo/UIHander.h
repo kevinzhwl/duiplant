@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DuiMenu.h" 
+#include <dui/DuiMenu.h> 
 
 class CMainDlg;
 
