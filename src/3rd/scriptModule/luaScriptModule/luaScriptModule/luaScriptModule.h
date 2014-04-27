@@ -6,7 +6,7 @@
 #define LUASCRIPTMODULE_API __declspec(dllimport)
 #endif
 
-#include <DuiScriptModule.h>
+#include <dui\DuiScriptModule.h>
 
 extern "C"
 {

@@ -1,4 +1,4 @@
-#include <DuiResProviderBase.h>
+#include <dui\DuiResProviderBase.h>
 
 BOOL ExpLua_DuiResProvider(lua_State *L)
 {

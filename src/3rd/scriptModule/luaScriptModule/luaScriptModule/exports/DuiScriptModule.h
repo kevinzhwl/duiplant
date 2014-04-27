@@ -1,4 +1,4 @@
-#include <DuiScriptModule.h>
+#include <dui\DuiScriptModule.h>
 
 BOOL ExpLua_DuiScriptModule(lua_State *L)
 {

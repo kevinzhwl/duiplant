@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include <DuiEventSubscriber.h>
+#include <dui\DuiEventSubscriber.h>
 #include "luaScriptModule.h"
 #include "lua_tinker.h"
 

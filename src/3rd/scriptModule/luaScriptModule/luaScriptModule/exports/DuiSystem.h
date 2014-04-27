@@ -1,4 +1,4 @@
-#include <DuiSystem.h>
+#include <dui\DuiSystem.h>
 
 typedef 
 void (DuiSystem::*FUN_LOGEVENT)(LPCTSTR , LoggingLevel level);

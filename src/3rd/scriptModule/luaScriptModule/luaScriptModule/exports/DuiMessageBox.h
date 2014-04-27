@@ -1,4 +1,4 @@
-#include <DuiMessageBox.h>
+#include <dui\DuiMessageBox.h>
 
 BOOL ExpLua_DuiMessageBox(lua_State *L)
 {

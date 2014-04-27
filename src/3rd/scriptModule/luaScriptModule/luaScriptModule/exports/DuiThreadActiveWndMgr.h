@@ -1,4 +1,4 @@
-#include <DuiThreadActiveWndManager.h>
+#include <dui\DuiThreadActiveWndManager.h>
 
 BOOL ExpLua_DuiThreadActiveWndMgr(lua_State *L)
 {

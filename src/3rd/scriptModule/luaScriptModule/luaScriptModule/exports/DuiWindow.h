@@ -1,4 +1,4 @@
-#include <duiwnd.h>
+#include <dui\duiwnd.h>
 
 BOOL ExpLua_DuiWindow(lua_State *L)
 {
