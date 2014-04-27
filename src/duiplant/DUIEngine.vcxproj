@@ -263,7 +263,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
@@ -288,7 +288,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
@@ -309,7 +309,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_USRDLL;DUIENGINE_EXPORTS;DLL_DUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -332,7 +332,7 @@
       <PreprocessorDefinitions>_WIN64;NDEBUG;_USRDLL;DUIENGINE_EXPORTS;DLL_DUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
@@ -376,7 +376,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <ShowIncludes>false</ShowIncludes>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -390,7 +390,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
@@ -405,7 +405,7 @@
       <PreprocessorDefinitions>_WIN64;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
@@ -419,7 +419,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <ShowIncludes>false</ShowIncludes>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -432,7 +432,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;USING_ATL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <ShowIncludes>false</ShowIncludes>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -450,7 +450,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <ShowIncludes>false</ShowIncludes>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -465,7 +465,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>_WIN64;NDEBUG;USING_ATL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>duistd.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <ShowIncludes>false</ShowIncludes>
       <WholeProgramOptimization>true</WholeProgramOptimization>
