@@ -171,9 +171,11 @@ void printUsage()
     TEXT("=================================================\n")\
     TEXT("| \n")\
     TEXT("| residbulider2 用于生成duiengine的是资源文件\n")\
-    TEXT("| 包括winres.rc2/ name2id winres.h\n")\
+    TEXT("|   包括winres.rc2/ name2id winres.h\n")\
     TEXT("| residbuilder2 在构建之前事件中调用\n")\
-    TEXT("| residbuilder2A 是对 residbuilder2的改版，主要是增加这个说明\n")\
+    TEXT("| residbuilder2A 是对 residbuilder2的改版 \n")\
+    TEXT("|   主要是改为输出#include <dui/duires.h> \n")\
+    TEXT("|        增加-q 快速设定为实例中的参数\n")\
     TEXT("| 示例\n")\
     TEXT("| residbuilder -y -p skin -i skin\\index.xml -r .\\duires\\winres.rc2 -n .\\duires\\name2id.xml -h .\\duires\\winres.h\n")\
     TEXT("=================================================\n")\
@@ -191,11 +193,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	string strHead;		//资源头文件,如winres.h
 	string strName2ID;	//名字-ID映射表XML
 	char   cYes=0;		//强制改写标志
+    char   cQuickSetting =0; //快速设置
 
 	int c;
 
 	_tprintf(TEXT("%s\n"),GetCommandLine());
-	while ((c = getopt(argc, argv, _T("i:r:h:n:y:p:"))) != EOF)
+	while ((c = getopt(argc, argv, _T("i:r:h:n:y:p:q:"))) != EOF)
 	{
 		switch (c)
 		{
@@ -205,8 +208,21 @@ int _tmain(int argc, _TCHAR* argv[])
 		case _T('n'):strName2ID=optarg;break;
 		case _T('y'):cYes=1;optind--;break;
 		case _T('p'):strSkinPath=optarg;break;
+		case _T('q'):cQuickSetting=1;optind--;break;
 		}
 	}
+
+    if( cQuickSetting == 1)
+    {
+		strIndexFile="skin\\index.xml";
+		strRes="duires\\winres.rc2";
+		strHead="duires\\winres.h";
+		strName2ID="duires\\name2id.xml";
+		cYes=1;
+		strSkinPath="skin";
+
+    }
+
 	if(strIndexFile.empty())
 	{
 		_tprintf(TEXT("not specify input file, using -i to define the input file"));
