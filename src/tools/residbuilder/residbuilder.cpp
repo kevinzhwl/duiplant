@@ -4,12 +4,17 @@
 #include "stdafx.h"
 #include "tinyxml/tinyxml.h"
 
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
 const wchar_t  RB_HEADER[]=
 L"/*<------------------------------------------------------------------------------------------------->*/\n"\
 L"/*该文件由residbuilder2生成，请不要手动修改*/\n"\
 L"/*<------------------------------------------------------------------------------------------------->*/\n";
 
-const wchar_t RB_RC2INCLUDE[]=L"#pragma once\n#include <duires.h>\n";
+const wchar_t RB_RC2INCLUDE[]=L"#pragma once\n#include <dui/duires.h>\n";
 
 
 struct IDMAPRECORD
@@ -94,7 +99,7 @@ void UpdateName2ID(map<string,int> *pmapName2ID,TiXmlDocument *pXmlDocName2ID,Ti
 			(*pmapName2ID)[strName]=nID;
 		}else
 		{
-			printf("find a element which uses a used name attribute %s \n",strName);
+			_tprintf(TEXT("find a element which uses a used name attribute %s \n"),strName);
 		}
 	}
 	TiXmlElement *pXmlChild=pXmlEleLayer->FirstChildElement();
@@ -170,7 +175,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	int c;
 
-	printf("%s\n",GetCommandLineA());
+	_tprintf(TEXT("%s\n"),GetCommandLine());
 	while ((c = getopt(argc, argv, _T("i:r:h:n:y:p:"))) != EOF)
 	{
 		switch (c)
@@ -185,7 +190,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	if(strIndexFile.empty())
 	{
-		printf("not specify input file, using -i to define the input file");
+		_tprintf(TEXT("not specify input file, using -i to define the input file"));
 		return 1;
 	}
 
@@ -193,7 +198,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	TiXmlDocument xmlIndexFile;
 	if(!xmlIndexFile.LoadFile(strIndexFile.c_str()))
 	{
-		printf("parse input file failed");
+		_tprintf(TEXT("parse input file failed"));
 		return 1;
 	}
 
@@ -252,11 +257,11 @@ int _tmain(int argc, _TCHAR* argv[])
 				fwrite(RB_RC2INCLUDE,2,wcslen(RB_RC2INCLUDE),f);
 				fwrite(strOut.c_str(),sizeof(WCHAR),strOut.length(),f);
 				fclose(f);
-				printf("build resource succeed!\n");
+				_tprintf(TEXT("build resource succeed!\n"));
 			}
 		}else
 		{
-			printf("%s has not been modified\n",strIndexFile.c_str());
+			_tprintf(TEXT("%s has not been modified\n"),strIndexFile.c_str());
 		}
 
 	}
@@ -291,7 +296,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				if(!strSkinPath.empty()) strXmlLayer=strSkinPath+"\\"+strXmlLayer;
 				if(strXmlLayer.length())
 				{//找到一个窗口描述XML
-					printf("extracting named element from %s\n",strXmlLayer.c_str());
+					_tprintf(TEXT("extracting named element from %s\n"),strXmlLayer.c_str());
 					TiXmlDocument xmlDocLayer;
 					xmlDocLayer.LoadFile(strXmlLayer.c_str());
 					UpdateName2ID(&mapNamedID,&xmlName2ID,xmlDocLayer.RootElement(),nCurID);
@@ -302,7 +307,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		if(!IsName2IDMapChanged(mapNamedID,mapNamedID_Old))
 		{
-			printf("name2id map doesn't need to be updated!");
+			_tprintf(TEXT("name2id map doesn't need to be updated!"));
 		}else
 		{
 
@@ -311,7 +316,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				xmlName2ID.Print(f);
 				fclose(f);
-				printf("build name2id succeed!");
+				_tprintf(TEXT("build name2id succeed!"));
 			}
 
 			vector<NAME2IDRECORD> vecName2ID;
@@ -359,7 +364,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				fwrite(szBom,2,1,f);//写UTF16文件头。
 				fwrite(strOut.c_str(),sizeof(WCHAR),strOut.length(),f);
 				fclose(f);
-				printf("build header succeed!\n");
+				_tprintf(TEXT("build header succeed!\n"));
 			}
 		}
 	}
