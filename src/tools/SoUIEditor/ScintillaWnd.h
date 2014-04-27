@@ -1,6 +1,6 @@
 #pragma once
 
-#include <simplewnd.h>
+#include <dui/simplewnd.h>
 
 class CScintillaModule
 {

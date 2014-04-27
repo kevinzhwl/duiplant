@@ -14,9 +14,10 @@ CDuiStringT CSoUIHelper::GetEditText( CDuiRichEdit *pEdit )
 CDuiStringT CSoUIHelper::GetComboboxText( CDuiComboBox *pCtrl )
 {
 	CDuiStringT str;
-	int nLen=pCtrl->GetWindowTextLength()+1;
-	LPTSTR pBuf=str.GetBufferSetLength(nLen);
-	pCtrl->GetWindowText(pBuf,nLen);
-	str.ReleaseBuffer();
+    str = pCtrl->GetWindowText();
+	//int nLen=pCtrl->GetWindowTextLength()+1;
+	//LPTSTR pBuf=str.GetBufferSetLength(nLen);
+	//pCtrl->GetWindowText(pBuf,nLen);
+	//str.ReleaseBuffer();
 	return str;
 }
