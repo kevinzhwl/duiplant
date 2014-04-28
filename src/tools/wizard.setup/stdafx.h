@@ -16,7 +16,13 @@
 
 #include <atlbase.h>
 #include <atlstr.h>
+
 #include <atlapp.h>
+
+//include define AtlLoadIconImage without WTL::CString
+#define _WTL_NO_CSTRING
+#include <atluser.h>
+#include <atlmisc.h>
 
 extern CAppModule _Module;
 
