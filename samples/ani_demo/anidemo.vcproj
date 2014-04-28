@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="animate_demo"
+	Name="anidemo"
 	ProjectGUID="{F41B4A33-1948-42D0-BFCF-C58EEE0371CE}"
-	RootNamespace="animate_demo"
+	RootNamespace="anidemo"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -179,7 +179,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Project1.cpp"
+				RelativePath=".\anidemo.cpp"
 				>
 			</File>
 			<File
@@ -237,11 +237,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\duires\Project1.ico"
+				RelativePath=".\duires\anidemo.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\Project1.rc"
+				RelativePath=".\anidemo.rc"
 				>
 			</File>
 			<File

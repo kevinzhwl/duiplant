@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "animate_demo", "Project1.vcproj", "{F41B4A33-1948-42D0-BFCF-C58EEE0371CE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "anidemo", "anidemo.vcproj", "{F41B4A33-1948-42D0-BFCF-C58EEE0371CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
