@@ -12,7 +12,7 @@
       <AdditionalIncludeDirectories>$(DUIENGINE_DIR)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DUIENGINE_DIR)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DUIENGINE_DIR)lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(DUIENGINE_DIR)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
