@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="Dui-Demo"
+	Name="DuiDemo"
 	ProjectGUID="{4E567F0E-9B95-4EEA-95B6-58BF748C69C4}"
-	RootNamespace="Dui-Demo"
+	RootNamespace="DuiDemo"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -396,7 +396,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug_Dll|Win32"
+			Name="Debug-Dll|Win32"
 			OutputDirectory="..\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
@@ -490,7 +490,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug_Dll|x64"
+			Name="Debug-Dll|x64"
 			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -584,7 +584,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release_Dll|Win32"
+			Name="Release-Dll|Win32"
 			OutputDirectory="..\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
@@ -679,7 +679,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release_Dll|x64"
+			Name="Release-Dll|x64"
 			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -772,7 +772,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug_ATL|Win32"
+			Name="Debug-ATL|Win32"
 			OutputDirectory="..\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
@@ -866,7 +866,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug_ATL|x64"
+			Name="Debug-ATL|x64"
 			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -968,7 +968,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
-				RelativePath=".\dui-demo.cpp"
+				RelativePath=".\DuiDemo.cpp"
 				>
 			</File>
 			<File
@@ -1015,7 +1015,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_Dll|Win32"
+					Name="Debug-Dll|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1023,7 +1023,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_Dll|x64"
+					Name="Debug-Dll|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1031,7 +1031,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release_Dll|Win32"
+					Name="Release-Dll|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1039,7 +1039,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release_Dll|x64"
+					Name="Release-Dll|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1047,7 +1047,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_ATL|Win32"
+					Name="Debug-ATL|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1055,7 +1055,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_ATL|x64"
+					Name="Debug-ATL|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1128,42 +1128,42 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_Dll|Win32"
+					Name="Debug-Dll|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_Dll|x64"
+					Name="Debug-Dll|x64"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release_Dll|Win32"
+					Name="Release-Dll|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release_Dll|x64"
+					Name="Release-Dll|x64"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_ATL|Win32"
+					Name="Debug-ATL|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_ATL|x64"
+					Name="Debug-ATL|x64"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -1203,7 +1203,7 @@
 			Name="resource files"
 			>
 			<File
-				RelativePath=".\dui-demo.rc"
+				RelativePath=".\DuiDemo.rc"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1222,7 +1222,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_ATL|Win32"
+					Name="Debug-ATL|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -1230,7 +1230,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug_ATL|x64"
+					Name="Debug-ATL|x64"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -1278,7 +1278,7 @@
 				RelativePath=".\zipskin\DuiResProviderZip.cpp"
 				>
 				<FileConfiguration
-					Name="Debug_Dll|x64"
+					Name="Debug-Dll|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1294,7 +1294,7 @@
 				RelativePath=".\zipskin\zipArchive.cpp"
 				>
 				<FileConfiguration
-					Name="Debug_Dll|x64"
+					Name="Debug-Dll|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool

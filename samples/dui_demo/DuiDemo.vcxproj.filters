@@ -39,7 +39,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dui-demo.cpp">
+    <ClCompile Include="duidemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainDlg.cpp">
@@ -129,7 +129,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="dui-demo.rc">
+    <ResourceCompile Include="duidemo.rc">
       <Filter>resource files</Filter>
     </ResourceCompile>
   </ItemGroup>
