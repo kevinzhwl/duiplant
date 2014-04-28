@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<name2id name="maindlg" id="65537" />
+<name2id name="maindlg" id="65536" />
 <name2id name="close" id="1" />
-<name2id name="btn_msgbox" id="65538" />
-<name2id name="mfcbtn" id="65539" />
+<name2id name="mfcbtn" id="65537" />

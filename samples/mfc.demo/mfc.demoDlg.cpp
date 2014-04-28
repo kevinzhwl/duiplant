@@ -87,8 +87,8 @@ HCURSOR CmfcdemoDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-#include "DuiSystem.h" 
-#include "DuiDefaultLogger.h"
+#include <dui/DuiSystem.h> 
+#include <dui/DuiDefaultLogger.h>
 #include "MainDlg.h"
 
 using namespace DuiEngine;
@@ -116,7 +116,7 @@ void CmfcdemoDlg::OnDuiDlg()
 	DuiSystem duiSystem(theApp.m_hInstance);
 
 	DefaultLogger loger;
-	loger.setLogFilename(CDuiStringT(szCurrentDir)+"\\dui-demo.log");
+	loger.setLogFilename(CDuiStringT(szCurrentDir)+_T("\\dui-demo.log"));
 	duiSystem.SetLogger(&loger);
 
 	duiSystem.logEvent(_T("demo started"));

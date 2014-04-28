@@ -22,21 +22,24 @@
 
 #include <Imm.h>
 
-#include <duistd.h>
-#include <duihostwnd.h>
-#include <duictrls.h>
-#include <duiwndnotify.h>
-#include <DuiCSS.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <dui/duistd.h>
+#include <dui/duihostwnd.h>
+#include <dui/duictrls.h>
+#include <dui/duiwndnotify.h>
+#include <dui/DuiCSS.h>
 
 #include "resource.h"	//APP资源
 #include "duires/winres.h" //包含DUI资源定义
 
+
 #ifdef _DEBUG
 
-# pragma comment(lib, "duiengine_static_d.lib")
+	# pragma comment(lib, "duiengine-win32-debug-static.lib")
+
 #else
 
-# pragma comment(lib, "duiengine_static.lib")
+	# pragma comment(lib, "duiengine-win32-release-static.lib")
 
 #endif
 

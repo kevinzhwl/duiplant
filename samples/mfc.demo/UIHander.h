@@ -1,6 +1,6 @@
 #pragma once
 
-#include <duiwndnotify.h>
+#include <dui/duiwndnotify.h>
 
 class CMainDlg;
 

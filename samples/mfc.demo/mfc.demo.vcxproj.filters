@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="dui_res">
+      <UniqueIdentifier>{e8d7eac8-5038-42dd-9475-d04de6a4c8e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dui_skin">
+      <UniqueIdentifier>{5838f0ad-224c-4e13-884c-986202277a24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dui_skin\image">
+      <UniqueIdentifier>{50fd49e8-a792-4b5f-b94b-859e8d51e50d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dui_skin\xml">
+      <UniqueIdentifier>{366baf3f-5934-4fc9-90fa-db44db4535db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dui_source">
+      <UniqueIdentifier>{69b9187a-be37-4c17-847a-7863ce0d5d44}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="mfc.demo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mfc.demoDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDlg.cpp">
+      <Filter>dui_source</Filter>
+    </ClCompile>
+    <ClCompile Include="UIHander.cpp">
+      <Filter>dui_source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mfc.demo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mfc.demoDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="duires\winres.h">
+      <Filter>dui_res</Filter>
+    </ClInclude>
+    <ClInclude Include="MainDlg.h">
+      <Filter>dui_source</Filter>
+    </ClInclude>
+    <ClInclude Include="UIHander.h">
+      <Filter>dui_source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\mfc.demo.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="duires\name2id.xml">
+      <Filter>dui_res</Filter>
+    </None>
+    <None Include="duires\winres.rc2">
+      <Filter>dui_res</Filter>
+    </None>
+    <None Include="skin\image\btn_sys_close.png">
+      <Filter>dui_skin\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_checkbox.png">
+      <Filter>dui_skin\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_radio.png">
+      <Filter>dui_skin\image</Filter>
+    </None>
+    <None Include="skin\image\check.png">
+      <Filter>dui_skin\image</Filter>
+    </None>
+    <None Include="skin\image\dlg_bg_frame.png">
+      <Filter>dui_skin\image</Filter>
+    </None>
+    <None Include="skin\image\focus_checkbox.png">
+      <Filter>dui_skin\image</Filter>
+    </None>
+    <None Include="skin\image\focus_radio.png">
+      <Filter>dui_skin\image</Filter>
+    </None>
+    <None Include="skin\image\scrollbar.bmp">
+      <Filter>dui_skin\image</Filter>
+    </None>
+    <None Include="skin\xml\dlg_main.xml">
+      <Filter>dui_skin\xml</Filter>
+    </None>
+    <None Include="skin\xml\dlg_msgbox.xml">
+      <Filter>dui_skin\xml</Filter>
+    </None>
+    <None Include="skin\xml\init.xml">
+      <Filter>dui_skin\xml</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mfc.demo.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="skin\index.xml">
+      <Filter>dui_skin</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
