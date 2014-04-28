@@ -326,7 +326,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-static|x64'">
     <PreBuildEvent>
-      <Message>build resouce id to winres2.rc</Message>
+      <Message>
+      </Message>
       <Command>
       </Command>
     </PreBuildEvent>
@@ -406,7 +407,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-static|x64'">
     <PreBuildEvent>
-      <Message>build resouce id to winres2.rc</Message>
+      <Message>
+      </Message>
       <Command>
       </Command>
     </PreBuildEvent>
@@ -484,7 +486,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-shared|x64'">
     <PreBuildEvent>
-      <Message>build resouce id to winres2.rc</Message>
+      <Message>
+      </Message>
       <Command>
       </Command>
     </PreBuildEvent>
@@ -564,7 +567,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-shared|x64'">
     <PreBuildEvent>
-      <Message>build resouce id to winres2.rc</Message>
+      <Message>
+      </Message>
       <Command>
       </Command>
     </PreBuildEvent>
@@ -642,7 +646,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|x64'">
     <PreBuildEvent>
-      <Message>build resouce id to winres2.rc</Message>
+      <Message>
+      </Message>
       <Command>
       </Command>
     </PreBuildEvent>
@@ -761,12 +766,53 @@
     <CustomBuildStep Include="duires\winres.rc2">
       <FileType>RC</FileType>
     </CustomBuildStep>
-    <None Include="layout\dlg_main.xml" />
-    <None Include="layout\dlg_msgbox.xml" />
-    <None Include="index.xml" />
-    <None Include="layout\init.xml" />
-    <None Include="layout\menu_test.xml" />
-    <None Include="layout\page2.xml" />
+    <None Include="skin\xml\dlg_main.xml" />
+    <None Include="skin\xml\dlg_msgbox.xml" />
+    <CustomBuild Include="skin\index.xml">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|x64'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|Win32'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|Win32'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|Win32'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|Win32'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug-shared|Win32'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug-shared|Win32'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug-shared|Win32'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug-shared|Win32'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug-static|Win32'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug-static|Win32'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug-static|Win32'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug-static|Win32'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release-shared|Win32'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release-shared|Win32'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release-shared|Win32'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release-shared|Win32'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release-static|Win32'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release-static|Win32'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release-static|Win32'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release-static|Win32'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|x64'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|x64'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|x64'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug-shared|x64'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug-shared|x64'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug-shared|x64'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug-shared|x64'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug-static|x64'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug-static|x64'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug-static|x64'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug-static|x64'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release-shared|x64'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release-shared|x64'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release-shared|x64'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release-shared|x64'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release-static|x64'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release-static|x64'">Building DUIEngine XML Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release-static|x64'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release-static|x64'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+    </CustomBuild>
+    <None Include="skin\xml\init.xml" />
+    <None Include="skin\xml\menu_test.xml" />
+    <None Include="skin\xml\page2.xml" />
     <None Include="duires\name2id.xml" />
     <None Include="duires\resmode.zip" />
     <None Include="lua\test.lua" />

@@ -12,9 +12,6 @@
     <Filter Include="duires">
       <UniqueIdentifier>{8296dc2a-a8be-49c9-a284-76d2af0373c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="XML">
-      <UniqueIdentifier>{85f62cd5-6dc3-446f-8553-657ac7d19525}</UniqueIdentifier>
-    </Filter>
     <Filter Include="resource files">
       <UniqueIdentifier>{4595971b-6b50-4d0f-87a1-40ba7cb67f04}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,15 @@
     <Filter Include="lua">
       <UniqueIdentifier>{87b4bfea-708a-4c40-b58f-95c4e4f4809e}</UniqueIdentifier>
       <Extensions>lua</Extensions>
+    </Filter>
+    <Filter Include="Skin Files">
+      <UniqueIdentifier>{006e062d-1f05-49fe-bc5c-dbbdedb0bbaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\XML">
+      <UniqueIdentifier>{85f62cd5-6dc3-446f-8553-657ac7d19525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\image">
+      <UniqueIdentifier>{f8185b57-fde5-482c-b727-1b42c91e0548}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,24 +103,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="layout\dlg_main.xml">
-      <Filter>XML</Filter>
-    </None>
-    <None Include="layout\dlg_msgbox.xml">
-      <Filter>XML</Filter>
-    </None>
-    <None Include="index.xml">
-      <Filter>XML</Filter>
-    </None>
-    <None Include="layout\init.xml">
-      <Filter>XML</Filter>
-    </None>
-    <None Include="layout\menu_test.xml">
-      <Filter>XML</Filter>
-    </None>
-    <None Include="layout\page2.xml">
-      <Filter>XML</Filter>
-    </None>
     <None Include="duires\name2id.xml">
       <Filter>resource files</Filter>
     </None>
@@ -123,6 +111,21 @@
     </None>
     <None Include="lua\test.lua">
       <Filter>lua</Filter>
+    </None>
+    <None Include="skin\xml\dlg_main.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\menu_test.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\dlg_msgbox.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\init.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\page2.xml">
+      <Filter>Skin Files\XML</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -134,5 +137,10 @@
     <CustomBuildStep Include="duires\winres.rc2">
       <Filter>duires</Filter>
     </CustomBuildStep>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="skin\index.xml">
+      <Filter>Skin Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <DUIENGINE_DIR>..\DUIEngine\</DUIENGINE_DIR>
+    <DUITOOL_DIR>$(DUIENGINE_DIR)tools\</DUITOOL_DIR>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>duiengine-portal</_PropertySheetDisplayName>
@@ -21,6 +22,9 @@
   <ItemGroup>
     <BuildMacro Include="DUIENGINE_DIR">
       <Value>$(DUIENGINE_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DUITOOL_DIR">
+      <Value>$(DUITOOL_DIR)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
