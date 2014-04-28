@@ -1,10 +1,10 @@
 
-// mfc.demoDlg.cpp : 实现文件
+// mfcdemoDlg.cpp : 实现文件
 //
 
 #include "stdafx.h"
-#include "mfc.demo.h"
-#include "mfc.demoDlg.h"
+#include "mfcdemo.h"
+#include "mfcdemoDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

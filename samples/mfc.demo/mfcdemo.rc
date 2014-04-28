@@ -67,7 +67,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\mfc.demo.ico"
+IDR_MAINFRAME           ICON                    "res\\mfcdemo.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -77,7 +77,7 @@ IDR_MAINFRAME           ICON                    "res\\mfc.demo.ico"
 IDD_MFCDEMO_DIALOG DIALOGEX 0, 0, 320, 200
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "mfc.demo"
+CAPTION "mfcdemo"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "确定",IDOK,209,179,50,14
@@ -111,9 +111,9 @@ BEGIN
             VALUE "CompanyName", "TODO: <公司名>"
             VALUE "FileDescription", "TODO: <文件说明>"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "mfc.demo.exe"
+            VALUE "InternalName", "mfcdemo.exe"
             VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
-            VALUE "OriginalFilename", "mfc.demo.exe"
+            VALUE "OriginalFilename", "mfcdemo.exe"
             VALUE "ProductName", "TODO: <产品名>"
             VALUE "ProductVersion", "1.0.0.1"
         END

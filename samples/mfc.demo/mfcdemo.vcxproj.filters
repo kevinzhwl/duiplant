@@ -30,10 +30,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mfc.demo.cpp">
+    <ClCompile Include="mfcdemo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mfc.demoDlg.cpp">
+    <ClCompile Include="mfcdemoDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
@@ -47,10 +47,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mfc.demo.h">
+    <ClInclude Include="mfcdemo.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mfc.demoDlg.h">
+    <ClInclude Include="mfcdemoDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
@@ -70,7 +70,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\mfc.demo.ico">
+    <None Include="res\mfcdemo.ico">
       <Filter>资源文件</Filter>
     </None>
     <None Include="duires\name2id.xml">
@@ -115,7 +115,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="mfc.demo.rc">
+    <ResourceCompile Include="mfcdemo.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

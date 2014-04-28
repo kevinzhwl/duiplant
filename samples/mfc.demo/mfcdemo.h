@@ -1,5 +1,5 @@
 
-// mfc.demo.h : PROJECT_NAME 应用程序的主头文件
+// mfcdemo.h : PROJECT_NAME 应用程序的主头文件
 //
 
 #pragma once
@@ -12,7 +12,7 @@
 
 
 // CmfcdemoApp:
-// 有关此类的实现，请参阅 mfc.demo.cpp
+// 有关此类的实现，请参阅 mfcdemo.cpp
 //
 
 class CmfcdemoApp : public CWinApp

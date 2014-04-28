@@ -112,8 +112,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="mfc.demo.cpp" />
-    <ClCompile Include="mfc.demoDlg.cpp" />
+    <ClCompile Include="mfcdemo.cpp" />
+    <ClCompile Include="mfcdemoDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -122,8 +122,8 @@
     <ClCompile Include="UIHander.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mfc.demo.h" />
-    <ClInclude Include="mfc.demoDlg.h" />
+    <ClInclude Include="mfcdemo.h" />
+    <ClInclude Include="mfcdemoDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="duires\winres.h" />
@@ -131,7 +131,7 @@
     <ClInclude Include="UIHander.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\mfc.demo.ico" />
+    <None Include="res\mfcdemo.ico" />
     <None Include="duires\name2id.xml" />
     <None Include="duires\winres.rc2" />
     <CustomBuild Include="skin\index.xml">
@@ -158,14 +158,14 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="mfc.demo.rc" />
+    <ResourceCompile Include="mfcdemo.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties RESOURCE_FILE="mfc.demo.rc" />
+      <UserProperties RESOURCE_FILE="mfcdemo.rc" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

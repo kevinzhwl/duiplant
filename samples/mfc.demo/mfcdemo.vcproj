@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="mfc.demo"
+	Name="mfcdemo"
 	ProjectGUID="{4DDEC167-A92B-469B-8BFB-02D8B39EB187}"
 	RootNamespace="mfcdemo"
 	Keyword="MFCProj"
@@ -191,11 +191,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\mfc.demo.cpp"
+				RelativePath=".\mfcdemo.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\mfc.demoDlg.cpp"
+				RelativePath=".\mfcdemoDlg.cpp"
 				>
 			</File>
 			<File
@@ -225,11 +225,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\mfc.demo.h"
+				RelativePath=".\mfcdemo.h"
 				>
 			</File>
 			<File
-				RelativePath=".\mfc.demoDlg.h"
+				RelativePath=".\mfcdemoDlg.h"
 				>
 			</File>
 			<File
@@ -247,11 +247,11 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\res\mfc.demo.ico"
+				RelativePath=".\res\mfcdemo.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\mfc.demo.rc"
+				RelativePath=".\mfcdemo.rc"
 				>
 			</File>
 		</Filter>
@@ -359,7 +359,7 @@
 	<Globals>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="mfc.demo.rc"
+			Value="mfcdemo.rc"
 		/>
 	</Globals>
 </VisualStudioProject>

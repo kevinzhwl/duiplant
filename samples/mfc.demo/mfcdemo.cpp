@@ -1,10 +1,10 @@
 
-// mfc.demo.cpp : 定义应用程序的类行为。
+// mfcdemo.cpp : 定义应用程序的类行为。
 //
 
 #include "stdafx.h"
-#include "mfc.demo.h"
-#include "mfc.demoDlg.h"
+#include "mfcdemo.h"
+#include "mfcdemoDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

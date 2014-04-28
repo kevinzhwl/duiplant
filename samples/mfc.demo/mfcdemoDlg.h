@@ -1,5 +1,5 @@
 
-// mfc.demoDlg.h : 头文件
+// mfcdemoDlg.h : 头文件
 //
 
 #pragma once
