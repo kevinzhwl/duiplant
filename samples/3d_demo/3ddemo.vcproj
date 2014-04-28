@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="3d_demo"
+	Name="3ddemo"
 	ProjectGUID="{FF65FE45-DEC8-4B2F-8034-C9C53924852F}"
 	TargetFrameworkVersion="196613"
 	>
@@ -170,7 +170,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
-				RelativePath=".\3d_demo.cpp"
+				RelativePath=".\3ddemo.cpp"
 				>
 			</File>
 			<File
@@ -236,11 +236,11 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
 			>
 			<File
-				RelativePath=".\duires\3d_demo.ico"
+				RelativePath=".\duires\3ddemo.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\3d_demo.rc"
+				RelativePath=".\3ddemo.rc"
 				>
 			</File>
 			<File

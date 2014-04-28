@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{51e9de5b-7bb6-4e6b-bc5f-11cef2ff845b}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{9d5f1f02-9c37-4bb8-85eb-1c4a32897ab9}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{6b0648cd-a3d7-407a-82fb-182b53117836}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
+    </Filter>
+    <Filter Include="Skin Files">
+      <UniqueIdentifier>{0e1beec5-a722-45e0-b7f5-a4023e541dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\image">
+      <UniqueIdentifier>{b77beae3-eb0f-480f-8383-5d4c9a4ed173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\XML">
+      <UniqueIdentifier>{e9a54681-d47e-47b4-a753-1686cc1e8bad}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="3ddemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dui3DPreview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIHander.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dui3DPreview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIHander.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="duires\winres.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="duires\3ddemo.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="duires\winres.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="skin\image\btn_sys_close.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_checkbox.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_radio.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\check.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\dlg_bg_frame.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\focus_checkbox.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\focus_radio.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\mini_progress_bar.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\mini_progress_bg.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\scrollbar.bmp">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\slider.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\test.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\xml\dlg_main.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\dlg_msgbox.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\init.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="3ddemo.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="skin\index.xml">
+      <Filter>Skin Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
