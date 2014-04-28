@@ -290,6 +290,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -378,6 +379,7 @@
       <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <ShowIncludes>false</ShowIncludes>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Lib />
   </ItemDefinitionGroup>
@@ -451,6 +453,7 @@
       <PrecompiledHeaderFile>dui/duistd.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <ShowIncludes>false</ShowIncludes>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Lib />
   </ItemDefinitionGroup>
