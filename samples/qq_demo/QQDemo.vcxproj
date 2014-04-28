@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B001A464-04D2-4844-A274-190B77A7A5FD}</ProjectGuid>
+    <RootNamespace>QQDemo</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vsprops\duiengine-portal.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vsprops\duiengine-portal.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)obj\$(ProjectName)-$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)-$(Configuration)</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)obj\$(ProjectName)-$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName)-$(Configuration)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile />
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <CustomBuild>
+      <Command>
+      </Command>
+    </CustomBuild>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile />
+    <Link />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Dui3DView.cpp" />
+    <ClCompile Include="duibuttonex.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="duiembedbutton.cpp" />
+    <ClCompile Include="duiembededit.cpp" />
+    <ClCompile Include="duiturn3dview.cpp" />
+    <ClCompile Include="LoginDlg.cpp" />
+    <ClCompile Include="QQDemo.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="UIHander.cpp" />
+    <ClCompile Include="image3d\3dlib.cpp" />
+    <ClCompile Include="image3d\3dmatrix.cpp" />
+    <ClCompile Include="image3d\3dtransform.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dui3DView.h" />
+    <ClInclude Include="duibuttonex.h" />
+    <ClInclude Include="duiembedbutton.h" />
+    <ClInclude Include="duiembededit.h" />
+    <ClInclude Include="duiturn3dview.h" />
+    <ClInclude Include="LoginDlg.h" />
+    <ClInclude Include="image3d\PerspectiveTransform.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="UIHander.h" />
+    <ClInclude Include="image3d\3dlib.h" />
+    <ClInclude Include="image3d\3dmatrix.h" />
+    <ClInclude Include="image3d\3dTransform.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="duires\QQDemo.ico" />
+    <None Include="skin\image\small_head.jpg" />
+    <None Include="duires\winres.rc2" />
+    <CustomBuild Include="skin\index.xml">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building XML Resource</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\duires\winres.rc2;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building XML Resource</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">skin\xml\dlg_main.xml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\duires\winres.rc2;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="skin\image\00680[26x26x8BPP].png" />
+    <None Include="skin\image\00692[31x22x8BPP].png" />
+    <None Include="skin\image\00693[58x22x8BPP].png" />
+    <None Include="skin\image\allbtn_down.png" />
+    <None Include="skin\image\allbtn_nor.png" />
+    <None Include="skin\image\allbtn_over.png" />
+    <None Include="skin\image\border.png" />
+    <None Include="skin\image\BT_KEY_BOARD.png" />
+    <None Include="skin\image\btn_dropdown.png" />
+    <None Include="skin\image\btn_dropdown_set.png" />
+    <None Include="skin\image\btn_get_pswd.png" />
+    <None Include="skin\image\btn_login_set.png" />
+    <None Include="skin\image\btn_register.png" />
+    <None Include="skin\image\btn_sys_close.png" />
+    <None Include="skin\image\btn_sys_min.png" />
+    <None Include="skin\image\btn_wnd_checkbox.png" />
+    <None Include="skin\image\btn_wnd_radio.png" />
+    <None Include="skin\image\check.png" />
+    <None Include="skin\image\checkbox_icon.png" />
+    <None Include="skin\image\dlg_bg_frame.png" />
+    <None Include="skin\image\focus_checkbox.png" />
+    <None Include="skin\image\focus_radio.png" />
+    <None Include="skin\image\gray_border.png" />
+    <None Include="skin\image\head_bkg.png" />
+    <None Include="skin\image\header.png" />
+    <None Include="skin\image\icons.png" />
+    <None Include="skin\image\img_edit_border.png" />
+    <None Include="skin\image\img_edit_border2.png" />
+    <None Include="skin\image\img_edit_border_set.png" />
+    <None Include="skin\image\imoffline.png" />
+    <None Include="skin\image\keyboard1.png" />
+    <None Include="skin\image\keyboard2.png" />
+    <None Include="skin\image\login_2code_button.PNG" />
+    <None Include="skin\image\login_body1.png" />
+    <None Include="skin\image\login_btn_down.png" />
+    <None Include="skin\image\login_btn_hover.png" />
+    <None Include="skin\image\login_btn_normal.png" />
+    <None Include="skin\image\login_button.png" />
+    <None Include="skin\image\login_button2.PNG" />
+    <None Include="skin\image\login_foot_bk.PNG" />
+    <None Include="skin\image\LOGIN_LIST_CLOSE.png" />
+    <None Include="skin\image\login_set_bk1.PNG" />
+    <None Include="skin\image\login_set_bk2.PNG" />
+    <None Include="skin\image\login_set_title.PNG" />
+    <None Include="skin\image\menu.png" />
+    <None Include="skin\image\menu_bkg_board.png" />
+    <None Include="skin\image\menu_split_horz.png" />
+    <None Include="skin\image\menuborder.png" />
+    <None Include="skin\image\menuskin.png" />
+    <None Include="skin\image\scrollbar.bmp" />
+    <None Include="skin\image\set_btn_down.png" />
+    <None Include="skin\image\set_btn_hover.png" />
+    <None Include="skin\image\set_btn_normal.png" />
+    <None Include="skin\image\status_busy.png" />
+    <None Include="skin\image\status_invisible.png" />
+    <None Include="skin\image\status_leave.png" />
+    <None Include="skin\image\status_online.png" />
+    <None Include="skin\image\status_qme.png" />
+    <None Include="skin\image\status_stop.png" />
+    <None Include="skin\xml\dlg_main.xml" />
+    <None Include="skin\xml\dlg_msgbox.xml" />
+    <None Include="skin\xml\init.xml" />
+    <None Include="skin\xml\menu_status1.xml" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="QQDemo.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

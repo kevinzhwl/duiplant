@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{96b940d6-e0f0-4911-b556-5ed46f1562d3}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{b6ad34e1-2a59-4c0b-9b5b-7c576f25b0e5}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{702b2945-678d-4b51-8f67-f9df7f1fee42}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
+    </Filter>
+    <Filter Include="Skin Files">
+      <UniqueIdentifier>{360b1c94-60ee-4541-8aa2-6d54912acb4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\image">
+      <UniqueIdentifier>{0dccd62c-eb74-45fa-948b-510b4af5e5d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\XML">
+      <UniqueIdentifier>{96866768-a423-4e10-9456-188ce4073bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="image3d">
+      <UniqueIdentifier>{4beafad5-6a4a-4150-8763-fe80be0be1b8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dui3DView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="duibuttonex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="duiembedbutton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="duiembededit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="duiturn3dview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QQDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIHander.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="image3d\3dlib.cpp">
+      <Filter>image3d</Filter>
+    </ClCompile>
+    <ClCompile Include="image3d\3dmatrix.cpp">
+      <Filter>image3d</Filter>
+    </ClCompile>
+    <ClCompile Include="image3d\3dtransform.cpp">
+      <Filter>image3d</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dui3DView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="duibuttonex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="duiembedbutton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="duiembededit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="duiturn3dview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="image3d\PerspectiveTransform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIHander.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="image3d\3dlib.h">
+      <Filter>image3d</Filter>
+    </ClInclude>
+    <ClInclude Include="image3d\3dmatrix.h">
+      <Filter>image3d</Filter>
+    </ClInclude>
+    <ClInclude Include="image3d\3dTransform.h">
+      <Filter>image3d</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="duires\QQDemo.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="skin\image\small_head.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="duires\winres.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="skin\image\00680[26x26x8BPP].png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\00692[31x22x8BPP].png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\00693[58x22x8BPP].png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\allbtn_down.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\allbtn_nor.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\allbtn_over.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\border.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\BT_KEY_BOARD.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_dropdown.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_dropdown_set.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_get_pswd.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_login_set.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_register.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_sys_close.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_sys_min.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_checkbox.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_radio.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\check.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\checkbox_icon.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\dlg_bg_frame.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\focus_checkbox.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\focus_radio.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\gray_border.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\head_bkg.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\header.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\icons.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\img_edit_border.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\img_edit_border2.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\img_edit_border_set.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\imoffline.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\keyboard1.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\keyboard2.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_2code_button.PNG">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_body1.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_btn_down.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_btn_hover.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_btn_normal.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_button.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_button2.PNG">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_foot_bk.PNG">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\LOGIN_LIST_CLOSE.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_set_bk1.PNG">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_set_bk2.PNG">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\login_set_title.PNG">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\menu.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\menu_bkg_board.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\menu_split_horz.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\menuborder.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\menuskin.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\scrollbar.bmp">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\set_btn_down.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\set_btn_hover.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\set_btn_normal.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\status_busy.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\status_invisible.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\status_leave.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\status_online.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\status_qme.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\status_stop.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\xml\dlg_main.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\dlg_msgbox.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\init.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\menu_status1.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="QQDemo.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="skin\index.xml">
+      <Filter>Skin Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
