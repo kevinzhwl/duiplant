@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="Project5"
+	Name="gifplayer"
 	ProjectGUID="{D5C5DE29-1E17-4B2E-87BF-42031CC3B72F}"
 	TargetFrameworkVersion="196613"
 	>
@@ -178,7 +178,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Project5.cpp"
+				RelativePath=".\gifplayer.cpp"
 				>
 			</File>
 			<File
@@ -240,11 +240,11 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
 			>
 			<File
-				RelativePath=".\duires\Project5.ico"
+				RelativePath=".\duires\gifplayer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\Project5.rc"
+				RelativePath=".\gifplayer.rc"
 				>
 			</File>
 			<File

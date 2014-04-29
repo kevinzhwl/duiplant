@@ -1,5 +1,5 @@
 #pragma once
-#include "duiwnd.h"
+#include <dui/duiwnd.h>
 #include "DuiSkinGif.h"
 
 namespace DuiEngine

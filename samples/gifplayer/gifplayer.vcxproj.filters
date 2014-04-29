@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0c995ecf-b4ba-4735-8dda-714853f9414b}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{99f33162-d927-4637-859f-f94ec0c5a0b9}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{98502582-e425-4dd4-96b0-be08ec1fea3a}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
+    </Filter>
+    <Filter Include="Skin Files">
+      <UniqueIdentifier>{88ac2ed0-9bbe-49bd-9807-dd795096b5ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\image">
+      <UniqueIdentifier>{391b5c9c-8e17-4049-b714-dae24c73fb1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\XML">
+      <UniqueIdentifier>{654202d1-1490-4c23-9af1-747a7787eb33}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="gif\DuiGifControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gif\DuiSkinGif.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gifplayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIHander.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gif\DuiGifControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gif\DuiSkinGif.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIHander.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="duires\gifplayer.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="duires\winres.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="skin\image\btn_sys_close.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_checkbox.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_radio.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\check.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\dlg_bg_frame.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\focus_checkbox.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\focus_radio.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\scrollbar.bmp">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\xml\dlg_main.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\dlg_msgbox.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\init.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\image\012l.gif" />
+    <None Include="skin\image\06f.gif" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="gifplayer.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="skin\index.xml">
+      <Filter>Skin Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
