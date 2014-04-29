@@ -5,24 +5,33 @@
 
 #pragma once
 
-#include <duistd.h>
-#include <duihostwnd.h>
-#include <duictrls.h>
-#include <duiwndnotify.h>
-#include <DuiCSS.h>
+// #define DLL_DUI
+#include <dui/duistd.h>
+#include <dui/duihostwnd.h>
+#include <dui/duictrls.h>
+#include <dui/duiwndnotify.h>
+#include <dui/DuiCSS.h>
+
 
 #include "resource.h"	//APP资源
-#include "duires/winres.h" //包含DUI资源定义
+#include "duires/winres.h"	//控件ID
 
 using namespace DuiEngine;
 
 #ifdef _DEBUG
-	# pragma comment(lib, "duiengine_static_d.lib")
+	#ifdef DLL_DUI
+	# pragma comment(lib, "duiengine-win32-debug-shared.lib")
+	#else
+	# pragma comment(lib, "duiengine-win32-debug-static.lib")
+	#endif
 #else
-	# pragma comment(lib, "duiengine_static.lib")
+	#ifdef DLL_DUI
+	# pragma comment(lib, "duiengine-win32-release-shared.lib")
+	#else
+	# pragma comment(lib, "duiengine-win32-release-static.lib")
+	#endif
 
 #endif
-
 
 
 
