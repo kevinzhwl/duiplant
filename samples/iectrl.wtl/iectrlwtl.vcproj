@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="iedemo.wtl"
+	Name="iectrlwtl"
 	ProjectGUID="{4E567F0E-9B95-4EEA-95B6-58BF748C69C4}"
-	RootNamespace="Dui-Demo"
+	RootNamespace="iectrlwtl"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -398,7 +398,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
-				RelativePath=".\dui-demo.cpp"
+				RelativePath=".\iectrlwtl.cpp"
 				>
 			</File>
 			<File
@@ -515,11 +515,11 @@
 			Name="resource files"
 			>
 			<File
-				RelativePath=".\duires\dui-demo.ico"
+				RelativePath=".\duires\iectrlwtl.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\dui-demo.rc"
+				RelativePath=".\iectrlwtl.rc"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"

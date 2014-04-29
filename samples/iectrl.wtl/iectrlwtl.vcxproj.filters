@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{95d39608-6dbb-4787-98d3-7821697cc683}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{733e50a7-de3b-4bdc-8ff8-42a1611c0c54}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="duires">
+      <UniqueIdentifier>{38249c78-5bae-4f42-8c50-89b316f748b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource files">
+      <UniqueIdentifier>{a468462e-6ac1-4651-8eb4-e8e53e78e64a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="skin">
+      <UniqueIdentifier>{d74ee0d7-7381-4e98-9650-66e1dde085da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="skin\xml">
+      <UniqueIdentifier>{113cae7a-196d-4319-a408-312d3698c77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="skin\image">
+      <UniqueIdentifier>{ad44c726-39fb-4c35-84e2-258263f86c40}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="iectrlwtl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IECtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIHander.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IECtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIHander.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="duires\winres.h">
+      <Filter>duires</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>resource files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="duires\iectrlwtl.ico">
+      <Filter>resource files</Filter>
+    </None>
+    <None Include="duires\name2id.xml">
+      <Filter>resource files</Filter>
+    </None>
+    <None Include="skin\xml\def_objattr.xml">
+      <Filter>skin\xml</Filter>
+    </None>
+    <None Include="skin\xml\def_skin.xml">
+      <Filter>skin\xml</Filter>
+    </None>
+    <None Include="skin\xml\def_string.xml">
+      <Filter>skin\xml</Filter>
+    </None>
+    <None Include="skin\xml\def_style.xml">
+      <Filter>skin\xml</Filter>
+    </None>
+    <None Include="skin\xml\dlg_main.xml">
+      <Filter>skin\xml</Filter>
+    </None>
+    <None Include="skin\image\btn_sys_close.png">
+      <Filter>skin\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_checkbox.png">
+      <Filter>skin\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_radio.png">
+      <Filter>skin\image</Filter>
+    </None>
+    <None Include="skin\image\check.png">
+      <Filter>skin\image</Filter>
+    </None>
+    <None Include="skin\image\dlg_bg_frame.png">
+      <Filter>skin\image</Filter>
+    </None>
+    <None Include="skin\image\focus_checkbox.png">
+      <Filter>skin\image</Filter>
+    </None>
+    <None Include="skin\image\focus_radio.png">
+      <Filter>skin\image</Filter>
+    </None>
+    <None Include="skin\image\scrollbar.bmp">
+      <Filter>skin\image</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="iectrlwtl.rc">
+      <Filter>resource files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="duires\winres.rc2">
+      <Filter>duires</Filter>
+    </CustomBuildStep>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="skin\index.xml">
+      <Filter>skin</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

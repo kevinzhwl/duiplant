@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "DuiSystem.h" 
-#include "DuiDefaultLogger.h"
+#include <dui/DuiSystem.h> 
+#include <dui/DuiDefaultLogger.h>
  
 
 #include "MainDlg.h"

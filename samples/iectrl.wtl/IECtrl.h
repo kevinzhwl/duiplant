@@ -6,8 +6,8 @@
 
 #include <exdispid.h>
 
-#include "duiobject.h"
-#include "duimsgfilter.h"
+#include <dui/duiobject.h>
+#include <dui/duimsgfilter.h>
 #include <vector>
 
 const int _nDispatchID = 1;
