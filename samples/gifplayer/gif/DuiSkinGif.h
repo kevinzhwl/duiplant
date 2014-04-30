@@ -24,7 +24,8 @@
  	{
  		if(m_pFrameDelay) delete [] m_pFrameDelay;
  	}
- 	virtual void Draw(CDCHandle dc, CRect rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
+
+	virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
  
  	virtual int GetStates(){return m_nFrames;}
  	virtual void OnAttributeChanged(const CDuiStringA & strAttrName,BOOL bLoading,HRESULT hRet);
