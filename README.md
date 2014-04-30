@@ -28,23 +28,42 @@ dui-demo的debug_dll配置还需要lua脚本及zip支持，请先编译zip及scr
 
 启程软件 2014年1月9日
 
+DuixEngine(DuiPlant)新手指南
+----------
 
-这个库要做的
+DuixEngine 是一个DuiEngine的个人维护版本。
+
+DuixEngine基于 2014-4-25的DuiEngine版本，改变了DuiEngine一些头文件的目录结构，所以基于DuiEngine的项目不能直接过渡到DuixEngine。
+
+DuixEngine是
 ---------
 
- * 由 托管在svn库中，改为 托管在git中；
- * 由 msvc2008项目，改为 msvc2010项目；
- * 由 ansi字符集，改为 unicode字符集；
+ * 由 托管在svn库中，改为 托管在git中；done
+ * 由 msvc2008项目，改为 msvc2010项目；done
+ * 由 ansi字符集，改为 unicode字符集；done(as-is)
  * 由 扁平目录结构，改为 引擎，工具，范例三大块结构；
- * 由 内部构建，改为 与源代码分离式构建；
- * 增加库的内聚，减少对外部设置的依赖；
+ * 由 内部构建，改为 与源代码分离式构建；working
+ * 增加库的内聚，减少对外部设置的依赖；working
  * 增加类似cmake install的发布工具；
  * 增加对cmake工具的支持；
  * 可能还有其他暂时没想到
 
-
-这个库不会做的
+DuiEngine不是
 ----------
 
- * 修正库中的各种缺陷，除非其导致不能通过编译等基础工作无法完成；
- * 给库添加新的功能、控件、工具等等；
+ * 修正DuiEngnine库中的各种缺陷，除非其导致不能通过编译等基础工作无法完成；
+ * 给DuiEngine库添加新的功能、控件、工具等等；
+ 
+
+DuixEngine名字由来
+-----------
+
+DuixEngine对DuiEngine的改变主要是在对头文件目录组织的改变，这样在制定includepath之后可以使用形如"#include <dui/duibasic.h>"，而不是原来的"#include "duibasic.h""
+
+X = ><
+
+
+更新日志
+----------
+2014-4-30
+全部迁移到msvs2010
