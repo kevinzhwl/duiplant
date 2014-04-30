@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="duie-ie"
+	Name="duieie"
 	ProjectGUID="{F31A00FA-04E4-4BE2-927B-DF988BADB0C1}"
 	TargetFrameworkVersion="196613"
 	>
@@ -166,7 +166,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
-				RelativePath=".\duie-ie.cpp"
+				RelativePath=".\duieie.cpp"
 				>
 			</File>
 			<File
@@ -224,11 +224,11 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
 			>
 			<File
-				RelativePath=".\duires\duie-ie.ico"
+				RelativePath=".\duires\duieie.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\duie-ie.rc"
+				RelativePath=".\duieie.rc"
 				>
 			</File>
 			<File

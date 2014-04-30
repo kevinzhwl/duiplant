@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{94568907-9424-4c67-b494-6209ec8fb2b5}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{0cb144eb-9991-4ebe-a066-7eb83ca8c296}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{f71150a1-88af-43d9-bd24-a1afa608cac3}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
+    </Filter>
+    <Filter Include="Skin Files">
+      <UniqueIdentifier>{e45235e6-ab5d-4d70-9160-9138d054f103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\image">
+      <UniqueIdentifier>{2b4e11c6-e852-427c-9e25-67e7cd092021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skin Files\XML">
+      <UniqueIdentifier>{f4315125-e0a1-4a53-8b32-f214c4e8c007}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="duieie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DuiWebBrowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIHander.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DuiWebBrowser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIHander.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="duires\duieie.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="duires\winres.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="skin\image\btn_sys_close.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_checkbox.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\btn_wnd_radio.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\check.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\dlg_bg_frame.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\focus_checkbox.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\focus_radio.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\img_edit_border.png">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\image\scrollbar.bmp">
+      <Filter>Skin Files\image</Filter>
+    </None>
+    <None Include="skin\xml\dlg_main.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\dlg_msgbox.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="skin\xml\init.xml">
+      <Filter>Skin Files\XML</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="duieie.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="skin\index.xml">
+      <Filter>Skin Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
