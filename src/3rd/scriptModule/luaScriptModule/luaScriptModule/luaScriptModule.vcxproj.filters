@@ -26,7 +26,7 @@
     <ClCompile Include="lua_tinker.cpp">
       <Filter>lua_tinker</Filter>
     </ClCompile>
-    <ClCompile Include="exports\DuiEngine.cpp">
+    <ClCompile Include="exports\ExpDuiEngine.cpp">
       <Filter>exports</Filter>
     </ClCompile>
   </ItemGroup>
@@ -40,25 +40,25 @@
     <ClInclude Include="lua_tinker.h">
       <Filter>lua_tinker</Filter>
     </ClInclude>
-    <ClInclude Include="exports\DuiBasic.h">
+    <ClInclude Include="exports\ExpDuiBasic.h">
       <Filter>exports</Filter>
     </ClInclude>
-    <ClInclude Include="exports\DuiMessageBox.h">
+    <ClInclude Include="exports\ExpDuiMessageBox.h">
       <Filter>exports</Filter>
     </ClInclude>
-    <ClInclude Include="exports\DuiResProvider.h">
+    <ClInclude Include="exports\ExpDuiResProvider.h">
       <Filter>exports</Filter>
     </ClInclude>
-    <ClInclude Include="exports\DuiScriptModule.h">
+    <ClInclude Include="exports\ExpDuiScriptModule.h">
       <Filter>exports</Filter>
     </ClInclude>
-    <ClInclude Include="exports\DuiSystem.h">
+    <ClInclude Include="exports\ExpDuiSystem.h">
       <Filter>exports</Filter>
     </ClInclude>
-    <ClInclude Include="exports\DuiThreadActiveWndMgr.h">
+    <ClInclude Include="exports\ExpDuiThreadActiveWndMgr.h">
       <Filter>exports</Filter>
     </ClInclude>
-    <ClInclude Include="exports\DuiWindow.h">
+    <ClInclude Include="exports\ExpDuiWindow.h">
       <Filter>exports</Filter>
     </ClInclude>
   </ItemGroup>

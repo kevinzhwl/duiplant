@@ -11,13 +11,13 @@ extern "C"
 
 using namespace DuiEngine;
 
-#include "DuiBasic.h"
-#include "DuiSystem.h"
-#include "DuiWindow.h"
-#include "DuiMessageBox.h"
-#include "DuiScriptModule.h"
-#include "DuiThreadActiveWndMgr.h"
-#include "DuiResProvider.h"
+#include "ExpDuiBasic.h"
+#include "ExpDuiSystem.h"
+#include "ExpDuiWindow.h"
+#include "ExpDuiMessageBox.h"
+#include "ExpDuiScriptModule.h"
+#include "ExpDuiThreadActiveWndMgr.h"
+#include "ExpDuiResProvider.h"
 
 BOOL DuiEngine_Export_Lua(lua_State *L)
 {

@@ -122,19 +122,19 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release-shared|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="exports\DuiEngine.cpp" />
+    <ClCompile Include="exports\ExpDuiEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="luaScriptModule.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="lua_tinker.h" />
-    <ClInclude Include="exports\DuiBasic.h" />
-    <ClInclude Include="exports\DuiMessageBox.h" />
-    <ClInclude Include="exports\DuiResProvider.h" />
-    <ClInclude Include="exports\DuiScriptModule.h" />
-    <ClInclude Include="exports\DuiSystem.h" />
-    <ClInclude Include="exports\DuiThreadActiveWndMgr.h" />
-    <ClInclude Include="exports\DuiWindow.h" />
+    <ClInclude Include="exports\ExpDuiBasic.h" />
+    <ClInclude Include="exports\ExpDuiMessageBox.h" />
+    <ClInclude Include="exports\ExpDuiResProvider.h" />
+    <ClInclude Include="exports\ExpDuiScriptModule.h" />
+    <ClInclude Include="exports\ExpDuiSystem.h" />
+    <ClInclude Include="exports\ExpDuiThreadActiveWndMgr.h" />
+    <ClInclude Include="exports\ExpDuiWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

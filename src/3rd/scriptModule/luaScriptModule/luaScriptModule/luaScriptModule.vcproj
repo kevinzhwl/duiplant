@@ -252,35 +252,35 @@
 			Name="exports"
 			>
 			<File
-				RelativePath=".\exports\DuiBasic.h"
+				RelativePath=".\exports\ExpDuiBasic.h"
 				>
 			</File>
 			<File
-				RelativePath=".\exports\DuiEngine.cpp"
+				RelativePath=".\exports\ExpDuiEngine.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\exports\DuiMessageBox.h"
+				RelativePath=".\exports\ExpDuiMessageBox.h"
 				>
 			</File>
 			<File
-				RelativePath=".\exports\DuiResProvider.h"
+				RelativePath=".\exports\ExpDuiResProvider.h"
 				>
 			</File>
 			<File
-				RelativePath=".\exports\DuiScriptModule.h"
+				RelativePath=".\exports\ExpDuiScriptModule.h"
 				>
 			</File>
 			<File
-				RelativePath=".\exports\DuiSystem.h"
+				RelativePath=".\exports\ExpDuiSystem.h"
 				>
 			</File>
 			<File
-				RelativePath=".\exports\DuiThreadActiveWndMgr.h"
+				RelativePath=".\exports\ExpDuiThreadActiveWndMgr.h"
 				>
 			</File>
 			<File
-				RelativePath=".\exports\DuiWindow.h"
+				RelativePath=".\exports\ExpDuiWindow.h"
 				>
 			</File>
 		</Filter>
