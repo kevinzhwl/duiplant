@@ -60,10 +60,10 @@ DuixEngine名字由来
 
 DuixEngine对DuiEngine的改变主要是在对头文件目录组织的改变，这样在制定includepath之后可以使用形如
 
-    "#include <dui/duibasic.h>"
+    #include <dui/duibasic.h>
 而不是原来的
     
-    "#include "duibasic.h""
+    #include "duibasic.h"
 所以
 
     X = ><
