@@ -24,9 +24,6 @@
     <Filter Include="Header Files\controls">
       <UniqueIdentifier>{827faf6b-8165-430a-af87-8b0053f61cb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\singltons">
-      <UniqueIdentifier>{cecd6268-3a67-4a49-a577-a798f3d7d904}</UniqueIdentifier>
-    </Filter>
     <Filter Include="dependencies">
       <UniqueIdentifier>{f40266ed-a1be-47c4-b2b2-efd93dcae06d}</UniqueIdentifier>
     </Filter>
@@ -35,6 +32,9 @@
     </Filter>
     <Filter Include="dllmain">
       <UniqueIdentifier>{cf6570e6-a5a1-4ffb-8ba8-78d65e95066f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\singletons">
+      <UniqueIdentifier>{cecd6268-3a67-4a49-a577-a798f3d7d904}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -500,22 +500,22 @@
       <Filter>Header Files\controls</Filter>
     </ClInclude>
     <ClInclude Include="include\dui\duifontpool.h">
-      <Filter>Header Files\singltons</Filter>
+      <Filter>Header Files\singletons</Filter>
     </ClInclude>
     <ClInclude Include="include\dui\duiimgpool.h">
-      <Filter>Header Files\singltons</Filter>
+      <Filter>Header Files\singletons</Filter>
     </ClInclude>
     <ClInclude Include="include\dui\DUISingleton.h">
-      <Filter>Header Files\singltons</Filter>
+      <Filter>Header Files\singletons</Filter>
     </ClInclude>
     <ClInclude Include="include\dui\DuiSingletonMap.h">
-      <Filter>Header Files\singltons</Filter>
+      <Filter>Header Files\singletons</Filter>
     </ClInclude>
     <ClInclude Include="include\dui\DuiSkinPool.h">
-      <Filter>Header Files\singltons</Filter>
+      <Filter>Header Files\singletons</Filter>
     </ClInclude>
     <ClInclude Include="include\dui\duistringpool.h">
-      <Filter>Header Files\singltons</Filter>
+      <Filter>Header Files\singletons</Filter>
     </ClInclude>
     <ClInclude Include="include\pugixml\pugiconfig.hpp">
       <Filter>dependencies\pugixml</Filter>
