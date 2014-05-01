@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--XML 资源，name and id:将写入到resource.h中的define,type and file :将写入到rc2的资源定义,layer:窗口定义XML，resbuilder使用它来自动为对应的XML生成控件ID-->
+<resid type="XML" name="IDR_DUI_INIT" file="xml\init.xml"  />
+<resid type="XML" name="IDR_DUI_MAIN_DIALOG" layer="1" file="xml\dlg_main.xml"  />
+<resid type="XML" name="IDR_MENU_TEST" file="xml\menu_test.xml"  />
+<resid type="XML" name="IDR_DUI_MSGBOX" file="xml\dlg_msgbox.xml"  />
+<resid type="XML" name="xml_page2" layer="1" file="xml\page2.xml"  />
+
+
+<resid type="ICO" name="IDP_APP_LOGO_ICO"  file="image\app_logo.ico"    />
+<resid type="BMP" name="IDP_BMPMASK"  file="image\bmpmask.bmp" />
+
+<resid type="IMGX" name="IDP_DIALOG_BG_FRAME"     file="image\dialog_bg_frame.png"  />
+
+<resid type="IMGX" name="IDP_BUTTON_CHECKBOX"   file="image\button_checkbox.png"/>
+<resid type="IMGX" name="IDP_BUTTON_RADIOBOX"  file="image\button_radiobox.png"   />
+<resid type="IMGX" name="IDP_BUTTON_FLATBUTTON"   file="image\button_flatbutton.png"/>
+<resid type="IMGX" name="IDP_BUTTON_PUSHBUTTON"  file="image\button_pushbutton.png"   />
+
+<resid type="IMGX" name="IDP_BUTTON_CHECKBOX_FOCUS"  file="image\button_checkbox_focus.png"/>
+<resid type="IMGX" name="IDP_BUTTON_RADIOBOX_FOCUS"  file="image\button_radio_focus.png"   />
+
+<resid type="IMGX" name="IDP_CALENDAR_BUTTON"   file="image\calendar_button.png"/>
+
+<resid type="IMGX" name="IDP_BUTTON_CHECKBOX2"   file="image\button_checkbox2.png"/>
+<resid type="IMGX" name="IDP_BUTTON_CHECKBOX2_FOCUS"  file="image\button_checkbox2_focus.png"   />
+
+<resid type="IMGX" name="IDP_SYSBUTTON_CLOSE"  file="image\sysbutton_close.png"    />
+<resid type="IMGX" name="IDP_SYSBUTTON_MINIMIZE"  file="image\sysbutton_minimize.png" />
+<resid type="IMGX" name="IDP_SYSBUTTON_MAXIMIZE"  file="image\sysbutton_maximize.png" />
+<resid type="IMGX" name="IDP_SYSBUTTON_RESOTRE"  file="image\sysbutton_restore.png" />
+
+<resid type="IMGX" name="IDP_EDITBOX_BORDER"  file="image\editbox_border.png" />
+
+<resid type="IMGX" name="IDP_TAB_COMMON"  file="image\tab_common.png" />
+
+<resid type="IMGX" name="IDP_SCROLLBAR"  file="image\scrollbar.png" />
+<resid type="IMGX" name="IDP_SCROLLBAR2"  file="image\scrollbar2.png" />
+
+<resid type="IMGX" name="IDP_SEPERATOR_VERT"  file="image\seperator_vert.png" />
+<resid type="IMGX" name="IDP_SEPERATOR_HORZ"  file="image\seperator_horz.png" />
+
+<resid type="IMGX" name="IDP_COMBO_DROPDOWN"  file="image\combo_dropdown.png" />
+<resid type="IMGX" name="IDP_COMBO_ICONS"						id="503" file="image\combo_icons.png"/>
+
+<resid type="IMGX" name="IDP_ICONS_LARGE"  file="image\icons_large.png" />
+<resid type="IMGX" name="IDP_ICONS_SMALL"  file="image\icons_small.png" />
+
+<resid type="IMGX" name="IDP_MENU_SKIN"  file="image\menu_skin.png" />
+<resid type="IMGX" name="IDP_MENU_SEPERATOR"  file="image\menu_seperator.png" />
+<resid type="IMGX" name="IDP_MENU_BG"  file="image\menu_bg.png" />
+<resid type="IMGX" name="IDP_MENU_CHECK"  file="image\menu_check.png" />
+<resid type="IMGX" name="IDP_MENU_BORDER"  file="image\menu_border.png" />
+
+<resid type="IMGX" name="IDP_WEBBTN_BACK"  file="image\webbtn_back.png" />
+<resid type="IMGX" name="IDP_WEBBTN_FORWARD"  file="image\webbtn_forward.png" />
+<resid type="IMGX" name="IDP_WEBBTN_REFRESH"  file="image\webbtn_refresh.png" />
+
+<resid type="IMGX" name="IDP_DEMO_GIF"  file="image\demo_gif.gif" />
+
+<resid type="IMGX" name="IDR_TREE_TOGGLE"			id="500" file="image\tree_toggle.png"/>
+<resid type="IMGX" name="IDR_TREE_CHECKBOX"		id="501" file="image\tree_checkBox.png"/>
+<resid type="IMGX" name="IDR_TREE_ICON"				id="502" file="image\tree_icon.png"/>
+
+<resid type="IMGX" name="IDP_PROGRESSBAR_FG"						id="506" file="image\progressbar_fg.png"/>
+<resid type="IMGX" name="IDP_PROGRESSBAR_BG"						id="507" file="image\progressbar_bg.png"/>
+
+<resid type="IMGX" name="IDP_SLIDER_THUMB"						id="505" file="image\slider_thumb.png"/>
+<resid type="IMGX" name="IDP_SLIDER_FG"					 file="image\slider_fg.png"/>
+<resid type="IMGX" name="IDP_SLIDER_BG"						file="image\slider_bg.png"/>
+
+<resid type="IMGX" name="IDP_LISTCTRL_HEADER"  file="image\listctrl_header.png" />
+<resid type="IMGX" name="IDP_LISTCTRL_SCROLLBAR_VERT"  file="image\listctrl_scrollbar_vert.png" />
