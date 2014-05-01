@@ -756,7 +756,9 @@
     <CustomBuildStep Include="duires\winres.rc2">
       <FileType>RC</FileType>
     </CustomBuildStep>
-    <None Include="skin\xml\dlg_main.xml" />
+    <None Include="skin\xml\dlg_main.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="skin\xml\dlg_msgbox.xml" />
     <CustomBuild Include="skin\index.xml">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|x64'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>

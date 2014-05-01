@@ -147,6 +147,12 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 	CDuiWindow *pTst=m_pMainDlg->FindChildByCmdID(btn_tstevt);
 	DuiSystem::getSingleton().GetScriptModule()->subscribeEvent(pTst,DUINM_COMMAND,"onEvtTstClick");
 #endif
+    
+    CDuiFlashCtrl *pFlash=(CDuiFlashCtrl*)m_pMainDlg->FindChildByName("ctrl_flash");
+	if(pFlash)
+	{
+		//pFlash->m_strUrl = ;
+	}
 
 	OnBtnInitListClick();
 	m_pMainDlg->SetTimer(100,10,NULL);
