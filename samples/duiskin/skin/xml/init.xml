@@ -37,7 +37,7 @@
     <imglst name="skin_checkbox"         src="IDP_BUTTON_CHECKBOX2" subwidth="15"  />
     <imglst name="skin_checkbox_focus" src="IDP_BUTTON_CHECKBOX2_FOCUS"/>
 
-    <imglst name="skin_btn_sys_close"    src="IDP_SYSBUTTON_CLOSE" subwidth="38" />
+    <imglst name="skin_btn_sys_close"    src="IDP_SYSBUTTON_CLOSE" subwidth="36" />
     <imglst name="btn_sys_minimize" src="IDP_SYSBUTTON_MINIMIZE" subwidth="36" />
     <imglst name="btn_sys_maximize" src="IDP_SYSBUTTON_MAXIMIZE" subwidth="36" />
     <imglst name="btn_sys_restore" src="IDP_SYSBUTTON_RESOTRE" subwidth="36" />

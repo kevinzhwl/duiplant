@@ -1,0 +1,14 @@
+<skins>
+  <imgframe name="dlg_frame"  src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
+ 
+  <imglst name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" subwidth="38" />
+
+  <imglst name="tabskin_default" src="IDP_TAB_COMMON" subwidth="94"/>
+    <scrollbar name="sb_common" src="IDP_SCROLL" magin="3"/>
+
+  <button name="normalbtn" border="7D9EBC" bg="FBFCFD" bgup="FEFEFE" 
+			bgdown="C6E2FD" bguphover="FEFEFE" bgdownhover="DBEDFE" 
+			bguppush="C6E2FD" bgdownpush="FEFEFE"/>
+
+  <imgframe name="skin_editnc" src="IDP_EDIT_BORDER" subwidth="26" left="2" top="2"/>
+</skins>
