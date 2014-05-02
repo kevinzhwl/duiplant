@@ -656,7 +656,7 @@
     <ClInclude Include="include\dui\mybuffer.h" />
     <ClInclude Include="include\dui\Name2ID.h" />
     <ClInclude Include="include\dui\SimpleWnd.h" />
-    <ClInclude Include="include\dui\stree.hpp" />
+    <ClInclude Include="include\dui\stree.h" />
     <ClInclude Include="include\dui\wtl.mini\duicoll.h" />
     <ClInclude Include="include\dui\wtl.mini\duicrack.h" />
     <ClInclude Include="include\dui\wtl.mini\duigdi.h" />

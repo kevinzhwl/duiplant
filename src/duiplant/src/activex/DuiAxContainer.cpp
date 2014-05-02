@@ -17,7 +17,7 @@
 ** Version:     1.1 - Support for windowless keyboard events
 */
 #include <dui/duistd.h>
-#include "DuiAxContainer.h"
+#include "DuiAxContainer.hpp"
 
 
 namespace DuiEngine

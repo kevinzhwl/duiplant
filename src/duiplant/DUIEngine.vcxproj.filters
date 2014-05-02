@@ -409,9 +409,6 @@
     <ClInclude Include="include\dui\SimpleWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\dui\stree.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\dui\wtl.mini\duicoll.h">
       <Filter>Header Files\wtl.mini</Filter>
     </ClInclude>
@@ -522,6 +519,9 @@
     </ClInclude>
     <ClInclude Include="include\pugixml\pugixml.hpp">
       <Filter>dependencies\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dui\stree.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

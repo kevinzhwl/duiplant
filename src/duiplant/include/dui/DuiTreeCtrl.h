@@ -8,7 +8,7 @@
 
 #pragma once
 #include <dui/duiwndpanel.h>
-#include <dui/stree.hpp>
+#include <dui/stree.h>
 
 namespace DuiEngine{
 

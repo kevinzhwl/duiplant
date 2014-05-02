@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "DuiAxUtil.h"
+#include "DuiAxUtil.hpp"
 #include <dui/atl.mini/duicomcli.h>
 #include <MsHtmHst.h>
 
