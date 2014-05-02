@@ -51,8 +51,9 @@
     <scrollbar name="skin_sb_normal" src="IDP_SCROLLBAR2" margin="3" hasgripper="0" hasinactive="1"/>
 
     <imglst name="skin_combo_icons"							src="IDP_COMBO_ICONS"  subwidth="15"/>
-    <imgframe name="skin_combobox_dropdown" src="IDP_COMBO_DROPDOWN" subwidth="16"/>
-    
+    <imgframe name="skin_combo_dropdown" src="IDP_COMBO_DROPDOWN" subwidth="16"/>
+    <imgframe name="skin_combo_edit_nc" src="IDP_EDITBOX_BORDER" subwidth="26" left="2" top="2"/>
+
     <imgframe name="skin_edit_nc" src="IDP_EDITBOX_BORDER" subwidth="26" left="2" top="2"/>
     
     <imgframe name="skin_seperator_vert" src="IDP_SEPERATOR_VERT" top="20" bottom="10"/>
@@ -107,24 +108,26 @@
 
     <class name="normalbtn" skin="skin_normalbutton" font="0000" crtext="385e8b" crdisabled="91a7c0" textmode="25" cursor="hand" x-margin="0"/>
 
-    <class name="toptext" textmode="20" />
-    <class name="vcentertext" textmode="24"/>
-    <class name="rightvcentertext" textmode="26"/>
-    <class name="centertext" textmode="25"/>
-    <class name="righttext" textmode="22"/>
-    <class name="Arial_txt_white"   font="0000:Arial" textmode="25" crtext="FCF5F1" />
-    <class name="Arial_txt_gray"   font="0000:Arial" textmode="25" crtext="565656" />
+    <class name="cls_toptext" textmode="20" />
+    <class name="cls_vcentertext" textmode="24"/>
+    <class name="cls_rightvcentertext" textmode="26"/>
+    <class name="cls_centertext" textmode="25"/>
+    <class name="cls_righttext" textmode="22"/>
+    <class name="cls_arial_txt_white"   font="0000:Arial" textmode="25" crtext="FCF5F1" />
+    <class name="cls_arial_txt_gray"   font="0000:Arial" textmode="25" crtext="565656" />
 
-    <class name="linkimage" cursor="hand"/>
+    <class name="cls_linkimage" cursor="hand"/>
 
     <class name="cls_edit" x-margin="2" y-margin="2" ncskin="skin_edit_nc"/>
+    <class name="cls_combo_edit" x-margin="2" y-margin="2" ncskin="skin_combo_edit_nc"/>
+    <class name="cls_combo_list" x-margin="2" y-margin="2" ncskin="skin_combo_edit_nc"/>
   </style>
 
   <objattr>
     <button class="normalbtn"/>
     <check skin="btncheckbox"/>
     <radio skin="btnRadio"/>
-    <imgbtn class="linkimage"/>
+    <imgbtn class="cls_linkimage"/>
     <tabctrl tabskin="skin_tabctrl" crtext="000000" align="top" tabwidth="70" tabheight="38" tabspacing="0" tabpos="10" dotted="1"/>
     <divex sbskin="sb_common" sbwid="16"/>
     <edit transparent="1" x-margin="2" y-margin="2" ncskin="skin_edit_nc"/>

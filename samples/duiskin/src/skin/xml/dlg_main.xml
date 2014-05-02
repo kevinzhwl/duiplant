@@ -37,9 +37,9 @@
           <hotkey id="1340" pos="350,20,450,45" class="cls_edit"/>
           <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
           <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="skin_progress_bg" posskin="skin_progress_fg" value="20" min="0" max="100" showpercent="1"/>
-          <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" alpha="200" width="200" bgskin="skin_progress_bg" posskin="skin_progress_fg" thumbskin="skin_slider_thumb" value="20" min="0" max="100"/>
-          <comboboxex show="1" id="1310" pos="100,40,300,64" dropdown="0" dropheight="250" class="cls_edit" font="8300" dotted="0" cursel="0" itempanel="1"  id_text="1" id_icon="2">
-            <liststyle  class="cls_edit" crbg="FF0000" itemheight="50">
+          <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" alpha="200" width="200" bgskin="skin_slider_bg" posskin="skin_slider_fg" thumbskin="skin_slider_thumb" value="20" min="0" max="100"/>
+          <comboboxex show="1" id="1310" pos="100,40,300,64" dropdown="0" dropheight="250" class="cls_combo_edit" font="8300" dotted="0" cursel="0" itempanel="1"  id_text="1" id_icon="2">
+            <liststyle  class="cls_combo_list" crbg="FF0000" itemheight="50">
               <template skin="skin_webbtn_forward">
                 <text id="1" pos="5,2" crtext="ff0000"/>
                 <button id="3" pos="0,20,100,40" class="normalbtn" tip="delete cur item">delete</button>
@@ -57,8 +57,8 @@
               <item text="combobox.item6" icon="6" data="100"/>
             </items>
           </comboboxex>
-	        <combobox name="IDC_CB_TEST" pos="100,70,300,94" dropdown="1" dropheight="250" class="cls_edit" dotted="0" animtime="200">
-            <liststyle class="cls_edit"  iconskin="skin_combo_icons" itemheight="30" crtext="000000" crseltext="FFFFFF" critembg="FFFFFF" critemselbg="000088"/>
+	        <combobox name="IDC_CB_TEST" pos="100,70,300,94" dropdown="1" dropheight="250" class="cls_combo_edit" dotted="0" animtime="200">
+            <liststyle class="cls_combo_list"  iconskin="skin_combo_icons" itemheight="30" crtext="000000" crseltext="FFFFFF" critembg="FFFFFF" critemselbg="000088"/>
             <editstyle inset="5,0,5,0" crtext="000000" align="left" crbg="FFFFFF"/>
             <items>
              <item text="combobox.item1" icon="1" data="100"/>
@@ -97,8 +97,8 @@
         </tab>
         <tab id="116" title="attribute">
           <button class="normalbtn" tabstop="1"  name="测试" font2="bold:1;italic:1;underline:1;adding:15;facename:隶书" pos="20,50,200,80">reposition测试</button>
-          <comboboxex show="1" pos="100,140,300,164" dropdown="0" dropheight="250" class="cls_edit" font="8300" dotted="0" cursel="0" id_text="1" id_icon="2">
-            <liststyle  class="cls_edit" crbg="FF0000" itemheight="50" >
+          <comboboxex show="1" pos="100,140,300,164" dropdown="0" dropheight="250" class="cls_combo_edit" font="8300" dotted="0" cursel="0" id_text="1" id_icon="2">
+            <liststyle  class="cls_combo_list" crbg="FF0000" itemheight="50" >
               <template skin="skin_webbtn_forward">
                 <text id="1" pos="5,2" crtext="ff0000"/>
                 <button id="3" pos="0,20,100,40" class="normalbtn" tip="delete cur item">delete</button>
