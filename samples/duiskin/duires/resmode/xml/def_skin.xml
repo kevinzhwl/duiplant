@@ -1,7 +1,7 @@
 <skins>
-  <imgframe name="dlg_frame"  src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
+  <imgframe name="dlg_frame"  src="IDP_DLG_BG_FRAME" left="5" right="5" top="40" bottom="40"/>
  
-  <imglst name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" subwidth="38" />
+  <imglst name="btn_sys_close"    src="IDP_SYSBUTTON_CLOSE" subwidth="38" />
 
   <imglst name="tabskin_default" src="IDP_TAB_COMMON" subwidth="94"/>
     <scrollbar name="sb_common" src="IDP_SCROLL" magin="3"/>

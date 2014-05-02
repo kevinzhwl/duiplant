@@ -198,7 +198,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	pDuiSystem->SetScriptModule(&scriptLua);
 #endif
 
-	CMenuWndHook::InstallHook(hInstance,"skin_menuborder");
+	CMenuWndHook::InstallHook(hInstance,"skin_menu_border");
 	int nRet = 0; 
 	// BLOCK: Run application
 	{

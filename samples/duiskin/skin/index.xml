@@ -32,7 +32,7 @@
 
 <resid type="IMGX" name="IDP_EDITBOX_BORDER"  file="image\editbox_border.png" />
 
-<resid type="IMGX" name="IDP_TAB_COMMON"  file="image\tab_common.png" />
+<resid type="IMGX" name="IDP_TAB_PAGE"  file="image\tab_page.png" />
 
 <resid type="IMGX" name="IDP_SCROLLBAR"  file="image\scrollbar.png" />
 <resid type="IMGX" name="IDP_SCROLLBAR2"  file="image\scrollbar2.png" />
@@ -46,7 +46,8 @@
 <resid type="IMGX" name="IDP_ICONS_LARGE"  file="image\icons_large.png" />
 <resid type="IMGX" name="IDP_ICONS_SMALL"  file="image\icons_small.png" />
 
-<resid type="IMGX" name="IDP_MENU_SKIN"  file="image\menu_skin.png" />
+<resid type="IMGX" name="IDP_MENU_ICONS"  file="image\menu_icons.png" />
+<resid type="IMGX" name="IDP_MENU_ITEM"  file="image\menu_item.png" />
 <resid type="IMGX" name="IDP_MENU_SEPERATOR"  file="image\menu_seperator.png" />
 <resid type="IMGX" name="IDP_MENU_BG"  file="image\menu_bg.png" />
 <resid type="IMGX" name="IDP_MENU_CHECK"  file="image\menu_check.png" />
@@ -59,8 +60,8 @@
 <resid type="IMGX" name="IDP_DEMO_GIF"  file="image\demo_gif.gif" />
 
 <resid type="IMGX" name="IDR_TREE_TOGGLE"			id="500" file="image\tree_toggle.png"/>
-<resid type="IMGX" name="IDR_TREE_CHECKBOX"		id="501" file="image\tree_checkBox.png"/>
-<resid type="IMGX" name="IDR_TREE_ICON"				id="502" file="image\tree_icon.png"/>
+<resid type="IMGX" name="IDR_TREE_CHECKBOX"		id="501" file="image\tree_checkbox.png"/>
+<resid type="IMGX" name="IDR_TREE_ICONS"				id="502" file="image\tree_icons.png"/>
 
 <resid type="IMGX" name="IDP_PROGRESSBAR_FG"						id="506" file="image\progressbar_fg.png"/>
 <resid type="IMGX" name="IDP_PROGRESSBAR_BG"						id="507" file="image\progressbar_bg.png"/>

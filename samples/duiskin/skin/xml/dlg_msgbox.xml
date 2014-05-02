@@ -3,7 +3,7 @@
     <dlg id="100" pos="0,0,-0,-0" class="cls_dlg_frame">
       <caption id="101" pos="0,0,-0,29">
         <text pos="11,9" class="cls_txt_red" name="msgtitle" >title</text>
-        <imgbtn id="1" skin="skin_btn_sys_close"    pos="-45,0" tip="close"/>
+        <imgbtn id="1" skin="skin_sysbutton_close"    pos="-45,0" tip="close"/>
       </caption>
 
       <dlg pos="5,30,-5,-50">

@@ -3,15 +3,15 @@
     <dlg id="100" pos="0,0,-0,-0" class="cls_dlg_frame">
       <caption id="101" pos="0,0,-0,29">
         <text pos="11,9" class="cls_txt_red">DUI-Demo ver:%str1%</text>
-        <imgbtn id="1" skin="skin_btn_sys_close"    pos="-45,0" tip="close" animate="1"/>
-        <imgbtn id="2" skin="btn_sys_maximize"  pos="-83,0" animate="1" />
-        <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="1" />
-        <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="1" />
+        <imgbtn id="1" skin="skin_sysbutton_close"    pos="-45,0" tip="close" animate="1"/>
+        <imgbtn id="2" skin="skin_sysbutton_maximize"  pos="-83,0" animate="1" />
+        <imgbtn id="3" name="按钮_恢复" skin="skin_sysbutton_restore"  pos="-83,0" show="0" animate="1" />
+        <imgbtn id="5" name="btn_minimize" skin="skin_sysbutton_minimize" pos="-121,0" animate="1" />
       </caption>
       <tabctrl pos="5,29,-5,-5" id="2000" cursel="0" animatesteps="10" tabstop="0" inset="10,0,3,0">
         <tab id="110" title="listctrl">
-          <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" sbskin="lc_sb_vert" sbwid="8">
-            <header itemSkin="listctrl_header" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">                                                                                                                                                      
+          <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" sbskin="skin_lc_sb_vert" sbwid="8">
+            <header itemSkin="skin_lc_hdr" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">                                                                                                                                                      
             </header>
           </listctrl>
           <button name="btn_ani" pos="-100,0,-56,30" class="normalbtn" alpha="200" animate="1">ani list</button>
@@ -36,8 +36,8 @@
           <button id="1360" class="normalbtn" pos="10,200,150,230" accel="ctrl+alt+num 8" animate="1">dui menu</button>
           <hotkey id="1340" pos="350,20,450,45" class="cls_edit"/>
           <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
-          <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="prog_bg" posskin="prog_bar" value="20" min="0" max="100" showpercent="1"/>
-          <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" alpha="200" width="200" bgskin="prog_bg" posskin="prog_bar" thumbskin="slidethumb" value="20" min="0" max="100"/>
+          <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="skin_progress_bg" posskin="skin_progress_fg" value="20" min="0" max="100" showpercent="1"/>
+          <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" alpha="200" width="200" bgskin="skin_progress_bg" posskin="skin_progress_fg" thumbskin="skin_slider_thumb" value="20" min="0" max="100"/>
           <comboboxex show="1" id="1310" pos="100,40,300,64" dropdown="0" dropheight="250" class="cls_edit" font="8300" dotted="0" cursel="0" itempanel="1"  id_text="1" id_icon="2">
             <liststyle  class="cls_edit" crbg="FF0000" itemheight="50">
               <template skin="skin_webbtn_forward">
@@ -58,7 +58,7 @@
             </items>
           </comboboxex>
 	        <combobox name="IDC_CB_TEST" pos="100,70,300,94" dropdown="1" dropheight="250" class="cls_edit" dotted="0" animtime="200">
-            <liststyle class="cls_edit"  iconskin="comboIcons" itemheight="30" crtext="000000" crseltext="FFFFFF" critembg="FFFFFF" critemselbg="000088"/>
+            <liststyle class="cls_edit"  iconskin="skin_combo_icons" itemheight="30" crtext="000000" crseltext="FFFFFF" critembg="FFFFFF" critemselbg="000088"/>
             <editstyle inset="5,0,5,0" crtext="000000" align="left" crbg="FFFFFF"/>
             <items>
              <item text="combobox.item1" icon="1" data="100"/>
@@ -80,7 +80,7 @@
           <check id="1143" pos="100,|10">check 2</check>
           <button name="IDC_REPSEL"  pos="200,|10,300,|35" class="normalbtn">repsel</button>
           <dateedit pos="10,-50,100,-10" name="de_test"/>
-          <header pos="10,-90,-100,-60" name="hd_test" itemSkin="listctrl_header" align="left" itemSwapEnable="0" fixWidth="1" sortHeader="0">
+          <header pos="10,-90,-100,-60" name="hd_test" itemSkin="skin_lc_hdr" align="left" itemSwapEnable="0" fixWidth="1" sortHeader="0">
             <items>
               <item width="60">col 1</item>
               <item width="50">col 2</item>
@@ -90,7 +90,7 @@
           </header>
         </tab>
         <tab id="115" title="scrollview">
-          <scrollview id="1150" pos="10,0,-10,-10" viewwid="900" viewhei="5000" sbskin="sb_test">
+          <scrollview id="1150" pos="10,0,-10,-10" viewwid="900" viewhei="5000" sbskin="skin_sb_normal">
             <button class="normalbtn" id="11501" tip="tip test" pos="20,50,200,80">test</button>
             <edit pos="50,100,150,150">scroll edit</edit>
           </scrollview>
@@ -211,7 +211,7 @@
           </treebox>
         </tab>
         <tab id="119" title="duitreectrl">
-     			<treectrl pos="10,0,-10,-10"  name="mytree1" itemhei="30" iconskin="TreeIcon" checkbox="1">
+     			<treectrl pos="10,0,-10,-10"  name="mytree1" itemhei="30" iconskin="skin_tree_icons" checkbox="1">
 					<item text="组织机构" img="0" selimg="1">
 						<item text="市场部" img="0" selimg="1">
 							<item text="南一区" img="2"/>
