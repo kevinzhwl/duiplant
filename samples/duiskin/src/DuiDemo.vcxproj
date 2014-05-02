@@ -673,7 +673,9 @@
     <None Include="skin\xml\init.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="skin\xml\menu_test.xml" />
+    <None Include="skin\xml\menu_test.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="skin\xml\page2.xml" />
     <None Include="duires\name2id.xml" />
   </ItemGroup>
