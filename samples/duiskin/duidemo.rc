@@ -98,7 +98,6 @@ IDR_NAME2ID             XML2                    "duires\\name2id.xml"
 // ZIP
 //
 
-IDR_ZIP_MODESEL         ZIP                     "duires\\resmode.zip"
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 

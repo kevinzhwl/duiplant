@@ -102,9 +102,6 @@
     <None Include="duires\name2id.xml">
       <Filter>resource files</Filter>
     </None>
-    <None Include="duires\resmode.zip">
-      <Filter>resource files</Filter>
-    </None>
     <None Include="skin\xml\dlg_main.xml">
       <Filter>Skin Files\XML</Filter>
     </None>

@@ -759,7 +759,9 @@
     <None Include="skin\xml\dlg_main.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="skin\xml\dlg_msgbox.xml" />
+    <None Include="skin\xml\dlg_msgbox.xml">
+      <SubType>Designer</SubType>
+    </None>
     <CustomBuild Include="skin\index.xml">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|x64'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug-ATL|Win32'">"$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2</Command>
@@ -807,7 +809,6 @@
     <None Include="skin\xml\menu_test.xml" />
     <None Include="skin\xml\page2.xml" />
     <None Include="duires\name2id.xml" />
-    <None Include="duires\resmode.zip" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="duidemo.rc">
