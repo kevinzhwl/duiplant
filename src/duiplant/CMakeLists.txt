@@ -70,12 +70,13 @@ set(ALL_INCLUDES
 set(ALL_SOURCES
     ${MFC_APP_SRCS}
     ${CPP_SRCS}
+${ALL_INCLUDES}
 )
 
 set(ALL_LIBRARIES
 )
 
-source_group(engine FILES ${ENGINE_INCS})
+
 
 if(WIN32)
     # lots of warnings with cl.exe right now, use /W1
