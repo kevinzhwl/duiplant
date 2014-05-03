@@ -1,14 +1,26 @@
 ### ---[ PCL global CMake
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
+OPTION (DUIX_BUILD_SHARED_LIBS "Build Shared Libraries" ON)
+OPTION (DUIX_BUILD_STATIC_LIBS "Build Static Libraries" ON)
+OPTION (DUIX_BUILD_WIN64_PLATFORM "Build X64 Platform" ON)
+
+#判断是32位编译还是64位编译。
+#在 Win32 配置下，_WIN32 有定义，_WIN64 没有定义。
+#在 x64 配置下，两者都有定义。即在 VC 下，_WIN32 一定有定义。
+#因此，WIN32/_WIN32 可以用来判断是否 Windows 系统（对于跨平台程序），
+#而 _WIN64 用来判断编译环境是 x86 还是 x64。附一个表
+
+project(DuiXEngine)
+string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
+set(PROJ_TARGET_NAME DuiXEngine)
+
+set(DUIX_BUILD_WIN64_PLATFORM ON)
 #set(CMAKE_BUILD_TYPE "Debug")
 set(CMAKE_BUILD_TYPE "Release")
 
 set(CMAKE_DEBUG_POSTFIX "")
 set(CMAKE_RELEASE_POSTFIX "")
-
-OPTION (DUIX_BUILD_SHARED_LIBS "Build Shared Libraries" ON)
-OPTION (DUIX_BUILD_STATIC_LIBS "Build Static Libraries" ON)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "possible configurations" FORCE)
 
@@ -17,9 +29,15 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "")
   set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "build type default to RelWithDebInfo, set to Release to improve performance" FORCE)
 endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
 
-project(DuiXEngine)
-string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
-set(PROJ_TARGET_NAME DuiXEngine)
+set(DUIX_TARGET_PLATFORM "Win32")
+if(DUIX_BUILD_WIN64_PLATFORM)
+add_definitions("-D_WIN64")
+set(DUIX_WIN64 ON)
+set(DUIX_TARGET_PLATFORM "x64")
+MESSAGE("d_win64")
+endif(DUIX_BUILD_WIN64_PLATFORM)
+
+add_definitions("-DUNICODE -D_UNICODE")
 
 
 #set the C/C++ include path to the "include" directory
@@ -59,18 +77,12 @@ set(ALL_LIBRARIES
 
 source_group(engine FILES ${ENGINE_INCS})
 
-if (WIN32)
+if(WIN32)
     # lots of warnings with cl.exe right now, use /W1
     add_definitions("/W3 -D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS /bigobj")
-else(WIN32)
-    add_definitions( "-Wall -Wno-unknown-pragmas -Wno-unused-function" )
 endif(WIN32)
 
-if (WIN32)
-    set(DUIX_TARGET_PLATFORM "Win32")
-else(WIN32)
-    set(DUIX_TARGET_PLATFORM "x64")
-endif(WIN32)
+
 
 set(DUIX_TRAGET_STATIC_NAME "${PROJECT_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-static")
 set(DUIX_TRAGET_SHARED_NAME "${PROJECT_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-shared")
