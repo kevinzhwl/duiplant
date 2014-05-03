@@ -604,8 +604,8 @@
     <ClInclude Include="include\dui\DragWnd.h" />
     <ClInclude Include="include\dui\DuiActiveX.h" />
     <ClInclude Include="include\dui\DuiAttrCrack.h" />
-    <ClInclude Include="src\activex\DuiAxContainer.h" />
-    <ClInclude Include="src\activex\DuiAxUtil.h" />
+    <ClInclude Include="src\activex\DuiAxContainer.hpp" />
+    <ClInclude Include="src\activex\DuiAxUtil.hpp" />
     <ClInclude Include="include\dui\duicolor.h" />
     <ClInclude Include="include\dui\atl.mini\duicomcli.h" />
     <ClInclude Include="include\dui\DuiContainer.h" />

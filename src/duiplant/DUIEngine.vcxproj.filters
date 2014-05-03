@@ -253,12 +253,6 @@
     <ClInclude Include="include\dui\DuiAttrCrack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\activex\DuiAxContainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\activex\DuiAxUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\dui\duicolor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -521,6 +515,12 @@
       <Filter>dependencies\pugixml</Filter>
     </ClInclude>
     <ClInclude Include="include\dui\stree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\activex\DuiAxContainer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\activex\DuiAxUtil.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

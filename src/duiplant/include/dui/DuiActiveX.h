@@ -1,8 +1,13 @@
 #pragma once
-#include <dui/duiwnd.h>
-#include "activex/flash10t.tlh"
-#include "activex/wmp.tlh"
 #include <mshtmhst.h>
+#include <dui/duiwnd.h>
+#include <dui/activex/flash10t.tlh>
+//#import "C:\WINDOWS\system32\Macromed\Flash\Flash10t.ocx"
+#include <dui/activex/wmp.tlh>
+//#import "C:/windows/system32/wmp.dll" no_function_mapping
+//see : http://support.microsoft.com/kb/832688/en-us
+
+
 
 namespace DuiEngine
 {

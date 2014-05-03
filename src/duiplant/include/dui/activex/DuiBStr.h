@@ -7,7 +7,7 @@
 #include <windows.h>
 #include <oleauto.h>
 
-#include <dui\DuiDef.h>
+#include <dui/DuiDef.h>
 
 typedef WCHAR char16;
 typedef unsigned int uint32;
