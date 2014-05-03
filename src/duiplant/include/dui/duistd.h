@@ -16,9 +16,13 @@
 #define _WIN32_IE	0x0601
 #define _RICHEDIT_VER	0x0200
 
+#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
-#define _CRT_NON_CONFORMING_SWPRINTFS
+#endif
 
+#ifndef _CRT_NON_CONFORMING_SWPRINTFS
+#define _CRT_NON_CONFORMING_SWPRINTFS
+#endif
 
 # pragma warning(disable:4661)
 # pragma warning(disable:4251)
