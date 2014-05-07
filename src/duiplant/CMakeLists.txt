@@ -51,7 +51,7 @@ file ( GLOB_RECURSE ENGINE_SRCS "src/*.cpp" )
 file ( GLOB_RECURSE PUGIXML_SRCS "include/pugixml/*.cpp" )
 
 set(MFC_APP_SRCS
-"dllmain.cpp"
+
 )
 
 set(CPP_SRCS

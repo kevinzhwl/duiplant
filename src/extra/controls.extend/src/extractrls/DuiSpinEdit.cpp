@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "DuiSpinEdit.h"
+#include <dui/extractrls/DuiSpinEdit.h>
 
 CDuiSpinEdit::CDuiSpinEdit() : m_pUpSkinBtn(NULL), m_pDownSkinBtn(NULL), m_dwUpBtnState(0), m_dwDownBtnState(0)
 {

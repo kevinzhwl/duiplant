@@ -9,8 +9,8 @@
 	purpose:	自定义皮肤对象
 *********************************************************************/
 #pragma once
-#include "DuiSkinBase.h"
-#include "duiimage.h"
+#include <dui/DuiSkinBase.h>
+#include <dui/duiimage.h>
 
  class CDuiSkinGif : public CDuiSkinBase
  {

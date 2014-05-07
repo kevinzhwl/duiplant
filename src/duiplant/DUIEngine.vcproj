@@ -1626,7 +1626,7 @@
 			Name="dllmain"
 			>
 			<File
-				RelativePath=".\dllmain.cpp"
+				RelativePath="src\dllmain.cpp"
 				>
 			</File>
 		</Filter>

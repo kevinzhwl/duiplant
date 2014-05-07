@@ -1,5 +1,5 @@
 #pragma once
-#include "ColourPopup.h"
+#include <dui/extractrls/ColourPopup.h>
 
 namespace DuiEngine
 {

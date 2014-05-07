@@ -1,6 +1,6 @@
 #pragma once
 
-#include <DuiActiveX.h>
+#include <dui/DuiActiveX.h>
 #include <ExDisp.h>
 #include <ExDispid.h>
 

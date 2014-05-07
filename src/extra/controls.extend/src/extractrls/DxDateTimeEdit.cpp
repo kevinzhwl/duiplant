@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 
-#include "DxContainer.h"
-#include "DxDateTimeEdit.h"
+#include <dui/extractrls/DxContainer.h>
+#include <dui/extractrls/DxDateTimeEdit.h>
 
 /////////////////////////////////////////////////////////////////////////////
 // CDxMaskEdit

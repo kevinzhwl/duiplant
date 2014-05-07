@@ -1,6 +1,6 @@
 #pragma once
-#include "duiwnd.h"
-#include "DuiRichEdit.h"
+#include <dui/duiwnd.h>
+#include <dui/DuiRichEdit.h>
 
 namespace DuiEngine
 {

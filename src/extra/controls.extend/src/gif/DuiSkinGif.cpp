@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "DuiSkinGif.h"
+#include <dui/gif/DuiSkinGif.h>
 #pragma comment(lib,"gdiplus.lib")
 
 GUID CDuiSkinGif::ms_Guid = Gdiplus::FrameDimensionTime;

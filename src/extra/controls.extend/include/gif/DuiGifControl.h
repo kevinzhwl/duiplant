@@ -1,6 +1,6 @@
 #pragma once
-#include "duiwnd.h"
-#include "DuiSkinGif.h"
+#include <dui/duiwnd.h>
+#include <dui/gif/DuiSkinGif.h>
 
 namespace DuiEngine
 {

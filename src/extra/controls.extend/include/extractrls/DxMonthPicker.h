@@ -4,8 +4,8 @@
 #include <atltime.h>
 #include <atlcomtime.h>
 
-#include "DxWindow.h"
-#include "DxCommonCtrl.h"
+#include <dui/DxWindow.h>
+#include <dui/DxCommonCtrl.h>
 
 class CDxMonthPicker;
 //---------------------------------------------------------------------------

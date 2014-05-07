@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "DuiColorPicker.h"
+#include <dui/extractrls/DuiColorPicker.h>
 
 namespace DuiEngine
 {
