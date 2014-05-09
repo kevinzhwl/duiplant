@@ -1278,7 +1278,7 @@ void CDuiWindow::OnShowWindow(BOOL bShow, UINT nStatus)
 }
 
 
-void CDuiWindow::OnEnable( BOOL bEnable,UINT nStatus )
+void CDuiWindow::OnEnable( BOOL bEnable,LPARAM nStatus )
 {
 	if(nStatus == ParentEnable)
 	{

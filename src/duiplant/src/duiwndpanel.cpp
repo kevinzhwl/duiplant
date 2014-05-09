@@ -714,7 +714,7 @@ void CDuiPanelEx::OnShowWindow( BOOL bShow, UINT nStatus )
 	__super::OnShowWindow(bShow,nStatus);
 }
 
-LRESULT CDuiPanelEx::OnAttrScrollbarSkin( CDuiStringA strValue,BOOL bLoading )
+HRESULT CDuiPanelEx::OnAttrScrollbarSkin( CDuiStringA strValue,BOOL bLoading )
 {
 	CDuiSkinBase *pSbSkin=DuiSkinPool::getSingleton().GetSkin(strValue);
 	DUIASSERT(pSbSkin);

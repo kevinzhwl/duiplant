@@ -106,7 +106,7 @@ namespace DuiEngine
 
 	struct char_traits
 	{
-		static int StrLen(const char* psz)
+        static size_t StrLen(const char* psz)
 		{
 			return psz ? strlen(psz) : 0;
 		}
@@ -230,13 +230,13 @@ namespace DuiEngine
 		typedef wchar_t			this_type;
 		typedef wchar_traits	this_traits;
 
-		static int StrLen(const wchar_t* psz)
+        static size_t StrLen(const wchar_t* psz)
 		{
 			return psz ? wcslen(psz) : 0;
 		}
 		static int StrCmp(const wchar_t* psz1, const wchar_t* psz2)
 		{
-			return wcscmp(psz1, psz2);
+            return wcscmp(psz1, psz2);
 		}
 		static int StrICmp(const wchar_t* psz1, const wchar_t* psz2)
 		{
@@ -1099,7 +1099,7 @@ namespace DuiEngine
 			return GetData()->nAllocLength;
 		}
 
-		static int SafeStrlen(const tchar* psz)
+        static size_t SafeStrlen(const tchar* psz)
 		{
 			return (psz == NULL) ? 0 : tchar_traits::StrLen(psz);
 		}

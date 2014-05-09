@@ -133,7 +133,7 @@ protected:
 
 	void ScrollUpdate();
 
-	LRESULT OnAttrScrollbarSkin(CDuiStringA strValue,BOOL bLoading);
+    HRESULT OnAttrScrollbarSkin(CDuiStringA strValue,BOOL bLoading);
 
     SCROLLINFO m_siVer,m_siHoz;
     CDuiScrollbarSkin *m_pSkinSb;

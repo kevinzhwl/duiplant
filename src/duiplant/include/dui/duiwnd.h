@@ -768,7 +768,7 @@ protected:
 
     void OnShowWindow(BOOL bShow, UINT nStatus);
 
-	void OnEnable(BOOL bEnable,UINT nStatus);
+    void OnEnable(BOOL bEnable,LPARAM nStatus);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
 

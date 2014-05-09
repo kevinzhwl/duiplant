@@ -1,8 +1,8 @@
-### ---[ PCL global CMake
+### ---[ global CMake
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 OPTION (DUIX_BUILD_SHARED_LIBS "Build Shared Libraries" ON)
-OPTION (DUIX_BUILD_STATIC_LIBS "Build Static Libraries" ON)
+OPTION (DUIX_BUILD_STATIC_LIBS "Build Static Libraries" OFF)
 OPTION (DUIX_BUILD_WIN64_PLATFORM "Build X64 Platform" ON)
 OPTION (DUIX_BUILD_INSTALLATION "Build DuixEngine Installation" OFF)
 OPTION (DUIX_BUILD_RELEASE "Build Release Version" OFF)
@@ -15,7 +15,7 @@ OPTION (DUIX_BUILD_RELEASE "Build Release Version" OFF)
 set(DUIX_BUILD_WIN64_PLATFORM ON)
 
 project(DuiXEngine)
-string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
+string(TOLOWER ${PROJECT_NAME} DUIX_PROJECT_NAME)
 
 set(CMAKE_BUILD_TYPE "Debug")
 if(DUIX_BUILD_RELEASE)
@@ -45,6 +45,8 @@ add_definitions("-DUNICODE -D_UNICODE")
 #set the C/C++ include path to the "include" directory
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
+file ( GLOB_RECURSE HEADER_INCS "*.h" "*.hpp" "*.tlh" "*.tli")
+
 file ( GLOB_RECURSE ENGINE_INCS "include/*.h" "include/*.hpp")
 file ( GLOB_RECURSE ENGINE_EXTRA_INCS "include/*.tlh" "include/*.tli")
 file ( GLOB_RECURSE ENGINE_INCS "include/pugixml/*.h" "include/pugixml/*.hpp")
@@ -71,19 +73,20 @@ set(ALL_INCLUDES
 set(ALL_SOURCES
     ${MFC_APP_SRCS}
     ${CPP_SRCS}
-${ALL_INCLUDES}
+${HEADER_INCS}
 )
 
 set(ALL_LIBRARIES
 )
+
 
 if(WIN32)
     # lots of warnings with cl.exe right now, use /W1
     add_definitions("/W3 -D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS /bigobj")
 endif(WIN32)
 
-set(DUIX_TRAGET_STATIC_NAME "${PROJECT_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-static")
-set(DUIX_TRAGET_SHARED_NAME "${PROJECT_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-shared")
+set(DUIX_TRAGET_STATIC_NAME "${DUIX_PROJECT_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-static")
+set(DUIX_TRAGET_SHARED_NAME "${DUIX_PROJECT_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-shared")
 
 IF(DUIX_BUILD_SHARED_LIBS)
 add_library("${DUIX_TRAGET_SHARED_NAME}" SHARED ${ALL_SOURCES} )
@@ -107,11 +110,11 @@ ENDIF()
 
 # set CMAKE Installation Options
 IF(DUIX_BUILD_INSTALLATION)
-set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../${PROJECT_NAME}-installation")
+set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../${DUIX_PROJECT_NAME}-installation")
 ENDIF()
 
 # set customize Options
-set(DUIX_INSTALL_DIR_NAME "${PROJECT_NAME}-install")
+set(DUIX_INSTALL_DIR_NAME "${DUIX_PROJECT_NAME}-install")
 set(DUIX_INSTALL_DIR "${CMAKE_SOURCE_DIR}/../${DUIX_INSTALL_DIR_NAME}")
 
 IF(DUIX_BUILD_INSTALLATION)
@@ -119,25 +122,27 @@ set(DUIX_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 ENDIF()
 
 #set the default path for built executables to the "bin" directory
-set(DUIX_EXEC_INSTALL_DIR ${DUIX_INSTALL_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(DUIX_LIB_INSTALL_DIR ${DUIX_INSTALL_DIR}/lib)
+set(DUIX_INSTALL_EXEC_DIR ${DUIX_INSTALL_DIR}/bin)
+#set the default path for built libraries(shared) to the "lib" directory
+set(DUIX_INSTALL_LIB_DIR ${DUIX_INSTALL_DIR}/lib)
+#set the default path for built libraries(static)
+set(DUIX_INSTALL_ARCH_DIR ${DUIX_INSTALL_DIR}/lib)
 
 IF(DUIX_BUILD_SHARED_LIBS)
 install (
     TARGETS "${DUIX_TRAGET_SHARED_NAME}"
-    RUNTIME DESTINATION ${DUIX_EXEC_INSTALL_DIR}
-    LIBRARY DESTINATION ${DUIX_LIB_INSTALL_DIR}
-    ARCHIVE DESTINATION ${DUIX_LIB_INSTALL_DIR}
+    RUNTIME DESTINATION ${DUIX_INSTALL_EXEC_DIR}
+    LIBRARY DESTINATION ${DUIX_INSTALL_LIB_DIR}
+    ARCHIVE DESTINATION ${DUIX_INSTALL_ARCH_DIR}
 )
 ENDIF()
 
 IF(DUIX_BUILD_STATIC_LIBS)
 install (
     TARGETS "${DUIX_TRAGET_STATIC_NAME}"
-    RUNTIME DESTINATION ${DUIX_EXEC_INSTALL_DIR}
-    LIBRARY DESTINATION ${DUIX_LIB_INSTALL_DIR}
-    ARCHIVE DESTINATION ${DUIX_LIB_INSTALL_DIR}
+    RUNTIME DESTINATION ${DUIX_INSTALL_EXEC_DIR}
+    LIBRARY DESTINATION ${DUIX_INSTALL_LIB_DIR}
+    ARCHIVE DESTINATION ${DUIX_INSTALL_ARCH_DIR}
 )
 ENDIF()
 
