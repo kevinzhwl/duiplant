@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "DuiWebBrowser.h"
+#include <dui/extractrls/DuiWebBrowser.h>
 
 #define WM_FORWARDMSG       0x037F
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ATLComTime.h>
-#include "DxRichEdit.h"
+#include <dui/extractrls/DxRichEdit.h>
 
 //===========================================================================
 // Summary:

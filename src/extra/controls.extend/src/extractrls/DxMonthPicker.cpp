@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include <math.h>
-#include "DxMonthPicker.h"
+#include <dui/extractrls/DxMonthPicker.h>
 
 #define XTP_HALF_SECOND  (1.0/172800.0)
 const UINT XTP_MAX_WEEKS = (UINT)6;

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "DuiGifControl.h"
+#include <dui/gif/DuiGifControl.h>
 
 CDuiGifControl::CDuiGifControl() :m_pgif(NULL), m_iCurFrame(0)
 {

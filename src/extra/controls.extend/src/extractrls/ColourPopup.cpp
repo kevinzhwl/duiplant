@@ -33,7 +33,7 @@
 
 #include "stdafx.h"
 #include <math.h>
-#include "ColourPopup.h"
+#include <dui/ColourPopup.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

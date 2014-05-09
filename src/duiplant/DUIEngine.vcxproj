@@ -595,7 +595,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-static|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="src\dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\dui\Accelerator.h" />

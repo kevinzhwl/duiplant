@@ -230,7 +230,7 @@
     <ClCompile Include="include\pugixml\pugixml.cpp">
       <Filter>dependencies\pugixml</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="src\dllmain.cpp">
       <Filter>dllmain</Filter>
     </ClCompile>
   </ItemGroup>

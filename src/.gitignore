@@ -5,4 +5,5 @@
 # *.[oa] 忽略所有.o 和.a的文件
 
 #deploy DUIEngine DIR
-duiengine/
+duixengine-install/
+duixengine-build/
