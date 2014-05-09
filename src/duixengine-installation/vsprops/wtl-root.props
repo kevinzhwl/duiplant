@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <WLT_DIR>..\duixengine-installation\wtl81\</WLT_DIR>
+    <WLT_DIR>..\..\duixengine-installation\wtl81\</WLT_DIR>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup>
