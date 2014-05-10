@@ -3,7 +3,7 @@
 #ifndef CP_ACP
 #define CP_ACP 0
 #endif//CP_ACP
-//#pragma warning(disable:4267)
+#pragma warning(disable:4267)
 namespace DuiEngine
 {
 
