@@ -23,7 +23,7 @@ public:
     BOOL            CanOverType() const;
     void            SetOverType(BOOL bOverType);
 
-    BOOL            PosInRange(int nPos) const;
+    BOOL            PosInRange(size_t nPos) const;
 
     TCHAR           GetPromptChar() const;
     CDuiStringT         GetPromptString(int nLength) const;
@@ -37,16 +37,16 @@ public:
     BOOL            MaskClear();
     void            MaskSelectAll();
     BOOL            IsModified() const;
-    void            SetMaskedText(LPCTSTR lpszMaskedText, int nPos = 0, BOOL bUpdateWindow = TRUE);
+    void            SetMaskedText(LPCTSTR lpszMaskedText, size_t nPos = 0, BOOL bUpdateWindow = TRUE);
     virtual BOOL    SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszDefault=NULL);
     TCHAR           ConvertUnicodeAlpha(TCHAR nChar, BOOL bUpperCase) const;
-    virtual BOOL    CheckChar(TCHAR& nChar, int nPos);
-    virtual BOOL    ProcessMask(TCHAR& nChar, int nEndPos);
+    virtual BOOL    CheckChar(TCHAR& nChar, size_t nPos);
+    virtual BOOL    ProcessMask(TCHAR& nChar, size_t nEndPos);
 
-    void            DeleteCharAt(int nPos);
-    void            InsertCharAt(int nPos, TCHAR nChar);
+    void            DeleteCharAt(size_t nPos);
+    void            InsertCharAt(size_t nPos, TCHAR nChar);
 
-    CDuiStringT         GetMaskedText(int nStartPos = 0, int nEndPos = -1) const;
+    CDuiStringT         GetMaskedText(size_t nStartPos = 0, size_t nEndPos = -1) const;
 
     void            GetMaskState(BOOL bCorrectSelection = TRUE);
     void            SetMaskState();
@@ -55,10 +55,10 @@ public:
 
     BOOL            CopyToClipboard(const CDuiStringT& strText);
 
-    BOOL            IsPromptPos(int nPos) const;
-    BOOL            IsPromptPos(const CDuiStringT& strLiteral, int nPos) const;
+    BOOL            IsPromptPos(size_t nPos) const;
+    BOOL            IsPromptPos(const CDuiStringT& strLiteral, size_t nPos) const;
 
-    BOOL            CorrectPosition(int& nPos, BOOL bForward = TRUE);
+    BOOL            CorrectPosition(size_t& nPos, BOOL bForward = TRUE);
 
     void            CorrectWindowText();
 
@@ -69,15 +69,15 @@ public:
     void            ProcessChar(TCHAR nChar);
 
 protected:
-    int             OnCreate(LPVOID);
+    LRESULT         OnCreate(LPVOID);
     void            OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
     void            OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
     void            OnSetDuiFocus();
 
 	CDuiStringT		GetWindowText();
 protected:
-    int             m_nStartChar;       // Current position of the first character in the current selection.
-    int             m_nEndChar;         // Current position of the first non-selected character past the end of the current selection.
+    size_t          m_nStartChar;       // Current position of the first character in the current selection.
+    size_t          m_nEndChar;         // Current position of the first non-selected character past the end of the current selection.
     BOOL            m_bUseMask;         // TRUE to use the edit mask.
     BOOL            m_bOverType;        // TRUE to over type the text, set with VK_INSERT key press.
     BOOL            m_bModified;        // TRUE if mask edit has been modified.
@@ -109,9 +109,9 @@ public:
 	virtual void	SetDateTime(CTime tm);
 
     virtual CDuiStringT GetWindowDateTime();
-    virtual BOOL    ProcessMask(TCHAR& nChar, int nEndPos);
+    virtual BOOL    ProcessMask(TCHAR& nChar, size_t nEndPos);
 protected:
-    int             OnCreate(LPVOID);
+    LRESULT         OnCreate(LPVOID);
 
 protected:
    DUIWIN_BEGIN_MSG_MAP()
@@ -134,7 +134,7 @@ public:
     virtual void    SetTime(int nHours, int nMins);
     int             GetHours() const;
     int             GetMins() const;
-    virtual BOOL    ProcessMask(TCHAR& nChar, int nEndPos);
+    virtual BOOL    ProcessMask(TCHAR& nChar, size_t nEndPos);
     void            SetMilitary(BOOL bMilitary = TRUE);
 
 protected:
@@ -143,7 +143,7 @@ protected:
     BOOL            m_bMilitary;
 
 protected:
-    int             OnCreate(LPVOID);
+    LRESULT         OnCreate(LPVOID);
 
 protected:
    DUIWIN_BEGIN_MSG_MAP()

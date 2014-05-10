@@ -83,15 +83,15 @@ public:
 	
 	void OnSetCaretValidateRect(LPCRECT lpRect);
 
-	LPARAM GetItemIndex(){return m_lpItemIndex;}
-	void SetItemIndex(LPARAM lp){m_lpItemIndex=lp;}
+    int GetItemIndex(){return m_lpItemIndex;}
+    void SetItemIndex(int lp){m_lpItemIndex=lp;}
 
 protected:
     CDuiWindow * m_pFrmHost;
     CDuiItemContainer * m_pItemContainer;
     COLORREF m_crBk, m_crSelBk;
     LPARAM		m_dwData;
-	LPARAM		m_lpItemIndex;
+    int 		m_lpItemIndex;
 };
 
 

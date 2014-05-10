@@ -96,7 +96,7 @@ void CDuiListBoxEx::DeleteItem(int iItem)
     SetViewSize(szView);
 }
 
-int CDuiListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*/)
+int CDuiListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,LPARAM dwData/*=0*/)
 {
 	if(IsVirtual()) return -1;
 
@@ -127,7 +127,7 @@ int CDuiListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*
     return iItem;
 }
 
-int CDuiListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
+int CDuiListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,LPARAM dwData/*=0*/)
 {
 	if(IsVirtual()) return -1;
 

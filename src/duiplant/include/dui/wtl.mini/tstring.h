@@ -20,11 +20,14 @@
 namespace DuiEngine
 {
 
+typedef size_t tsize_t;
+typedef intptr_t tptr_t;
+
 	struct TStringData
 	{
 		long nRefs;			// Reference count: negative == locked
-		int nDataLength;	// Length of currently used data in XCHARs (not including terminating null)
-		int nAllocLength;	// Length of allocated data in XCHARs (not including terminating null)
+        tsize_t nDataLength;	// Length of currently used data in XCHARs (not including terminating null)
+        tsize_t nAllocLength;	// Length of allocated data in XCHARs (not including terminating null)
 		//	void* pReversed;	// String manager for this StringData
 		//	tchar data[nAllocLength+1]	// A TStringData is always followed in memory by the actual array of character data
 
@@ -106,7 +109,7 @@ namespace DuiEngine
 
 	struct char_traits
 	{
-        static size_t StrLen(const char* psz)
+        static tsize_t StrLen(const char* psz)
 		{
 			return psz ? strlen(psz) : 0;
 		}
@@ -190,11 +193,11 @@ namespace DuiEngine
 			return psz + 1;
 #endif
 		}
-		static int VirtualFormat(char** ppszDst, const char* pszFormat, va_list args)
+        static tsize_t VirtualFormat(char** ppszDst, const char* pszFormat, va_list args)
 		{
 			DWORD dwAllocSize = 0, dwPageSize = 0;
 			char* pszBuffer = NULL;
-			int nLength = 0;
+            tsize_t nLength = 0;
 
 			SYSTEM_INFO si;
 			GetSystemInfo(&si);
@@ -230,7 +233,7 @@ namespace DuiEngine
 		typedef wchar_t			this_type;
 		typedef wchar_traits	this_traits;
 
-        static size_t StrLen(const wchar_t* psz)
+        static tsize_t StrLen(const wchar_t* psz)
 		{
 			return psz ? wcslen(psz) : 0;
 		}
@@ -278,11 +281,11 @@ namespace DuiEngine
 		{
 			return psz + 1;
 		}
-		static int VirtualFormat(wchar_t** ppszDst, const wchar_t* pszFormat, va_list args)
+        static tsize_t VirtualFormat(wchar_t** ppszDst, const wchar_t* pszFormat, va_list args)
 		{
 			DWORD dwAllocSize = 0, dwPageSize = 0;
 			wchar_t* pszBuffer = NULL;
-			int nLength = 0;
+            tsize_t nLength = 0;
 
 			SYSTEM_INFO si;
 			GetSystemInfo(&si);
@@ -341,19 +344,19 @@ namespace DuiEngine
 				*this = stringSrc.m_pszData;
 			}
 		}
-		TStringT(tchar ch, int nLength = 1)
+        TStringT(tchar ch, tsize_t nLength = 1)
 		{
 			Init();
 			if (nLength >= 1)
 			{
 				if (AllocBuffer(nLength))
 				{
-					for (int i = 0; i < nLength; i++)
+                    for (tsize_t i = 0; i < nLength; i++)
 						m_pszData[i] = ch;
 				}
 			}
 		}
-		TStringT(const tchar* psz, int nLength)
+        TStringT(const tchar* psz, tsize_t nLength)
 		{
 			Init();
 			if (nLength != 0)
@@ -365,7 +368,7 @@ namespace DuiEngine
 		TStringT(const tchar* psz)
 		{
 			Init();
-			int nLength = SafeStrlen(psz);
+            tsize_t nLength = SafeStrlen(psz);
 			if (nLength != 0)
 			{
 				if (AllocBuffer(nLength))
@@ -383,7 +386,7 @@ namespace DuiEngine
 
 		// Attributes & Operations
 		// as an array of characters
-		int GetLength() const
+        tsize_t GetLength() const
 		{
 			return GetData()->nDataLength;
 		}
@@ -499,11 +502,11 @@ namespace DuiEngine
 		}
 
 		// simple sub-string extraction
-		TStringT Mid(int nFirst) const
+        TStringT Mid(tsize_t nFirst) const
 		{
 			return Mid(nFirst, GetData()->nDataLength - nFirst);
 		}
-		TStringT Mid(int nFirst, int nCount) const
+        TStringT Mid(tsize_t nFirst, tsize_t nCount) const
 		{
 			// out-of-bounds requests return sensible things
 			if (nFirst < 0)
@@ -521,7 +524,7 @@ namespace DuiEngine
 			AllocCopy(dest, nCount, nFirst, 0);
 			return dest;
 		}
-		TStringT Right(int nCount) const
+        TStringT Right(tsize_t nCount) const
 		{
 			TStringData* pData = GetData();
 			if (nCount < 0)
@@ -533,7 +536,7 @@ namespace DuiEngine
 			AllocCopy(dest, nCount, pData->nDataLength - nCount, 0);
 			return dest;
 		}
-		TStringT Left(int nCount) const
+        TStringT Left(tsize_t nCount) const
 		{
 			TStringData* pData = GetData();
 			if (nCount < 0)
@@ -590,7 +593,7 @@ namespace DuiEngine
 			{
 				// truncate at left-most matching character
 				*pszLast = '\0';
-				GetData()->nDataLength = (int)(pszLast - m_pszData);
+                GetData()->nDataLength = (tsize_t)(pszLast - m_pszData);
 			}
 			return *this;
 		}
@@ -610,7 +613,7 @@ namespace DuiEngine
 			{
 				// fix up data and length
 				TStringData* pData = GetData();
-				int nDataLength = pData->nDataLength - (int)(psz - m_pszData);
+                tsize_t nDataLength = pData->nDataLength - (tptr_t)(psz - m_pszData);
 				memmove(m_pszData, psz, (nDataLength + 1) * sizeof(tchar));
 				pData->nDataLength = nDataLength;
 			}
@@ -625,7 +628,7 @@ namespace DuiEngine
 		}
 
 		// insert character at zero-based index; concatenates if index is past end of string
-		int Insert(int nIndex, tchar ch)
+        tsize_t Insert(tsize_t nIndex, tchar ch)
 		{
 			CopyBeforeWrite();
 
@@ -633,7 +636,7 @@ namespace DuiEngine
 				nIndex = 0;
 
 			TStringData* pData = GetData();
-			int nNewLength = pData->nDataLength;
+            tsize_t nNewLength = pData->nDataLength;
 			if (nIndex > nNewLength)
 				nIndex = nNewLength;
 			nNewLength++;
@@ -650,13 +653,13 @@ namespace DuiEngine
 			return nNewLength;
 		}
 		// insert substring at zero-based index; concatenates if index is past end of string
-		inline int Insert(int nIndex, const tchar* psz)
+        inline tsize_t Insert(tsize_t nIndex, const tchar* psz)
 		{
 			if (nIndex < 0)
 				nIndex = 0;
 
-			int nInsertLength = SafeStrlen(psz);
-			int nNewLength = GetData()->nDataLength;
+            tsize_t nInsertLength = SafeStrlen(psz);
+            tsize_t nNewLength = GetData()->nDataLength;
 			if (nInsertLength > 0)
 			{
 				CopyBeforeWrite();
@@ -677,11 +680,11 @@ namespace DuiEngine
 			}
 			return nNewLength;
 		}
-		inline int Delete(int nIndex, int nCount = 1)
+        inline tsize_t Delete(tsize_t nIndex, tsize_t nCount = 1)
 		{
 			if (nIndex < 0)
 				nIndex = 0;
-			int nLength = GetData()->nDataLength;
+            tsize_t nLength = GetData()->nDataLength;
 			if (nCount > 0 && nIndex < nLength)
 			{
 				if((nIndex + nCount) > nLength)
@@ -689,7 +692,7 @@ namespace DuiEngine
 
 				CopyBeforeWrite();
 
-				int nBytesToCopy = nLength - (nIndex + nCount) + 1;
+                tsize_t nBytesToCopy = nLength - (nIndex + nCount) + 1;
 				memmove(m_pszData + nIndex, m_pszData + nIndex + nCount, nBytesToCopy * sizeof(tchar));
 				nLength -= nCount;
 				GetData()->nDataLength = nLength;
@@ -697,9 +700,9 @@ namespace DuiEngine
 
 			return nLength;
 		}
-		int Replace(tchar chOld, tchar chNew)
+        tsize_t Replace(tchar chOld, tchar chNew)
 		{
-			int nCount = 0;
+            tsize_t nCount = 0;
 
 			// short-circuit the nop case
 			if (chOld != chNew)
@@ -725,10 +728,10 @@ namespace DuiEngine
 		inline int Replace(const tchar* pszOld, const tchar* pszNew)
 		{
 			// can't have empty or NULL pszOld
-			int nSourceLen = SafeStrlen(pszOld);
+            tsize_t nSourceLen = SafeStrlen(pszOld);
 			if (nSourceLen == 0)
 				return 0;
-			int nReplacementLen = SafeStrlen(pszNew);
+            tsize_t nReplacementLen = SafeStrlen(pszNew);
 
 			// loop once to figure out the size of the result string
 			int nCount = 0;
@@ -753,8 +756,8 @@ namespace DuiEngine
 				// if the buffer is too small, just
 				//   allocate a new buffer (slow but sure)
 				TStringData* pOldData = GetData();
-				int nOldLength = pOldData->nDataLength;
-				int nNewLength =  nOldLength + (nReplacementLen - nSourceLen) * nCount;
+                tsize_t nOldLength = pOldData->nDataLength;
+                tsize_t nNewLength =  nOldLength + (nReplacementLen - nSourceLen) * nCount;
 				if (pOldData->nAllocLength < nNewLength || pOldData->IsShared())
 					if (! ReallocBuffer(nNewLength))
 						return -1;
@@ -768,7 +771,7 @@ namespace DuiEngine
 				{
 					while ((pszTarget = tchar_traits::StrStr(pszStart, pszOld)) != NULL)
 					{
-						int nBalance = nOldLength - ((int)(pszTarget - m_pszData) + nSourceLen);
+                        tsize_t nBalance = nOldLength - ((tptr_t)(pszTarget - m_pszData) + nSourceLen);
 						memmove(pszTarget + nReplacementLen, pszTarget + nSourceLen, nBalance * sizeof(tchar));
 						memcpy(pszTarget, pszNew, nReplacementLen * sizeof(tchar));
 						pszStart = pszTarget + nReplacementLen;
@@ -800,7 +803,7 @@ namespace DuiEngine
 				pstrSource = tchar_traits::CharNext(pstrSource);
 			}
 			*pstrDest = '\0';
-			int nCount = (int)(pstrSource - pstrDest);
+            int nCount = (int)(pstrSource - pstrDest);
 			GetData()->nDataLength -= nCount;
 
 			return nCount;
@@ -810,7 +813,7 @@ namespace DuiEngine
 		// look for a single character match
 		int Find(tchar ch, int nStart = 0) const
 		{
-			int nLength = GetData()->nDataLength;
+            tsize_t nLength = GetData()->nDataLength;
 			if (nStart >= nLength)
 				return -1;
 
@@ -832,7 +835,7 @@ namespace DuiEngine
 		// find a sub-string (like strstr)
 		int Find(const tchar* pszSub, int nStart = 0) const
 		{
-			int nLength = GetData()->nDataLength;
+            tsize_t nLength = GetData()->nDataLength;
 			if (nStart > nLength)
 				return -1;
 
@@ -890,7 +893,7 @@ namespace DuiEngine
 			}
 
 			tchar* pszBuffer = NULL;
-			int nLength = tchar_traits::VirtualFormat(&pszBuffer, pszFormat, args);
+            tsize_t nLength = tchar_traits::VirtualFormat(&pszBuffer, pszFormat, args);
 			if (nLength > 0 && pszBuffer != NULL)
 			{
 				*this = TStringT(pszBuffer, nLength);
@@ -905,7 +908,7 @@ namespace DuiEngine
 				return;
 
 			tchar* pszBuffer = NULL;
-			int nLength = tchar_traits::VirtualFormat(&pszBuffer, pszFormat, args);
+            tsize_t nLength = tchar_traits::VirtualFormat(&pszBuffer, pszFormat, args);
 			if (nLength > 0 && pszBuffer != NULL)
 			{
 				*this += TStringT(pszBuffer, nLength);
@@ -931,7 +934,7 @@ namespace DuiEngine
 		}
 
 		// Access to string implementation buffer as "C" character array
-		tchar* GetBuffer(int nMinBufLength)
+        tchar* GetBuffer(tsize_t nMinBufLength)
 		{
 			DUIASSERT(nMinBufLength >= 0);
 
@@ -939,7 +942,7 @@ namespace DuiEngine
 			if (pData->IsShared() || nMinBufLength > pData->nAllocLength)
 			{
 				// we have to grow the buffer
-				int nOldLen = pData->nDataLength;
+                tsize_t nOldLen = pData->nDataLength;
 				if (nMinBufLength < nOldLen)
 					nMinBufLength = nOldLen;
 				if (! ReallocBuffer(nMinBufLength))
@@ -951,7 +954,7 @@ namespace DuiEngine
 			DUIASSERT(m_pszData != NULL);
 			return m_pszData;
 		}
-		void ReleaseBuffer(int nNewLength = -1)
+        void ReleaseBuffer(tsize_t nNewLength = -1)
 		{
 			CopyBeforeWrite();  // just in case GetBuffer was not called
 
@@ -963,7 +966,7 @@ namespace DuiEngine
 			pData->nDataLength = nNewLength;
 			m_pszData[nNewLength] = '\0';
 		}
-		tchar* GetBufferSetLength(int nNewLength)
+        tchar* GetBufferSetLength(tsize_t nNewLength)
 		{
 			DUIASSERT(nNewLength >= 0);
 
@@ -974,7 +977,7 @@ namespace DuiEngine
 			m_pszData[nNewLength] = '\0';
 			return m_pszData;
 		}
-		void SetLength(int nLength)
+        void SetLength(tsize_t nLength)
 		{
 			DUIASSERT(nLength >= 0);
 			DUIASSERT(nLength <= GetData()->nAllocLength);
@@ -985,9 +988,9 @@ namespace DuiEngine
 				m_pszData[nLength] = 0;
 			}
 		}
-		void Preallocate(int nLength)
+        void Preallocate(tsize_t nLength)
 		{
-			int nOldLength = GetLength();
+            tsize_t nOldLength = GetLength();
 			GetBuffer(nLength);
 			ReleaseBuffer(nOldLength);
 		}
@@ -1094,12 +1097,12 @@ namespace DuiEngine
 
 		// Implementation
 	public:
-		inline int GetAllocLength() const
+        inline tsize_t GetAllocLength() const
 		{
 			return GetData()->nAllocLength;
 		}
 
-        static size_t SafeStrlen(const tchar* psz)
+        static tsize_t SafeStrlen(const tchar* psz)
 		{
 			return (psz == NULL) ? 0 : tchar_traits::StrLen(psz);
 		}
@@ -1125,14 +1128,14 @@ namespace DuiEngine
 		//  All routines return the new string (but as a 'const TStringT&' so that
 		//      assigning it again will cause a copy, eg: s1 = s2 = "hi there".
 		//
-		void AllocCopy(TStringT& dest, int nCopyLen, int nCopyIndex, int nExtraLen) const
+        void AllocCopy(TStringT& dest, tsize_t nCopyLen, tsize_t nCopyIndex, tsize_t nExtraLen) const
 		{
 			// will clone the data attached to this string
 			// allocating 'nExtraLen' characters
 			// Places results in uninitialized string 'dest'
 			// Will copy the part or all of original data to start of new string
 
-			int nNewLen = nCopyLen + nExtraLen;
+            tsize_t nNewLen = nCopyLen + nExtraLen;
 			if (nNewLen == 0)
 			{
 				dest.Init();
@@ -1144,7 +1147,7 @@ namespace DuiEngine
 			}
 		}
 
-		void AssignCopy(int nSrcLen, const tchar* pszSrcData)
+        void AssignCopy(tsize_t nSrcLen, const tchar* pszSrcData)
 		{
 			if (AllocBeforeWrite(nSrcLen))
 			{
@@ -1162,14 +1165,14 @@ namespace DuiEngine
 		//          TStringT + ?
 		//          ? + TStringT
 
-		bool ConcatCopy(int nSrc1Len, const tchar* pszSrc1Data, int nSrc2Len, const tchar* pszSrc2Data)
+        bool ConcatCopy(tsize_t nSrc1Len, const tchar* pszSrc1Data, tsize_t nSrc2Len, const tchar* pszSrc2Data)
 		{
 			// -- master concatenation routine
 			// Concatenate two sources
 			// -- assume that 'this' is a new TStringT object
 
 			bool bRet = true;
-			int nNewLength = nSrc1Len + nSrc2Len;
+            tsize_t nNewLength = nSrc1Len + nSrc2Len;
 			if (nNewLength != 0)
 			{
 				bRet = ReallocBuffer(nNewLength);
@@ -1181,7 +1184,7 @@ namespace DuiEngine
 			}
 			return bRet;
 		}
-		void ConcatInPlace(int nSrcLen, const tchar* pszSrcData)
+        void ConcatInPlace(tsize_t nSrcLen, const tchar* pszSrcData)
 		{
 			//  -- the main routine for += operators
 
@@ -1195,8 +1198,8 @@ namespace DuiEngine
 			if (pData->IsShared() || pData->nDataLength + nSrcLen > pData->nAllocLength)
 			{
 				// we have to grow the buffer
-				int nOldDataLength = pData->nDataLength;
-				int nNewLength = nOldDataLength + nSrcLen;
+                tsize_t nOldDataLength = pData->nDataLength;
+                tsize_t nNewLength = nOldDataLength + nSrcLen;
 				if (ReallocBuffer(nNewLength))
 					memcpy(m_pszData + nOldDataLength, pszSrcData, nSrcLen * sizeof(tchar));
 			}
@@ -1220,7 +1223,7 @@ namespace DuiEngine
 			}
 			DUIASSERT(GetData()->nRefs <= 1);
 		}
-		bool AllocBeforeWrite(int nLen)
+        bool AllocBeforeWrite(tsize_t nLen)
 		{
 			bool bRet = true;
 			TStringData* pData = GetData();
@@ -1233,7 +1236,7 @@ namespace DuiEngine
 			return bRet;
 		}
 
-		bool AllocBuffer(int nLength)
+        bool AllocBuffer(tsize_t nLength)
 		{
 			TStringData* pData = AllocData(nLength);
 			if (pData != NULL)
@@ -1244,7 +1247,7 @@ namespace DuiEngine
 			return false;
 		}
 
-		bool ReallocBuffer(int nNewLength)
+        bool ReallocBuffer(tsize_t nNewLength)
 		{
 #define TSTRING_REALLOC
 #ifdef TSTRING_REALLOC
@@ -1266,7 +1269,7 @@ namespace DuiEngine
 			tchar* psz = m_pszData;
 			if (AllocBuffer(nNewLength))
 			{
-				int nLength = min(pOldData->nDataLength, nNewLength) + 1;
+                tsize_t nLength = min(pOldData->nDataLength, nNewLength) + 1;
 				memcpy(m_pszData, psz, nLength * sizeof(tchar));
 				ReleaseData(pOldData);
 				return true;
@@ -1286,7 +1289,7 @@ namespace DuiEngine
 
 		// always allocate one extra character for '\0' termination
 		// assumes [optimistically] that data length will equal allocation length
-		static TStringData* AllocData(int nLength, TStringData* pOldData = NULL)
+        static TStringData* AllocData(tsize_t nLength, TStringData* pOldData = NULL)
 		{
 			DUIASSERT(nLength >= 0);
 			DUIASSERT(nLength <= 0x7fffffff);    // max size (enough room for 1 extra)
@@ -1294,7 +1297,7 @@ namespace DuiEngine
 			if (nLength == 0)
 				return _tstr_initDataNil;
 
-			int nSize = sizeof(TStringData) + (nLength + 1 + TSTRING_PADDING) * sizeof(tchar);
+            tsize_t nSize = sizeof(TStringData) + (nLength + 1 + TSTRING_PADDING) * sizeof(tchar);
 			TStringData* pData;
 			if (pOldData == NULL)
 				pData = (TStringData*)malloc(nSize);

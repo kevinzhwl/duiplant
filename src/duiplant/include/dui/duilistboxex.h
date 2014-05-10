@@ -28,9 +28,9 @@ public:
 
     void DeleteItem(int iItem);
 
-    int InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData=0);
+    int InsertItem(int iItem,pugi::xml_node xmlNode,LPARAM dwData=0);
 
-    int InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData=0);
+    int InsertItem(int iItem,LPCWSTR pszXml,LPARAM dwData=0);
 
     void SetCurSel(int iItem);
 

@@ -289,7 +289,7 @@ protected:
 
     HRESULT InitDefaultParaFormat(PARAFORMAT2* ppf);
 
-    HRESULT OnTxNotify(DWORD iNotify,LPVOID pv);
+    LRESULT OnTxNotify(DWORD iNotify,LPVOID pv);
 
     virtual HRESULT DefAttributeProc(const CDuiStringA & strAttribName,const CDuiStringA & strValue, BOOL bLoading);
 
@@ -321,7 +321,7 @@ protected:
 
     LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
 
-    LRESULT OnSetTextColor(const CDuiStringA &  strValue,BOOL bLoading);
+    HRESULT OnSetTextColor(const CDuiStringA &  strValue,BOOL bLoading);
 
 	void OnEnableDragDrop(BOOL bEnable);
 

@@ -3,17 +3,18 @@
 #ifndef CP_ACP
 #define CP_ACP 0
 #endif//CP_ACP
-
+//#pragma warning(disable:4267)
 namespace DuiEngine
 {
 
 	class CDuiStrCpCvt
 	{
+        const static int SZBUFFER_MAXLENGTH = 1024;
 	public:
 		static CDuiStringA CvtW2A(const CDuiStringW & str,unsigned int cp=CP_ACP)
 		{
-			char szBuf[1024];
-			int nRet=WideCharToMultiByte(cp,0,str,str.GetLength(),szBuf,1024,NULL,NULL);
+            char szBuf[SZBUFFER_MAXLENGTH];
+            int nRet=WideCharToMultiByte(cp,0,str,str.GetLength(),szBuf,SZBUFFER_MAXLENGTH,NULL,NULL);
 			if(nRet>0) return CDuiStringA(szBuf,nRet);
 			if(GetLastError()==ERROR_INSUFFICIENT_BUFFER)
 			{
@@ -33,8 +34,8 @@ namespace DuiEngine
 		static CDuiStringW CvtA2W(const CDuiStringA & str,unsigned int cp=CP_ACP,unsigned int cp2=0)
 		{
 			UNREFERENCED_PARAMETER(cp2);
-			wchar_t szBuf[1024];
-			int nRet=MultiByteToWideChar(cp,0,str,str.GetLength(),szBuf,1024);
+            wchar_t szBuf[SZBUFFER_MAXLENGTH];
+            int nRet=MultiByteToWideChar(cp,0,str,str.GetLength(),szBuf,SZBUFFER_MAXLENGTH);
 			if(nRet>0)
 			{
 				return CDuiStringW(szBuf,nRet);
