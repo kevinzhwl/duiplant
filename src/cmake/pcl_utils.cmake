@@ -75,25 +75,25 @@ endmacro(GET_OS_INFO)
 
 ###############################################################################
 # Set the destination directories for installing stuff.
-# Sets LIB_INSTALL_DIR. Install libraries here.
-# Sets BIN_INSTALL_DIR. Install binaries here.
-# Sets INCLUDE_INSTALL_DIR. Install include files here, preferably in a
+# Sets INSTALLATION_LIB_DIR. Install libraries here.
+# Sets INSTALLATION_BIN_DIR. Install binaries here.
+# Sets INSTALLATION_INCLUDE_DIR. Install include files here, preferably in a
 # subdirectory named after the library in question (e.g.
 # "registration/blorgle.h")
 macro(SET_INSTALL_DIRS)
-  if (NOT DEFINED LIB_INSTALL_DIR)
-    set(LIB_INSTALL_DIR "lib")
-  endif (NOT DEFINED LIB_INSTALL_DIR)
-    set(INCLUDE_INSTALL_ROOT
+  if (NOT DEFINED INSTALLATION_LIB_DIR)
+    set(INSTALLATION_LIB_DIR "lib")
+  endif (NOT DEFINED INSTALLATION_LIB_DIR)
+    set(INSTALLATION_INCLUDE_ROOT
         "include/${PROJECT_NAME_LOWER}-${PCL_MAJOR_VERSION}.${PCL_MINOR_VERSION}")
-    set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_ROOT}/pcl")
-    set(DOC_INSTALL_DIR "share/doc/${PROJECT_NAME_LOWER}-${PCL_MAJOR_VERSION}.${PCL_MINOR_VERSION}")
-    set(BIN_INSTALL_DIR "bin")
-    set(PKGCFG_INSTALL_DIR "${LIB_INSTALL_DIR}/pkgconfig")
+    set(INSTALLATION_INCLUDE_DIR "${INSTALLATION_INCLUDE_ROOT}/pcl")
+    set(INSTALLATION_DOC_DIR "share/doc/${PROJECT_NAME_LOWER}-${PCL_MAJOR_VERSION}.${PCL_MINOR_VERSION}")
+    set(INSTALLATION_BIN_DIR "bin")
+    set(PKGCFG_INSTALL_DIR "${INSTALLATION_LIB_DIR}/pkgconfig")
     if(WIN32)
-        set(PCLCONFIG_INSTALL_DIR "cmake")
+        set(INSTALLATION_PCLCONFIG_DIR "cmake")
     else(WIN32)
-        set(PCLCONFIG_INSTALL_DIR "share/${PROJECT_NAME_LOWER}-${PCL_MAJOR_VERSION}.${PCL_MINOR_VERSION}")
+        set(INSTALLATION_PCLCONFIG_DIR "share/${PROJECT_NAME_LOWER}-${PCL_MAJOR_VERSION}.${PCL_MINOR_VERSION}")
     endif(WIN32)
 endmacro(SET_INSTALL_DIRS)
 
