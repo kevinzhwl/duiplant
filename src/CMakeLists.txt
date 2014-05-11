@@ -40,6 +40,7 @@ SET(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
 set(PCL_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 include(${PCL_SOURCE_DIR}/cmake/pcl_targets.cmake)
+include(${PCL_SOURCE_DIR}/cmake/duix_build_config.cmake)
 
 set(PCL_OUTPUT_LIB_DIR ${PCL_BINARY_DIR}/${LIB_INSTALL_DIR})
 set(PCL_OUTPUT_BIN_DIR ${PCL_BINARY_DIR}/${BIN_INSTALL_DIR})
@@ -66,9 +67,9 @@ configure_file(${pcl_config_h_in} ${pcl_config_h})
 PCL_ADD_INCLUDES(common "" ${pcl_config_h})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
-file (GLOB examples_sbudirs */CMakeLists.txt)
+file (GLOB modules_subdirs */CMakeLists.txt)
 
-    foreach(subdir ${examples_sbudirs})
+    foreach(subdir ${modules_subdirs})
         # PATH of get_filename_component has problem dealing with windows shared folders "//xxx.xxx.xxx.xxx/folder"
         # Check here for the discussion: http://www.pcl-developers.org/Small-hack-to-get-filename-component-td5706691.html
         # Modified by Yangyan Li(yangyan.lee@gmail.com)
@@ -76,12 +77,12 @@ file (GLOB examples_sbudirs */CMakeLists.txt)
         get_filename_component (absolute ${subdir} ABSOLUTE)
         get_filename_component (name ${subdir} NAME)
         STRING(REGEX REPLACE ${name} "" dir ${absolute})
-        list(APPEND PCL_EXAMPLES_SUBDIRS ${dir})
+        list(APPEND PCL_MODULES_DIRS ${dir})
     endforeach(subdir)
     # Display the found subdirectories
-    message (STATUS "PCL_EXAMPLES_SUBDIRS ${PCL_EXAMPLES_SUBDIRS}")
+    message (STATUS "PCL_MODULES_DIRS ${PCL_MODULES_DIRS}")
     # Add the subdirectories
-    foreach(subdir ${PCL_EXAMPLES_SUBDIRS})
+    foreach(subdir ${PCL_MODULES_DIRS})
     add_subdirectory(${subdir})
     endforeach(subdir)
 

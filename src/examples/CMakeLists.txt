@@ -1,8 +1,8 @@
 set(SUBSYS_NAME examples)
 set(SUBSYS_DESC "PCL examples")
-set(SUBSYS_DEPS common io features search kdtree octree filters keypoints segmentation sample_consensus outofcore stereo geometry)
+set(SUBSYS_DEPS )
 
-set(DEFAULT FALSE)
+set(DEFAULT TRUE)
 set(REASON "Code examples are disabled by default.")
 PCL_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
 PCL_SUBSYS_DEPEND(build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS})
@@ -28,4 +28,5 @@ if (build)
     foreach(subdir ${PCL_EXAMPLES_SUBDIRS})
     add_subdirectory(${subdir})
     endforeach(subdir)
+
 endif (build)
