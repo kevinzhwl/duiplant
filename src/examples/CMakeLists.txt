@@ -1,6 +1,6 @@
 set(SUBSYS_NAME examples)
 set(SUBSYS_DESC "PCL examples")
-set(SUBSYS_DEPS )
+#set(SUBSYS_DEPS )
 
 set(DEFAULT TRUE)
 set(REASON "Code examples are disabled by default.")
@@ -8,7 +8,18 @@ PCL_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
 PCL_SUBSYS_DEPEND(build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS})
 
 if (build)
+
+    set(zlib_incs
+            ${CMAKE_CURRENT_SOURCE_DIR}/../3rd/zlib/zconf.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/../3rd/zlib/zlib.h
+        )
+    PCL_ADD_INCLUDES(zlib "zlib" ${zlib_incs})
+    set(ZLIB_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../3rd")
+    set(ZLIB_LIBRARY_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../duixengine-installation/lib")
+    include_directories(${ZLIB_INCLUDE_DIRS})
+    link_directories(${ZLIB_LIBRARY_DIRS})
     include_directories(${PCL_INCLUDE_DIRS})
+
     # This looks for all examples/XXX/CMakeLists.txt
     file (GLOB examples_sbudirs */CMakeLists.txt)
     # Extract only relevant XXX and append it to PCL_EXAMPLES_SUBDIRS

@@ -1,6 +1,9 @@
 ### ---[ PCL global CMake
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
+set(PCL_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+include(${PCL_SOURCE_DIR}/cmake/duix_build_config.cmake)
+
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "possible configurations" FORCE)
 
 # In case the user does not setup CMAKE_BUILD_TYPE, assume it's RelWithDebInfo
@@ -15,33 +18,25 @@ string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
 
 # ---[ Release/Debug specific flags
-if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-  add_definitions("-DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG")
-endif()
-if(WIN32)
-  if(NOT DEFINED CMAKE_DEBUG_POSTFIX)
-    set(CMAKE_DEBUG_POSTFIX "_debug")
-  endif()
-  if(NOT DEFINED CMAKE_RELEASE_POSTFIX)
-    set(CMAKE_RELEASE_POSTFIX "_release")
-  endif()
-endif()
 
-MARK_AS_ADVANCED(
-    CMAKE_CXX_FLAGS_MAINTAINER
-    CMAKE_C_FLAGS_MAINTAINER
-    CMAKE_EXE_LINKER_FLAGS_MAINTAINER
-    CMAKE_SHARED_LINKER_FLAGS_MAINTAINER )
+#if(WIN32)
+#  if(NOT DEFINED CMAKE_DEBUG_POSTFIX)
+#    set(CMAKE_DEBUG_POSTFIX "_debug")
+#  endif()
+#  if(NOT DEFINED CMAKE_RELEASE_POSTFIX)
+#    set(CMAKE_RELEASE_POSTFIX "_release")
+#  endif()
+#endif()
+
 # Update the documentation string of CMAKE_BUILD_TYPE for GUIs
 SET(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
     "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel Maintainer."
     FORCE)
 
-set(PCL_SOURCE_DIR ${CMAKE_SOURCE_DIR})
-set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 include(${PCL_SOURCE_DIR}/cmake/pcl_targets.cmake)
-include(${PCL_SOURCE_DIR}/cmake/duix_build_config.cmake)
 
+set(LIB_INSTALL_DIR "lib")
+set(BIN_INSTALL_DIR "bin")
 set(PCL_OUTPUT_LIB_DIR ${PCL_BINARY_DIR}/${LIB_INSTALL_DIR})
 set(PCL_OUTPUT_BIN_DIR ${PCL_BINARY_DIR}/${BIN_INSTALL_DIR})
 make_directory(${PCL_OUTPUT_LIB_DIR})
@@ -64,8 +59,12 @@ endif(WIN32)
 set(pcl_config_h_in "${CMAKE_CURRENT_SOURCE_DIR}/pcl_config.h.in")
 set(pcl_config_h "${CMAKE_CURRENT_BINARY_DIR}/include/pcl/pcl_config.h")
 configure_file(${pcl_config_h_in} ${pcl_config_h})
-PCL_ADD_INCLUDES(common "" ${pcl_config_h})
+PCL_ADD_INCLUDES(duixengine "" ${pcl_config_h})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
+
+  set(PCL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/duixengine/include")
+  #set(PCL_LIBRARY_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/@LIB_INSTALL_DIR@")
+
 
 file (GLOB modules_subdirs */CMakeLists.txt)
 
