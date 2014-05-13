@@ -10,25 +10,17 @@ PCL_SUBSYS_DEPEND(build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS})
 
 if(build)
 
-    #OPTION (DUIX_BUILD_SHARED_LIBS "Build Shared Libraries" ON)
-    #OPTION (DUIX_BUILD_STATIC_LIBS "Build Static Libraries" OFF)
-    #OPTION (DUIX_BUILD_WIN64_PLATFORM "Build X64 Platform" OFF)
-    #OPTION (DUIX_BUILD_INSTALLATION "Build DuixEngine Installation" OFF)
-    #OPTION (DUIX_BUILD_RELEASE "Build Release Version" OFF)
-
     #判断是32位编译还是64位编译。
     #在 Win32 配置下，_WIN32 有定义，_WIN64 没有定义。
     #在 x64 配置下，两者都有定义。即在 VC 下，_WIN32 一定有定义。
     #因此，WIN32/_WIN32 可以用来判断是否 Windows 系统（对于跨平台程序），
     #而 _WIN64 用来判断编译环境是 x86 还是 x64。附一个表
-    set(DUIX_BUILD_WIN64_PLATFORM OFF)
 
-    #include(cmake/mfc.cmake.in)
     set(DUIX_PROJECT_NAME "${SUBSYS_NAME}")
+
     set(DUIX_TARGET_PLATFORM "Win32")
     if(DUIX_BUILD_WIN64_PLATFORM)
     add_definitions("-D_WIN64")
-    set(DUIX_WIN64 ON)
     set(DUIX_TARGET_PLATFORM "x64")
     MESSAGE("build duixengine-64bit")
     endif(DUIX_BUILD_WIN64_PLATFORM)
@@ -72,7 +64,7 @@ if(build)
     set(ALL_SOURCES
         ${MFC_APP_SRCS}
         ${CPP_SRCS}
-      ${HEADER_INCS}
+        ${HEADER_INCS}
     )
 
     set(ALL_LIBRARIES
@@ -154,7 +146,6 @@ if(build)
             DESTINATION ${DUIX_INSTALL_DIR}
             FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp" PATTERN "*.tli" PATTERN "*.tlh"
         )
-
 
 
 endif(build)
