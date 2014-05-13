@@ -41,11 +41,11 @@ DuixEngine是
  * 由 托管在svn库中，改为 托管在git中；done
  * 由 msvc2008项目，改为 msvc2010项目；done
  * 由 ansi字符集，改为 unicode字符集；done(as-is)
- * 由 扁平目录结构，改为 引擎，工具，范例三大块结构；done
+ * 由 扁平目录结构，改为 代码，工具，文档三大块结构；done
  * 由 内部构建，改为 与源代码分离式构建；working
- * 增加库的内聚，减少对外部设置的依赖；working
- * 增加类似cmake install的发布工具；
- * 增加对cmake工具的支持；
+ * 增加库的内聚，减少对外部设置的依赖；
+ * 增加类似cmake install的发布工具；working
+ * 增加对cmake工具的支持；working
  * 可能还有其他暂时没想到
 
 DuiEngine不是
@@ -58,19 +58,22 @@ DuiEngine不是
 DuixEngine名字由来
 -----------
 
-DuixEngine对DuiEngine的改变主要是在对头文件目录组织的改变，这样在制定includepath之后可以使用形如
+DuixEngine对DuiEngine的改变主要是在对头文件目录组织的改变，这样在指定includepath之后，将不再使用形如
 
-    #include <dui/duibasic.h>
-而不是原来的
-    
     #include "duibasic.h"
+而改为
+    
+    #include <dui/duibasic.h>
 所以
 
     X = ><
 
-
+DuiPlant是指整个项目，包括代码、文档、工具等；DuixEngine则是指核心的界面引擎。
+	
 更新日志
 ----------
+2014-5-13：基本目录定型，初步增加cmake支持，并且可以运行。
+
 2014-4-30：全部迁移到msvs2010
 
 2014-4-25：项目起步
