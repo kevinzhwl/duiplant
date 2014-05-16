@@ -1,5 +1,5 @@
 set(SUBSYS_NAME examples)
-set(SUBSYS_DESC "PCL examples")
+set(SUBSYS_DESC "examples for duixengine")
 #set(SUBSYS_DEPS )
 
 set(DEFAULT TRUE)
@@ -14,11 +14,12 @@ if (build)
             ${CMAKE_CURRENT_SOURCE_DIR}/../3rd/zlib/zlib.h
         )
     PCL_ADD_INCLUDES(zlib "zlib" ${zlib_incs})
-    set(ZLIB_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../3rd")
     set(ZLIB_LIBRARY_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../duixengine-installation/lib")
     include_directories(${ZLIB_INCLUDE_DIRS})
     link_directories(${ZLIB_LIBRARY_DIRS})
-    include_directories(${PCL_INCLUDE_DIRS})
+
+    include_directories(${ENGINE_INCLUDE_DIR})
+    include_directories(${ZLIB_INCLUDE_DIR})
 
     # This looks for all examples/XXX/CMakeLists.txt
     file (GLOB examples_sbudirs */CMakeLists.txt)

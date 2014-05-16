@@ -39,6 +39,10 @@ extern "C" {
 
 #define ZLIB_VERSION "1.2.3"
 #define ZLIB_VERNUM 0x1230
+#define ZLIB_VER_MAJOR 1
+#define ZLIB_VER_MINOR 2
+#define ZLIB_VER_REVISION 8
+#define ZLIB_VER_SUBREVISION 0
 
 /*
      The 'zlib' compression library provides in-memory compression and

@@ -72,7 +72,6 @@ if(build)
         #Msimg32.lib
         )
 
-    #set(LIB_NAME pcl_${SUBSYS_NAME})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
     if(BUILD_duixengine_static)
@@ -98,21 +97,19 @@ if(build)
 
     endif(BUILD_duixengine_shared)
 
+foreach(hdfile ${HEADER_INCS})
+    get_filename_component (absolute ${hdfile} ABSOLUTE)
+    get_filename_component (name ${hdfile} NAME)
+    STRING(REGEX REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/include" "${DUIX_OUTPUT_INCLUDE_DIR}" dir ${absolute})
+    configure_file(${hdfile} ${dir} COPYONLY)
+endforeach(hdfile)
+
 #/////////////////////////////////////////////////////////////////
 # installation setting
 
         # set CMAKE Installation Options
-        IF(DUIX_BUILD_INSTALLATION)
-        set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../${DUIX_PROJECT_NAME}-installation")
-        ENDIF()
 
-        # set customize Options
-        set(DUIX_INSTALL_DIR_NAME "${DUIX_PROJECT_NAME}-install")
-        set(DUIX_INSTALL_DIR "${CMAKE_SOURCE_DIR}/../${DUIX_INSTALL_DIR_NAME}")
-
-        IF(DUIX_BUILD_INSTALLATION)
         set(DUIX_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
-        ENDIF()
 
         #set the default path for built executables to the "bin" directory
         set(DUIX_INSTALL_EXEC_DIR ${DUIX_INSTALL_DIR}/bin)

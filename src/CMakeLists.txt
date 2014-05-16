@@ -47,6 +47,9 @@ set(DUIX_OUTPUT_LIB_DIR ${CMAKE_BINARY_DIR}/${INSTALLATION_LIB_DIR})
 set(DUIX_OUTPUT_BIN_DIR ${CMAKE_BINARY_DIR}/${INSTALLATION_BIN_DIR})
 make_directory(${DUIX_OUTPUT_LIB_DIR})
 make_directory(${DUIX_OUTPUT_BIN_DIR})
+set(INSTALLATION_INCLUDE_DIR "include")
+set(DUIX_OUTPUT_INCLUDE_DIR ${CMAKE_BINARY_DIR}/${INSTALLATION_INCLUDE_DIR})
+make_directory(${DUIX_OUTPUT_BIN_DIR})
 
 if(WIN32)
   foreach(config ${CMAKE_CONFIGURATION_TYPES})
@@ -67,10 +70,15 @@ set(duix_config_h_in "${CMAKE_CURRENT_SOURCE_DIR}/duix_config.h.in")
 set(duix_config_h "${CMAKE_CURRENT_BINARY_DIR}/include/duix_config.h")
 configure_file(${duix_config_h_in} ${duix_config_h})
 PCL_ADD_INCLUDES(duix "" ${duix_config_h})
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
+include_directories(${DUIX_OUTPUT_INCLUDE_DIR})
 
-  set(PCL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/duixengine/include")
-  #set(PCL_LIBRARY_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/@INSTALLATION_LIB_DIR@")
+set(ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/duixengine/include")
+set(ZLIB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/addons")
+#set(PCL_LIBRARY_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/@INSTALLATION_LIB_DIR@")
+
+IF(DUIX_BUILD_INSTALLATION AND CMAKE_INSTALL_PREFIX)
+set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../${DUIX_PROJECT_NAME}-installation")
+ENDIF()
 
 
 file (GLOB modules_subdirs */CMakeLists.txt)
