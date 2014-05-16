@@ -1,5 +1,5 @@
 
-set(SUBSYS_NAME duixengine)
+set(SUBSYS_NAME duiengine)
 set(SUBSYS_DESC "duixengine")
 #set(SUBSYS_DEPS )
 
@@ -16,7 +16,7 @@ if(build)
     #因此，WIN32/_WIN32 可以用来判断是否 Windows 系统（对于跨平台程序），
     #而 _WIN64 用来判断编译环境是 x86 还是 x64。附一个表
 
-    set(DUIX_PROJECT_NAME "${SUBSYS_NAME}")
+    set(ENGINE_TARGET_NAME "${SUBSYS_NAME}")
 
     set(DUIX_TARGET_PLATFORM "Win32")
     if(DUIX_BUILD_WIN64_PLATFORM)
@@ -75,14 +75,14 @@ if(build)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
     if(BUILD_duixengine_static)
-        set(DUIX_TRAGET_STATIC_NAME "${DUIX_PROJECT_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-static")
+        set(DUIX_TRAGET_STATIC_NAME "${ENGINE_TARGET_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-static")
         add_library("${DUIX_TRAGET_STATIC_NAME}" STATIC ${ALL_SOURCES} )
         #target_link_libraries("${DUIX_TRAGET_STATIC_NAME}" ${ALL_LIBRARIES})
     endif(BUILD_duixengine_static)
 
 
     if(BUILD_duixengine_shared)
-        set(DUIX_TRAGET_SHARED_NAME "${DUIX_PROJECT_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-shared")
+        set(DUIX_TRAGET_SHARED_NAME "${ENGINE_TARGET_NAME}-${DUIX_TARGET_PLATFORM}-${CMAKE_BUILD_TYPE}-shared")
         #ADD_MSVC_PRECOMPILED_HEADER("include/dui/duistd.h" "src/duistd.cpp" ALL_SOURCES)
         add_library(${DUIX_TRAGET_SHARED_NAME} SHARED ${ALL_SOURCES} )
         target_link_libraries(${DUIX_TRAGET_SHARED_NAME} ${ALL_LIBRARIES})

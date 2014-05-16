@@ -39,7 +39,7 @@ using namespace DuiEngine;
 
 #if defined(_WIN64)
 
-#pragma comment(lib,"zlib-x64-debug.lib")
+#pragma comment(lib,"zlib-x64-debug-static.lib")
 
 	#if defined(USING_ATL)
 	# pragma comment(lib, "duiengine-x64-debug-atl.lib")
@@ -51,7 +51,7 @@ using namespace DuiEngine;
 
 #else
 
-#pragma comment(lib,"zlib-win32-debug.lib")
+#pragma comment(lib,"zlib-win32-debug-static.lib")
 
 	#if defined(USING_ATL)
 	# pragma comment(lib, "duiengine-win32-debug-atl.lib")
@@ -66,7 +66,7 @@ using namespace DuiEngine;
 #else
 
 #if defined(_WIN64)
-#pragma comment(lib,"zlib-x64-release.lib")
+#pragma comment(lib,"zlib-x64-release-static.lib")
 
 	#if defined DLL_DUI
 	# pragma comment(lib, "duiengine-x64-release-shared.lib")
@@ -75,7 +75,7 @@ using namespace DuiEngine;
 	#endif
 
 #else
-#pragma comment(lib,"zlib-win32-release.lib")
+#pragma comment(lib,"zlib-win32-release-static.lib")
 
 	#if defined DLL_DUI
 	# pragma comment(lib, "duiengine-win32-release-shared.lib")

@@ -71,10 +71,7 @@ set(duix_config_h "${CMAKE_CURRENT_BINARY_DIR}/include/duix_config.h")
 configure_file(${duix_config_h_in} ${duix_config_h})
 PCL_ADD_INCLUDES(duix "" ${duix_config_h})
 include_directories(${DUIX_OUTPUT_INCLUDE_DIR})
-
-set(ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/duixengine/include")
-set(ZLIB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/addons")
-#set(PCL_LIBRARY_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/@INSTALLATION_LIB_DIR@")
+link_directories(${DUIX_OUTPUT_LIB_DIR})
 
 IF(DUIX_BUILD_INSTALLATION AND CMAKE_INSTALL_PREFIX)
 set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../${DUIX_PROJECT_NAME}-installation")
