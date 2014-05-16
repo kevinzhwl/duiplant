@@ -73,6 +73,7 @@ PCL_ADD_INCLUDES(duix "" ${duix_config_h})
 include_directories(${DUIX_OUTPUT_INCLUDE_DIR})
 link_directories(${DUIX_OUTPUT_LIB_DIR})
 
+set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../${DUIX_PROJECT_NAME}-installation")
 IF(DUIX_BUILD_INSTALLATION AND CMAKE_INSTALL_PREFIX)
 set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../${DUIX_PROJECT_NAME}-installation")
 ENDIF()
@@ -80,20 +81,21 @@ ENDIF()
 
 file (GLOB modules_subdirs */CMakeLists.txt)
 
-    foreach(subdir ${modules_subdirs})
-        # PATH of get_filename_component has problem dealing with windows shared folders "//xxx.xxx.xxx.xxx/folder"
-        # Check here for the discussion: http://www.pcl-developers.org/Small-hack-to-get-filename-component-td5706691.html
-        # Modified by Yangyan Li(yangyan.lee@gmail.com)
-        # get_filename_component (dir ${subdir} PATH)
-        get_filename_component (absolute ${subdir} ABSOLUTE)
-        get_filename_component (name ${subdir} NAME)
-        STRING(REGEX REPLACE ${name} "" dir ${absolute})
-        list(APPEND PCL_MODULES_DIRS ${dir})
-    endforeach(subdir)
-    # Display the found subdirectories
-    message (STATUS "PCL_MODULES_DIRS ${PCL_MODULES_DIRS}")
-    # Add the subdirectories
-    foreach(subdir ${PCL_MODULES_DIRS})
-    add_subdirectory(${subdir})
-    endforeach(subdir)
+foreach(subdir ${modules_subdirs})
+    # PATH of get_filename_component has problem dealing with windows shared folders "//xxx.xxx.xxx.xxx/folder"
+    # Check here for the discussion: http://www.pcl-developers.org/Small-hack-to-get-filename-component-td5706691.html
+    # Modified by Yangyan Li(yangyan.lee@gmail.com)
+    # get_filename_component (dir ${subdir} PATH)
+    get_filename_component (absolute ${subdir} ABSOLUTE)
+    get_filename_component (name ${subdir} NAME)
+    STRING(REGEX REPLACE ${name} "" dir ${absolute})
+    list(APPEND PCL_MODULES_DIRS ${dir})
+endforeach(subdir)
+# Display the found subdirectories
+message (STATUS "PCL_MODULES_DIRS ${PCL_MODULES_DIRS}")
+# Add the subdirectories
+foreach(subdir ${PCL_MODULES_DIRS})
+add_subdirectory(${subdir})
+endforeach(subdir)
 
+MESSAGE(STATUS ${CMAKE_INSTALL_PREFIX})
