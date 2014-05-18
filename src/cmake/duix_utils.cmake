@@ -23,3 +23,15 @@ else(NOT DEFINED DUIX_RESBUILDER)
 endif(NOT DEFINED DUIX_RESBUILDER)
 
 endmacro(GETDUIX_BUILD_CMD)
+
+macro(ADD_RESBUILD_TARGET _targename _xmlfile _rcfile)
+
+    GETDUIX_BUILD_CMD(_BUILD_CMD ${_xmlfile} ${_rcfile})
+    MESSAGE(STATUS ${_BUILD_CMD})
+
+    add_custom_target(${_targetname}
+                   COMMAND ${_BUILD_CMD}
+                   COMMENT "Build DuiEngine Skin XML File"
+                    )
+
+endmacro(ADD_RESBUILD_TARGET)
