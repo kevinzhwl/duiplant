@@ -1,12 +1,8 @@
+include(${CMAKE_SOURCE_DIR}/cmake/duix_utils.cmake)
 
 if(BUILD_examples)
 
-   # PCL_SUBSYS_DEPEND(build ${SUBSYS_NAME} DEPS surface)
-	
-	
-#    PCL_ADD_EXAMPLE(pcl_test_nurbs_fitting_surface
-#            FILES test_nurbs_fitting_surface.cpp
-#                    LINK_WITH pcl_common pcl_io pcl_surface pcl_visualization)
+    set(EXAMPLE_TARGET_NAME "duiskin")
 
     include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
@@ -18,33 +14,27 @@ if(BUILD_examples)
     set(ALL_SOURCES
         ${APP_SRCS} ${APP_INCS} ${APP_SKINS} ${APP_RES})
 
-
-    set(PROJ_TARGET_NAME "duiskin")
-    add_definitions("-DUNICODE -D_UNICODE")
-
-
     set_source_files_properties( ${OUPUT_FILE} PROPERTIES GENERATED TRUE )
 
-    add_executable(${PROJ_TARGET_NAME} WIN32 ${ALL_SOURCES})
+    add_definitions("-DUNICODE -D_UNICODE")
+    add_executable(${EXAMPLE_TARGET_NAME} WIN32 ${ALL_SOURCES})
 
 #$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2
-    set(TOOL_DIR ${CMAKE_SOURCE_DIR}/duixengine-installation/tools)
-    set(RESBULDER "${TOOL_DIR}/residbuilder2.exe")
     set(INPUT_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/skin/index.xml")
     set(OUTPUT_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/duires/winres.rc2")
-    set(CMDARGS -i ${INPUT_FILE} -y -p skin -r ${OUTPUT_FILE})
-    set(BUILD_CMD ${RESBULDER} -i ${INPUT_FILE} -y -p skin -r ${OUTPUT_FILE})
-    set(BUILD_CMDA "${RESBULDER} ${CMDARGS}")
-    MESSAGE(${BUILD_CMD})
+    GETDUIX_BUILD_CMD(BUILD_CMD ${INPUT_FILE} ${OUTPUT_FILE})
+    MESSAGE(STATUS ${BUILD_CMD})
 
-    add_custom_target(skinres
+    set(EXAMPLE_TARGET_SKINRES ${EXAMPLE_TARGET_NAME}_skinres)
+    add_custom_target(${EXAMPLE_TARGET_SKINRES}
                    COMMAND ${BUILD_CMD}
                    COMMENT "Build DuiEngine Skin XML File"
                     )
-    add_dependencies( ${PROJ_TARGET_NAME} skinres )
+    add_dependencies(${EXAMPLE_TARGET_NAME} EXAMPLE_TARGET_SKINRES )
+    add_dependencies(${EXAMPLE_TARGET_NAME} ZLIB_SHARED_NAME)
 
-#   add_custom_command may (or not) work above vs2010
-#    add_custom_command(TARGET ${PROJ_TARGET_NAME}
+##   add_custom_command may (or not) work above vs2010
+#    add_custom_command(TARGET ${EXAMPLE_TARGET_NAME}
  #                        PRE_BUILD
   #                      COMMAND ${BUILD_CMDA}
    #                      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/"

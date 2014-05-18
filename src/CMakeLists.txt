@@ -7,7 +7,6 @@ string(TOLOWER ${PROJECT_NAME} DUIX_PROJECT_NAME)
 #set(DUIX_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 include(${CMAKE_SOURCE_DIR}/cmake/duix_build_config.cmake)
 
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "possible configurations" FORCE)
 
 # In case the user does not setup CMAKE_BUILD_TYPE, assume it's RelWithDebInfo
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -35,6 +34,8 @@ SET(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
 
 include(${CMAKE_SOURCE_DIR}/cmake/pcl_utils.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/pcl_targets.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/duix_utils.cmake)
+
 #set(PCL_VERSION 1.7.0 CACHE STRING "PCL version")
 #DISSECT_VERSION()
 GET_OS_INFO()
@@ -50,6 +51,8 @@ make_directory(${DUIX_OUTPUT_BIN_DIR})
 set(INSTALLATION_INCLUDE_DIR "include")
 set(DUIX_OUTPUT_INCLUDE_DIR ${CMAKE_BINARY_DIR}/${INSTALLATION_INCLUDE_DIR})
 make_directory(${DUIX_OUTPUT_BIN_DIR})
+
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "possible configurations" FORCE)
 
 if(WIN32)
   foreach(config ${CMAKE_CONFIGURATION_TYPES})
@@ -78,6 +81,7 @@ IF(DUIX_BUILD_INSTALLATION AND CMAKE_INSTALL_PREFIX)
 set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../${DUIX_PROJECT_NAME}-installation")
 ENDIF()
 
+SETDUIX_TOOLS_DIR("${CMAKE_SOURCE_DIR}/../tools")
 
 file (GLOB modules_subdirs */CMakeLists.txt)
 
