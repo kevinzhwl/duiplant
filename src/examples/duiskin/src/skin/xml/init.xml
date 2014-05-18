@@ -26,9 +26,8 @@
     <scrollbar name="sb_common" src="IDP_SCROLLBAR" margin="3" hasgripper="0"/>
     <imgframe name="comboboxbtn" src="IDP_COMBO_DROPDOWN" subwidth="16"/>
     <!--  must-have End-->
-    <!--
-    <imgframe name="dlg_frame" owner="DUI-DEMO2" src="IDP_DIALOG_BG_FRAME" left="5" right="5" top="40" bottom="40"/>
-    -->
+
+    <imgframe name="dlg_frame" owner="DUI-DEMO" src="IDP_DIALOG_BG_FRAME" left="5" right="5" top="40" bottom="40"/>
     <imgframe name="dlg_black" owner="DUI-DEMO" src="IDP_DIALOG_BG_FRAME_BLACK" left="5" right="5" top="40" bottom="40"/>
 
     <imgframe name="skin_flatbutton" src="IDP_BUTTON_FLATBUTTON" left="3" states="4"/>

@@ -23,8 +23,7 @@ if(BUILD_examples)
     add_executable(${EXAMPLE_TARGET_NAME} WIN32 ${ALL_SOURCES})
 
 #$(DUITOOL_DIR)residbuilder2.exe" -i "%(FullPath)" -y -p skin -r .\duires\winres.rc2
-    SETDUIX_TOOLS_DIR("${CMAKE_SOURCE_DIR}/duixengine-installation/tools")
-
+   # SETDUIX_TOOLS_DIR("${CMAKE_SOURCE_DIR}/duixengine-installation/tools")
     #GETDUIX_BUILD_CMD(BUILD_CMD ${XML_FILE} ${RC_FILE})
 
     set(BUILD_CMD ${DUIX_RESBUILDER} -i ${XML_FILE} -y -p skin -r ${RC_FILE})

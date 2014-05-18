@@ -9,6 +9,8 @@ PCL_SUBSYS_DEPEND(build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS})
 
 if (build)
 
+    SETDUIX_TOOLS_DIR("${CMAKE_SOURCE_DIR}/../tools")
+
     # This looks for all examples/XXX/CMakeLists.txt
     file (GLOB examples_sbudirs */CMakeLists.txt)
     # Extract only relevant XXX and append it to PCL_EXAMPLES_SUBDIRS
