@@ -4,6 +4,8 @@
 # !foo.html 指定例外 不会被忽略
 # *.[oa] 忽略所有.o 和.a的文件
 
+*-installation/
+
 # Qt project
 *-build-*/
 build/

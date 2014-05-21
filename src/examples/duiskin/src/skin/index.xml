@@ -22,7 +22,7 @@ layer:窗口定义XML，resbuilder使用它来自动为对应的XML生成控件I
 <resid type="IMGX" name="IDP_BUTTON_PUSHBUTTON" file="image\button_pushbutton.png" />
 
 <resid type="IMGX" name="IDP_BUTTON_CHECKBOX_FOCUS" file="image\button_checkbox_focus.png"/>
-<resid type="IMGX" name="IDP_BUTTON_RADIOBOX_FOCUS" file="image\button_radio_focus.png" />
+<resid type="IMGX" name="IDP_BUTTON_RADIOBOX_FOCUS" file="image\button_radiobox_focus.png" />
 
 <resid type="IMGX" name="IDP_CALENDAR_BUTTON" file="image\calendar_button.png"/>
 
